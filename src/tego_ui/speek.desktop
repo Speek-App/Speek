@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Speek
+Categories=Network;InstantMessaging;Chat;FileTransfer;Qt
+Comment=Anonymous instant messaging
+Icon=speek
+Exec=speek
+Name[en_US]=speek.desktop

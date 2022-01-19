@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/lang">
+        <file>ricochet_en.qm</file>
+        <file>ricochet_it.qm</file>
+        <file>ricochet_es.qm</file>
+        <file>ricochet_da.qm</file>
+        <file>ricochet_pt_BR.qm</file>
+        <file>ricochet_de.qm</file>
+        <file>ricochet_bg.qm</file>
+        <file>ricochet_cs.qm</file>
+        <file>ricochet_fi.qm</file>
+        <file>ricochet_fr.qm</file>
+        <file>ricochet_ru.qm</file>
+        <file>ricochet_uk.qm</file>
+        <file>ricochet_tr.qm</file>
+        <file>ricochet_nl_NL.qm</file>
+        <file>ricochet_fil_PH.qm</file>
+        <file>ricochet_sv.qm</file>
+        <file>ricochet_pl.qm</file>
+        <file>ricochet_he.qm</file>
+        <file>ricochet_sl.qm</file>
+        <file>ricochet_zh.qm</file>
+        <file>ricochet_et_EE.qm</file>
+        <file>ricochet_it_IT.qm</file>
+        <file>ricochet_nb.qm</file>
+        <file>ricochet_pt_PT.qm</file>
+        <file>ricochet_sq.qm</file>
+        <file>ricochet_zh_HK.qm</file>
+        <file>ricochet_ja.qm</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,396 @@
+This file aims to document the low-level details of communication and protocol
+in Ricochet.
+
+Unless otherwise noted, this document describes protocol version 0. Section 1
+(protocol negotiation) is intended to be invariant, as it is responsible for
+negotiating the protocol version.
+
+Table of contents:
+    0. Conventions in this document
+    1. The hidden service layer
+    2. Protocol negotiation
+        2.1. Introduction syntax
+    3. Connection purpose and authentication
+        3.1. Authenticated contact connections
+    4. Connection management
+        4.1. Command connections
+        4.2. Data connections
+    5. Message processing
+    6. Commands and replies
+        6.1. Length field
+        6.2. Command field
+        6.3. State field
+        6.4. Identifier field
+        6.5. Data
+    7. Defined commands
+        7.1. 0x00 - Ping
+        7.2. 0x01 - Get connection secret
+        7.3. 0x10 - Chat message
+    8. Contact request connections
+
+0. Conventions in this document
+
+    'Client' refers to the peer creating the connection
+    'Server' refers to the peer receiving an incoming connection. After
+             authentication, this distinction is irrelevant.
+
+1. The hidden service layer
+
+[TBD: describe use of hidden services and the properties they make available]
+
+    Connections are made to port 9878 of the hidden service.
+
+2. Protocol negotiation
+
+    Immediately after establishing a connection, the client must send an
+    introduction. The server is expected to expire any connection on which
+    this introduction does not arrive in a reasonable amount of time.
+
+2.1. Introduction syntax
+
+    The client must send the following sequence:
+        0x49
+        0x4D
+        nVersions                               [1 octet]
+        versions                                [nVersions bytes]
+
+    'nVersions' describes the number of version fields to follow. Each version
+    field is a single octet, where each value identifies an incompatible
+    protocol. The value 0xFF is reserved to indicate failure in a later reply.
+
+    In response, once the entire introduction has been received, the server
+    responds with a single octet containing the protocol version chosen from
+    the list provided by the client. This should be the highest mutually
+    supported version. If there is no mutual version, the server sends 0xff
+    (which is not a valid version value), and terminates the connection.
+
+    Implementations MUST NOT expect any more than 4 octets (the introduction
+    with one version) to arrive before attempting to process them. The client
+    MUST NOT expect more than one octet (the response version) before
+    processing that data, regardless of any data which may immediately follow.
+
+3. Connection purpose and authentication
+
+    Immediately after version negotiation has finished (i.e. the server has
+    responded), the client must send a connection purpose field, which defines
+    the type of connection. This is a single octet, with the following
+    currently recognized values:
+
+        0x00       Contact command connection
+        0x01       Contact data connection
+        0x80       Contact request
+
+    Any value below 0x20 (non-inclusive) shares the same immediate usage for
+    authentication. The 0x00 value indicates a command connection (4.),
+    while all others are auxiliary connections. The protocol version must be
+    increased when introducing a new purpose.
+
+3.1. Authenticated contact connections
+
+    For connections with a purpose value below 0x20, the following
+    authentication process is used to prove the identity of existing
+    contacts.
+
+    After sending the purpose, the client must follow with a 16-octet
+    pre-exchanged secret. This secret is specific to each peer, and is defined
+    during the contact request (or shortly thereafter). Because of the
+    hidden service layer pre-authenticating the server end of the connection,
+    and the existing layers of encryption, this value is sent in plaintext.
+
+    The server looks up this value and matches it to any known contacts.
+    It then sends a one-octet response code; the value 0x00 for this code
+    indicates success, while all other values are assumed to be failure.
+    Any failure response may be followed by the server immediately closing
+    the connection, or may be followed by additional information. No response
+    other than 0x00 will result in the connection continuing to exist. The
+    following responses are currently defined:
+
+        0x00        Success
+        0x01        General failure; immediately closes the connection
+        0x02        Unrecognized secret
+
+    After a success reply, the connection transitions into message parsing
+    and may be used bidirectionally as desired. The "unrecognized secret"
+    response should be considered a permanent failure and disable future
+    connection attempts without issuing a new contact request.
+
+4. Connection management
+
+4.1. Command connections
+
+    Connections initiated with a purpose of 0x00 (see section 3.) are command
+    connections, over which the protocol defined in section 5 through 7 is
+    used. Generally, there may only be one command connection with a peer,
+    and a new connection is considered to replace any existing connection
+    (causing failure of all incomplete commands).
+
+    A race is possible when two peers connect simultaniously and each
+    establish a command connection. To resolve this situation, the following
+    rules are used:
+
+        - If the remote peer establishes a command connection prior to
+          sending authentication data for an outgoing attempt, the outgoing
+          attempt is aborted and the peer's connection is used.
+        - If the existing connection is more than 30 seconds old, measured
+          from the time authentication is sent, it is replaced and closed.
+        - Otherwise, both peers close the connection for which the server's
+          onion-formatted hostname is considered less by a strcmp function.
+
+4.2. Data connections
+
+    All commands and general communication take place over the command
+    connection. It's important that command connections keep low latency
+    regardless of throughput, so they are not suitable for transferring
+    large data.
+
+    Peers may establish data connections with a purpose of 0x01 for the
+    transfer of larger amounts of data. These transfers must first be
+    negotiated on the command connection, where the receiving peer assigns
+    a 4 octet identifier for the blob of data.
+
+    Either peer may use a data connection regardless of why it was
+    originally established. Connections should not be closed by expiration
+    if a pending identifier has been issued for the peer's use. It should
+    be possible for the sending peer in a transfer to indicate that the
+    recipient should establish a data connection, to avoid relying on
+    the connectivity of both peers.
+
+    Data arrives in the following form:
+
+        identifier                  [4 octets]
+        length                      [64-bit unsigned big endian integer]
+        data                        [length octets]
+
+    Unexpected identifiers may be ignored or result in closing the
+    data connection.
+
+5. Message processing
+
+    Most communication takes place over the command or message protocol, used
+    on authenticated connections with contacts. This is a sequence of messages,
+    each of which is a command or a reply.
+
+    All commands must generate a reply, unless otherwise specifically defined.
+    This is done to allow intelligent handling of various error situations, and
+    to enable better internal API for managing outstanding commands. Replies
+    have a concept of finality; a command may generate many replies, but must
+    have exactly one final reply, which obviously must be the last.
+
+    Each command also has an identifier; this is a 16-bit value unique to the
+    sender of the command, which serves to relate replies back to the original
+    command. As a result of this, there is no requirement that replies be
+    immediate, and they may even be interleaved with other replies. The
+    identifier may be considered unused immediately after a final reply arrives
+    with that identifier set. Identifiers are specific to a single connection.
+    0 is reserved for identifiers, and should not be used.
+
+    One last distinction is between two types of messages that have very
+    different behavior for processing. Buffered messages (which are the
+    majority) include their length, which may not exceed 65,540 octets
+    inclusive of the header and the length itself, meaning that they may
+    have a maximum payload of 65,534 octets. As the name implies, buffered
+    messages are buffered until all data has arrived, and processed once.
+
+6. Commands and replies
+
+    The syntax of a message (a command or reply) is:
+
+        length                      [16-bit big endian integer]
+        command                     [1 octet]
+        state                       [1 octet]
+        identifier                  [16-bit big endian integer]
+        data                        [length-1 octets, or unspecified]
+
+    These fields will be addressed in order.
+
+6.1. Length field
+
+    The length is a 16-bit big endian integer defining the size in bytes of the
+    data payload in the message. This length does not include the header of the
+    message. It may be 0 for messages with no associated data.
+
+6.2. Command field
+
+    The command is a one octet identifier for the command that should be
+    performed. When adding commands, great care should be taken to avoid
+    collisions with any other implementation. Command values below 0x80 should
+    be reserved for definition in this official document, while those above
+    are open for third party usage with appropriate precautions. A feature
+    inspection command may be introduced in the future to handle this issue.
+
+    For details on existing commands, see section 7.
+
+6.3. State field
+
+    The state field can be thought of as a subdivision of the command. It
+    enables different usages of the same command, and is also used to indicate
+    replies and reply status. The state is one octet, which is to be
+    interpreted as follows, where 0 is the most significant bit (0x80), and 7
+    is the least significant (0x01).
+
+    Bit 0 (0x80) indicates if the message is a reply.
+
+    If bit 0 is NOT set, the message is a command:
+        Bit 1 (0x40) is reserved, and should have a value of 1.
+        Bits 2 through 7 are available for command-specific usage.
+
+    If bit 0 IS set:
+        Bit 1 (0x40) indicates if the reply is a final reply. No more replies
+        may arrive with the same identifier for that command after the final
+        reply.
+
+        Bit 2 (0x20) indicates if the command was successful. This bit should
+        be set for any reply which does not indicate failure, but is largely
+        intepreted by the command itself.
+
+        IF bit 2 is NOT set (i.e. the command failed), all values with bit 3
+        (0x10) set are reserved for protocol usage as defined below.
+
+        All other bits (3-7 for success, 4-7 for failure) are available for
+        command-specific usage.
+
+    The following chart describes these values and their meaning:
+        0x00 to 0x3F        Reserved (unused)
+        0x40 to 0x7F        Command
+        0x80 to 0x8F        Reply   Intermediate    Failure     Available
+        0x90 to 0x9F        Reply   Intermediate    Failure     Reserved
+        0xA0 to 0xBF        Reply   Intermediate    Successful
+        0xC0 to 0xCF        Reply   Final           Failure     Available
+        0xD0 to 0xDF        Reply   Final           Failure     Reserved
+        0xE0 to 0xFF        Reply   Final           Successful
+
+6.4. Identifier field
+
+    The identifier is a 16-bit big endian integer, selected when sending the
+    command. It is unique to the peer and connection. It is illegal to send a
+    command with the same identifier as a command for which a final reply has
+    not arrived. It is illegal to send a reply with an identifier that does not
+    match an outstanding command from the peer.
+
+    The identifier 0 is reserved.
+
+6.5. Data
+
+    The data is arbitrary data, specific to the command (and possibly state).
+    Its length is defined by the length field, which may be 0.
+
+7. Defined commands
+
+    This is a comprehensive listing of all commands implemented in the version
+    of Ricochet to which this document corrosponds, and potentially those used
+    by other applications that are considered reserved for that purpose.
+
+7.1. 0x00 - Ping
+
+    The ping command has no data, and results in a single, final, successful
+    reply with a command-specific state of 0 (0xE0). It has no other effect.
+
+7.2. 0x01 - Get connection secret
+
+    The command has no data. If successful, the peer will send a single, final
+    reply with a command state of 0 (0xE0), and the 16-byte secret that is
+    used to authenticate the local (command outgoing) end when establishing a
+    connection.
+
+    This is a dirty trick used during contact requests to allow the requesting
+    end of the request to discover the secret that it should use.
+
+7.3. 0x10 - Chat message
+
+    The command sends the following data:
+
+        timeDelta               32-bit signed big-endian integer; seconds
+                                before now that the message was written. A
+                                negative value (indicating the future) may be
+                                rejected.
+        lastReceived            16-bit big-endian integer; command identifier
+                                of the last chat message that had been received
+                                from the peer when this message was sent.
+        length                  16-big unsigned big-endian integer; length in
+                                octets of the text field
+        text                    UTF8-encoded message text of 'length' octets.
+
+    If successful, a single, final reply will be sent.
+
+8. Contact request connections
+
+    Contact requests are indicated by a connection with a purpose of 0x80.
+    Immediately after receiving the purpose, the server will respond with a
+    16-octet randomly generated cookie.
+
+    Once the cookie is received, the client (i.e. the peer that is sending a
+    request) must send the following structure:
+
+        length                  16-bit big-endian unsigned integer; length in
+                                octets of the entire request message, inclusive
+                                of itself.
+        serverHostname          16 octets, base32-encoded onion hostname of the
+                                intended recipient of the request.
+        serverCookie            16 octets, the cookie provided by the server
+        connSecret              16 octets, random data that the recipient can
+                                use to authenticate for a contact connection.
+        pubKeyLength            16-bit big-endian unsigned integer; length in
+                                octets of the pubKey field
+        pubKey                  PEM-encoded hidden service public key of
+                                pubKeyLength octets
+        nicknameLength          16-bit big-endian unsigned integer; length in
+                                octets of the nickname field
+        nickname                UTF-8 encoded string of nicknameLength octets;
+                                suggested nickname for this contact
+        messageLength           16-bit big-endian unsigned integer; length in
+                                octets of the message field
+        message                 UTF-8 encoded string of messageLength octets;
+                                freeform message to be shown with the request
+        signatureLength         16-bit big-endian unsigned integer; length in
+                                octets of the signature field
+        signature               RSA signature of the SHA256 digest of the fields
+                                from serverHostname to message inclusive.
+
+    Upon receiving the request, the server must verify that it is correct:
+
+        - length must be greater than 58
+        - serverHostname must equal the onion hostname that received this request
+        - serverCookie must equal the random cookie sent by the server
+        - pubKey must be a parseable and valid RSA public key
+        - at least one of nickname or message must be non-empty
+        - signature must be a valid signature by pubKey of the previous fields,
+          excluding the length.
+
+    Verifying serverHostname and serverCookie prevents replay and forwarding
+    attacks on the request. The signature authenticates that the origin of the
+    request is able to publish the hidden service represented by pubKey. The
+    requesting service's hostname can be calculated from pubKey.
+
+    After the request, the server will respond with a response code. All
+    responses with the exception of 0x00 (acknowledge) and 0x01 (accept) are
+    considered errors. The following are currently-defined responses:
+
+        0x00        Acknowledged (see below)
+        0x01        Accepted (see below)
+        0x40        Rejected by user
+        0x80        Syntax error
+        0x81        Verification error
+        0x82        Request requires either a nickname or a message
+
+    All of the error responses (that is, any with a value greater than 0x01)
+    will be followed closing the connection. In the case of user rejection,
+    and potentially others, the contact ID used for this request may be added
+    to a blacklist, causing any further requests to be immediately rejected
+    without notifying the user.
+
+    The acknowledged response is a special case; this indicates that the
+    request was valid and has been processed, but that no response has yet been
+    made. After the acknowledged response, the client should leave open the
+    connection and wait for another response code to arrive. However, this is
+    not a requirement.
+
+    Immediately after the accepted response, both peers are expected to
+    transition the connection to an established and authenticated command
+    connection (i.e., they begin the message protocol).
+
+    The requesting peer MUST be willing to accept normal contact connections,
+    authenticated with the connSecret field from the request, at any time after
+    the request has been sent. If such a connection is established, the
+    requesting peer should treat that as implicitly accepting the request. This
+    allows the request to be accepted if the request connection has since been
+    lost.

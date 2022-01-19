@@ -1,0 +1,4 @@
+orconfig.h
+lib/log/*.h
+lib/trace/*.h
+lib/subsys/*.h

@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>ricochet_refresh.png</file>
+        <file>ricochet_icons.ttf</file>
+        <file>download.png</file>
+        <file>cancel.png</file>
+        <file>image-add-svgrepo-com.svg</file>
+        <file>paperclip-svgrepo-com.svg</file>
+        <file>emoji-add-svgrepo-com.svg</file>
+        <file>guest-add-svgrepo-com.svg</file>
+        <file>table-settings-svgrepo-com.svg</file>
+        <file>display-rich-text-svgrepo-com.svg</file>
+        <file>display-rich-text-svgrepo-com-white.svg</file>
+        <file>table-settings-svgrepo-com-white.svg</file>
+        <file>guest-add-svgrepo-com-white.svg</file>
+        <file>emoji-add-svgrepo-com-white.svg</file>
+        <file>paperclip-svgrepo-com-white.svg</file>
+        <file>image-add-svgrepo-com-white.svg</file>
+        <file>duomo-di-milano-church-svgrepo-com.svg</file>
+        <file>duomo-di-milano-church-svgrepo-com.png</file>
+        <file>speek.svg</file>
+        <file>speek.png</file>
+        <file>speek.ico</file>
+        <file>speek.icns</file>
+    </qresource>
+</RCC>
