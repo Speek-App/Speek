@@ -1,4 +1,4 @@
-# Speek
+# Speek App
 
 ## Tego-Core
 Tego-Core is the work in progress repository for Ricochet Refresh. We are in the process of making significant changes to Ricochet Refresh to implement V3 Onion Service support as well as some exciting new features. The change to V3 Onion Services will not be backwards compatible with V2, which is the version currently implemented in Ricochet Refresh. As such, we are keeping development separate until we are ready to release a V3 Onion Services version of Ricochet Refresh. 
