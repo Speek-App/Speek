@@ -42,7 +42,7 @@ include($${QMAKE_INCLUDES}/linker_flags.pri)
 TARGET = speek
 TEMPLATE = app
 
-QT += core gui network quick widgets quickcontrols2
+QT += core gui network quick widgets
 
 #isEmpty(RICOCHET_REFRESH_VERSION) {
 #    VERSION = devbuild
