@@ -47,7 +47,7 @@ Rectangle {
             strAppnd = "&nbsp;"
         }
 
-        strAppnd += '<span style="font-size:22px;font-family:' + emojiFont.name + '">' + selectedEmoji + '</span> '
+        strAppnd += '<span style="font-size:22px;font-family:Noto Color Emoji">' + selectedEmoji + '</span> '
         //strAppnd += selectedEmoji
 
         textArea.insert(textArea.cursorPosition, strAppnd)

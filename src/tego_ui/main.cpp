@@ -42,7 +42,7 @@
 #include "shims/TorManager.h"
 #include "shims/UserIdentity.h"
 
-#include <QtQml>
+#include <QFontDatabase>
 
 static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &errorMessage);
 static void initTranslation();
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) try
     defaultFont.setPointSize(defaultFont.pointSize()+2);
     qApp->setFont(defaultFont);
 
-    qmlRegisterSingletonType( QUrl("qrc:/ui/Singleton.qml"), "ca.speek.singleton", 1, 0, "Singleton" );
+    int id_f = QFontDatabase::addApplicationFont(":/fonts/NotoColorEmoji.ttf");
 
     tego_context_t* tegoContext = nullptr;
     tego_initialize(&tegoContext, tego::throw_on_error());
