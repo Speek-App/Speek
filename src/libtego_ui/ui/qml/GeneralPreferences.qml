@@ -147,6 +147,38 @@ ColumnLayout {
         }
     }
 
+    RowLayout {
+        z: 2
+        Label {
+            //: Label for combobox where users can specify the Background for the chat area
+            text: qsTr("Chat Area Background")
+            Accessible.role: Accessible.StaticText
+            Accessible.name: text
+        }
+
+        ComboBox {
+            id: backgroundBox
+            currentIndex: typeof(uiSettings.data.chatBackground) !== "undefined" ? model.indexOf(uiSettings.data.chatBackground) : 0
+            Layout.minimumWidth: 200
+            model: [
+                qsTr("Purple"),
+                qsTr("Purple2"),
+                qsTr("Purple-Blue"),
+            ]
+
+            onActivated: {
+                var back = model[index]
+                uiSettings.write("chatBackground", back)
+            }
+
+            Accessible.role: Accessible.ComboBox
+            //: Name of the combobox used to select UI langauge for accessibility tech like screen readers
+            Accessible.name: qsTr("Chat Area Background")
+            //: Description of what the language combox is for for accessibility tech like screen readers
+            Accessible.description: qsTr("What background the Chat Area uses")
+        }
+    }
+
     Item {
         Layout.fillHeight: true
         Layout.fillWidth: true

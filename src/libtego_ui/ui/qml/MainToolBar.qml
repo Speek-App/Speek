@@ -58,7 +58,7 @@ ToolBar {
         id: toolBarLayout
         width: parent.width
         spacing: 0
-        height: 46
+        height: 50
 
         TorStateWidget {
             id:torstatewidget

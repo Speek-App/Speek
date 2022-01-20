@@ -42,6 +42,8 @@
 #include "shims/TorManager.h"
 #include "shims/UserIdentity.h"
 
+#include <QtQml>
+
 static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &errorMessage);
 static void initTranslation();
 static void initTheme();
@@ -72,6 +74,8 @@ int main(int argc, char *argv[]) try
     QFont defaultFont = QApplication::font();
     defaultFont.setPointSize(defaultFont.pointSize()+2);
     qApp->setFont(defaultFont);
+
+    qmlRegisterSingletonType( QUrl("qrc:/ui/Singleton.qml"), "ca.speek.singleton", 1, 0, "Singleton" );
 
     tego_context_t* tegoContext = nullptr;
     tego_initialize(&tegoContext, tego::throw_on_error());
@@ -440,7 +444,7 @@ static void initTheme()
     darkPalette.setColor(QPalette::Midlight,QColor(50,50,50));
 
     SettingsObject settings;
-    if(settings.read("ui.darkMode").toBool() == false){
+    if(settings.read("ui.darkMode").toBool() == false || QPalette().color(QPalette::WindowText).value() > QPalette().color(QPalette::Window).value()){
         qApp->setPalette(darkPalette);
     }
 }

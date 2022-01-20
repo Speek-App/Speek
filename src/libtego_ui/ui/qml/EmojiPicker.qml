@@ -6,6 +6,12 @@ import QtQuick.Dialogs 1.0
 import "qrc:/ui/emoji.js" as EmojiJSON
 
 Rectangle {
+    FontLoader {
+            id: emojiFont
+            source: "qrc:/fonts/NotoColorEmoji.ttf"
+            Component.onCompleted: console.log(name)
+        }
+
     id: emojiPicker
     property EmojiCategoryButton currSelEmojiButton
     property variant emojiParsedJson
@@ -41,7 +47,7 @@ Rectangle {
             strAppnd = "&nbsp;"
         }
 
-        strAppnd += '<span style="font-size:22px;font-family:Noto Emoji">' + selectedEmoji + '</span> '
+        strAppnd += '<span style="font-size:22px;font-family:' + emojiFont.name + '">' + selectedEmoji + '</span> '
         //strAppnd += selectedEmoji
 
         textArea.insert(textArea.cursorPosition, strAppnd)

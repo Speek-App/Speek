@@ -7,6 +7,12 @@ import im.utility 1.0
 import QtQuick.Dialogs 1.0
 
 FocusScope {
+    FontLoader {
+            id: emojiFont
+            source: "qrc:/fonts/NotoColorEmoji.ttf"
+            Component.onCompleted: console.log(name)
+        }
+
     id: chatPage
 
     property ContactUser contact

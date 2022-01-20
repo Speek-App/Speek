@@ -39,8 +39,10 @@
         <file>AudioNotifications.qml</file>
         <file>utils.js</file>
         <file>ColorLetterCircle.qml</file>
+        <file>Singleton.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

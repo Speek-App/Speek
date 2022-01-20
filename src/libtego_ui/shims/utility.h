@@ -78,6 +78,9 @@ public:
          QString encoded = buffer.data().toBase64();
         return encoded;*/
     }
+    Q_INVOKABLE bool checkFileExists(QString path) {
+        return QFile::exists(path);
+    }
 };
 
 #endif // UTILITY_H

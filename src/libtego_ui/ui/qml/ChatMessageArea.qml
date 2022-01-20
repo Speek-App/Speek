@@ -3,6 +3,12 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 
 Rectangle {
+    FontLoader {
+            id: emojiFont
+            source: "qrc:/fonts/NotoColorEmoji.ttf"
+            Component.onCompleted: console.log(name)
+        }
+
     id: scroll
     clip: true
     //color: "#e4dcd3"
@@ -13,9 +19,13 @@ Rectangle {
     Image {
                 id: image2
                 anchors.fill: parent
-                source: "qrc:/backgrounds/purple.png"
-                //opacity: 0.5
-                //z: -1
+                //source: "qrc:/backgrounds/purple.png"
+                source: {
+                    if(typeof(uiSettings.data.chatBackground) !== "undefined")
+                        return "qrc:/backgrounds/" + uiSettings.data.chatBackground.toLowerCase() + ".png"
+                    else
+                        return "qrc:/backgrounds/purple.png"
+                }
             }
 
     /* As of Qt 5.5.0, ScrollView is too buggy to use. It often fails to keep the

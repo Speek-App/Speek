@@ -37,7 +37,7 @@ Column {
             width: delegate.width
             elide: Text.ElideRight
             horizontalAlignment: Qt.AlignHCenter
-            color: palette.mid
+            color: "#DDDDDD"//palette.mid
             height: 28
         }
     }
