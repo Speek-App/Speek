@@ -91,7 +91,7 @@ ToolBar {
             label: Image {
                 height: 32
                 width: 32
-                        source: palette.base == "#2a2a2a" ? "qrc:/icons/guest-add-svgrepo-com-white.svg" : "qrc:/icons/guest-add-svgrepo-com.svg"
+                        source: palette.base == "#2a2a2a" ? "qrc:/icons/guest-add-svgrepo-com-white.png" : "qrc:/icons/guest-add-svgrepo-com.png"
                         fillMode: Image.PreserveAspectFit  // ensure it fits
                         Layout.preferredHeight: 32
                             Layout.preferredWidth: 32
@@ -139,7 +139,7 @@ ToolBar {
             label: Image {
                 height: 32
                 width: 32
-                        source: palette.base == "#2a2a2a" ? "qrc:/icons/table-settings-svgrepo-com-white.svg" : "qrc:/icons/table-settings-svgrepo-com.svg"
+                        source: palette.base == "#2a2a2a" ? "qrc:/icons/table-settings-svgrepo-com-white.png" : "qrc:/icons/table-settings-svgrepo-com.png"
                         fillMode: Image.PreserveAspectFit  // ensure it fits
                         Layout.preferredHeight: 32
                             Layout.preferredWidth: 32

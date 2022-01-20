@@ -19,5 +19,18 @@
         <file>speek.png</file>
         <file>speek.ico</file>
         <file>speek.icns</file>
+        <file>display-rich-text-svgrepo-com-white.png</file>
+        <file>display-rich-text-svgrepo-com.png</file>
+        <file>emoji-add-svgrepo-com-white.png</file>
+        <file>emoji-add-svgrepo-com.png</file>
+        <file>guest-add-svgrepo-com-white.png</file>
+        <file>guest-add-svgrepo-com.png</file>
+        <file>image-add-svgrepo-com-white.png</file>
+        <file>image-add-svgrepo-com.png</file>
+        <file>icons_source.png</file>
+        <file>paperclip-svgrepo-com-white.png</file>
+        <file>paperclip-svgrepo-com.png</file>
+        <file>table-settings-svgrepo-com-white.png</file>
+        <file>table-settings-svgrepo-com.png</file>
     </qresource>
 </RCC>

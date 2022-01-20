@@ -187,7 +187,7 @@ FocusScope {
                                 }
                               label: Image {
                                   height: 30
-                                          source: palette.base == "#2a2a2a" ? "qrc:/icons/display-rich-text-svgrepo-com-white.svg" : "qrc:/icons/display-rich-text-svgrepo-com.svg"
+                                          source: palette.base == "#2a2a2a" ? "qrc:/icons/display-rich-text-svgrepo-com-white.png" : "qrc:/icons/display-rich-text-svgrepo-com.png"
                                           fillMode: Image.PreserveAspectFit  // ensure it fits
                                       }
                             }
@@ -211,7 +211,7 @@ FocusScope {
                                 }
                               label: Image {
                                   height: 30
-                                          source: palette.base == "#2a2a2a" ? "qrc:/icons/emoji-add-svgrepo-com-white.svg" : "qrc:/icons/emoji-add-svgrepo-com.svg"
+                                          source: palette.base == "#2a2a2a" ? "qrc:/icons/emoji-add-svgrepo-com-white.png" : "qrc:/icons/emoji-add-svgrepo-com.png"
                                           fillMode: Image.PreserveAspectFit  // ensure it fits
                                       }
                             }
@@ -344,7 +344,7 @@ FocusScope {
                                 }
                             label: Image {
                                 height: 30
-                                        source: palette.base == "#2a2a2a" ? "qrc:/icons/paperclip-svgrepo-com-white.svg" : "qrc:/icons/paperclip-svgrepo-com.svg"
+                                        source: palette.base == "#2a2a2a" ? "qrc:/icons/paperclip-svgrepo-com-white.png" : "qrc:/icons/paperclip-svgrepo-com.png"
                                         fillMode: Image.PreserveAspectFit  // ensure it fits
                                     }
                             /*
@@ -379,7 +379,7 @@ FocusScope {
                                 }
                             label: Image {
                                 height: 30
-                                        source: palette.base == "#2a2a2a" ? "qrc:/icons/image-add-svgrepo-com-white.svg" : "qrc:/icons/image-add-svgrepo-com.svg"
+                                        source: palette.base == "#2a2a2a" ? "qrc:/icons/image-add-svgrepo-com-white.png" : "qrc:/icons/image-add-svgrepo-com.png"
                                         fillMode: Image.PreserveAspectFit  // ensure it fits
                                     }
 
