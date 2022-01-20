@@ -16,9 +16,9 @@ apt-get install build-essential libssl-dev pkg-config libprotobuf-dev protobuf-c
 
 ## Building Speek
 
-These instructions are intended for people who wish to build or modify Speek from source. Most users should [download releases](https://github.com/blueprint-freespeech/ricochet-refresh/releases) instead.
+These instructions are intended for people who wish to build or modify Speek from source. Most users should [download releases](https://github.com/Speek-App/Speek/releases) instead.
 
-Clone with git from `https://github.com/blueprint-freespeech/ricochet-refresh.git`, or download source packages [on github](https://github.com/blueprint-freespeech/ricochet-refresh/releases). Then proceed to instructions for your platform.
+Clone with git from `https://github.com/Speek-App/Speek.git`, or download source packages [on github](https://github.com/Speek-App/Speek/releases). Then proceed to instructions for your platform.
 
 ## Hints
 
@@ -63,7 +63,7 @@ You must have a `tor` binary installed on the system (in $PATH), or placed next 
 
 In portable mode (default), all configuration is stored in a folder called `config` with the binary. When installed, the platform's user configuration path is used instead.
 
-The [buildscripts](https://github.com/blueprint-freespeech/ricochet-refresh/tree/master/buildscripts) directory contains a set of scripts to build a fully static Speek on a clean Debian system. These are used to create the generic linux binary packages.
+The [buildscripts](https://github.com/Speek-App/Speek/tree/main/buildscripts) directory contains a set of scripts to build a fully static Speek on a clean Debian system. These are used to create the generic linux binary packages.
 
 #### Hardening
 Speek will use aggressive compiler hardening flags if available. `qmake` will print the results of these tests on first run, or when run with `CONFIG+=recheck`.
@@ -101,7 +101,7 @@ make
 
 ## Windows
 
-Building for Windows is difficult. The process and scripts used for release builds are documented in the [buildscripts directory](https://github.com/blueprint-freespeech/ricochet-refresh/tree/master/buildscripts).
+Building for Windows is difficult. The process and scripts used for release builds are documented in the [buildscripts directory](https://github.com/Speek-App/Speek/tree/main/buildscripts).
 
 For development builds, you will want:
  * Visual Studio C++ or MinGW
@@ -111,7 +111,7 @@ For development builds, you will want:
 
 Compile OpenSSL and protobuf first, according to their instructions.
 
-After installing the Qt SDK, open the `ricochet.pro` project in Qt Creator. Before building, you must click the 'Projects' tab on the left side, and under 'Build Steps', modify 'Additional arguments' to add:
+After installing the Qt SDK, open the `tego.pro` project in Qt Creator. Before building, you must click the 'Projects' tab on the left side, and under 'Build Steps', modify 'Additional arguments' to add:
 
 ```
     OPENSSLDIR=C:\path\to\openssl\ PROTOBUFDIR=C:\path\to\protobuf
