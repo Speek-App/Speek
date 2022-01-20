@@ -10,6 +10,14 @@ Rectangle {
 
     property alias model: messageView.model
 
+    Image {
+                id: image2
+                anchors.fill: parent
+                source: "qrc:/backgrounds/purple.png"
+                //opacity: 0.5
+                //z: -1
+            }
+
     /* As of Qt 5.5.0, ScrollView is too buggy to use. It often fails to keep the
      * view scrolled to the bottom, and moves erratically on wheel events. */
     Rectangle {

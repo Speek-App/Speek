@@ -440,7 +440,7 @@ static void initTheme()
     darkPalette.setColor(QPalette::Midlight,QColor(50,50,50));
 
     SettingsObject settings;
-    if(settings.read("ui.darkMode").toBool()){
+    if(settings.read("ui.darkMode").toBool() == false){
         qApp->setPalette(darkPalette);
     }
 }

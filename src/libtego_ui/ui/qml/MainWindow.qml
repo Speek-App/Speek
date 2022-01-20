@@ -71,6 +71,11 @@ ApplicationWindow {
                 //: Description of the main toolbar for accessibility tech like screen readers
                 Accessible.description: qsTr("Toolbar with connection status, add contact button, and preferences button")
             }
+            Rectangle {
+                color: "darkgrey"
+                width: 220
+                height: 1
+                 }
 
             Item {
                 Layout.fillHeight: true

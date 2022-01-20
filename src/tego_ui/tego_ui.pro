@@ -93,6 +93,7 @@ DEFINES += QT_NO_CAST_TO_ASCII
 # QML
 RESOURCES +=\
     $${PWD}/../libtego_ui/ui/qml/qml.qrc \
+    backgrounds.qrc \
     icons/icons.qrc \
     sounds/sounds.qrc
 

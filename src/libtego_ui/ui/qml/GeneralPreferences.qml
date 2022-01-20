@@ -26,7 +26,7 @@ ColumnLayout {
 
     CheckBox {
         //: Text description of an option to activate a dark mode theme
-        text: qsTr("Activate dark mode (restart required)")
+        text: qsTr("Activate light mode (restart required)")
         checked: uiSettings.data.darkMode || false
         onCheckedChanged: {
             uiSettings.write("darkMode", checked)
