@@ -10,8 +10,6 @@ Column {
     property string selected_image;
     property string copy_selected_image;
 
-    //FontLoader { id: localFont; source: "file:///home/jesus/Downloads/ricochet-refresh-main/pp/src/ricochet-refresh/build/release/tego_ui/NotoColorEmoji.ttf" }
-
     Loader {
         active: {
             if (model.section === "offline")

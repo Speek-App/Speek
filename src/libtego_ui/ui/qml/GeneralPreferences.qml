@@ -25,32 +25,32 @@ ColumnLayout {
     }
 
     CheckBox {
-        //: Text description of an option to activate a dark mode theme
+        //: Text description of an option to activate a light mode theme
         text: qsTr("Activate light mode (restart required)")
-        checked: uiSettings.data.darkMode || false
+        checked: uiSettings.data.lightMode || false
         onCheckedChanged: {
-            uiSettings.write("darkMode", checked)
+            uiSettings.write("lightMode", checked)
         }
 
         Accessible.role: Accessible.CheckBox
         Accessible.name: text
         Accessible.onPressAction: {
-            uiSettings.write("darkMode", checked)
+            uiSettings.write("lightMode", checked)
         }
     }
 
     CheckBox {
         //: Text description of an option to activate rich text editing by default which allows the input of emojis and images
-        text: qsTr("Default Rich Text editing")
-        checked: uiSettings.data.defaultRichText || false
+        text: qsTr("Disable default Rich Text editing")
+        checked: uiSettings.data.disableDefaultRichText || false
         onCheckedChanged: {
-            uiSettings.write("defaultRichText", checked)
+            uiSettings.write("disableDefaultRichText", checked)
         }
 
         Accessible.role: Accessible.CheckBox
         Accessible.name: text
         Accessible.onPressAction: {
-            uiSettings.write("defaultRichText", checked)
+            uiSettings.write("disableDefaultRichText", checked)
         }
     }
 

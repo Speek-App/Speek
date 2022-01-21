@@ -3,12 +3,6 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 
 Rectangle {
-    FontLoader {
-            id: emojiFont
-            source: "qrc:/fonts/NotoColorEmoji.ttf"
-            Component.onCompleted: console.log(name)
-        }
-
     id: scroll
     clip: true
     //color: "#e4dcd3"

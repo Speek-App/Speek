@@ -127,5 +127,6 @@
         <file>icons_letter/Y.png</file>
         <file>icons_letter/z.png</file>
         <file>icons_letter/Z.png</file>
+        <file>speeklogo2.png</file>
     </qresource>
 </RCC>

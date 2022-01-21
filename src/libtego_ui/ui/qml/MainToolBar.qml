@@ -31,6 +31,16 @@ ToolBar {
         },
 
         Action {
+            id: viewIdAction
+            //: Tooltip text for the button that launches the dialog box for adding a new contact
+            text: qsTr("View Id")
+            onTriggered: {
+                var object = createDialog("ViewIdDialog.qml", { }, window)
+                object.visible = true
+            }
+        },
+
+        Action {
             id: preferencesAction
             //: Tooltip text for the button that launches program preferences window
             text: qsTr("Preferences")
@@ -77,7 +87,6 @@ ToolBar {
 
             anchors{
                 horizontalCenter: parent.horizontalCenter
-                verticalCenter: parent.verticalCenter
             }
             id: label_speekers
             y: 2
@@ -89,14 +98,10 @@ ToolBar {
             color: palette.text//"#3f454a"
             font.family: "Helvetica"
             text: "Speekers"
-            Layout.alignment: Qt.AlignHCenter
         }
 
         ToolButton {
-            anchors{
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-            }
+            Layout.alignment: Qt.AlignRight
 
             //visible: !torstatewidget.visible
             id: contextMenuButton
@@ -161,7 +166,7 @@ ToolBar {
             MenuItem {
                 //: Context menu command to open a window showing the selected contact's details
                 text: qsTr("View Speek ID")
-                onTriggered: addContactAction.trigger()
+                onTriggered: viewIdAction.trigger()
             }
             MenuSeparator { }
             MenuItem {

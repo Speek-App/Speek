@@ -33,8 +33,6 @@ Rectangle {
         emojiCategoryButton.clickedFunction(emojiCategoryButton.categoryName);
     }
 
-    //FontLoader { id: localFont; source: "file:///home/jesus/Downloads/ricochet-refresh-main/pp/src/ricochet-refresh/build/release/tego_ui/NotoColorEmoji.ttf" }
-
     Text {
         id: emojiText
         color: "gray"

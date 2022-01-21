@@ -7,12 +7,6 @@ import im.utility 1.0
 import QtQuick.Dialogs 1.0
 
 FocusScope {
-    FontLoader {
-            id: emojiFont
-            source: "qrc:/fonts/NotoColorEmoji.ttf"
-            Component.onCompleted: console.log(name)
-        }
-
     id: chatPage
 
     property ContactUser contact
@@ -21,7 +15,7 @@ FocusScope {
     property var conversationModel: (contact !== null) ? contact.conversation : null
     property bool emojiVisible: false
     property int margin_chat: 0
-    property bool richTextActive: uiSettings.data.defaultRichText
+    property bool richTextActive: !uiSettings.data.disableDefaultRichText
 
     function forceActiveFocus() {
         textField.forceActiveFocus()
@@ -51,8 +45,6 @@ FocusScope {
         if (active)
             conversationModel.resetUnreadCount()
     }
-
-    //FontLoader { id: localFont; source: "file:///home/jesus/Downloads/ricochet-refresh-main/pp/src/ricochet-refresh/build/release/tego_ui/JoyPixels.ttf" }
 
     Connections {
         target: conversationModel

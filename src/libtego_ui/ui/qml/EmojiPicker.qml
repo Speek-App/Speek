@@ -6,12 +6,6 @@ import QtQuick.Dialogs 1.0
 import "qrc:/ui/emoji.js" as EmojiJSON
 
 Rectangle {
-    FontLoader {
-            id: emojiFont
-            source: "qrc:/fonts/NotoColorEmoji.ttf"
-            Component.onCompleted: console.log(name)
-        }
-
     id: emojiPicker
     property EmojiCategoryButton currSelEmojiButton
     property variant emojiParsedJson

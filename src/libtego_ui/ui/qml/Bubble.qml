@@ -2,12 +2,6 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 
 Rectangle {
-    FontLoader {
-            id: emojiFont
-            source: "qrc:/fonts/NotoColorEmoji.ttf"
-            Component.onCompleted: console.log(name)
-        }
-
     id: bubble
     x: {
         switch (horizontalAlignment) {
