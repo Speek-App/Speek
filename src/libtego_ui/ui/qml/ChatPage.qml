@@ -65,36 +65,23 @@ FocusScope {
         height: implicitHeight + 8
         spacing: 8
 
-        /*PresenceIcon {
-            // 1 = Status::Offline
-            status: contact != null ? contact.status : 1
-        }*/
         ColorLetterCircle{
             name: contact != null ? contact.nickname : ""
         }
         ColumnLayout{
             spacing:0
-        Label {
-            text: contact != null ? contact.nickname : ""
-            textFormat: Text.PlainText
-            font.pointSize: styleHelper.pointSize
-            anchors.topMargin: 15
-        }/*
-        RowLayout{
             Label {
-                anchors.bottomMargin: 15
-                text: "⦿"
-                color: contact != null ? contact.status == 0 ? "green": "red" : "red"
+                text: contact != null ? contact.nickname : ""
                 textFormat: Text.PlainText
                 font.pointSize: styleHelper.pointSize
-            }*/
-        Label {
-            anchors.bottomMargin: 15
-            text: contact != null ? contact.status == 0 ? "online": "offline" : ""
-            textFormat: Text.PlainText
-            font.pointSize: styleHelper.pointSize *0.8
-        }
-        //}
+                anchors.topMargin: 15
+            }
+            Label {
+                anchors.bottomMargin: 15
+                text: contact != null ? contact.status == 0 ? "online": "offline" : ""
+                textFormat: Text.PlainText
+                font.pointSize: styleHelper.pointSize *0.8
+            }
         }
 
         Item {
@@ -119,8 +106,6 @@ FocusScope {
                 left: parent.left
                 right: parent.right
             }
-            //Rectangle { width: parent.width; height: 1; color: palette.midlight; }
-            //Rectangle { width: parent.width; height: 1; color: palette.window; }
             Rectangle { width: parent.width; height: 1; color: "darkgrey"; }
         }
     }
@@ -175,19 +160,21 @@ FocusScope {
             Button {
                         style: ButtonStyle {
                             background: Rectangle {
-
-                                    implicitWidth: 30
-                                    implicitHeight: 30
+                                    implicitWidth: 28
+                                    implicitHeight: 28
                                     border.color: control.hovered ? "#dddddd" : "transparent"
                                     border.width: 1
                                     radius: 5
                                     color: "transparent"
                                 }
                               label: Image {
-                                  height: 30
-                                          source: palette.base == "#2a2a2a" ? "qrc:/icons/display-rich-text-svgrepo-com-white.png" : "qrc:/icons/display-rich-text-svgrepo-com.png"
-                                          fillMode: Image.PreserveAspectFit  // ensure it fits
-                                      }
+                                  height: 28
+                                  width: 28
+                                  sourceSize.width: 28
+                                  sourceSize.height: 28
+                                  source: palette.base == "#2a2a2a" ? "qrc:/icons/display-rich-text-svgrepo-com-white.png" : "qrc:/icons/display-rich-text-svgrepo-com.png"
+                                  antialiasing: true
+                              }
                             }
 
                         onClicked: {
@@ -199,20 +186,22 @@ FocusScope {
                         visible: richTextActive
                         style: ButtonStyle {
                             background: Rectangle {
-
-                                    implicitWidth: 30
-                                    implicitHeight: 30
+                                    implicitWidth: 28
+                                    implicitHeight: 28
                                     border.color: control.hovered ? "#dddddd" : "transparent"
                                     border.width: 1
                                     radius: 5
                                     color: "transparent"
                                 }
                               label: Image {
-                                  height: 30
-                                          source: palette.base == "#2a2a2a" ? "qrc:/icons/emoji-add-svgrepo-com-white.png" : "qrc:/icons/emoji-add-svgrepo-com.png"
-                                          fillMode: Image.PreserveAspectFit  // ensure it fits
-                                      }
-                            }
+                                  height: 28
+                                  width: 28
+                                  sourceSize.width: 28
+                                  sourceSize.height: 28
+                                  source: palette.base == "#2a2a2a" ? "qrc:/icons/emoji-add-svgrepo-com-white.png" : "qrc:/icons/emoji-add-svgrepo-com.png"
+                                  antialiasing: true
+                              }
+                         }
 
                         onClicked: {
                             emojiVisible = !emojiVisible
@@ -220,7 +209,6 @@ FocusScope {
                     }
 
             TextArea {
-                //text: '<html><style type="text/css"></style><table style="margin:10px;margin-left:10px;padding-left:6px;color:grey;"><tr><td width=3 bgcolor="grey"/><td>google</td></tr></table><br /></html>'
                 id: textInput
                 Layout.fillWidth: true
                 y: 4
@@ -236,7 +224,6 @@ FocusScope {
                 textFormat: richTextActive ? TextEdit.RichText : TextEdit.PlainText
 
                 font.pointSize: styleHelper.pointSize
-                //focus: true
                 font.family: "Helvetica"
                 textColor: "black"
 
@@ -248,7 +235,6 @@ FocusScope {
                     radius: 8
                     border.width: 0
                     border.color: "white"
-                    //implicitHeight: 45
                     color:"white"
                     y:0
                     }
@@ -296,16 +282,6 @@ FocusScope {
                       return chunks
                     }
                     if (textInput.text.length > 63000){
-                        //textInput.text.remove(63000, textInput.text.length)
-                        /*var rr = chunkSubstr(textInput.text, 63000)
-                        for(var i = 0; i<rr.length; i++){
-                            var tt
-                            if(i === rr.length-1)
-                                tt = "￿" + rr[i]
-                            else
-                                tt = "￾" + rr[i]
-                            conversationModel.sendMessage(tt)
-                        }*/
                         conversationModel.sendMessage(textInput.text)
                     }
                     else{
@@ -327,67 +303,56 @@ FocusScope {
             }
 
             Button {
-                        //text: "📎"
-
-
-                        style: ButtonStyle {
-                            background: Rectangle {
-
-                                    implicitWidth: 30
-                                    implicitHeight: 30
-                                    border.color: control.hovered ? "#dddddd" : "transparent"
-                                    border.width: 1
-                                    radius: 5
-                                    color: "transparent"
-                                }
-                            label: Image {
-                                height: 30
-                                        source: palette.base == "#2a2a2a" ? "qrc:/icons/paperclip-svgrepo-com-white.png" : "qrc:/icons/paperclip-svgrepo-com.png"
-                                        fillMode: Image.PreserveAspectFit  // ensure it fits
-                                    }
-                            /*
-                              label: Text {
-                                renderType: Text.NativeRendering
-                                font.family: localFont.name
-                                text: control.text
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: Text.AlignHCenter
-                                font.pointSize: 22
-
-                              }*/
-                            }
-
-                        onClicked: {
-                            sendFile()
+                style: ButtonStyle {
+                    background: Rectangle {
+                            implicitWidth: 28
+                            implicitHeight: 28
+                            border.color: control.hovered ? "#dddddd" : "transparent"
+                            border.width: 1
+                            radius: 5
+                            color: "transparent"
                         }
+                    label: Image {
+                        height: 28
+                        width: 28
+                        sourceSize.width: 28
+                        sourceSize.height: 28
+                        source: palette.base == "#2a2a2a" ? "qrc:/icons/paperclip-svgrepo-com-white.png" : "qrc:/icons/paperclip-svgrepo-com.png"
+                        antialiasing: true
                     }
+                }
+
+                onClicked: {
+                    sendFile()
+                }
+            }
 
             Button {
                 id: img1
-                        visible: richTextActive
-                        style: ButtonStyle {
-                            background: Rectangle {
-
-                                    implicitWidth: 30
-                                    implicitHeight: 30
-                                    border.color: control.hovered ? "#dddddd" : "transparent"
-                                    border.width: 1
-                                    radius: 5
-                                    color: "transparent"
-                                }
-                            label: Image {
-                                height: 30
-                                        source: palette.base == "#2a2a2a" ? "qrc:/icons/image-add-svgrepo-com-white.png" : "qrc:/icons/image-add-svgrepo-com.png"
-                                        fillMode: Image.PreserveAspectFit  // ensure it fits
-                                    }
-
-                            }
-
-                        onClicked: {
-                            fileDialog.open()
-
+                visible: richTextActive
+                style: ButtonStyle {
+                    background: Rectangle {
+                            implicitWidth: 28
+                            implicitHeight: 28
+                            border.color: control.hovered ? "#dddddd" : "transparent"
+                            border.width: 1
+                            radius: 5
+                            color: "transparent"
                         }
+                    label: Image {
+                        height: 30
+                        width: 30
+                        sourceSize.width: 30
+                        sourceSize.height: 30
+                        source: palette.base == "#2a2a2a" ? "qrc:/icons/image-add-svgrepo-com-white.png" : "qrc:/icons/image-add-svgrepo-com.png"
+                        antialiasing: true
                     }
+                }
+
+                onClicked: {
+                    fileDialog.open()
+                }
+            }
         }
     }
 }
