@@ -1,7 +1,7 @@
 ## Overview
 
-Ricochet is a peer-to-peer instant messaging system built on anonymity
-networks. This document defines the communication protocol between two Ricochet
+Speek is a peer-to-peer instant messaging system built on anonymity
+networks. This document defines the communication protocol between two Speek
 instances, as carried out over a Tor hidden service connection.
 
 The protocol is defined in three layers:
@@ -23,7 +23,7 @@ type* and the state of that specific channel.
 
 ##### Hidden services
 
-Ricochet uses Tor [hidden services][rend-spec] as a transport; the reader
+Speek uses Tor [hidden services][rend-spec] as a transport; the reader
 should be familiar with that architecture and the properties it provides. In
 particular:
 
@@ -40,7 +40,7 @@ particular:
 
 ##### Usage
 
-Each Ricochet instance publishes a hidden service, which serves as its identity
+Each Speek instance publishes a hidden service, which serves as its identity
 and accepts connections from contacts. When it first comes online, it attempts
 to connect to the addresses of known contacts. If a connection is made, it is
 held open; a contact is considered online when there is an open connection.
@@ -53,7 +53,7 @@ Only one active connection is needed for a contact. Connections are fully
 bidirectional and all behavior is equivalent regardless of which peer acts as
 server at the transport level.
 
-Ricochet does not use central servers; connections are made to services
+Speek does not use central servers; connections are made to services
 published directly by your contacts with no intermediary.
 
 Keeping open connections to unknown peers poses a risk for various attacks,
@@ -96,7 +96,7 @@ maintenance of the underlying connection.
 
 ### Authentication
 
-Ricochet needs a variety of levels and types of authentication; known contacts
+Speek needs a variety of levels and types of authentication; known contacts
 might have a strong proof of identity, while a request from a new person comes
 with a different proof and an anti-spam "proof of work". Some features could
 allow unauthenticated use.
@@ -126,7 +126,7 @@ the beginning of the connection, and must be given equivalent privileges.
 Unless otherwise noted, these conventions and definitions are used for the
 protocol and this document:
 
-  * *Peer* refers to either Ricochet instance on a connection
+  * *Peer* refers to either Speek instance on a connection
   * *Recipient* refers to the peer which received the message
   * Channels encode data using [protocol buffers][protobuf], with one protobuf
     message per packet
@@ -169,7 +169,7 @@ This document describes protocol version 3. Known versions are:
 ```
 0                   The Ricochet <= 1.0.x protocol
 1                   The Ricochet >= 1.1.x protocol
-3                   This document (The Ricochet 3.x.x protocol)
+3                   This document (The Speek 3.x.x protocol)
 ```
 
 If the negotiation is successful, the connection can be immediately used to
