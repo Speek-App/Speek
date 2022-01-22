@@ -75,12 +75,6 @@ ToolBar {
             Layout.alignment: Qt.AlignVCenter
             visible: text === qsTr("Online") ? false : true
         }
-/*
-        Item {
-            Layout.fillWidth: true
-            height: 1
-        }
-*/
 
         Label {
             visible: !torstatewidget.visible
@@ -103,15 +97,13 @@ ToolBar {
         ToolButton {
             Layout.alignment: Qt.AlignRight
 
-            //visible: !torstatewidget.visible
             id: contextMenuButton
             implicitHeight: 32
             implicitWidth: 32
             onClicked: {
                 action: mainContextMenu.popup()
             }
-            //action: mainContextMenu.popup()
-            //style: iconButtonStyle
+
             text: "☰"
             style: ButtonStyle {
             background: Rectangle {
@@ -123,24 +115,13 @@ ToolBar {
                     radius: 5
                     color: "transparent"
                 }
-            /*label: Image {
-                height: 32
-                width: 32
-                        source: palette.base == "#2a2a2a" ? "qrc:/icons/guest-add-svgrepo-com-white.png" : "qrc:/icons/guest-add-svgrepo-com.png"
-                        fillMode: Image.PreserveAspectFit  // ensure it fits
-                        Layout.preferredHeight: 32
-                            Layout.preferredWidth: 32
-                            smooth: true
-                            antialiasing: true
-                            sourceSize: Qt.size(width*2,height*2)
-                    }*/
             }
 
             Loader {
                 id: emptyState
                 active: contactList.view.count == 0
                 sourceComponent: Bubble {
-                    target: addContactButton
+                    target: contextMenuButton
                     maximumWidth: toolBarLayout.width
                     //: Tooltip that displays on first launch indicating how to add a new contact
                     text: qsTr("Click to add contacts")
@@ -175,91 +156,5 @@ ToolBar {
                 onTriggered: preferencesAction.trigger()
             }
         }
-/*
-        ToolButton {
-            visible: !torstatewidget.visible
-            id: addContactButton
-            implicitHeight: 32
-            implicitWidth: 32
-            action: addContactAction
-            //style: iconButtonStyle
-            //text: "\ue810" // iconFont plus symbol
-            style: ButtonStyle {
-            background: Rectangle {
-
-                    implicitWidth: 28
-                    implicitHeight: 28
-                    border.color: control.hovered ? "#dddddd" : "transparent"
-                    border.width: 1
-                    radius: 5
-                    color: "transparent"
-                }
-            label: Image {
-                height: 32
-                width: 32
-                        source: palette.base == "#2a2a2a" ? "qrc:/icons/guest-add-svgrepo-com-white.png" : "qrc:/icons/guest-add-svgrepo-com.png"
-                        fillMode: Image.PreserveAspectFit  // ensure it fits
-                        Layout.preferredHeight: 32
-                            Layout.preferredWidth: 32
-                            smooth: true
-                            antialiasing: true
-                            sourceSize: Qt.size(width*2,height*2)
-                    }
-            }
-
-            Loader {
-                id: emptyState
-                active: contactList.view.count == 0
-                sourceComponent: Bubble {
-                    target: addContactButton
-                    maximumWidth: toolBarLayout.width
-                    //: Tooltip that displays on first launch indicating how to add a new contact
-                    text: qsTr("Click to add contacts")
-                }
-            }
-
-            Accessible.role: Accessible.Button
-            //: Name of the button for adding a new contact for accessibility tech like screen readers
-            Accessible.name: qsTr("Add Contact")
-            //: Description of the 'Add Contact' button for accessibility tech like screen readers
-            Accessible.description: qsTr("Shows the add contact dialogue")
-        }
-
-        ToolButton {
-            action: preferencesAction
-            implicitHeight: 32
-            implicitWidth: 32
-            //style: iconButtonStyle
-            //text: "\ue803" // iconFont gear
-
-            style: ButtonStyle {
-            background: Rectangle {
-
-                    implicitWidth: 28
-                    implicitHeight: 28
-                    border.color: control.hovered ? "#dddddd" : "transparent"
-                    border.width: 1
-                    radius: 5
-                    color: "transparent"
-                }
-            label: Image {
-                height: 32
-                width: 32
-                        source: palette.base == "#2a2a2a" ? "qrc:/icons/table-settings-svgrepo-com-white.png" : "qrc:/icons/table-settings-svgrepo-com.png"
-                        fillMode: Image.PreserveAspectFit  // ensure it fits
-                        Layout.preferredHeight: 32
-                            Layout.preferredWidth: 32
-                            smooth: true
-                            antialiasing: true
-                            sourceSize: Qt.size(width*2,height*2)
-                    }
-            }
-
-            Accessible.role: Accessible.Button
-            //: Name of the button for launching the preferences window for accessibility tech like screen readres
-            Accessible.name: qsTr("Preferences")
-            //: Description of the 'Preferences' button for accessibility tech like screen readers
-            Accessible.description: qsTr("Shows the preferences dialogue") // todo: translation
-        }*/
     }
 }

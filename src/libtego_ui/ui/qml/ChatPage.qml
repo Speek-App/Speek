@@ -305,13 +305,13 @@ FocusScope {
             Button {
                 style: ButtonStyle {
                     background: Rectangle {
-                            implicitWidth: 28
-                            implicitHeight: 28
-                            border.color: control.hovered ? "#dddddd" : "transparent"
-                            border.width: 1
-                            radius: 5
-                            color: "transparent"
-                        }
+                        implicitWidth: 28
+                        implicitHeight: 28
+                        border.color: control.hovered ? "#dddddd" : "transparent"
+                        border.width: 1
+                        radius: 5
+                        color: "transparent"
+                    }
                     label: Image {
                         height: 28
                         width: 28
@@ -332,13 +332,13 @@ FocusScope {
                 visible: richTextActive
                 style: ButtonStyle {
                     background: Rectangle {
-                            implicitWidth: 28
-                            implicitHeight: 28
-                            border.color: control.hovered ? "#dddddd" : "transparent"
-                            border.width: 1
-                            radius: 5
-                            color: "transparent"
-                        }
+                        implicitWidth: 28
+                        implicitHeight: 28
+                        border.color: control.hovered ? "#dddddd" : "transparent"
+                        border.width: 1
+                        radius: 5
+                        color: "transparent"
+                    }
                     label: Image {
                         height: 30
                         width: 30

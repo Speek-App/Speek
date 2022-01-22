@@ -58,6 +58,8 @@ Rectangle {
 
         Accessible.name: text
         Accessible.role: Accessible.StaticText
+
+        color: "black"
     }
 }
 
