@@ -37,6 +37,7 @@ GridLayout {
     }
 
     TextField {
+        text: qsTr("Contact_Name")
         id: nameField
         Layout.fillWidth: true
         readOnly: contactFields.readOnly
