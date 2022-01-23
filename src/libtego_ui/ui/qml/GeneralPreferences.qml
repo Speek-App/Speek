@@ -9,6 +9,35 @@ ColumnLayout {
         margins: 8
     }
 
+    RowLayout {
+        z: 2
+        Label {
+            //: Label for text input where users can specify their username
+            text: qsTr("Username")
+            Accessible.role: Accessible.StaticText
+            Accessible.name: text
+        }
+
+        TextArea {
+            id: usernameText
+
+            text: typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek User"
+            Layout.minimumWidth: 200
+            Layout.maximumHeight: 33
+
+            onTextChanged: {
+                if (length > 40) remove(40, length);
+                uiSettings.write("username", usernameText.text)
+            }
+
+            Accessible.role: Accessible.ComboBox
+            //: Name of the text input used to select the own username
+            Accessible.name: qsTr("Username input field")
+            //: Description of what the username text input is for accessibility tech like screen readers
+            Accessible.description: qsTr("What the own username should be")
+        }
+    }
+
     CheckBox {
         //: Text description of an option to use one single program window for the contact list and the chats
         text: qsTr("Use a single window for conversations")

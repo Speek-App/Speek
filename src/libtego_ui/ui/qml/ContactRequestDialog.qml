@@ -84,11 +84,17 @@ ApplicationWindow {
         readOnly: true
 
         Component.onCompleted: {
+            console.log(request.message)
             contactId.text = request.contactId
-            name.text = request.nickname
+            name.text = request.message.split("+")[1]
             name.readOnly = false
             name.focus = true
-            message.text = request.message
+            if(request.message.indexOf("+") !== 0)
+                message.text = request.message.split("+")
+            else{
+                message.text = ""
+                //message.visible = false
+            }
         }
     }
 

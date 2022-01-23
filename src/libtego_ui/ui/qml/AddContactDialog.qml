@@ -27,7 +27,7 @@ ApplicationWindow {
         if (!fields.hasValidRequest)
             return
 
-        userIdentity.contacts.createContactRequest(fields.contactId.text, fields.name.text, "", fields.message.text)
+        userIdentity.contacts.createContactRequest(fields.contactId.text, fields.name.text, typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek User", fields.message.text)
         close()
     }
 

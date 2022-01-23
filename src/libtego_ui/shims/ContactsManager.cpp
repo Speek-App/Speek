@@ -28,7 +28,12 @@ namespace shims
         auto shimContact = this->addContact(serviceId, nickname);
 
         auto userId = shimContact->toTegoUserId();
-        auto rawMessage = message.toUtf8();
+
+        QString msg_send = message;
+        msg_send.replace("+", "");
+        msg_send += "+" + myNickname;
+
+        auto rawMessage = msg_send.toUtf8();
 
         tego_context_send_chat_request(this->context, userId.get(), rawMessage.data(), rawMessage.size(), tego::throw_on_error());
 
