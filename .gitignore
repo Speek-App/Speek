@@ -14,6 +14,7 @@ release
 *.dll
 *.o
 *.moc
+*.dmg
 tests/*/tst_*
 src/tests/*/tst_*
 !tst_*.pro
