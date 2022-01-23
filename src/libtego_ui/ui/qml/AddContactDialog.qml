@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.0
 ApplicationWindow {
     id: addContactWindow
     width: 740
-    height: 300
+    height: 400
     minimumWidth: width
     maximumWidth: width
     minimumHeight: height
@@ -27,10 +27,11 @@ ApplicationWindow {
         if (!fields.hasValidRequest)
             return
 
-        userIdentity.contacts.createContactRequest(fields.contactId.text, fields.name.text, typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek User", fields.message.text)
+        userIdentity.contacts.createContactRequest(fields.contactId.text, fields.name.text, yourNameField.text.length > 0 ? yourNameField.text : "Speek User", fields.message.text)
         close()
     }
 
+    /*
     ColumnLayout {
         id: infoArea
         z: 2
@@ -72,6 +73,44 @@ ApplicationWindow {
         }
 
         Item { height: 1 }
+    }*/
+
+    ColumnLayout {
+        id: infoArea
+        z: 2
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+            topMargin: 8
+            leftMargin: 16
+            rightMargin: 16
+        }
+
+        Rectangle {
+            color: "transparent"
+            width: 150
+            height: 160
+            Layout.alignment: Qt.AlignCenter
+            Image {
+                height: 150
+                width: 150
+                source: "qrc:/icons/speeklogo2.png"
+                smooth: true
+                antialiasing: true
+            }
+        }
+
+        Label {
+            Layout.columnSpan: 2
+            Layout.fillWidth: true
+            horizontalAlignment: Qt.AlignHCenter
+            wrapMode: Text.Wrap
+            //: tells the user to get the Speek ID of their friends to add them as contacts
+            text: qsTr("Get the Speek ID of your Friends to add them as contacts")
+            Accessible.role: Accessible.StaticText
+            Accessible.name: text
+        }
     }
 
     ContactRequestFields {
@@ -84,6 +123,25 @@ ApplicationWindow {
             margins: 8
             leftMargin: 16
             rightMargin: 16
+        }
+
+        Label {
+            //: Label for the recommended username (own username) text box in the 'add new contact' window
+            text: qsTr("Your Username:")
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+            Accessible.role: Accessible.StaticText
+            Accessible.name: text
+        }
+
+        TextField {
+            text: typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek User"
+            id: yourNameField
+            Layout.fillWidth: true
+
+            Accessible.role: Accessible.Dialog
+            Accessible.name: text
+            //: Description of textbox for setting a your nickname for accessibility tech like screen readers
+            Accessible.description: qsTr("Field for your nickname")
         }
 
         Component.onCompleted: {
