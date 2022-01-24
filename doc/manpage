@@ -1,0 +1,26 @@
+.\" Manpage for Speek
+.\" Submit a PR on the github repository for typos/errors (https://github.com/Speek-App/Speek.git)
+.Dd $Mdocdate$
+.Dt speek 1
+.Os
+.Sh NAME
+.Nm speek
+.Nd Anonymous metadata-resistant instant messaging
+.Sh SYNOPSIS
+.Nm speek
+.Op options
+.Sh DESCRIPTION
+.Nm
+is an open source project to allow private and anonymous 
+instant messaging. It is metadata-resistant, anonymous and decentralised.
+.Sh OPTIONS
+.Nm
+takes up to 1 argument, the speek folder path (relative to the current 
+working directory). If this folder does not exist, speek will create the 
+folder and inside that folder will create files containing tor keys and 
+contacts. If no argument is given, speek will create a config folder at 
+QStandardPaths::AppDataLocation (see 
+https://doc.qt.io/qt-5/qstandardpaths.html#StandardLocation-enum).
+.Sh AUTHOR
+.Nm
+Speek <contact@speek.network>
