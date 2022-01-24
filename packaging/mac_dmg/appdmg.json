@@ -1,0 +1,10 @@
+{
+  "title": "Speek",
+  "icon": "speek-drive.icns",
+  "background": "background.png",
+  "icon-size": 120,
+  "contents": [
+    { "x": 400, "y": 445, "type": "link", "path": "/Applications" },
+    { "x": 400, "y": 160, "type": "file", "path": "Speek.app" }
+  ]
+}
