@@ -1,0 +1,4 @@
+sizes=("16" "24" "32" "48" "64" "96" "128" "192" "256" "512" "1024")
+for sz in ${sizes[@]}; do
+	inkscape -w $sz -h $sz -o ./${sz}x${sz}/speek.png ../../src/tego_ui/icons/speek.svg
+done
