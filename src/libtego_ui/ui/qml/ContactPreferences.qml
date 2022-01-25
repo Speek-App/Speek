@@ -19,7 +19,7 @@ Item {
             onAccepted: {
                 var b = utility.toBase64_PNG(fileDialog.fileUrl.toString(), 100, 100);
                 if(b.length < 16000)
-                    iconText.text = b;
+                    contactInfo.contact.icon = b
             }
         }
 
@@ -131,37 +131,30 @@ Item {
                 z: 2
                 Label {
                     //: Label for text input where users can specify their username
-                    text: qsTr("Icon")
+                    text: qsTr("Profile Picture: ")
                     Accessible.role: Accessible.StaticText
                     Accessible.name: text
                 }
 
-                TextArea {
-                    id: iconText
-
-                    text: visible ? contactInfo.contact.icon : ""
-                    Layout.minimumWidth: 200
-                    Layout.maximumHeight: 33
-
-                    onTextChanged: {
-                        //if (visible)
-                            contactInfo.contact.icon = text
-                    }
-
-                    Accessible.role: Accessible.EditableText
-                    //: Name of the icon input used to select a icon for another user
-                    Accessible.name: qsTr("Icon input field")
-                    //: Description of what the icon text input is for accessibility tech like screen readers
-                    Accessible.description: qsTr("What the icon of the user should be")
-                }
                 Button {
-                    //: Label for button which allows the changing of an user icon
-                    text: qsTr("Open Icon")
+                    //: Label for button which allows the changing of an user profile picture
+                    text: qsTr("Select Profile Picture")
                     onClicked: fileDialog.open()
                     Accessible.role: Accessible.Button
                     Accessible.name: text
-                    //: Description of button which allows the selection of an icon for a user for accessibility tech like screen readers
+                    //: Description of button which allows the selection of a profile picture for an user for accessibility tech like screen readers
                     Accessible.description: qsTr("Select icon for this contact")
+                }
+                Button {
+                    //: Label for button which allows the removal of a profile picture
+                    text: qsTr("Remove Profile Picture")
+                    onClicked: {
+                        contactInfo.contact.icon = ""
+                    }
+                    Accessible.role: Accessible.Button
+                    Accessible.name: text
+                    //: Description of button which allows the removal of a profile picture for an user for accessibility tech like screen readers
+                    Accessible.description: qsTr("Remove icon for this contact")
                 }
             }
 
@@ -211,5 +204,5 @@ Item {
     //: Name of the contact preferences window for accessibility tech like screen readers
     Accessible.name: qsTr("Contact Preferences Window")
     //: Description of what user can do in the contact preferences window for accessibility tech like screen readers
-    Accessible.description: qsTr("A list of all your contacts, with their ricochet IDs, and options such as renaming and removing")
+    Accessible.description: qsTr("A list of all your contacts, with their Speek IDs, and options such as renaming and removing")
 }
