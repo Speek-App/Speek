@@ -131,8 +131,8 @@ bool MainWindow::showUI()
 
     if (qml->rootObjects().isEmpty()) {
         // Assume this is only applicable to technical users; not worth translating or simplifying.
-        QMessageBox::critical(0, QStringLiteral("Speek"),
-            QStringLiteral("An error occurred while loading the Speek UI.\n\n"
+        QMessageBox::critical(0, QStringLiteral("Speek.Chat"),
+            QStringLiteral("An error occurred while loading the Speek.Chat UI.\n\n"
                            "You might be missing plugins or dependency packages."));
         qCritical() << "Failed to load UI. Exiting.";
         return false;

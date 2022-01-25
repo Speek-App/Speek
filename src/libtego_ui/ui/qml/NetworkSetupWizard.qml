@@ -10,7 +10,7 @@ ApplicationWindow {
     maximumWidth: minimumWidth
     minimumHeight: visibleItem.height + 16
     maximumHeight: minimumHeight
-    title: "Speek"
+    title: "Speek.Chat"
 
     signal networkReady
     signal closed

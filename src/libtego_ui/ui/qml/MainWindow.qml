@@ -7,7 +7,7 @@ import "ContactWindow.js" as ContactWindow
 
 ApplicationWindow {
     id: window
-    title: "Speek"
+    title: "Speek.Chat"
     visibility: Window.AutomaticVisibility
 
     width: 950
@@ -22,7 +22,7 @@ ApplicationWindow {
         active: Qt.platform.os == 'osx'
         sourceComponent: MenuBar {
             Menu {
-                title: "Speek"
+                title: "Speek.Chat"
                 MenuItem {
                     text: qsTranslate("QCocoaMenuItem", "Preference")
                     onTriggered: toolBar.preferences.trigger()
