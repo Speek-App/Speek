@@ -126,18 +126,20 @@ FocusScope {
     }
 
     EmojiPicker {
-            id: emojiPicker
+        id: emojiPicker
 
-            anchors.fill: parent
-            anchors.bottomMargin: statusBar.height
-            anchors.topMargin: parent.height - 200
+        anchors.fill: parent
+        anchors.bottomMargin: statusBar.height
+        anchors.topMargin: parent.height - 200
 
-            visible: emojiVisible
+        clip: true
 
-            color: "white"
-            buttonWidth: 28
-            textArea: textField     //the TextArea in which EmojiPicker is pasting the Emoji into
-        }
+        visible: emojiVisible
+
+        color: "white"
+        buttonWidth: 28
+        textArea: textField     //the TextArea in which EmojiPicker is pasting the Emoji into
+    }
 
     Rectangle {
         id: statusBar

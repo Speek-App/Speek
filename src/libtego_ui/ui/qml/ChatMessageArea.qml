@@ -5,22 +5,21 @@ import QtQuick.Layouts 1.0
 Rectangle {
     id: scroll
     clip: true
-    //color: "#e4dcd3"
     color: palette.base
 
     property alias model: messageView.model
 
     Image {
-                id: image2
-                anchors.fill: parent
-                //source: "qrc:/backgrounds/purple.png"
-                source: {
-                    if(typeof(uiSettings.data.chatBackground) !== "undefined")
-                        return "qrc:/backgrounds/" + uiSettings.data.chatBackground.toLowerCase() + ".png"
-                    else
-                        return "qrc:/backgrounds/purple.png"
-                }
-            }
+        id: image2
+        anchors.fill: parent
+        source: {
+            if(typeof(uiSettings.data.chatBackground) !== "undefined")
+                return "qrc:/backgrounds/" + uiSettings.data.chatBackground.toLowerCase() + ".png"
+            else
+                return "qrc:/backgrounds/purple.png"
+        }
+        fillMode: Image.PreserveAspectCrop
+    }
 
     /* As of Qt 5.5.0, ScrollView is too buggy to use. It often fails to keep the
      * view scrolled to the bottom, and moves erratically on wheel events. */
