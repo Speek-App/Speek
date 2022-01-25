@@ -1,5 +1,5 @@
 This document explains some of the sandboxing contributions available for
-Ricochet.
+Speek.
 
 Debian GNU/Linux sandboxing:
 
@@ -11,7 +11,7 @@ usr.bin.ricochet-apparmor is a basic AppArmor policy to be installed in
 
 the minijail tool originally from the ChromeOS project is an easy way to
 use seccomp as a generic wrapper around any program. We use it to add seccomp
-support to ricochet without using the more useful or privileged modes. If
+support to Speek without using the more useful or privileged modes. If
 minijail is supported for your platform, congratulations. If not, it may be
 built and used like so:
 
@@ -31,7 +31,7 @@ policies for the x86 and arm architectures. They may need tweaking before
 they are useful. They need testing - only the amd64 code has been used
 extensively.
 
-It is also possible to run Ricochet inside of xpra like so:
+It is also possible to run Speek inside of xpra like so:
 
   xpra start :23 --start-child ricochet --exit-with-children \
   --no-pulseaudio \
