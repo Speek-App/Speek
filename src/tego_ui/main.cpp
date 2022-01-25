@@ -472,9 +472,9 @@ static void initTranslation()
         settings.write(QStringLiteral("ui.language"), QString());
     }
 
-    ok = translator->load(locale, QStringLiteral("ricochet"), QStringLiteral("_"), appPath);
+    ok = translator->load(locale, QStringLiteral("speek"), QStringLiteral("_"), appPath);
     if (!ok)
-        ok = translator->load(locale, QStringLiteral("ricochet"), QStringLiteral("_"), resPath);
+        ok = translator->load(locale, QStringLiteral("speek"), QStringLiteral("_"), resPath);
 
     if (ok) {
         qApp->installTranslator(translator);

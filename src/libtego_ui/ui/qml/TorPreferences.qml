@@ -40,7 +40,7 @@ Item {
                 Accessible.description: qsTr("Whether tor is running")
             }
             Label {
-                //: Display label that beside it indicates whether ricochet is connected to tor's control port
+                //: Display label that beside it indicates whether Speek is connected to tor's control port
                 text: qsTr("Control connected:")
                 Accessible.role: Accessible.StaticText
                 Accessible.name: qsTr("Control connected")

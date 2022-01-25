@@ -40,7 +40,7 @@ LanguagesModel::LanguagesModel(QObject* parent)
     languages.append(LanguageEntry(tr("System default"), QString()));
     foreach (const QString& translationFile, languagesFolder.entryList()) {
         QString localeID = translationFile;
-        localeID.remove(QLatin1String("ricochet_")).remove(QLatin1String(".qm"));
+        localeID.remove(QLatin1String("speek_")).remove(QLatin1String(".qm"));
         QString nativeName = QLocale(localeID).nativeLanguageName();
         languages.append(LanguageEntry(nativeName, localeID));
     }

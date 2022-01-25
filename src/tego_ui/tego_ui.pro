@@ -50,7 +50,7 @@ QT += core gui network quick widgets
 #    VERSION = $${RICOCHET_REFRESH_VERSION}
 #}
 
-VERSION = 1.4.1
+VERSION = 1.4.2
 
 DEFINES += "TEGO_VERSION=$${VERSION}"
 
@@ -112,33 +112,33 @@ lupdate_only {
 
 # Translations
 TRANSLATIONS += \
-    ricochet_en \
-    ricochet_it \
-    ricochet_es \
-    ricochet_da \
-    ricochet_pl \
-    ricochet_pt_BR \
-    ricochet_de \
-    ricochet_bg \
-    ricochet_cs \
-    ricochet_fi \
-    ricochet_fr \
-    ricochet_ru \
-    ricochet_uk \
-    ricochet_tr \
-    ricochet_nl_NL \
-    ricochet_fil_PH \
-    ricochet_sv \
-    ricochet_he \
-    ricochet_sl \
-    ricochet_zh \
-    ricochet_et_EE \
-    ricochet_it_IT \
-    ricochet_nb \
-    ricochet_pt_PT \
-    ricochet_sq \
-    ricochet_zh_HK \
-    ricochet_ja
+    speek_en \
+    speek_it \
+    speek_es \
+    speek_da \
+    speek_pl \
+    speek_pt_BR \
+    speek_de \
+    speek_bg \
+    speek_cs \
+    speek_fi \
+    speek_fr \
+    speek_ru \
+    speek_uk \
+    speek_tr \
+    speek_nl_NL \
+    speek_fil_PH \
+    speek_sv \
+    speek_he \
+    speek_sl \
+    speek_zh \
+    speek_et_EE \
+    speek_it_IT \
+    speek_nb \
+    speek_pt_PT \
+    speek_sq \
+    speek_zh_HK \
+    speek_ja
 
 # Only build translations when creating the primary makefile.
 {
