@@ -1,0 +1,42 @@
+# Maintainer: Speek <contact@speek.network>
+
+pkgname=speek-chat
+pkgver=1.4.2
+pkgrel=1
+pkgdesc="Anonymous metadata-resistant instant messaging with Tor Onion Services v3 support."
+arch=('i686' 'x86_64')
+url="https://www.speek.network/"
+license=('BSD 3-Clause')
+depends=('tor' 'qt5-quickcontrols' 'qt5-declarative' 'openssl' 'protobuf' 'qt5-multimedia'
+         'desktop-file-utils' 'hicolor-icon-theme' 'noto-fonts-emoji')
+makedepends=('qt5-tools' 'pkg-config')
+source=("${pkgname}::git+https://github.com/Speek-App/Speek.git#tag=v${pkgver}-release")
+sha256sums=('SKIP')
+
+prepare() {
+  cd ${pkgname}
+  git submodule update --init
+}
+
+build() {
+  cd ${pkgname}/src
+  qmake
+  make
+}
+
+package() {
+  cd ${pkgname}
+  install -Dm755 -t "${pkgdir}/usr/bin" build/release/tego_ui/speek
+  install -Dm644 -t "${pkgdir}/usr/share/licenses/${pkgname}" src/LICENSE
+  install -Dm644 doc/manpage "${pkgdir}/usr/share/man/man1/speek.1"
+  install -Dm644 -t "${pkgdir}/usr/share/applications" src/tego_ui/speek.desktop
+  install -Dm644 -t "${pkgdir}/usr/share/icons/hicolor/apps" src/tego_ui/icons/speek.svg
+  cd debian/icons
+  for res in *
+  do
+    if [ "$res" != "generate_icons" ]; then
+      install -Dm644 ${res}/speek.png "${pkgdir}/usr/share/icons/hicolor/${res}/apps/speek.png"
+    fi
+  done
+}
+
