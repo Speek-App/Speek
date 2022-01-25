@@ -83,8 +83,8 @@ deploy:
     skip_cleanup: true
     file_glob: true
     file:
-    - 'buildscripts/output/Ricochet-Refresh-*.dmg'
-    - 'buildscripts/output/ricochet-refresh-*-static.tar.bz2'
+    - 'buildscripts/output/Speek-*.dmg'
+    - 'buildscripts/output/speek-*-static.tar.bz2'
     overwrite: true
     draft: true
   - provider: releases
@@ -94,8 +94,8 @@ deploy:
     skip_cleanup: true
     file_glob: true
     file:
-    - 'buildscripts/output/Ricochet-Refresh-*.dmg'
-    - 'buildscripts/output/ricochet-refresh-*-static.tar.bz2'
+    - 'buildscripts/output/Speek-*.dmg'
+    - 'buildscripts/output/speek-*-static.tar.bz2'
     on:
       tags: true
     overwrite: true
