@@ -13,10 +13,13 @@ Rectangle {
         id: image2
         anchors.fill: parent
         source: {
-            if(typeof(uiSettings.data.chatBackground) !== "undefined")
-                return "qrc:/backgrounds/" + uiSettings.data.chatBackground.toLowerCase() + ".png"
+            if(typeof(uiSettings.data.UseCustomChatAreaBackground) !== "undefined" && uiSettings.data.UseCustomChatAreaBackground === true)
+                return uiSettings.data.customChatAreaBackground
             else
-                return "qrc:/backgrounds/purple.png"
+                if(typeof(uiSettings.data.chatBackground) !== "undefined")
+                    return "qrc:/backgrounds/" + uiSettings.data.chatBackground.toLowerCase() + ".png"
+                else
+                    return "qrc:/backgrounds/purple.png"
         }
         fillMode: Image.PreserveAspectCrop
     }
