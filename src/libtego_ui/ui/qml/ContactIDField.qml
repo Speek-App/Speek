@@ -51,7 +51,7 @@ FocusScope {
                     }
                     else
                     {
-                        //: Error message showed when the provided ricochet id is invalid
+                        //: Error message showed when the provided Speek id is invalid
                         errorBubble.show(qsTr("Enter an ID starting with <b>speek:</b>"))
                     }
                 }
@@ -115,8 +115,8 @@ FocusScope {
 
             Accessible.role: Accessible.Button
             Accessible.name: text
-            //: Text description of ricochet id copy button for accessibility tech like screen readers
-            Accessible.description: qsTr("Copies the ricochet id to the clipboard")
+            //: Text description of Speek id copy button for accessibility tech like screen readers
+            Accessible.description: qsTr("Copies the Speek id to the clipboard")
             Accessible.onPressAction: field.copyLoudly()
         }
     }

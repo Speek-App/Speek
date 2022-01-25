@@ -13,7 +13,7 @@
 	<key>CFBundleExecutable</key>
         <string>speek</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.ricochetrefresh</string>
+        <string>net.speek</string>
 	<key>CFBundleName</key>
         <string>Speek</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>

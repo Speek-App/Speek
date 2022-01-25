@@ -172,7 +172,7 @@ ColumnLayout {
             //: Name of the combobox used to select UI langauge for accessibility tech like screen readers
             Accessible.name: qsTr("Language")
             //: Description of what the language combox is for for accessibility tech like screen readers
-            Accessible.description: qsTr("What language ricochet will use")
+            Accessible.description: qsTr("What language Speek will use")
         }
     }
 

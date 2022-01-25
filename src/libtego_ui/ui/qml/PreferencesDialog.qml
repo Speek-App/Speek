@@ -63,7 +63,7 @@ ApplicationWindow {
         }
 
         Tab {
-            //: Title of the about tab, contains license information and ricochet version
+            //: Title of the about tab, contains license information and speek version
             title: qsTr("About")
             source: Qt.resolvedUrl("AboutPreferences.qml")
         }
