@@ -5,7 +5,7 @@ import im.ricochet 1.0
 
 ApplicationWindow {
     id: preferencesWindow
-    width: 820
+    width: 900
     minimumWidth: 820
     height: 400
     minimumHeight: 400

@@ -1,12 +1,28 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
+import QtQuick.Dialogs 1.0
+import im.utility 1.0
 import im.ricochet 1.0
 
 Item {
     property alias selectedContact: contacts.selectedContact
 
     RowLayout {
+        Utility {
+               id: utility
+            }
+
+        FileDialog {
+            id: fileDialog
+            nameFilters: ["Images (*.png *.jpg *.jpeg)"]
+            onAccepted: {
+                var b = utility.toBase64_PNG(fileDialog.fileUrl.toString(), 100, 100);
+                if(b.length < 16000)
+                    iconText.text = b;
+            }
+        }
+
         anchors {
             fill: parent
             margins: 8
@@ -110,6 +126,45 @@ Item {
                 height: 1
                 Layout.fillWidth: true
             }
+
+            RowLayout {
+                z: 2
+                Label {
+                    //: Label for text input where users can specify their username
+                    text: qsTr("Icon")
+                    Accessible.role: Accessible.StaticText
+                    Accessible.name: text
+                }
+
+                TextArea {
+                    id: iconText
+
+                    text: visible ? contactInfo.contact.icon : ""
+                    Layout.minimumWidth: 200
+                    Layout.maximumHeight: 33
+
+                    onTextChanged: {
+                        //if (visible)
+                            contactInfo.contact.icon = text
+                    }
+
+                    Accessible.role: Accessible.EditableText
+                    //: Name of the icon input used to select a icon for another user
+                    Accessible.name: qsTr("Icon input field")
+                    //: Description of what the icon text input is for accessibility tech like screen readers
+                    Accessible.description: qsTr("What the icon of the user should be")
+                }
+                Button {
+                    //: Label for button which allows the changing of an user icon
+                    text: qsTr("Open Icon")
+                    onClicked: fileDialog.open()
+                    Accessible.role: Accessible.Button
+                    Accessible.name: text
+                    //: Description of button which allows the selection of an icon for a user for accessibility tech like screen readers
+                    Accessible.description: qsTr("Select icon for this contact")
+                }
+            }
+
             Item { height: 1; width: 1 }
 
             RowLayout {

@@ -47,6 +47,7 @@ HEADERS += \
     ui/ContactsModel.h \
     ui/LanguagesModel.h \
     ui/MainWindow.h \
+    utils/Base64CircleImageProvider.h \
     utils/Settings.h \
     utils/Useful.h \
     shims/TorControl.h\

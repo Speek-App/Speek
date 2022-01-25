@@ -67,6 +67,7 @@ FocusScope {
 
         ColorLetterCircle{
             name: contact != null ? contact.nickname : ""
+            icon: contact != null ? contact.icon : ""
         }
         ColumnLayout{
             spacing:0

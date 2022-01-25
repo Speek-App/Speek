@@ -27,6 +27,7 @@ Rectangle {
         }
         ColorLetterCircle{
             name: model.name !== "" ? model.name : "-"
+            icon: typeof(model.contact.icon) !== "undefined" ? model.contact.icon : ""
         }
         ColumnLayout{
             spacing:0

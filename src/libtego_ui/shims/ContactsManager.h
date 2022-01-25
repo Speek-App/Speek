@@ -16,7 +16,7 @@ namespace shims
             const QString &nickname,
             const QString &myNickname,
             const QString &message);
-        shims::ContactUser* addContact(const QString& serviceId, const QString& nickname);
+        shims::ContactUser* addContact(const QString& serviceId, const QString& nickname, const QString& icon = "");
         const QList<shims::ContactUser*>& contacts() const;
         shims::ContactUser* getShimContactByContactId(const QString& contactId) const;
 

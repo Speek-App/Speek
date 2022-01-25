@@ -37,6 +37,7 @@
 
 #include "utils/Settings.h"
 #include "utils/Useful.h"
+#include "utils/Base64CircleImageProvider.h"
 
 
 // shim replacements
@@ -97,6 +98,7 @@ MainWindow::MainWindow(QObject *parent)
     uiMain = this;
 
     qml = new QQmlApplicationEngine(this);
+    qml->addImageProvider(QLatin1String("base64"), new Base64CircleImageProvider);
     qml->setNetworkAccessManagerFactory(new NetworkAccessBlockingFactory);
 
     qmlRegisterUncreatableType<shims::ContactUser>("im.ricochet", 1, 0, "ContactUser", QString());

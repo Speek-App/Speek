@@ -9,24 +9,30 @@
 
 namespace shims
 {
-    ContactUser::ContactUser(const QString& serviceId, const QString& nickname)
+    ContactUser::ContactUser(const QString& serviceId, const QString& nickname, const QString& icon)
     : conversationModel(new shims::ConversationModel(this))
     , outgoingContactRequest(new shims::OutgoingContactRequest())
     , status(ContactUser::Offline)
     , serviceId(serviceId)
     , nickname()
+    , icon()
     , settings(QString("users.%1").arg(serviceId))
     {
         Q_ASSERT(serviceId.size() == TEGO_V3_ONION_SERVICE_ID_LENGTH);
         conversationModel->setContact(this);
 
-
         this->setNickname(nickname);
+        this->setIcon(icon);
     }
 
     QString ContactUser::getNickname() const
     {
         return nickname;
+    }
+
+    QString ContactUser::getIcon() const
+    {
+        return icon;
     }
 
     QString ContactUser::getContactID() const
@@ -80,6 +86,16 @@ namespace shims
             this->nickname = nickname;
             settings.write("nickname", nickname);
             emit this->nicknameChanged();
+        }
+    }
+
+    void ContactUser::setIcon(const QString& icon)
+    {
+        if (this->icon != icon)
+        {
+            this->icon = icon;
+            settings.write("icon", icon);
+            emit this->iconChanged();
         }
     }
 

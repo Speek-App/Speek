@@ -42,10 +42,10 @@ namespace shims
         return shimContact;
     }
 
-    shims::ContactUser* ContactsManager::addContact(const QString& serviceId, const QString& nickname)
+    shims::ContactUser* ContactsManager::addContact(const QString& serviceId, const QString& nickname, const QString& icon)
     {
         // creates a new contact from service id and nickname
-        auto shimContact = new shims::ContactUser(serviceId, nickname);
+        auto shimContact = new shims::ContactUser(serviceId, nickname, icon);
         contactsList.push_back(shimContact);
 
         // remove our reference and ready for deleting when contactDeleted signal is fireds

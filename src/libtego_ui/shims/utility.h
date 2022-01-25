@@ -68,16 +68,27 @@ public:
             w=maxs/image2.height()*image2.width();
         }
         encoded = "<a href=\"" + GetRandomString() + "\"><img width=\"" + QString::number(w) + "\" height=\"" + QString::number(h) + "\" src=\"data:image/jpg;base64," + encoded + "\" /></a>";
-       return encoded;
-
-       /*
-        QPixmap pix(url.replace("file://", ""));
-        QBuffer buffer;
-         buffer.open(QIODevice::WriteOnly);
-         pix.save(&buffer, "JPG", 80);
-         QString encoded = buffer.data().toBase64();
-        return encoded;*/
+        return encoded;
     }
+
+    Q_INVOKABLE QString toBase64_PNG(QString url, int w_, int h_) {
+        QImage image1(url.replace("file://", ""));
+        QImage image2(image1.size(), QImage::Format_RGB32);
+        image2.fill(QColor(Qt::white).rgb());
+        QPainter painter(&image2);
+        painter.drawImage(0, 0, image1);
+        painter.end();
+        QBuffer buffer;
+        buffer.open(QIODevice::WriteOnly);
+        if(image2.width() > w_ || image2.height() > h_)
+            image2 = image2.scaled(w_, h_, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        image2.save(&buffer, "png");
+        QString encoded = buffer.data().toBase64();
+
+        encoded = "data:image/png;base64," + encoded;
+        return encoded;
+    }
+
     Q_INVOKABLE bool checkFileExists(QString path) {
         return QFile::exists(path);
     }

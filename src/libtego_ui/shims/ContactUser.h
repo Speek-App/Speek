@@ -14,6 +14,7 @@ namespace shims
         Q_ENUMS(Status)
 
         Q_PROPERTY(QString nickname READ getNickname WRITE setNickname NOTIFY nicknameChanged)
+        Q_PROPERTY(QString icon READ getIcon WRITE setIcon NOTIFY iconChanged)
         Q_PROPERTY(QString contactID READ getContactID CONSTANT)
         Q_PROPERTY(Status status READ getStatus NOTIFY statusChanged)
         Q_PROPERTY(shims::OutgoingContactRequest* contactRequest READ contactRequest NOTIFY statusChanged)
@@ -28,9 +29,10 @@ namespace shims
             Outdated
         };
 
-        ContactUser(const QString& serviceId, const QString& nickname);
+        ContactUser(const QString& serviceId, const QString& nickname, const QString& icon = "");
 
         QString getNickname() const;
+        QString getIcon() const;
         QString getContactID() const;
         Status getStatus() const;
         void setStatus(Status status);
@@ -45,9 +47,11 @@ namespace shims
 
     public slots:
         void setNickname(const QString &nickname);
+        void setIcon(const QString &nickname);
 
     signals:
         void nicknameChanged();
+        void iconChanged();
         void statusChanged();
         void contactDeleted(shims::ContactUser *user);
 
@@ -58,6 +62,7 @@ namespace shims
         Status status;
         QString serviceId;
         QString nickname;
+        QString icon;
 
         SettingsObject settings;
 

@@ -42,6 +42,7 @@
 #include "shims/TorManager.h"
 #include "shims/UserIdentity.h"
 
+
 static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &errorMessage);
 static void initTranslation();
 static void initTheme();
@@ -206,7 +207,8 @@ int main(int argc, char *argv[]) try
                 type == tego_user_type_rejected)
             {
                 const auto nickname = userData.value("nickname").toString();
-                auto contact = contactsManager->addContact(serviceIdString, nickname);
+                const auto icon = userData.contains("icon") ? userData.value("icon").toString() : "";
+                auto contact = contactsManager->addContact(serviceIdString, nickname, icon);
                 switch(type)
                 {
                 case tego_user_type_allowed:
@@ -277,13 +279,13 @@ static void loadDefaultSettings(SettingsFile *settings)
 
 static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &errorMessage)
 {
-    /* ricochet-refresh by default loads and saves configuration files from QStandardPaths::AppConfigLocation
+    /* speek by default loads and saves configuration files from QStandardPaths::AppConfigLocation
      *
-     * Linux: ~/.config/ricochet-refresh
-     * Windows: C:/Users/<USER>/AppData/Local/ricochet-refresh
+     * Linux: ~/.config/speek
+     * Windows: C:/Users/<USER>/AppData/Local/speek
      * macOS: ~/Library/Preferences/<APPNAME>
      *
-     * ricochet-refresh can also load configuration files from a custom directory passed in as the first argument
+     * speek can also load configuration files from a custom directory passed in as the first argument
      */
 
     QString configPath;
@@ -379,7 +381,7 @@ static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &
     if (QDir::setCurrent(dir.absolutePath()) && dir.isRelative())
         dir.setPath(QStringLiteral("."));
 
-    QLockFile *lock = new QLockFile(dir.filePath(QStringLiteral("ricochet.json.lock")));
+    QLockFile *lock = new QLockFile(dir.filePath(QStringLiteral("speek.json.lock")));
     *lockFile = lock;
     lock->setStaleLockTime(0);
     if (!lock->tryLock()) {
@@ -399,7 +401,7 @@ static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &
         }
     }
 
-    settings->setFilePath(dir.filePath(QStringLiteral("ricochet.json")));
+    settings->setFilePath(dir.filePath(QStringLiteral("speek.json")));
     if (settings->hasError()) {
         errorMessage = settings->errorMessage();
         return false;
