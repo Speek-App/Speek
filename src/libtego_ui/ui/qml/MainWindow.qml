@@ -71,11 +71,6 @@ ApplicationWindow {
                 //: Description of the main toolbar for accessibility tech like screen readers
                 Accessible.description: qsTr("Toolbar with connection status, add contact button, and preferences button")
             }
-            Rectangle {
-                color: "darkgrey"
-                width: 220
-                height: 1
-                 }
 
             Item {
                 Layout.fillHeight: true
@@ -112,7 +107,7 @@ ApplicationWindow {
             visible: combinedChatView.visible
             width: 1
             Layout.fillHeight: true
-            color: "darkgrey"//Qt.darker(palette.window, 1.5)
+            color: "#888888"//Qt.darker(palette.window, 1.5)
         }
 
         PageView {

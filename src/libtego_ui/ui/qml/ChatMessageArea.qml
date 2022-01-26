@@ -64,7 +64,5 @@ Rectangle {
 
         verticalLayoutDirection: ListView.BottomToTop
     }
-
-    //Rectangle {anchors.bottom: parent.bottom; width: parent.width; height: 1; color: "darkgrey"; }
 }
 

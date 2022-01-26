@@ -74,14 +74,18 @@ FocusScope {
             Label {
                 text: contact != null ? contact.nickname : ""
                 textFormat: Text.PlainText
-                font.pointSize: styleHelper.pointSize
                 anchors.topMargin: 15
+                font.pointSize: styleHelper.pointSize * 0.9
+                font.bold: true
+                color: palette.text
             }
             Label {
                 anchors.bottomMargin: 15
                 text: contact != null ? contact.status == 0 ? "online": "offline" : ""
                 textFormat: Text.PlainText
                 font.pointSize: styleHelper.pointSize *0.8
+                opacity: 0.6
+                color: palette.text
             }
         }
 
@@ -107,7 +111,7 @@ FocusScope {
                 left: parent.left
                 right: parent.right
             }
-            Rectangle { width: parent.width; height: 1; color: "darkgrey"; }
+            Rectangle { width: parent.width; height: 1; color: "#888888"; }
         }
     }
 
@@ -149,9 +153,9 @@ FocusScope {
             bottom: parent.bottom
         }
         height: statusLayout.height + 8
-        color: Qt.lighter(palette.midlight, 1.14)
+        color: palette.base//Qt.lighter(palette.midlight, 1.14)
 
-        Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: "darkgrey"; }
+        Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: "#888888"; }
 
         RowLayout {
             id: statusLayout
@@ -161,55 +165,55 @@ FocusScope {
             Rectangle {width: 3; height: parent.height; color: "transparent"; }
 
             Button {
-                        style: ButtonStyle {
-                            background: Rectangle {
-                                    implicitWidth: 28
-                                    implicitHeight: 28
-                                    border.color: control.hovered ? "#dddddd" : "transparent"
-                                    border.width: 1
-                                    radius: 5
-                                    color: "transparent"
-                                }
-                              label: Image {
-                                  height: 28
-                                  width: 28
-                                  sourceSize.width: 28
-                                  sourceSize.height: 28
-                                  source: palette.base == "#2a2a2a" ? "qrc:/icons/display-rich-text-svgrepo-com-white.png" : "qrc:/icons/display-rich-text-svgrepo-com.png"
-                                  antialiasing: true
-                              }
-                            }
-
-                        onClicked: {
-                            richTextActive = !richTextActive
-                            textInput.text = ""
+                style: ButtonStyle {
+                    background: Rectangle {
+                            implicitWidth: 22
+                            implicitHeight: 22
+                            border.color: control.hovered ? "#dddddd" : "transparent"
+                            border.width: 1
+                            radius: 5
+                            color: "transparent"
+                        }
+                        label: Text {
+                            text: "S"
+                            font.family: iconFont.name
+                            font.pixelSize: 22
+                            horizontalAlignment: Qt.AlignHCenter
+                            renderType: Text.QtRendering
+                            color: palette.text
                         }
                     }
+
+                onClicked: {
+                    richTextActive = !richTextActive
+                    textInput.text = ""
+                }
+            }
             Button {
-                        visible: richTextActive
-                        style: ButtonStyle {
-                            background: Rectangle {
-                                    implicitWidth: 28
-                                    implicitHeight: 28
-                                    border.color: control.hovered ? "#dddddd" : "transparent"
-                                    border.width: 1
-                                    radius: 5
-                                    color: "transparent"
-                                }
-                              label: Image {
-                                  height: 28
-                                  width: 28
-                                  sourceSize.width: 28
-                                  sourceSize.height: 28
-                                  source: palette.base == "#2a2a2a" ? "qrc:/icons/emoji-add-svgrepo-com-white.png" : "qrc:/icons/emoji-add-svgrepo-com.png"
-                                  antialiasing: true
-                              }
-                         }
-
-                        onClicked: {
-                            emojiVisible = !emojiVisible
+                visible: richTextActive
+                style: ButtonStyle {
+                    background: Rectangle {
+                            implicitWidth: 22
+                            implicitHeight: 22
+                            border.color: control.hovered ? "#dddddd" : "transparent"
+                            border.width: 1
+                            radius: 5
+                            color: "transparent"
                         }
-                    }
+                      label: Text {
+                          text: "Q"
+                          font.family: iconFont.name
+                          font.pixelSize: 22
+                          horizontalAlignment: Qt.AlignHCenter
+                          renderType: Text.QtRendering
+                          color: palette.text
+                      }
+                 }
+
+                onClicked: {
+                    emojiVisible = !emojiVisible
+                }
+            }
 
             TextArea {
                 id: textInput
@@ -308,20 +312,20 @@ FocusScope {
             Button {
                 style: ButtonStyle {
                     background: Rectangle {
-                        implicitWidth: 28
-                        implicitHeight: 28
+                        implicitWidth: 22
+                        implicitHeight: 22
                         border.color: control.hovered ? "#dddddd" : "transparent"
                         border.width: 1
                         radius: 5
                         color: "transparent"
                     }
-                    label: Image {
-                        height: 28
-                        width: 28
-                        sourceSize.width: 28
-                        sourceSize.height: 28
-                        source: palette.base == "#2a2a2a" ? "qrc:/icons/paperclip-svgrepo-com-white.png" : "qrc:/icons/paperclip-svgrepo-com.png"
-                        antialiasing: true
+                    label: Text {
+                        text: "R"
+                        font.family: iconFont.name
+                        font.pixelSize: 22
+                        horizontalAlignment: Qt.AlignHCenter
+                        renderType: Text.QtRendering
+                        color: palette.text
                     }
                 }
 
@@ -335,20 +339,20 @@ FocusScope {
                 visible: richTextActive
                 style: ButtonStyle {
                     background: Rectangle {
-                        implicitWidth: 28
-                        implicitHeight: 28
+                        implicitWidth: 22
+                        implicitHeight: 22
                         border.color: control.hovered ? "#dddddd" : "transparent"
                         border.width: 1
                         radius: 5
                         color: "transparent"
                     }
-                    label: Image {
-                        height: 30
-                        width: 30
-                        sourceSize.width: 30
-                        sourceSize.height: 30
-                        source: palette.base == "#2a2a2a" ? "qrc:/icons/image-add-svgrepo-com-white.png" : "qrc:/icons/image-add-svgrepo-com.png"
-                        antialiasing: true
+                    label: Text {
+                        text: "P"
+                        font.family: iconFont.name
+                        font.pixelSize: 22
+                        horizontalAlignment: Qt.AlignHCenter
+                        renderType: Text.QtRendering
+                        color: palette.text
                     }
                 }
 

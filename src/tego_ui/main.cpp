@@ -423,7 +423,7 @@ static void initTheme()
     darkPalette.setColor(QPalette::Window,QColor(53,53,53));
     darkPalette.setColor(QPalette::WindowText,Qt::white);
     darkPalette.setColor(QPalette::Disabled,QPalette::WindowText,QColor(127,127,127));
-    darkPalette.setColor(QPalette::Base,QColor(42,42,42));
+    darkPalette.setColor(QPalette::Base,QColor(32,32,32));
     darkPalette.setColor(QPalette::AlternateBase,QColor(66,66,66));
     darkPalette.setColor(QPalette::ToolTipBase,QColor(40,40,40));
     darkPalette.setColor(QPalette::ToolTipText,Qt::white);

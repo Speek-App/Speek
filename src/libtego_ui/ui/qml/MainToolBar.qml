@@ -76,48 +76,37 @@ ToolBar {
             visible: text === qsTr("Online") ? false : true
         }
 
-        Label {
-            visible: !torstatewidget.visible
-
-            //anchors{
-            //    horizontalCenter: parent.horizontalCenter
-            //}
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: parent.width - 32
-            horizontalAlignment: Text.AlignHCenter
-            id: label_speekers
-            y: 2
-
-            font.pointSize: styleHelper.pointSize
-            font.bold: true
-            font.capitalization: Font.SmallCaps
-            textFormat: Text.PlainText
-            color: palette.text//"#3f454a"
-            font.family: "Helvetica"
-            text: " Speekers"
-        }
-
         ToolButton {
-            Layout.alignment: Qt.AlignRight
-
             id: contextMenuButton
             implicitHeight: 32
             implicitWidth: 32
+
             onClicked: {
                 action: mainContextMenu.popup()
             }
 
             text: "☰"
-            style: ButtonStyle {
-            background: Rectangle {
 
+            style: ButtonStyle {
+                background: Rectangle {
                     implicitWidth: 28
                     implicitHeight: 28
                     border.color: control.hovered ? "#dddddd" : "transparent"
                     border.width: 1
                     radius: 5
                     color: "transparent"
+
                 }
+                label: Text {
+                    renderType: Text.NativeRendering
+                    font.family: "Helvetica"
+                    font.pointSize: styleHelper.pointSize * 1.2
+                    font.bold: true
+                    text: control.text
+                    color: palette.text
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                 }
             }
 
             Loader {
@@ -136,6 +125,26 @@ ToolBar {
             Accessible.name: qsTr("Add Contact")
             //: Description of the 'Add Contact' button for accessibility tech like screen readers
             Accessible.description: qsTr("Shows the add contact dialogue")
+        }
+
+        Label {
+            visible: !torstatewidget.visible
+
+            anchors{
+                horizontalCenter: parent.horizontalCenter
+            }
+            //Layout.alignment: Qt.AlignHCenter
+            //Layout.preferredWidth: parent.width
+            //horizontalAlignment: Text.AlignHCenter
+            id: label_speekers
+            y: 2
+
+            font.pointSize: styleHelper.pointSize * 1.03
+            font.bold: true
+            textFormat: Text.PlainText
+            color: palette.text//"#3f454a"
+            font.family: "Helvetica"
+            text: "Speekers"
         }
 
         Menu {

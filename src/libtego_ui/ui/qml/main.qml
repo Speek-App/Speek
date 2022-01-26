@@ -108,6 +108,11 @@ QtObject {
             id: palette
         },
 
+        FontLoader {
+            id: iconFont
+            source: "qrc:/icons/speek-icons.ttf"
+        },
+
         Item {
             id: styleHelper
             visible: false

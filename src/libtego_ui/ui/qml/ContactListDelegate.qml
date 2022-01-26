@@ -36,21 +36,24 @@ Rectangle {
                 anchors {
                     leftMargin: 6
                     rightMargin: 8
-                    //verticalCenter: parent.verticalCenter
                     topMargin: 15
                 }
                 text: model.name
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                font.pointSize: styleHelper.pointSize
+                font.pointSize: styleHelper.pointSize * 0.9
+                font.bold: true
                 color: palette.text
-                opacity: model.status === ContactUser.Online ? 1 : 0.8
+
             }
             Label {
                 anchors.bottomMargin: 15
                 text: model.status === ContactUser.Online ? "online": "offline"
                 textFormat: Text.PlainText
                 font.pointSize: styleHelper.pointSize *0.8
+                color: palette.text
+                //opacity: model.status === ContactUser.Online ? 1 : 0.8
+                opacity: 0.6
             }
         }
     }

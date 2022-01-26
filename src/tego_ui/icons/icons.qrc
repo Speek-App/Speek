@@ -120,5 +120,6 @@
         <file>icons_letter/z.png</file>
         <file>icons_letter/Z.png</file>
         <file>speeklogo2.png</file>
+        <file>speek-icons.ttf</file>
     </qresource>
 </RCC>

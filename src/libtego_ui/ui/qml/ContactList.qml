@@ -53,24 +53,22 @@ ScrollView {
         section.property: "status"
         section.delegate: Row {
             width: parent.width - x
-            height: label.height + 4
+            height: label.height + 8
             x: 8
             spacing: 6
 
             Label {
                 id: label
-                y: 2
+                y: 8
 
-                font.pointSize: styleHelper.pointSize
-                font.bold: true
-                font.capitalization: Font.SmallCaps
+                font.pointSize: styleHelper.pointSize * 0.8
                 textFormat: Text.PlainText
-                color: palette.text//"#3f454a"
+                color: palette.text
+                opacity: 0.8
 
                 text: {
                     // Translation strings are uppercase for legacy reasons, and because they
-                    // should correctly be capitalized. We go lowercase only because it looks
-                    // nicer when using SmallCaps, and that's a display detail.
+                    // should correctly be capitalized. We go lowercase only because it looks nicer
                     switch (parseInt(section)) {
                         //: Section header in the contact list for users which are online
                         case ContactUser.Online: return qsTr("Online").toLowerCase()
@@ -87,18 +85,6 @@ ScrollView {
                 Accessible.name: text
                 //: Description of the section header for accessibility tech like screen readers
                 Accessible.description: qsTr("Status for the given contacts")
-            }
-
-            Rectangle {
-                height: 1
-                width: parent.width - x
-                anchors {
-                    top: label.verticalCenter
-                    topMargin: 1
-                }
-
-                color: palette.text
-                opacity: 0.1
             }
         }
 

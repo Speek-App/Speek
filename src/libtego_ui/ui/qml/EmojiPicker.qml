@@ -181,9 +181,6 @@ Rectangle {
         id: emojiCategoryButtons
     }
 
-    //onVisibleChanged: function_assign()
     Component.onCompleted: completedHandler()
-
-    //Rectangle {anchors.bottom: parent.bottom; width: parent.width; height: 1; color: "darkgrey"; }
 }
 
