@@ -92,6 +92,12 @@ public:
     Q_INVOKABLE bool checkFileExists(QString path) {
         return QFile::exists(path);
     }
+
+    Q_INVOKABLE void startNewInstance(QString id) {
+        QStringList a;
+        a << id;
+        QProcess::startDetached(qApp->arguments()[0], a);
+    }
 };
 
 #endif // UTILITY_H

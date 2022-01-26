@@ -77,9 +77,10 @@ ToolBar {
         }
 
         ToolButton {
+            visible: !torstatewidget.visible
             id: contextMenuButton
             implicitHeight: 32
-            implicitWidth: 32
+            implicitWidth: 50
 
             onClicked: {
                 action: mainContextMenu.popup()
@@ -113,6 +114,8 @@ ToolBar {
                 id: emptyState
                 active: contactList.view.count == 0
                 sourceComponent: Bubble {
+                    horizontalAlignment: Qt.AlignLeft
+                    x: 0
                     target: contextMenuButton
                     maximumWidth: toolBarLayout.width
                     //: Tooltip that displays on first launch indicating how to add a new contact

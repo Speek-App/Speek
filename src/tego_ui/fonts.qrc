@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>fonts/TwitterColorEmoji-SVGinOT.ttf</file>
         <file>fonts/NotoColorEmoji.ttf</file>
     </qresource>
 </RCC>

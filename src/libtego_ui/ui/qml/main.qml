@@ -113,6 +113,11 @@ QtObject {
             source: "qrc:/icons/speek-icons.ttf"
         },
 
+        FontLoader {
+            id: emojiFont
+            source: "qrc:/fonts/NotoColorEmoji.ttf"
+        },
+
         Item {
             id: styleHelper
             visible: false

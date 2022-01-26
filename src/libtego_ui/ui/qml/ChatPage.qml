@@ -7,6 +7,10 @@ import im.utility 1.0
 import QtQuick.Dialogs 1.0
 
 FocusScope {
+    function openPreferences() {
+        root.openPreferences("ContactPreferences.qml", { 'selectedContact': contact })
+    }
+
     id: chatPage
 
     property ContactUser contact
@@ -93,6 +97,49 @@ FocusScope {
             Layout.fillWidth: true
             height: 1
         }
+        ToolButton {
+            id: contactSettings
+            implicitHeight: 32
+            implicitWidth: 32
+
+            onClicked: {
+                openPreferences()
+            }
+
+            text: "K"
+
+            style: ButtonStyle {
+                background: Rectangle {
+                    implicitWidth: 28
+                    implicitHeight: 28
+                    border.color: control.hovered ? "#dddddd" : "transparent"
+                    border.width: 1
+                    radius: 5
+                    color: "transparent"
+
+                }
+                label: Text {
+                    renderType: Text.NativeRendering
+                    font.family: iconFont.name
+                    font.pointSize: styleHelper.pointSize * 1.2
+                    font.bold: true
+                    text: control.text
+                    color: palette.text
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                 }
+            }
+
+            Accessible.role: Accessible.Button
+            //: Name of the button for opening the conatct settings for accessibility tech like screen readers
+            Accessible.name: qsTr("Open Contact Settings")
+            //: Description of the 'Open Contact Settings' button for accessibility tech like screen readers
+            Accessible.description: qsTr("Shows the contact settings")
+        }
+        Item {
+            width:0
+            height: 1
+        }
     }
 
     Rectangle {
@@ -167,17 +214,17 @@ FocusScope {
             Button {
                 style: ButtonStyle {
                     background: Rectangle {
-                            implicitWidth: 22
-                            implicitHeight: 22
+                            implicitWidth: 20
+                            implicitHeight: 20
                             border.color: control.hovered ? "#dddddd" : "transparent"
                             border.width: 1
                             radius: 5
                             color: "transparent"
                         }
                         label: Text {
-                            text: "S"
+                            text: "J"
                             font.family: iconFont.name
-                            font.pixelSize: 22
+                            font.pixelSize: 20
                             horizontalAlignment: Qt.AlignHCenter
                             renderType: Text.QtRendering
                             color: palette.text
@@ -193,8 +240,8 @@ FocusScope {
                 visible: richTextActive
                 style: ButtonStyle {
                     background: Rectangle {
-                            implicitWidth: 22
-                            implicitHeight: 22
+                            implicitWidth: 20
+                            implicitHeight: 20
                             border.color: control.hovered ? "#dddddd" : "transparent"
                             border.width: 1
                             radius: 5
@@ -203,7 +250,7 @@ FocusScope {
                       label: Text {
                           text: "Q"
                           font.family: iconFont.name
-                          font.pixelSize: 22
+                          font.pixelSize: 20
                           horizontalAlignment: Qt.AlignHCenter
                           renderType: Text.QtRendering
                           color: palette.text
@@ -312,8 +359,8 @@ FocusScope {
             Button {
                 style: ButtonStyle {
                     background: Rectangle {
-                        implicitWidth: 22
-                        implicitHeight: 22
+                        implicitWidth: 20
+                        implicitHeight: 20
                         border.color: control.hovered ? "#dddddd" : "transparent"
                         border.width: 1
                         radius: 5
@@ -322,7 +369,7 @@ FocusScope {
                     label: Text {
                         text: "R"
                         font.family: iconFont.name
-                        font.pixelSize: 22
+                        font.pixelSize: 20
                         horizontalAlignment: Qt.AlignHCenter
                         renderType: Text.QtRendering
                         color: palette.text
@@ -339,8 +386,8 @@ FocusScope {
                 visible: richTextActive
                 style: ButtonStyle {
                     background: Rectangle {
-                        implicitWidth: 22
-                        implicitHeight: 22
+                        implicitWidth: 20
+                        implicitHeight: 20
                         border.color: control.hovered ? "#dddddd" : "transparent"
                         border.width: 1
                         radius: 5
@@ -349,7 +396,7 @@ FocusScope {
                     label: Text {
                         text: "P"
                         font.family: iconFont.name
-                        font.pixelSize: 22
+                        font.pixelSize: 20
                         horizontalAlignment: Qt.AlignHCenter
                         renderType: Text.QtRendering
                         color: palette.text
