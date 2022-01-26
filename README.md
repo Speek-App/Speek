@@ -1,4 +1,4 @@
-# Speek
+# Speek.Chat
 
 Speek is currently available for OS X (10.12 or later), Linux and Windows. Visit the [releases page](https://github.com/blueprint-freespeech/ricochet-refresh/releases) for the latest version and changelog.
 
