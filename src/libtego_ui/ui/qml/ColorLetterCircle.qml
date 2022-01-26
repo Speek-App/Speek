@@ -22,7 +22,10 @@ Rectangle {
         width: parent.width
         anchors.fill: parent
         source: {
-            if(icon == ""){
+            if(icon == "" || typeof(icon) === "undefined"){
+                if(typeof(name) === "undefined"){
+                    return "";
+                }
                 var file_path1 = ":/icons/icons_letter/" + name.charAt(0) + ".png";
                 var file_path2 = ":/icons/icons_letter/ASCII-" + name.charCodeAt(0) + ".png";
                 if(utility.checkFileExists(file_path1))

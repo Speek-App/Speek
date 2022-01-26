@@ -31,50 +31,6 @@ ApplicationWindow {
         close()
     }
 
-    /*
-    ColumnLayout {
-        id: infoArea
-        z: 2
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            topMargin: 8
-            leftMargin: 16
-            rightMargin: 16
-        }
-
-        Label {
-            Layout.columnSpan: 2
-            Layout.fillWidth: true
-            horizontalAlignment: Qt.AlignHCenter
-            wrapMode: Text.Wrap
-            //: tells the user the purpose of their Speek ID, which is basically a username
-            text: qsTr("Share your Speek ID to allow connection requests")
-            Accessible.role: Accessible.StaticText
-            Accessible.name: text
-        }
-
-        ContactIDField {
-            id: localId
-            Layout.fillWidth: true
-            readOnly: true
-            text: userIdentity.contactID
-            horizontalAlignment: Qt.AlignLeft
-        }
-
-        Item { height: 1 }
-
-        Rectangle {
-            color: palette.mid
-            height: 1
-            Layout.fillWidth: true
-            Layout.columnSpan: 2
-        }
-
-        Item { height: 1 }
-    }*/
-
     ColumnLayout {
         id: infoArea
         z: 2
@@ -107,7 +63,7 @@ ApplicationWindow {
             horizontalAlignment: Qt.AlignHCenter
             wrapMode: Text.Wrap
             //: tells the user to get the Speek ID of their friends to add them as contacts
-            text: qsTr("Get the Speek ID of your Friends to add them as contacts")
+            text: qsTr("Get the Speek ID of your Friends to add them as contacts. Please, be aware that a request generally takes ~10-20 seconds to arrive.")
             Accessible.role: Accessible.StaticText
             Accessible.name: text
         }

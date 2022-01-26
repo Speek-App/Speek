@@ -57,6 +57,15 @@ Item {
             property QtObject request: (contact !== null) ? contact.contactRequest : null
 
             Item { height: 1; width: 1 }
+
+            ColorLetterCircle {
+                width: 80
+                height: 80
+                name: visible ? contactInfo.contact.nickname : ""
+                icon: visible ? typeof(contactInfo.contact.icon) !== "undefined" ? contactInfo.contact.icon : "" : ""
+                Layout.alignment: Qt.AlignCenter
+            }
+
             Label {
                 id: nickname
                 Layout.fillWidth: true

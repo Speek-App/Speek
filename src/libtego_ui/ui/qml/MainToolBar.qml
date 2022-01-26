@@ -79,9 +79,12 @@ ToolBar {
         Label {
             visible: !torstatewidget.visible
 
-            anchors{
-                horizontalCenter: parent.horizontalCenter
-            }
+            //anchors{
+            //    horizontalCenter: parent.horizontalCenter
+            //}
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: parent.width - 32
+            horizontalAlignment: Text.AlignHCenter
             id: label_speekers
             y: 2
 
@@ -91,7 +94,7 @@ ToolBar {
             textFormat: Text.PlainText
             color: palette.text//"#3f454a"
             font.family: "Helvetica"
-            text: "Speekers"
+            text: " Speekers"
         }
 
         ToolButton {
