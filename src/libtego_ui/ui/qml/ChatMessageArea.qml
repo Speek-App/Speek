@@ -22,6 +22,8 @@ Rectangle {
                     return "qrc:/backgrounds/purple.png"
         }
         fillMode: Image.PreserveAspectCrop
+        smooth: true
+        antialiasing: true
     }
 
     /* As of Qt 5.5.0, ScrollView is too buggy to use. It often fails to keep the

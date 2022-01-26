@@ -1,30 +1,11 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>ricochet_icons.ttf</file>
         <file>download.png</file>
         <file>cancel.png</file>
-        <file>image-add-svgrepo-com.svg</file>
-        <file>paperclip-svgrepo-com.svg</file>
-        <file>emoji-add-svgrepo-com.svg</file>
-        <file>display-rich-text-svgrepo-com.svg</file>
-        <file>display-rich-text-svgrepo-com-white.svg</file>
-        <file>emoji-add-svgrepo-com-white.svg</file>
-        <file>paperclip-svgrepo-com-white.svg</file>
-        <file>image-add-svgrepo-com-white.svg</file>
         <file>speek.svg</file>
         <file>speek.png</file>
         <file>speek.ico</file>
         <file>speek.icns</file>
-        <file>display-rich-text-svgrepo-com-white.png</file>
-        <file>display-rich-text-svgrepo-com.png</file>
-        <file>emoji-add-svgrepo-com-white.png</file>
-        <file>emoji-add-svgrepo-com.png</file>
-        <file>image-add-svgrepo-com-white.png</file>
-        <file>image-add-svgrepo-com.png</file>
-        <file>icons_source.png</file>
-        <file>paperclip-svgrepo-com-white.png</file>
-        <file>paperclip-svgrepo-com.png</file>
-        <file>purple-1780212_1920.png</file>
         <file>icons_letter/0.png</file>
         <file>icons_letter/1.png</file>
         <file>icons_letter/2.png</file>
