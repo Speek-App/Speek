@@ -293,7 +293,7 @@ static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &
     QStringList args = qApp->arguments();
 
     if (args.size() > 1) {
-        configPath = args[1];
+        configPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/" + args[1];
     } else {
         // TODO: remove this profile migration after sufficient time has passed (EOY 2021)
         auto legacyConfigPath = []() -> QString {

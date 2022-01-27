@@ -30,8 +30,8 @@ FocusScope {
     }
 
     Utility {
-           id: utility
-        }
+       id: utility
+    }
 
     FileDialog {
         id: fileDialog

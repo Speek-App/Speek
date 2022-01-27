@@ -41,9 +41,12 @@
         <file>ColorLetterCircle.qml</file>
         <file>Singleton.qml</file>
         <file>ViewIdDialog.qml</file>
+        <file>SelectIdentityDialog.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>
     </qresource>
-    <qresource prefix="/"/>
+    <qresource prefix="/">
+        <file>SelectIdentityDialog.qml</file>
+    </qresource>
 </RCC>

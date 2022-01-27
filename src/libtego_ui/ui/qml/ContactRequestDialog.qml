@@ -90,7 +90,7 @@ ApplicationWindow {
             name.readOnly = false
             name.focus = true
             if(request.message.indexOf("+") !== 0)
-                message.text = request.message.split("+")
+                message.text = request.message.split("+")[0]
             else{
                 message.text = ""
                 //message.visible = false

@@ -3,6 +3,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
 import im.ricochet 1.0
+import im.utility 1.0
 
 ToolBar {
     Layout.minimumWidth: 200
@@ -17,6 +18,10 @@ ToolBar {
         panel: Rectangle {
             color: palette.base
         }
+    }
+
+    Utility {
+       id: utility
     }
 
     data: [
@@ -167,6 +172,14 @@ ToolBar {
             MenuSeparator { }
             MenuItem {
                 //: Context menu command to remove a contact from the contact list
+                text: qsTr("Open other Identity")
+                onTriggered: {
+                    var object = createDialog("SelectIdentityDialog.qml", { }, window)
+                    object.visible = true
+                }
+            }
+            MenuItem {
+                //: Context menu command to open the settings dialog
                 text: qsTr("Settings")
                 onTriggered: preferencesAction.trigger()
             }

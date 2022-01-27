@@ -98,6 +98,33 @@ public:
         a << id;
         QProcess::startDetached(qApp->arguments()[0], a);
     }
+
+    Q_INVOKABLE QVariantList getIdentities() {
+        QVariantList a;
+        for (QString const& name: QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).entryList(QDir::AllDirs | QDir::NoDotAndDotDot))
+        {
+            if(name != "tor"){
+                QVariantMap p;
+                p.insert("name", name);
+
+                QFile f(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/" + name + "/speek.json");
+                if (!f.open(QFile::ReadOnly | QFile::Text)){
+                    p.insert("contacts", "unknown");
+                }
+                else{
+                    QTextStream in(&f);
+                    QString c = QString::number(in.readAll().count("\"type\": \"allowed\""));
+                    p.insert("contacts", c);
+                    QFileInfo ff(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/" + name + "/speek.json");
+                    p.insert("created", ff.birthTime().toString());
+                }
+
+                a.push_back(p);
+            }
+        }
+
+        return a;
+    }
 };
 
 #endif // UTILITY_H
