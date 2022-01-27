@@ -420,10 +420,10 @@ static void initTheme()
 {
     // modify palette to dark
     QPalette darkPalette;
-    darkPalette.setColor(QPalette::Window,QColor(53,53,53));
+    darkPalette.setColor(QPalette::Window,QColor(28,28,28));
     darkPalette.setColor(QPalette::WindowText,Qt::white);
     darkPalette.setColor(QPalette::Disabled,QPalette::WindowText,QColor(127,127,127));
-    darkPalette.setColor(QPalette::Base,QColor(32,32,32));
+    darkPalette.setColor(QPalette::Base,QColor(18,18,18));
     darkPalette.setColor(QPalette::AlternateBase,QColor(66,66,66));
     darkPalette.setColor(QPalette::ToolTipBase,QColor(40,40,40));
     darkPalette.setColor(QPalette::ToolTipText,Qt::white);

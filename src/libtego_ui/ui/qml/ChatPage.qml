@@ -158,7 +158,7 @@ FocusScope {
                 left: parent.left
                 right: parent.right
             }
-            Rectangle { width: parent.width; height: 1; color: "#888888"; }
+            Rectangle { width: parent.width; height: 1; color: "#333333"; }
         }
     }
 
@@ -202,7 +202,7 @@ FocusScope {
         height: statusLayout.height + 8
         color: palette.base//Qt.lighter(palette.midlight, 1.14)
 
-        Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: "#888888"; }
+        Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: "#333333"; }
 
         RowLayout {
             id: statusLayout
@@ -325,6 +325,7 @@ FocusScope {
                 }
 
                 function send() {
+                    /*
                     function chunkSubstr(str, size) {
                       const numChunks = Math.ceil(str.length / size)
                       const chunks = new Array(numChunks)
@@ -335,12 +336,12 @@ FocusScope {
 
                       return chunks
                     }
-                    if (textInput.text.length > 63000){
+                    if (textInput.text.length > 63000){*/
                         conversationModel.sendMessage(textInput.text)
-                    }
+                    /*}
                     else{
                         conversationModel.sendMessage(textInput.text)
-                    }
+                    }*/
                     textInput.remove(0, textInput.length)
                 }
 

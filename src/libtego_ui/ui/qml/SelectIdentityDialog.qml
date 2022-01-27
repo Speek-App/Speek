@@ -19,6 +19,20 @@ ApplicationWindow {
        id: utility
     }
 
+    Timer {
+        id: timer
+        function setTimeout(cb, delayTime) {
+            timer.interval = delayTime;
+            timer.repeat = false;
+            timer.triggered.connect(cb);
+            timer.triggered.connect(function release () {
+                timer.triggered.disconnect(cb); // This is important
+                timer.triggered.disconnect(release); // This is important as well
+            });
+            timer.start();
+        }
+    }
+
     signal closed
     onVisibleChanged: if (!visible) closed()
 
@@ -26,8 +40,16 @@ ApplicationWindow {
         visible = false
     }
 
-    Component.onCompleted: {
+    function load(){
+        for (var i=listview.model.count-1; i>0; i--)
+        {
+            listview.model.remove(i);
+        }
         listview.model.append(utility.getIdentities())
+    }
+
+    Component.onCompleted: {
+        load()
     }
 
     ColumnLayout {
@@ -50,15 +72,16 @@ ApplicationWindow {
             horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignTop
             wrapMode: Text.Wrap
-            text: qsTr("Select an Id to start onother instance of Speek with")
+            text: qsTr("Select an Id to start another instance of Speek.Chat with. Or alternatively, add a new one by entering a name into the text input at the bottom.")
             Accessible.role: Accessible.StaticText
             Accessible.name: text
         }
         ListView {
+            clip: true
             id: listview
-            y: 45
+            y: 65
             width: parent.width
-            height: parent.height - 50
+            height: parent.height - 120
             model: ListModel {
                 ListElement {
                     name: "Name"
@@ -119,13 +142,56 @@ ApplicationWindow {
         }
     }
 
+    RowLayout {
+        id: buttonRow
+        anchors {
+            right: parent.right
+            bottom: parent.bottom
+            rightMargin: 16
+            bottomMargin: 8
+        }
+
+        TextArea {
+            selectByMouse: true
+            id: newIdentityName
+            text: ""
+
+            enabled: true
+            Layout.minimumWidth: 150
+            Layout.maximumHeight: 33
+
+            Accessible.role: Accessible.EditableText
+            //: Name of the text input used to add a new identity
+            Accessible.name: qsTr("Add new identity text input field")
+            //: Description of what the add new identity text input is for accessibility tech like screen readers
+            Accessible.description: qsTr("How the new identity should be named")
+        }
+
+        Button {
+            //: button label to add a new identity
+            text: qsTr("Add")
+            enabled: newIdentityName.text.length > 0
+            onClicked: {
+                utility.startNewInstance(newIdentityName.text)
+
+                timer.setTimeout(function(){ load(); }, 1000);
+            }
+
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: description for 'Add' button for accessibility tech like screen readres
+            Accessible.description: qsTr("Adds a new identity")
+            Accessible.onPressAction: addContactWindow.close()
+        }
+    }
+
     Action {
         shortcut: StandardKey.Close
-        onTriggered: addContactWindow.close()
+        onTriggered: selectIdentityDialog.close()
     }
 
     Action {
         shortcut: "Escape"
-        onTriggered: addContactWindow.close()
+        onTriggered: selectIdentityDialog.close()
     }
 }

@@ -67,19 +67,6 @@ Rectangle {
         Qt.emojiClickedHandler = emojiClickedHandler
     }
 
-/*
-    //checks if the previous character is an Emoji and adds a ' ' if that's the case
-    //this is necessary, because Emoji use a bigger font-size, and that font-size is kept using without a ' '
-    function keyPressedHandler(event) {
-        var testStr = txtIn.getText(txtIn.length-2, txtIn.length)
-        var ptrn = new RegExp("[\uD800-\uDBFF][\uDC00-\uDFFF]")
-        if ((event.key !== Qt.Key_Backspace) && (ptrn.test(testStr))) {
-            txtIn.text += " "
-            txtIn.cursorPosition = txtIn.length
-        }
-    }
-*/
-
     //all emoji of one category
     ListModel {
         id: emojiByCategory
@@ -98,8 +85,8 @@ Rectangle {
             height: buttonWidth
             color: emojiPicker.color
             onClickedFunction: {
-                             emojiClickedHandler(b)
-                    }
+                emojiClickedHandler(b)
+            }
         }
     }
 
@@ -132,8 +119,8 @@ Rectangle {
             height: buttonWidth
             color: emojiPicker.color
             onClickedFunction: {
-                             categoryChangedHandler(b)
-                    }
+                categoryChangedHandler(b)
+            }
         }
 
         Button {
@@ -141,40 +128,39 @@ Rectangle {
                 top: parent.top
                 right: parent.right
             }
-                    id: button_skin
-                    text: "🏻"
-                    Layout.alignment: Qt.AlignRight
-                    style: ButtonStyle {
-                        background: Rectangle {
+            id: button_skin
+            text: "🏻"
+            Layout.alignment: Qt.AlignRight
+            style: ButtonStyle {
+                background: Rectangle {
 
-                                implicitWidth: 22
-                                implicitHeight: 22
-                                border.color: control.hovered ? "#dddddd" : "transparent"
-                                border.width: 1
-                                radius: 5
-                                color: "transparent"
-                            }
-
-                          label: Text {
-                            renderType: Text.NativeRendering
-                            font.family: "Noto Emoji"
-                            text: control.text
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            font.pointSize: 16
-
-                          }
-                        }
-
-                    onClicked: {
-                        current_skin_tone += 1
-                        if(current_skin_tone > 4){
-                            current_skin_tone = 0
-                        }
-                        button_skin.text = skin_tones[current_skin_tone]
+                        implicitWidth: 22
+                        implicitHeight: 22
+                        border.color: control.hovered ? "#dddddd" : "transparent"
+                        border.width: 1
+                        radius: 5
+                        color: "transparent"
                     }
+
+                  label: Text {
+                    renderType: Text.NativeRendering
+                    font.family: "Noto Emoji"
+                    text: control.text
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pointSize: 16
+
+                  }
                 }
 
+            onClicked: {
+                current_skin_tone += 1
+                if(current_skin_tone > 4){
+                    current_skin_tone = 0
+                }
+                button_skin.text = skin_tones[current_skin_tone]
+            }
+        }
     }
 
     ListModel {

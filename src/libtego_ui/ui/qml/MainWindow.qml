@@ -107,7 +107,7 @@ ApplicationWindow {
             visible: combinedChatView.visible
             width: 1
             Layout.fillHeight: true
-            color: "#888888"//Qt.darker(palette.window, 1.5)
+            color: "#333333"//Qt.darker(palette.window, 1.5)
         }
 
         PageView {
