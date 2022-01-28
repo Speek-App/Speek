@@ -35,6 +35,11 @@ ApplicationWindow {
         close()
     }
 
+    function deny() {
+        request.deny()
+        close()
+    }
+
     GridLayout {
         id: infoArea
         anchors {
@@ -109,11 +114,21 @@ ApplicationWindow {
         Button {
             //: Label for button which rejects a contact request when pressed
             text: qsTr("Reject")
-            onClicked: contactRequestDialog.reject()
+            onClicked: contactRequestDialog.deny()
             Accessible.role: Accessible.Button
             Accessible.name: text
             //: Description of what 'Reject' button does for accessibility tech like screen readers
             Accessible.description: qsTr("Rejects the incoming contact request")
+        }
+
+        Button {
+            //: Label for button which rejects a contact request and block the sending user when pressed
+            text: qsTr("Reject and Block further requests")
+            onClicked: contactRequestDialog.reject()
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: Description of what 'Reject and Block further requests' button does for accessibility tech like screen readers
+            Accessible.description: qsTr("Rejects the incoming contact request and blocks all further ones")
         }
 
         Button {

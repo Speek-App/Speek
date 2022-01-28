@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-//import QtGraphicalEffects 1.12
 import im.ricochet 1.0
 import im.utility 1.0
 
@@ -42,21 +41,36 @@ Column {
     }
 
     Rectangle {
-        /*
+        //Drop Shadow
         Rectangle {
-            anchors.fill: parent
-            height: background.height
-            width: background.width
-            color: parent.color
-            radius: 5
+            x: 1
+            y: 1
+            width: parent.width + 1
+            height:parent.height + 1
+            color: "black"
+            opacity: 0.4
+            radius: 6
+        }
+        Rectangle {
+            x: 1
+            y: 1
+            width: parent.width
+            height:parent.height
+            color: "black"
+            opacity: 0.4
+            radius: 6
+        }
+        Rectangle {
+            x: 1
+            y: 1
+            width: parent.width - 1
+            height:parent.height - 1
+            color: "black"
+            opacity: 0.4
+            radius: 6
+        }
+        // - Drop Shadow
 
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: 1
-                verticalOffset: 1
-            }
-        }*/
         id: background
         width: Math.max(30, message.width + 12)
         height: message.height + 12
@@ -83,7 +97,15 @@ Column {
         Rectangle {
             anchors.fill: parent
             radius: 5
-            anchors.margins: 1
+            anchors.margins: 0
+            visible: opacity > 0
+            color: parent.color
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            radius: 5
+            anchors.margins: 0
             opacity: (model.status === ConversationModel.Sending || model.status === ConversationModel.Queued || model.status === ConversationModel.Error) ? 1 : 0
             visible: opacity > 0
             color: Qt.lighter(parent.color, 1.15)

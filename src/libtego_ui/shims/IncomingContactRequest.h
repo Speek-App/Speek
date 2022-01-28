@@ -23,6 +23,7 @@ namespace shims
     public slots:
         void accept();
         void reject();
+        void deny();
     signals:
         void nicknameChanged();
 
