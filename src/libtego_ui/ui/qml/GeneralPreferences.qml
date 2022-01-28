@@ -14,7 +14,7 @@ ColumnLayout {
         id: fileDialog
         nameFilters: ["Images (*.png *.jpg *.jpeg)"]
         onAccepted: {
-            var b = fileDialog.fileUrl.toString();
+            var b = utility.platformPath(fileDialog.fileUrl.toString());
             customChatAreaBackgroundText.text = b;
         }
     }

@@ -46,7 +46,11 @@ public:
         return true;
     }
     Q_INVOKABLE QString toBase64(QString url) {
-        QImage image1(url.replace("file://", ""));
+        #ifdef Q_OS_WIN
+            QImage image1(url.replace("file:///", ""));
+        #else
+            QImage image1(url.replace("file://", ""));
+        #endif
         QImage image2(image1.size(), QImage::Format_RGB32);
         image2.fill(QColor(Qt::white).rgb());
         QPainter painter(&image2);
@@ -72,7 +76,11 @@ public:
     }
 
     Q_INVOKABLE QString toBase64_PNG(QString url, int w_, int h_) {
-        QImage image1(url.replace("file://", ""));
+        #ifdef Q_OS_WIN
+            QImage image1(url.replace("file:///", ""));
+        #else
+            QImage image1(url.replace("file://", ""));
+        #endif
         QImage image2(image1.size(), QImage::Format_RGB32);
         image2.fill(QColor(Qt::white).rgb());
         QPainter painter(&image2);
@@ -103,7 +111,7 @@ public:
         QVariantList a;
         for (QString const& name: QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).entryList(QDir::AllDirs | QDir::NoDotAndDotDot))
         {
-            if(name != "tor"){
+            if(name != "tor" && name != "cache"){
                 QVariantMap p;
                 p.insert("name", name);
 
@@ -124,6 +132,14 @@ public:
         }
 
         return a;
+    }
+
+    Q_INVOKABLE QString platformPath(QString url) {
+        #ifdef Q_OS_WIN
+            return url.replace("file:///", "file:\\");
+        #else
+            return url;
+        #endif
     }
 };
 
