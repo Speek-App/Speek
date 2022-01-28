@@ -173,6 +173,7 @@ ColumnLayout {
             currentIndex: typeof(uiSettings.data.chatBackground) !== "undefined" ? model.indexOf(uiSettings.data.chatBackground) : 0
             Layout.minimumWidth: 200
             model: [
+                "Blue",
                 "Purple",
                 "Purple2",
                 "Purple-Blue",

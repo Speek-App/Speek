@@ -20,7 +20,7 @@ Rectangle {
                 if(typeof(uiSettings.data.chatBackground) !== "undefined")
                     return "qrc:/backgrounds/" + uiSettings.data.chatBackground.toLowerCase() + ".png"
                 else
-                    return "qrc:/backgrounds/purple.png"
+                    return "qrc:/backgrounds/blue.png"
         }
         fillMode: Image.PreserveAspectCrop
         smooth: true

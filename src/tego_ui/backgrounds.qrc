@@ -4,5 +4,6 @@
         <file>backgrounds/purple.png</file>
         <file>backgrounds/purple2.png</file>
         <file>backgrounds/purple-wave.png</file>
+        <file>backgrounds/blue.png</file>
     </qresource>
 </RCC>
