@@ -5,6 +5,7 @@
 #include <QBuffer>
 #include <QDebug>
 #include <QPainter>
+#include <QDir>
 
 class Utility : public QObject
 {
@@ -47,7 +48,7 @@ public:
     }
     Q_INVOKABLE QString toBase64(QString url) {
         #ifdef Q_OS_WIN
-            QImage image1(url.replace("file:///", ""));
+            QImage image1(QDir::toNativeSeparators(url.replace("file:///", "")));
         #else
             QImage image1(url.replace("file://", ""));
         #endif
@@ -77,7 +78,7 @@ public:
 
     Q_INVOKABLE QString toBase64_PNG(QString url, int w_, int h_) {
         #ifdef Q_OS_WIN
-            QImage image1(url.replace("file:///", ""));
+            QImage image1(QDir::toNativeSeparators(url.replace("file:///", "")));
         #else
             QImage image1(url.replace("file://", ""));
         #endif
@@ -136,7 +137,7 @@ public:
 
     Q_INVOKABLE QString platformPath(QString url) {
         #ifdef Q_OS_WIN
-            return url.replace("file:///", "file:\\");
+            return url.replace("file:///", "file:\\\\");
         #else
             return url;
         #endif
