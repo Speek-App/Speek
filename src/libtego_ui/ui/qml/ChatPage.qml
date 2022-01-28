@@ -122,7 +122,6 @@ FocusScope {
                     renderType: Text.NativeRendering
                     font.family: iconFont.name
                     font.pointSize: styleHelper.pointSize * 1.2
-                    font.bold: true
                     text: control.text
                     color: palette.text
                     verticalAlignment: Text.AlignVCenter

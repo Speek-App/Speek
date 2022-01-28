@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import QtGraphicalEffects 1.12
+//import QtGraphicalEffects 1.12
 import im.ricochet 1.0
 import im.utility 1.0
 
@@ -42,6 +42,7 @@ Column {
     }
 
     Rectangle {
+        /*
         Rectangle {
             anchors.fill: parent
             height: background.height
@@ -55,7 +56,7 @@ Column {
                 horizontalOffset: 1
                 verticalOffset: 1
             }
-        }
+        }*/
         id: background
         width: Math.max(30, message.width + 12)
         height: message.height + 12
