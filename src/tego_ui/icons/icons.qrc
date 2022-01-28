@@ -102,5 +102,6 @@
         <file>icons_letter/Z.png</file>
         <file>speeklogo2.png</file>
         <file>speek-icons.ttf</file>
+        <file>speeklogo-full.png</file>
     </qresource>
 </RCC>

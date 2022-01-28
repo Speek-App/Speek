@@ -97,8 +97,6 @@ ApplicationWindow {
                     id: ma
                     anchors.fill: parent
                     onClicked: {
-                        console.log(model.name)
-                        console.log(model.sid)
                         if(model.sid !== "Contacts")
                             utility.startNewInstance(model.name)
                     }

@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import QtGraphicalEffects 1.12
 import im.ricochet 1.0
 import im.utility 1.0
 
@@ -41,6 +42,20 @@ Column {
     }
 
     Rectangle {
+        Rectangle {
+            anchors.fill: parent
+            height: background.height
+            width: background.width
+            color: parent.color
+            radius: 5
+
+            layer.enabled: true
+            layer.effect: DropShadow {
+                transparentBorder: true
+                horizontalOffset: 1
+                verticalOffset: 1
+            }
+        }
         id: background
         width: Math.max(30, message.width + 12)
         height: message.height + 12
@@ -108,16 +123,14 @@ Column {
                 height: contentHeight
 
                 renderType: Text.NativeRendering
-                textFormat: TextEdit.RichText
-                //onLinkActivated: Qt.openUrlExternally(link)
-                //onLinkActivated: console.log(link + " link activated")
+                textFormat: text.includes("<html><head><meta name=\"qrichtext\"") ? TextEdit.RichText : TextEdit.PlainText
+                //color: text.includes("<html><head><meta name=\"qrichtext\"") ? "red" : "black"
                 onLinkHovered: {
-                    //console.log(link)
                     selected_image = link
                 }
                 selectionColor: palette.highlight
                 selectedTextColor: palette.highlightedText
-                font.pointSize: styleHelper.pointSize
+                font.pointSize: styleHelper.pointSize * 0.9
                 font.family: "Helvetica"
 
                 wrapMode: TextEdit.Wrap

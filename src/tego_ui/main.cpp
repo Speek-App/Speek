@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) try
     qputenv("QT_ENABLE_REGEXP_JIT",   "0");
     /* Use QtQuick 2D renderer by default; ignored if not available */
     if (qEnvironmentVariableIsEmpty("QMLSCENE_DEVICE"))
-        qputenv("QMLSCENE_DEVICE", "softwarecontext");
+        qputenv("QMLSCENE_DEVICE", "openvg");
 
     /* https://doc.qt.io/qt-5/highdpi.html#high-dpi-support-in-qt */
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

@@ -277,7 +277,7 @@ FocusScope {
                 wrapMode: TextEdit.Wrap
                 textFormat: richTextActive ? TextEdit.RichText : TextEdit.PlainText
 
-                font.pointSize: styleHelper.pointSize
+                font.pointSize: styleHelper.pointSize * 0.9
                 font.family: "Helvetica"
                 textColor: "black"
 
@@ -285,14 +285,14 @@ FocusScope {
                 horizontalAlignment: Qt.AlignLeft
 
                 style: TextAreaStyle {
-                    frame: Rectangle {
-                    radius: 8
-                    border.width: 0
-                    border.color: "white"
-                    color:"white"
-                    y:0
+                        frame: Rectangle {
+                        radius: 8
+                        border.width: 0
+                        border.color: "white"
+                        color:"white"
+                        y:0
                     }
-                        }
+                }
 
                 property TextEdit edit
 
@@ -313,7 +313,10 @@ FocusScope {
                         case Qt.Key_Enter:
                         case Qt.Key_Return:
                             if (event.modifiers & Qt.ShiftModifier || event.modifiers & Qt.AltModifier) {
-                                textInput.insert(textInput.cursorPosition, "\n")
+                                if(richTextActive)
+                                    textInput.insert(textInput.cursorPosition, "<br>")
+                                else
+                                    textInput.insert(textInput.cursorPosition, "\n")
                             } else {
                                 send()
                             }

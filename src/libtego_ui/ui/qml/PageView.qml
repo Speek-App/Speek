@@ -65,4 +65,19 @@ FocusScope {
         id: content
         anchors.fill: parent
     }
+
+    Rectangle {
+        visible: currentPage != null ? !currentPage.visible : true
+        anchors.fill: parent
+        color: "transparent"
+        Image{
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            source: "qrc:/icons/speeklogo-full.png"
+            width:200
+            height:200
+            fillMode: Image.PreserveAspectFit
+            smooth: true
+        }
+    }
 }
