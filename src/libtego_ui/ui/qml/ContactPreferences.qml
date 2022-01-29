@@ -33,7 +33,6 @@ Item {
             Layout.preferredWidth: 200
             Layout.minimumWidth: 150
             Layout.fillHeight: true
-            frameVisible: true
 
             Accessible.role: Accessible.List
             //: Description of the list of contacts for accessibility tech like screen readers

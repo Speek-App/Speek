@@ -76,7 +76,10 @@ namespace shims
 
     shims::ConversationModel* ContactUser::conversation()
     {
-        return conversationModel;
+        if(status == RequestPending)
+            return new ConversationModel;
+        else
+            return conversationModel;
     }
 
     void ContactUser::setNickname(const QString& nickname)
@@ -101,6 +104,7 @@ namespace shims
 
     void ContactUser::deleteContact()
     {
+        this->setStatus(Offline);
         auto userIdentity = shims::UserIdentity::userIdentity;
 
         auto context = userIdentity->getContext();

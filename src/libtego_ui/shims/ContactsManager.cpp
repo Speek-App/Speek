@@ -51,12 +51,17 @@ namespace shims
         // remove our reference and ready for deleting when contactDeleted signal is fireds
         connect(shimContact, &shims::ContactUser::contactDeleted, [self=this](shims::ContactUser* user) -> void
         {
+            QTime dieTime= QTime::currentTime().addSecs(1);
+            while (QTime::currentTime() < dieTime)
+                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+
             // find the given user in our internal list and remove, mark for deletion
             auto& contactsList = self->contactsList;
-            auto it = std::find(contactsList.begin(), contactsList.end(), user);
-            contactsList.erase(it);
-
-            user->deleteLater();
+            if(contactsList.contains(user)){
+                auto it = std::find(contactsList.begin(), contactsList.end(), user);
+                contactsList.erase(it);
+                user->deleteLater();
+            }
         });
 
         emit this->contactAdded(shimContact);
