@@ -16,12 +16,12 @@ public:
     QString GetRandomString() const
     {
        const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-       const int randomStringLength = 12; // assuming you want random strings of 12 characters
+       const int randomStringLength = 12;
 
        QString randomString;
        for(int i=0; i<randomStringLength; ++i)
        {
-           int index = qrand() % possibleCharacters.length();
+           int index = QRandomGenerator::global()->generate() % possibleCharacters.length();
            QChar nextChar = possibleCharacters.at(index);
            randomString.append(nextChar);
        }
@@ -48,7 +48,7 @@ public:
     }
     Q_INVOKABLE QString toBase64(QString url) {
         #ifdef Q_OS_WIN
-            QImage image1(QDir::toNativeSeparators(url.replace("file:///", "")));
+            QImage image1(url.replace("file:///", "").replace("/","\\\\"));
         #else
             QImage image1(url.replace("file://", ""));
         #endif
@@ -78,7 +78,7 @@ public:
 
     Q_INVOKABLE QString toBase64_PNG(QString url, int w_, int h_) {
         #ifdef Q_OS_WIN
-            QImage image1(QDir::toNativeSeparators(url.replace("file:///", "")));
+            QImage image1(url.replace("file:///", "").replace("/","\\\\"));
         #else
             QImage image1(url.replace("file://", ""));
         #endif
