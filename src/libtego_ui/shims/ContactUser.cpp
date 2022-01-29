@@ -76,10 +76,7 @@ namespace shims
 
     shims::ConversationModel* ContactUser::conversation()
     {
-        if(status == RequestPending)
-            return new ConversationModel;
-        else
-            return conversationModel;
+        return conversationModel;
     }
 
     void ContactUser::setNickname(const QString& nickname)
