@@ -1,6 +1,6 @@
 # Speek.Chat
 
-Speek is currently available for OS X (10.12 or later), Linux and Windows. Visit the [releases page](https://github.com/blueprint-freespeech/ricochet-refresh/releases) for the latest version and changelog.
+Speek is currently available for OS X (10.12 or later), Linux and Windows. Visit the [releases page](https://github.com/Speek-App/Speek/releases) for the latest version and changelog.
 
 Speek is an experimental kind of instant messaging that **doesn't trust anyone** with your identity, your contact list, or your communications.
 
@@ -16,7 +16,7 @@ Speek is a peer-to-peer instant messaging system built on the Tor Network [hidde
 
 Speek is not affiliated with or endorsed by The Tor Project.
 
-For more information, you can [read about Tor](https://www.torproject.org/about/overview.html.en) and [learn about Ricochet's design](https://github.com/ricochet-im/ricochet/blob/master/doc/design.md) or [protocol](https://github.com/ricochet-im/ricochet/blob/master/doc/protocol.md) (or the [old protocol](https://github.com/ricochet-im/ricochet/blob/master/doc/deprecated/protocol-1.0.txt)). Everything is [open-source](https://github.com/ricochet-im/ricochet/blob/master/LICENSE) and open to contribution.
+For more information, you can [read about Tor](https://www.torproject.org/about/overview.html.en) and [learn about Speek's design](https://github.com/Speek-App/Speek/blob/main/doc/design.md) or [protocol](https://github.com/Speek-App/Speek/blob/main/doc/protocol.md). Everything is [open-source](https://github.com/Speek-App/Speek/blob/main/LICENSE) and open to contribution.
 
 ### Downloads
 
