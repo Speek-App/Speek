@@ -41,10 +41,10 @@ Rectangle {
                 text: model.name
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
+                Layout.preferredWidth: 150
                 font.pointSize: styleHelper.pointSize * 0.9
                 font.bold: true
                 color: palette.text
-
             }
             Label {
                 anchors.bottomMargin: 15
@@ -111,7 +111,8 @@ Rectangle {
 
         onPressed: {
             if (!delegate.ListView.isCurrentItem)
-                contactListView.currentIndex = model.index
+                //if(model.status !== ContactUser.RequestPending)
+                    contactListView.currentIndex = model.index
         }
 
         onClicked: {
