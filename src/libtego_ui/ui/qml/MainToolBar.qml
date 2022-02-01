@@ -91,7 +91,7 @@ ToolBar {
                 action: mainContextMenu.popup()
             }
 
-            text: "☰"
+            text: "F"
 
             style: ButtonStyle {
                 background: Rectangle {
@@ -105,8 +105,8 @@ ToolBar {
                 }
                 label: Text {
                     renderType: Text.NativeRendering
-                    font.family: "Helvetica"
-                    font.pointSize: styleHelper.pointSize * 1.2
+                    font.family: iconFont.name
+                    font.pointSize: styleHelper.pointSize * 1.1
                     font.bold: true
                     text: control.text
                     color: palette.text
