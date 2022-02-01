@@ -17,5 +17,5 @@ win32 {
     }
 
     # required by openssl
-    LIBS += -luser32 -lgdi32 -ladvapi32
+    LIBS += -luser32 -lgdi32 -ladvapi32 -lws2_32
 }

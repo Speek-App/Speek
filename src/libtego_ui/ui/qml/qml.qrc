@@ -39,14 +39,10 @@
         <file>AudioNotifications.qml</file>
         <file>utils.js</file>
         <file>ColorLetterCircle.qml</file>
-        <file>Singleton.qml</file>
         <file>ViewIdDialog.qml</file>
         <file>SelectIdentityDialog.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>
-    </qresource>
-    <qresource prefix="/">
-        <file>SelectIdentityDialog.qml</file>
     </qresource>
 </RCC>
