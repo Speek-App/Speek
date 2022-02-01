@@ -145,7 +145,7 @@ namespace
         return contactId;
     }
 
-    // converts the our tego_user_id_t to ricochet's contactId in the form ricochet:serviceidserviceidserviceid...
+    // converts the our tego_user_id_t to speek's contactId in the form speek:serviceidserviceidserviceid...
     QString tegoUserIdToContactId(const tego_user_id_t* user)
     {
         return serviceIdToContactId(tegoUserIdToServiceId(user));

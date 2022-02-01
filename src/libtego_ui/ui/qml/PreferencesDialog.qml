@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import im.ricochet 1.0
+import QtQuick.Controls.Styles 1.4
 
 ApplicationWindow {
     id: preferencesWindow
@@ -41,6 +42,26 @@ ApplicationWindow {
         Accessible.role: Accessible.MenuBar
         //: Name of the tab bar for accessibility tech like screen readers
         Accessible.name: qsTr("Menu Tabs")
+
+        style: TabViewStyle {
+            frameOverlap: 1
+            tab: Rectangle {
+                color: styleData.selected ? palette.window : palette.base
+                implicitWidth: Math.max(text.width + 4, 80)
+                implicitHeight: 30
+                radius: 2
+                Text {
+                    id: text
+                    anchors.centerIn: parent
+                    text: styleData.title
+                    color: palette.text
+                }
+                border.color: "#333333"
+                border.width: 1
+            }
+            frame: Rectangle { color: palette.window; border.color: "#333333"; border.width: 1 }
+            //tabBar: Rectangle { color: "red"; anchors.fill: parent }
+        }
 
         /* QT will automatically set Accessible.text, also tabs fail to load if
          * you set any accessibility properties */

@@ -1046,7 +1046,7 @@ typedef void (*tego_tor_error_occurred_callback_t)(
     const tego_error_t* error);
 
 /*
- * TODO: this should go away and only exists for the ricochet Qt UI :(
+ * TODO: this should go away and only exists for the speek Qt UI :(
  *  saving the daemon config should probably just be synchrynous
  * Callback fired after we attempt to save the tor configuration
  *

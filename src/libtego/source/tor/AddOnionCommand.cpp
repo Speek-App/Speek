@@ -1,4 +1,5 @@
-/* Ricochet - https://ricochet.im/
+/* Speek - https://speek.network/
+ * Copyright (C) 2020, Speek Network (contact@speek.network)
  * Copyright (C) 2016, John Brooks <john.brooks@dereferenced.net>
  *
  * Redistribution and use in source and binary forms, with or without

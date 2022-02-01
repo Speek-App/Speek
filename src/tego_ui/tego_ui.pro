@@ -1,4 +1,5 @@
-# Ricochet Refresh - https://blueprint-freespeech.github.io/refresh-site/
+# Speek - https://speek.network/
+# Copyright (C) 2020, Speek Network (contact@speek.network)
 # Copyright (C) 2019, Blueprint for Free Speech  <ricochet@blueprintforfreespeech.net>
 #
 # Redistribution and use in source and binary forms, with or without
@@ -44,13 +45,7 @@ TEMPLATE = app
 
 QT += core gui network quick widgets
 
-#isEmpty(RICOCHET_REFRESH_VERSION) {
-#    VERSION = devbuild
-#} else {
-#    VERSION = $${RICOCHET_REFRESH_VERSION}
-#}
-
-VERSION = 1.4.2
+VERSION = 1.4.3
 
 DEFINES += "TEGO_VERSION=$${VERSION}"
 

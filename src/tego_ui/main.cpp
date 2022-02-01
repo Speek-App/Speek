@@ -1,4 +1,4 @@
-/* Speek - https://speek.net/
+/* Speek - https://speek.network/
  * Copyright (C) 2020, Speek Network (contact@speek.network)
  * Copyright (C) 2019, Blueprint For Free Speech <ricochet@blueprintforfreespeech.net>
  * Copyright (C) 2014, John Brooks <john.brooks@dereferenced.net>
@@ -253,7 +253,7 @@ catch(std::exception& re)
 }
 
 #ifdef Q_OS_MAC
-// returns the directory to place the config.ricochet directory on macOS
+// returns the directory to place the config.speek directory on macOS
 // no trailing '/'
 static QString appBundlePath()
 {
@@ -301,10 +301,10 @@ static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &
 #ifdef Q_OS_MAC
             // if the user has installed it to /Applications
             if (qApp->applicationDirPath().contains(QStringLiteral("/Applications"))) {
-                // ~Library/Application Support/Ricochet/Ricochet-Refresh
-                configPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/Ricochet/Ricochet-Refresh");
+                // ~Library/Application Support/Speek
+                configPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/Speek");
             } else {
-                configPath = appBundlePath() + QStringLiteral("/config.ricochet");
+                configPath = appBundlePath() + QStringLiteral("/config.speek");
             }
 #else
             configPath = qApp->applicationDirPath() + QStringLiteral("/config");
@@ -431,7 +431,7 @@ static void initTheme()
     darkPalette.setColor(QPalette::Disabled,QPalette::Text,QColor(127,127,127));
     darkPalette.setColor(QPalette::Dark,QColor(35,35,35));
     darkPalette.setColor(QPalette::Shadow,QColor(20,20,20));
-    darkPalette.setColor(QPalette::Button,QColor(53,53,53));
+    darkPalette.setColor(QPalette::Button,QColor(33,33,33));
     darkPalette.setColor(QPalette::ButtonText,Qt::white);
     darkPalette.setColor(QPalette::Disabled,QPalette::ButtonText,QColor(127,127,127));
     darkPalette.setColor(QPalette::BrightText,Qt::red);
@@ -457,8 +457,8 @@ static void initTranslation()
     QString resPath = QLatin1String(":/lang/");
 
     QLocale locale = QLocale::system();
-    if (!qgetenv("RICOCHET_LOCALE").isEmpty()) {
-        locale = QLocale(QString::fromLatin1(qgetenv("RICOCHET_LOCALE")));
+    if (!qgetenv("SPEEK_LOCALE").isEmpty()) {
+        locale = QLocale(QString::fromLatin1(qgetenv("SPEEK_LOCALE")));
         qDebug() << "Forcing locale" << locale << "from environment" << locale.uiLanguages();
     }
 

@@ -24,8 +24,6 @@ Clone with git from `https://github.com/Speek-App/Speek.git`, or download source
 
 Add `CONFIG+=debug` or `CONFIG+=release` to the qmake command for a debug or release build. Debug builds enable logging to standard output, and shouldn't be used in sensitive environments.
 
-By default, Speek will be portable, and configuration is stored in a folder named `config` next to the binary. Add `DEFINES+=RICOCHET_NO_PORTABLE` to the qmake command for a system-wide installation using platform configuration paths instead.
-
 ## Linux
 
 You will need:
@@ -78,15 +76,15 @@ You will need:
  * Protocol Buffers (libprotobuf, protoc) - `brew install protobuf`
  * pkg-config - `brew install pkg-config`
 
-You can either load `ricochet.pro` in Qt Creator and build normally, or build command-line with:
+You can either load `tego.pro` in Qt Creator and build normally, or build command-line with:
 ```sh
 /path/to/qtsdk/5.3/clang_64/bin/qmake
 make
 ```
 
-You also need a `tor` binary in $PATH or inside the build's `ricochet refresh.app/Contents/MacOS` folder. The easiest solution is to use `brew install tor`. If you copy the `tor` binary, you will need to keep it up to date.
+You also need a `tor` binary in $PATH or inside the build's `speek.app/Contents/MacOS` folder. The easiest solution is to use `brew install tor`. If you copy the `tor` binary, you will need to keep it up to date.
 
-Normally, configuration will be stored in a `config.ricochet` folder, in the same location as `ricochet.app`. However, if the bundle is installed to `/Applications`, the system location `~/Library/Application Support/Ricochet` is used instead. You can force that behavior by adding `DEFINES+=RICOCHET_NO_PORTABLE` to the qmake command.
+Normally, configuration will be stored in a `config.ricochet` folder, in the same location as `speek.app`. However, if the bundle is installed to `/Applications`, the system location `~/Library/Application Support/Speek` is used instead.
 
 The `packaging/osx/release_osx.sh` script demonstrates how to build a redistributable app bundle.
 

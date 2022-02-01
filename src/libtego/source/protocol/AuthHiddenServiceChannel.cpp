@@ -1,4 +1,5 @@
-/* Ricochet - https://ricochet.im/
+/* Speek - https://speek.network/
+ * Copyright (C) 2020, Speek Network (contact@speek.network)
  * Copyright (C) 2014, John Brooks <john.brooks@dereferenced.net>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -241,7 +242,7 @@ QByteArray AuthHiddenServiceChannelPrivate::getProofKey() const
 
 QByteArray AuthHiddenServiceChannelPrivate::getProofMessage(const QByteArray& clientServiceId) const
 {
-    // TODO: prepenend string 'ricochet-refresh proof' to the message to prevent hash reuse
+    // TODO: prepenend string 'speek proof' to the message to prevent hash reuse
     QByteArray serverServiceId = connection->serverServiceId();
 
     if (clientServiceId.size() != TEGO_V3_ONION_SERVICE_ID_LENGTH || serverServiceId.size() != TEGO_V3_ONION_SERVICE_ID_LENGTH) {

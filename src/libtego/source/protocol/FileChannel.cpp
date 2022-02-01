@@ -1,4 +1,5 @@
-/* Ricochet Refresh - https://ricochetrefresh.net/
+/* Speek - https://speek.network/
+ * Copyright (C) 2020, Speek Network (contact@speek.network)
  * Copyright (C) 2020, Blueprint For Free Speech <ricochet@blueprintforfreespeech.net>
  *
  * Redistribution and use in source and binary forms, with or without
