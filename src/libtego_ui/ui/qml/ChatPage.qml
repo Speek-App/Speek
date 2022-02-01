@@ -14,6 +14,19 @@ FocusScope{
     property bool emojiVisible: false
     property int margin_chat: 0
     property bool richTextActive: !uiSettings.data.disableDefaultRichText
+
+    function forceActiveFocus() {
+        textField.forceActiveFocus()
+    }
+
+    function sendFile() {
+        contact.sendFile();
+    }
+
+    Utility {
+       id: utility
+    }
+
     FocusScope {
         visible: contact.status == 0 || contact.status == 1 ? true : false
         function openPreferences() {
@@ -23,23 +36,12 @@ FocusScope{
         anchors.fill: parent
         id: chatPage
 
-        function forceActiveFocus() {
-            textField.forceActiveFocus()
-        }
-
-        function sendFile() {
-            contact.sendFile();
-        }
-
-        Utility {
-           id: utility
-        }
-
         FileDialog {
             id: fileDialog
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
                 var b = utility.toBase64(fileDialog.fileUrl.toString());
+                console.log(b)
                 textInput.insert(textInput.cursorPosition, '&nbsp;' + b + ' ')
             }
         }

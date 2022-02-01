@@ -84,7 +84,8 @@ int main(int argc, char *argv[]) try
 
     init_libtego_callbacks(tegoContext);
 
-
+    //a.setOrganizationName("Speek");
+    //a.setOrganizationDomain("speek.network");
     a.setApplicationVersion(QLatin1String(TEGO_VERSION_STR));
 
 #if !defined(Q_OS_WIN) && !defined(Q_OS_MAC)

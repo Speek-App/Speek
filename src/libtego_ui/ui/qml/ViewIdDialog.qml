@@ -66,5 +66,15 @@ ApplicationWindow {
             horizontalAlignment: Qt.AlignLeft
         }
     }
+
+    Action {
+        shortcut: StandardKey.Close
+        onTriggered: addContactWindow.close()
+    }
+
+    Action {
+        shortcut: "Escape"
+        onTriggered: addContactWindow.close()
+    }
 }
 
