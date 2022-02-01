@@ -137,7 +137,7 @@ public:
 
     Q_INVOKABLE QString platformPath(QString url) {
         #ifdef Q_OS_WIN
-            return url.replace("file:///", "file:\\\\");
+            return url.replace("file:///", "file:/");
         #else
             return url;
         #endif
