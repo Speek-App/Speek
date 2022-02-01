@@ -56,10 +56,10 @@ ApplicationWindow {
                     text: styleData.title
                     color: palette.text
                 }
-                border.color: "#333333"
+                border.color: palette.midlight == "#323232" ? "#333333" : "#dddddd"
                 border.width: 1
             }
-            frame: Rectangle { color: palette.window; border.color: "#333333"; border.width: 1 }
+            frame: Rectangle { color: palette.window; border.color: palette.midlight == "#323232" ? "#333333" : "#dddddd"; border.width: 1 }
             //tabBar: Rectangle { color: "red"; anchors.fill: parent }
         }
 

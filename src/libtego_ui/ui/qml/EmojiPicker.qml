@@ -99,7 +99,7 @@ Rectangle {
         height: buttonWidth
     }
     Rectangle {
-        color: "black"
+        color: "#dddddd"
         anchors.bottom: parent.bottom
         anchors.bottomMargin: buttonWidth
         width: parent.width

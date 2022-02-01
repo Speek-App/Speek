@@ -103,5 +103,7 @@
         <file>speeklogo2.png</file>
         <file>speek-icons.ttf</file>
         <file>speeklogo-full.png</file>
+        <file>speeklogo-full-light.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

@@ -161,7 +161,7 @@ FocusScope{
                     left: parent.left
                     right: parent.right
                 }
-                Rectangle { width: parent.width; height: 1; color: "#333333"; }
+                Rectangle { width: parent.width; height: 1; color: palette.midlight == "#323232" ? "#333333" : "#dddddd" }
             }
         }
 
@@ -205,7 +205,7 @@ FocusScope{
             height: statusLayout.height + 8
             color: palette.base//Qt.lighter(palette.midlight, 1.14)
 
-            Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: "#333333"; }
+            Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: palette.midlight == "#323232" ? "#333333" : "#dddddd" }
 
             RowLayout {
                 id: statusLayout

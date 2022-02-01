@@ -73,7 +73,7 @@ FocusScope {
         Image{
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            source: "qrc:/icons/speeklogo-full.png"
+            source: palette.midlight == "#323232" ? "qrc:/icons/speeklogo-full.png" : "qrc:/icons/speeklogo-full-light.png"
             width:200
             height:200
             fillMode: Image.PreserveAspectFit
