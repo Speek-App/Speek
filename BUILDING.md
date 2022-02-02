@@ -84,7 +84,7 @@ make
 
 You also need a `tor` binary in $PATH or inside the build's `speek.app/Contents/MacOS` folder. The easiest solution is to use `brew install tor`. If you copy the `tor` binary, you will need to keep it up to date.
 
-Normally, configuration will be stored in a `config.ricochet` folder, in the same location as `speek.app`. However, if the bundle is installed to `/Applications`, the system location `~/Library/Application Support/Speek` is used instead.
+Normally, configuration will be stored in a `config.speek` folder, in the same location as `speek.app`. However, if the bundle is installed to `/Applications`, the system location `~/Library/Application Support/Speek` is used instead.
 
 The `packaging/osx/release_osx.sh` script demonstrates how to build a redistributable app bundle.
 
