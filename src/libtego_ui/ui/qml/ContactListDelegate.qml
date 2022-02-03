@@ -13,7 +13,9 @@ Rectangle {
     visible: search_visible()
 
     function search_visible(){
-        if(searchUserText === "")
+        if(typeof(searchUserText) === "undefined")
+            return true
+        else if(searchUserText === "")
             return true
         else if(model.contact.nickname.toLowerCase().indexOf(searchUserText.toLowerCase()) !== -1)
             return true

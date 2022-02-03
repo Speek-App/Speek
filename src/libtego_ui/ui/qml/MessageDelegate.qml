@@ -23,20 +23,30 @@ Column {
             return false
         }
 
-        sourceComponent: Label {
-            //: %1 nickname
-            text: {
-                if (model.section === "offline")
-                    return qsTr("%1 is offline").arg(contact !== null ? contact.nickname : "")
-                else
-                    return Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleShortDate)
+        sourceComponent: Rectangle{
+            x: delegate.width / 2 - 100
+            y: -3
+            width: 200
+            height: 30
+            color: palette.midlight == "#323232" ? "#222222" : "#eaeced"
+            radius: 6
+
+            Label {
+                anchors.centerIn: parent
+                //: %1 nickname
+                text: {
+                    if (model.section === "offline")
+                        return qsTr("%1 is offline").arg(contact !== null ? contact.nickname : "")
+                    else
+                        return Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleShortDate)
+                }
+                textFormat: Text.PlainText
+                width: parent.width
+                elide: Text.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                color: palette.text
+                height: 28
             }
-            textFormat: Text.PlainText
-            width: delegate.width
-            elide: Text.ElideRight
-            horizontalAlignment: Qt.AlignHCenter
-            color: "#DDDDDD"//palette.mid
-            height: 28
         }
     }
 
@@ -80,7 +90,7 @@ Column {
 
         property int __maxWidth: parent.width * 0.8
 
-        color: (model.status === ConversationModel.Error) ? "#ffdcc4" : ( model.isOutgoing ? "#eaeced" : "#c4e7ff" )
+        color: (model.status === ConversationModel.Error) ? "#ffdcc4" : palette.midlight == "#323232" ? ( model.isOutgoing ? "#222222" : "#2b5278" ) : ( model.isOutgoing ? "#eaeced" : "#c4e7ff" )
         Behavior on color { ColorAnimation { } }
 
         Rectangle {
@@ -101,7 +111,19 @@ Column {
             visible: opacity > 0
             color: parent.color
         }
+        Label{
+            text: "✓"
+            height: 18
+            width: 12
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            opacity: (model.status === ConversationModel.Sending || model.status === ConversationModel.Queued || model.status === ConversationModel.Error) || (!model.isOutgoing) ? 0 : 1
+            visible: opacity > 0
+            color: palette.midlight == "#323232" ? palette.highlight : Qt.darker(palette.highlight, 1.5)
 
+            Behavior on opacity { NumberAnimation { } }
+        }
+        /*
         Rectangle {
             anchors.fill: parent
             radius: 5
@@ -112,7 +134,7 @@ Column {
             //color: (model.status === ConversationModel.Error) ? "#ffdcc4" : ( model.isOutgoing ? "#cccccc" : "#c4e7ff" )
 
             Behavior on opacity { NumberAnimation { } }
-        }
+        }*/
 
         Rectangle
         {
@@ -148,6 +170,7 @@ Column {
                 renderType: Text.NativeRendering
                 textFormat: text.includes("<html><head><meta name=\"qrichtext\"") ? TextEdit.RichText : TextEdit.PlainText
                 //color: text.includes("<html><head><meta name=\"qrichtext\"") ? "red" : "black"
+                color: palette.text
                 onLinkHovered: {
                     selected_image = link
                 }
@@ -197,6 +220,7 @@ Column {
 
                             width: parent.width
                             height: styleHelper.pointSize * 1.5
+                            color: palette.text
 
                             text: model.transfer ? model.transfer.file_name : ""
                             font.bold: true
@@ -375,8 +399,6 @@ Column {
                     const regex = '<a href="' + copy_selected_image + '"><img.* src="data:image/([a-zA-Z]+);base64,([A-Za-z0-9+/=]+)';
                     const found = textField.text.match(regex);
                     utility.saveBase64(found[2],"1",found[1])
-
-                    //console.log(found[1]);
                 }
             }
         }

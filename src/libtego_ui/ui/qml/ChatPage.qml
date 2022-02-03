@@ -41,7 +41,6 @@ FocusScope{
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
                 var b = utility.toBase64(fileDialog.fileUrl.toString());
-                console.log(b)
                 textInput.insert(textInput.cursorPosition, '&nbsp;' + b + ' ')
             }
         }
@@ -161,7 +160,7 @@ FocusScope{
                     left: parent.left
                     right: parent.right
                 }
-                Rectangle { width: parent.width; height: 1; color: palette.midlight == "#323232" ? "#333333" : "#dddddd" }
+                //Rectangle { width: parent.width; height: 1; color: palette.midlight == "#323232" ? "#222222" : "#dddddd" }
             }
         }
 
@@ -205,7 +204,7 @@ FocusScope{
             height: statusLayout.height + 8
             color: palette.base//Qt.lighter(palette.midlight, 1.14)
 
-            Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: palette.midlight == "#323232" ? "#333333" : "#dddddd" }
+            //Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: palette.midlight == "#323232" ? "#222222" : "#dddddd" }
 
             RowLayout {
                 id: statusLayout
@@ -219,8 +218,8 @@ FocusScope{
                         background: Rectangle {
                                 implicitWidth: 20
                                 implicitHeight: 20
-                                border.color: control.hovered ? "#dddddd" : "transparent"
-                                border.width: 1
+                                //border.color: control.hovered ? "#dddddd" : "transparent"
+                                //border.width: 1
                                 radius: 5
                                 color: "transparent"
                             }
@@ -230,7 +229,7 @@ FocusScope{
                                 font.pixelSize: 20
                                 horizontalAlignment: Qt.AlignHCenter
                                 renderType: Text.QtRendering
-                                color: palette.text
+                                color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
                             }
                         }
 
@@ -245,8 +244,8 @@ FocusScope{
                         background: Rectangle {
                                 implicitWidth: 20
                                 implicitHeight: 20
-                                border.color: control.hovered ? "#dddddd" : "transparent"
-                                border.width: 1
+                                //border.color: control.hovered ? "#dddddd" : "transparent"
+                                //border.width: 1
                                 radius: 5
                                 color: "transparent"
                             }
@@ -256,7 +255,7 @@ FocusScope{
                               font.pixelSize: 20
                               horizontalAlignment: Qt.AlignHCenter
                               renderType: Text.QtRendering
-                              color: palette.text
+                              color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
                           }
                      }
 
@@ -282,7 +281,8 @@ FocusScope{
 
                     font.pointSize: styleHelper.pointSize * 0.9
                     font.family: "Helvetica"
-                    textColor: "black"
+                    //textColor: "black"
+                    textColor: palette.text
 
                     verticalAlignment: Qt.AlignVCenter
                     horizontalAlignment: Qt.AlignLeft
@@ -290,14 +290,25 @@ FocusScope{
                     style: TextAreaStyle {
                             frame: Rectangle {
                             radius: 8
-                            border.width: 0
-                            border.color: "white"
-                            color:"white"
+                            //border.width: 0
+                            //border.color: "white"
+                            //color:"white"
+                            color: palette.base
                             y:0
                         }
                     }
 
                     property TextEdit edit
+                    property string placeholderText: qsTr("Write a message...")
+
+                    Text {
+                        x: 5
+                        y: 2
+                        font.pointSize: styleHelper.pointSize * 0.9
+                        text: textInput.placeholderText
+                        color: "#aaa"
+                        visible: !textInput.getText(0, textInput.length)
+                    }
 
                     Component.onCompleted: {
                         var objects = contentItem.contentItem.children
@@ -368,8 +379,8 @@ FocusScope{
                         background: Rectangle {
                             implicitWidth: 20
                             implicitHeight: 20
-                            border.color: control.hovered ? "#dddddd" : "transparent"
-                            border.width: 1
+                            //border.color: control.hovered ? "#dddddd" : "transparent"
+                            //border.width: 1
                             radius: 5
                             color: "transparent"
                         }
@@ -379,7 +390,7 @@ FocusScope{
                             font.pixelSize: 20
                             horizontalAlignment: Qt.AlignHCenter
                             renderType: Text.QtRendering
-                            color: palette.text
+                            color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
                         }
                     }
 
@@ -395,8 +406,8 @@ FocusScope{
                         background: Rectangle {
                             implicitWidth: 20
                             implicitHeight: 20
-                            border.color: control.hovered ? "#dddddd" : "transparent"
-                            border.width: 1
+                            //border.color: control.hovered ? "#dddddd" : "transparent"
+                            //border.width: 1
                             radius: 5
                             color: "transparent"
                         }
@@ -406,7 +417,7 @@ FocusScope{
                             font.pixelSize: 20
                             horizontalAlignment: Qt.AlignHCenter
                             renderType: Text.QtRendering
-                            color: palette.text
+                            color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
                         }
                     }
 

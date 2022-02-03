@@ -13,7 +13,7 @@ TextArea {
     textFormat: TextEdit.PlainText
     flickableItem.interactive: false
 
-    property string placeholderText: "Search"
+    property string placeholderText: qsTr("Search")
 
     Text {
         x: 5
