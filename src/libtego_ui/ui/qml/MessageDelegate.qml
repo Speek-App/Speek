@@ -27,9 +27,10 @@ Column {
             x: delegate.width / 2 - 100
             y: -3
             width: 200
-            height: 30
+            height: 31
             color: palette.midlight == "#323232" ? "#222222" : "#eaeced"
             radius: 6
+            opacity: 0.8
 
             Label {
                 anchors.centerIn: parent
@@ -46,6 +47,8 @@ Column {
                 horizontalAlignment: Qt.AlignHCenter
                 color: palette.text
                 height: 28
+                font.pointSize: styleHelper.pointSize * 0.8
+                verticalAlignment: Qt.AlignVCenter
             }
         }
     }
@@ -112,9 +115,10 @@ Column {
             color: parent.color
         }
         Label{
-            text: "✓"
-            height: 18
-            width: 12
+            text: "E"
+            height: 14
+            width: 16
+            font.family: iconFont.name
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             opacity: (model.status === ConversationModel.Sending || model.status === ConversationModel.Queued || model.status === ConversationModel.Error) || (!model.isOutgoing) ? 0 : 1
