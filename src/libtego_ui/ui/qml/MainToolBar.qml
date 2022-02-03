@@ -1,11 +1,12 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
-import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Styles 1.2
 import im.ricochet 1.0
 import im.utility 1.0
 
 ToolBar {
+    id: mainToolBar
     Layout.minimumWidth: 200
     Layout.fillWidth: true
     // Necessary to avoid oversized toolbars, e.g. OS X with Qt 5.4.1
@@ -13,6 +14,7 @@ ToolBar {
 
     property Action addContact: addContactAction
     property Action preferences: preferencesAction
+    property alias searchUserText: searchUser.text
 
     style: ToolBarStyle {
         panel: Rectangle {
@@ -85,7 +87,7 @@ ToolBar {
             visible: !torstatewidget.visible
             id: contextMenuButton
             implicitHeight: 32
-            implicitWidth: 50
+            implicitWidth: 42
 
             onClicked: {
                 action: mainContextMenu.popup()
@@ -120,7 +122,7 @@ ToolBar {
                 active: contactList.view.count == 0
                 sourceComponent: Bubble {
                     horizontalAlignment: Qt.AlignLeft
-                    x: 0
+                    x: -3
                     target: contextMenuButton
                     maximumWidth: toolBarLayout.width
                     //: Tooltip that displays on first launch indicating how to add a new contact
@@ -135,24 +137,19 @@ ToolBar {
             Accessible.description: qsTr("Shows the add contact dialogue")
         }
 
-        Label {
+        SearchBox {
+            id: searchUser
+
             visible: !torstatewidget.visible
+            text: ""
+            Layout.fillWidth: true
+            Layout.maximumHeight: 30
 
-            anchors{
-                horizontalCenter: parent.horizontalCenter
-            }
-            //Layout.alignment: Qt.AlignHCenter
-            //Layout.preferredWidth: parent.width
-            //horizontalAlignment: Text.AlignHCenter
-            id: label_speekers
-            y: 2
-
-            font.pointSize: styleHelper.pointSize * 1.03
-            font.bold: true
-            textFormat: Text.PlainText
-            color: palette.text//"#3f454a"
-            font.family: "Helvetica"
-            text: "Speekers"
+            Accessible.role: Accessible.EditableText
+            //: Name of the text input used to filter the contacts
+            Accessible.name: qsTr("Contact search")
+            //: Description of what the contact search filter is for accessibility tech like screen readers
+            Accessible.description: qsTr("Which contact to find")
         }
 
         Menu {

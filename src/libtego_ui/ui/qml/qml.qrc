@@ -41,6 +41,7 @@
         <file>ColorLetterCircle.qml</file>
         <file>ViewIdDialog.qml</file>
         <file>SelectIdentityDialog.qml</file>
+        <file>SearchBox.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>

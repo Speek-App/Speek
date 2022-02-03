@@ -10,6 +10,8 @@ ApplicationWindow {
     title: "Speek.Chat"
     visibility: Window.AutomaticVisibility
 
+    property alias searchUserText: toolBar.searchUserText
+
     width: 950
     height: 600
     minimumHeight: 400

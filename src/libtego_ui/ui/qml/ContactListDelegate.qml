@@ -9,8 +9,17 @@ Rectangle {
     //color: highlighted ? "#c4e7ff" : palette.base
     color: highlighted ? palette.highlight : palette.base
     width: parent != null ? parent.width : 0
-    height: 55
+    height: search_visible() ? 55 : 0
+    visible: search_visible()
 
+    function search_visible(){
+        if(searchUserText === "")
+            return true
+        else if(model.contact.nickname.toLowerCase().indexOf(searchUserText.toLowerCase()) !== -1)
+            return true
+        else
+            return false
+    }
 
     property bool highlighted: ListView.isCurrentItem
     onHighlightedChanged: {
