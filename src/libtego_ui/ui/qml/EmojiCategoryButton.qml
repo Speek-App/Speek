@@ -4,6 +4,7 @@ import QtQuick.Controls.Styles 1.2
 Rectangle {
     id: emojiCategoryButton
     property string categoryName
+    property var fontSize
 
     signal clickedFunction(var b)
 
@@ -33,13 +34,21 @@ Rectangle {
         emojiCategoryButton.clickedFunction(emojiCategoryButton.categoryName);
     }
 
+
     Text {
         id: emojiText
-        color: "gray"
+        color: "#A2A2A2"
         text: qsTr(eCatText)
-        font.pixelSize: emojiCategoryButton.width - 8
+        font.pixelSize: fontSize - 8
         anchors.centerIn: parent
-        font.family: "Noto Emoji"
+        font.family: iconFont.name
+    }
+
+    Rectangle{
+        id: selectedIndicator
+        color: "transparent"
+        width: parent.width
+        height: parent.height * 0.05
     }
 
 
@@ -49,21 +58,25 @@ Rectangle {
             name: "PRESSED"
             PropertyChanges {
                 target: emojiText
-                font.pixelSize: emojiCategoryButton.width - 10
+                font.pixelSize: fontSize - 10
             }
         },
         State {
             name: "RELEASED"
             PropertyChanges {
                 target: emojiText
-                font.pixelSize: emojiCategoryButton.width - 8
+                font.pixelSize: fontSize - 8
             }
         },
         State {
             name: "SELECTED"
-            PropertyChanges {
+            /*PropertyChanges {
                 target: emojiCategoryButton
                 color: "#ADD6FF"
+            }*/
+            PropertyChanges {
+                target: selectedIndicator
+                color: "#2b5278"
             }
         }
     ]

@@ -24,15 +24,6 @@ Rectangle {
         fillMode: Image.PreserveAspectCrop
         smooth: true
         antialiasing: true
-        /*
-        layer.enabled: true
-        layer.effect: InnerShadow {
-            horizontalOffset: 4
-            verticalOffset: 4
-            radius: 16.0
-                    samples: 16
-                    color:"black"
-        }*/
     }
 
     /* As of Qt 5.5.0, ScrollView is too buggy to use. It often fails to keep the

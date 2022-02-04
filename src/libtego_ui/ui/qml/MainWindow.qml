@@ -15,7 +15,7 @@ ApplicationWindow {
     width: 950
     height: 600
     minimumHeight: 400
-    minimumWidth: uiSettings.data.combinedChatWindow ? 650 : 250
+    minimumWidth: uiSettings.data.combinedChatWindow ? 750 : 350
 
     onMinimumWidthChanged: width = Math.max(width, minimumWidth)
 

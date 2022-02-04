@@ -76,7 +76,7 @@ Rectangle {
         id: emojiGrid
         width: parent.width
         anchors.fill: parent
-        anchors.bottomMargin: buttonWidth
+        anchors.bottomMargin: buttonWidth * 1.45
         cellWidth: buttonWidth; cellHeight: buttonWidth
 
         model: emojiByCategory
@@ -96,12 +96,12 @@ Rectangle {
         color: emojiPicker.color
         anchors.bottom: parent.bottom
         width: parent.width
-        height: buttonWidth
+        height: buttonWidth * 1.45
     }
     Rectangle {
         color: "#dddddd"
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: buttonWidth
+        anchors.bottomMargin: buttonWidth * 1.4
         width: parent.width
         height: 1
     }
@@ -110,13 +110,14 @@ Rectangle {
     ListView {
         width: parent.width
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: buttonWidth
+        anchors.bottomMargin: buttonWidth * 1.4
         orientation: ListView.Horizontal
 
         model: emojiCategoryButtons
         delegate: EmojiCategoryButton {
-            width: buttonWidth
-            height: buttonWidth
+            fontSize: buttonWidth
+            width: buttonWidth * 2
+            height: buttonWidth * 1.4
             color: emojiPicker.color
             onClickedFunction: {
                 categoryChangedHandler(b)
@@ -134,8 +135,8 @@ Rectangle {
             style: ButtonStyle {
                 background: Rectangle {
 
-                        implicitWidth: 22
-                        implicitHeight: 22
+                        implicitWidth: 36
+                        implicitHeight: 36
                         border.color: control.hovered ? "#dddddd" : "transparent"
                         border.width: 1
                         radius: 5

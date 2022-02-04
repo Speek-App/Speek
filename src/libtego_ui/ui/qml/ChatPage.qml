@@ -201,7 +201,7 @@ FocusScope{
                 right: parent.right
                 bottom: parent.bottom
             }
-            height: statusLayout.height + 8
+            height: statusLayout.height + 20
             color: palette.base//Qt.lighter(palette.midlight, 1.14)
 
             //Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: palette.midlight == "#323232" ? "#222222" : "#dddddd" }
@@ -209,7 +209,7 @@ FocusScope{
             RowLayout {
                 id: statusLayout
                 width: statusBar.width - 8
-                y: 4
+                y: 10
 
                 Rectangle {width: 3; height: parent.height; color: "transparent"; }
 

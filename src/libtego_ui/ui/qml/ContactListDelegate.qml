@@ -69,35 +69,6 @@ Rectangle {
         }
     }
 
-    /*
-    PresenceIcon {
-        id: presenceIcon
-        anchors {
-            left: parent.left
-            leftMargin: 20
-            verticalCenter: nameLabel.verticalCenter
-        }
-        status: model.status
-    }
-
-    Label {
-        id: nameLabel
-        anchors {
-            left: presenceIcon.right
-            leftMargin: 6
-            right: unreadBadge.left
-            rightMargin: 8
-            verticalCenter: parent.verticalCenter
-        }
-        text: model.name
-        textFormat: Text.PlainText
-        elide: Text.ElideRight
-        font.pointSize: styleHelper.pointSize
-        color: "black"
-        opacity: model.status === ContactUser.Online ? 1 : 0.8
-    }
-    */
-
     UnreadCountBadge {
         id: unreadBadge
         anchors {
@@ -157,10 +128,10 @@ Rectangle {
         id: renameComponent
 
         TextField {
+            width: 150
             id: nameField
             anchors {
-                horizontalCenter: nameLabel.horizontalAlignment
-                verticalCenter: nameLabel.verticalCenter
+                horizontalCenter: rowContact.horizontalCenter
             }
             text: model.contact.nickname
             onAccepted: {
