@@ -294,13 +294,22 @@ Column {
                         //: Description of what the file transfer 'Download' button does for accessibility tech like screen readers
                         Accessible.description: qsTr("Download file")
 
-                        Image {
-                            source: "qrc:/icons/download.png"
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                implicitWidth: cancelButton.width
+                                implicitHeight: cancelButton.height
+                                radius: cancelButton.width / 2
+                                color: Qt.lighter(palette.midlight == "#323232" ? ( !model.isOutgoing ? "#222222" : "#2b5278" ) : ( !model.isOutgoing ? "#eaeced" : "#c4e7ff" ), control.hovered ? 1.3 : 1)
+                            }
+                        }
+                        Label {
+                            text: "C"
                             anchors.centerIn: parent
-                            width: parent.width * 1/2
-                            height: parent.height * 1/2
-                            fillMode: Image.PreserveAspectFit
-                            mipmap: true
+                            font.pointSize: 20
+                            color: palette.text
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                            font.family: iconFont.name
                         }
                         action: downloadAction
                     }
@@ -338,14 +347,27 @@ Column {
                         //: Description of what the file transfer 'Cancel' button does for accessibility tech like screen readers
                         Accessible.description: qsTr("Cancels or rejects a file transfer")
 
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                implicitWidth: cancelButton.width
+                                implicitHeight: cancelButton.height
+                                radius: cancelButton.width / 2
+                                color: Qt.lighter(palette.midlight == "#323232" ? ( !model.isOutgoing ? "#222222" : "#2b5278" ) : ( !model.isOutgoing ? "#eaeced" : "#c4e7ff" ), control.hovered ? 1.3 : 1)
+                            }
+                        }
+
                         action: acceptButton.visible ? rejectFileTransferAction : cancelFileTransferAction
-                        Image {
-                            source: "qrc:/icons/cancel.png"
+                        Label {
+                            text: "T"
+                            //source: "qrc:/icons/cancel.png"
                             anchors.centerIn: parent
-                            width: parent.width * 1/2
-                            height: parent.height * 1/2
-                            fillMode: Image.PreserveAspectFit
-                            mipmap: true
+                            //width: parent.width * 1/2
+                            //height: parent.height * 1/2
+                            font.pointSize: 20
+                            color: palette.text
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                            font.family: iconFont.name
                         }
                     }
                 }
