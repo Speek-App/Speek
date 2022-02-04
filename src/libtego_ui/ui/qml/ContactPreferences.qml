@@ -146,7 +146,7 @@ Item {
 
                 Button {
                     //: Label for button which allows the changing of an user profile picture
-                    text: qsTr("Select Profile Picture")
+                    text: qsTr("Select Picture")
                     onClicked: fileDialog.open()
                     Accessible.role: Accessible.Button
                     Accessible.name: text
@@ -155,7 +155,7 @@ Item {
                 }
                 Button {
                     //: Label for button which allows the removal of a profile picture
-                    text: qsTr("Remove Profile Picture")
+                    text: qsTr("Remove Picture")
                     onClicked: {
                         contactInfo.contact.icon = ""
                     }

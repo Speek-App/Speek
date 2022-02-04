@@ -124,7 +124,7 @@ QtObject {
             Label { id: fakeLabel }
             Label { id: fakeLabelSized; font.pointSize: styleHelper.pointSize > 0 ? styleHelper.pointSize : 1 }
 
-            property int pointSize: (Qt.platform.os === "windows") ? 10 : fakeLabel.font.pointSize
+            property int pointSize: 12//(Qt.platform.os === "windows") ? 10 : fakeLabel.font.pointSize
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
         },

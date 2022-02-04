@@ -159,8 +159,7 @@ Rectangle {
         TextField {
             id: nameField
             anchors {
-                left: nameLabel.left
-                right: nameLabel.right
+                horizontalCenter: nameLabel.horizontalAlignment
                 verticalCenter: nameLabel.verticalCenter
             }
             text: model.contact.nickname
