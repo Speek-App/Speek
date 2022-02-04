@@ -69,12 +69,12 @@ ApplicationWindow {
 
     Action {
         shortcut: StandardKey.Close
-        onTriggered: addContactWindow.close()
+        onTriggered: viewIdDialog_.close()
     }
 
     Action {
         shortcut: "Escape"
-        onTriggered: addContactWindow.close()
+        onTriggered: viewIdDialog_.close()
     }
 }
 

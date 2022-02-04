@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>download.png</file>
-        <file>cancel.png</file>
         <file>speek.svg</file>
         <file>speek.png</file>
         <file>speek.ico</file>

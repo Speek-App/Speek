@@ -102,9 +102,7 @@ Column {
             height: 10
             x: model.isOutgoing ? parent.width - 20 : 10
             y: model.isOutgoing ? parent.height - 5 : -5
-            //color: "white"
             color: parent.color
-            //color: (model.status === ConversationModel.Error) ? "#ffdcc4" : ( model.isOutgoing ? "#cccccc" : "#c4e7ff" )
         }
 
         Rectangle {
@@ -127,18 +125,6 @@ Column {
 
             Behavior on opacity { NumberAnimation { } }
         }
-        /*
-        Rectangle {
-            anchors.fill: parent
-            radius: 5
-            anchors.margins: 0
-            opacity: (model.status === ConversationModel.Sending || model.status === ConversationModel.Queued || model.status === ConversationModel.Error) ? 1 : 0
-            visible: opacity > 0
-            color: Qt.lighter(parent.color, 1.15)
-            //color: (model.status === ConversationModel.Error) ? "#ffdcc4" : ( model.isOutgoing ? "#cccccc" : "#c4e7ff" )
-
-            Behavior on opacity { NumberAnimation { } }
-        }*/
 
         Rectangle
         {
@@ -359,10 +345,7 @@ Column {
                         action: acceptButton.visible ? rejectFileTransferAction : cancelFileTransferAction
                         Label {
                             text: "T"
-                            //source: "qrc:/icons/cancel.png"
                             anchors.centerIn: parent
-                            //width: parent.width * 1/2
-                            //height: parent.height * 1/2
                             font.pointSize: 20
                             color: palette.text
                             horizontalAlignment: Qt.AlignHCenter

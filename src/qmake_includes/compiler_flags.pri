@@ -1,4 +1,7 @@
 # get us onto the latest c++
+macx {
+    CONFIG += c++2a
+}
 QMAKE_CXXFLAGS += --std=c++2a -Wall -Wextra
 
 # link time optimization for non-windows targets
