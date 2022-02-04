@@ -189,7 +189,7 @@ FocusScope{
 
             visible: emojiVisible
 
-            color: "white"
+            color: palette.midlight == "#323232" ? palette.window : "white"
             buttonWidth: 28
             textArea: textField     //the TextArea in which EmojiPicker is pasting the Emoji into
         }

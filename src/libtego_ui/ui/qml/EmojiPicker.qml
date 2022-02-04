@@ -99,7 +99,7 @@ Rectangle {
         height: buttonWidth * 1.45
     }
     Rectangle {
-        color: "#dddddd"
+        color: palette.midlight == "#323232" ? "#444444" : "#dddddd"
         anchors.bottom: parent.bottom
         anchors.bottomMargin: buttonWidth * 1.4
         width: parent.width
