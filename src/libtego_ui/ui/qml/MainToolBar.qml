@@ -143,7 +143,7 @@ ToolBar {
             visible: !torstatewidget.visible
             text: ""
             Layout.fillWidth: true
-            Layout.maximumHeight: 30
+            Layout.maximumHeight: 34
 
             Accessible.role: Accessible.EditableText
             //: Name of the text input used to filter the contacts

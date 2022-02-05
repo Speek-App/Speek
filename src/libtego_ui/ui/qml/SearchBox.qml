@@ -1,6 +1,6 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import im.ricochet 1.0
 
 TextArea {
@@ -17,7 +17,7 @@ TextArea {
 
     Text {
         x: 5
-        y: 2
+        y: 3
         font.pointSize: styleHelper.pointSize * 0.9
         text: searchBox.placeholderText
         color: "#aaa"
@@ -28,9 +28,10 @@ TextArea {
     textColor: palette.text
 
     style: TextAreaStyle {
+        padding.top: 3
             frame: Rectangle {
-            radius: 8
-            color: palette.window
+                radius: 8
+                color: palette.window
         }
     }
 }

@@ -4,18 +4,10 @@
         <file>speek.png</file>
         <file>speek.ico</file>
         <file>speek.icns</file>
-        <file>icons_letter/0.png</file>
-        <file>icons_letter/1.png</file>
-        <file>icons_letter/2.png</file>
-        <file>icons_letter/3.png</file>
-        <file>icons_letter/4.png</file>
-        <file>icons_letter/5.png</file>
-        <file>icons_letter/6.png</file>
-        <file>icons_letter/7.png</file>
-        <file>icons_letter/8.png</file>
-        <file>icons_letter/9.png</file>
-        <file>icons_letter/a.png</file>
-        <file>icons_letter/A.png</file>
+        <file>speeklogo2.png</file>
+        <file>speek-icons.ttf</file>
+        <file>speeklogo-full.png</file>
+        <file>speeklogo-full-light.png</file>
         <file>icons_letter/ASCII-35.png</file>
         <file>icons_letter/ASCII-36.png</file>
         <file>icons_letter/ASCII-37.png</file>
@@ -27,11 +19,73 @@
         <file>icons_letter/ASCII-45.png</file>
         <file>icons_letter/ASCII-46.png</file>
         <file>icons_letter/ASCII-47.png</file>
+        <file>icons_letter/ASCII-48.png</file>
+        <file>icons_letter/ASCII-49.png</file>
+        <file>icons_letter/ASCII-50.png</file>
+        <file>icons_letter/ASCII-51.png</file>
+        <file>icons_letter/ASCII-52.png</file>
+        <file>icons_letter/ASCII-53.png</file>
+        <file>icons_letter/ASCII-54.png</file>
+        <file>icons_letter/ASCII-55.png</file>
+        <file>icons_letter/ASCII-56.png</file>
+        <file>icons_letter/ASCII-57.png</file>
         <file>icons_letter/ASCII-61.png</file>
         <file>icons_letter/ASCII-63.png</file>
+        <file>icons_letter/ASCII-65.png</file>
+        <file>icons_letter/ASCII-66.png</file>
+        <file>icons_letter/ASCII-67.png</file>
+        <file>icons_letter/ASCII-68.png</file>
+        <file>icons_letter/ASCII-69.png</file>
+        <file>icons_letter/ASCII-70.png</file>
+        <file>icons_letter/ASCII-71.png</file>
+        <file>icons_letter/ASCII-72.png</file>
+        <file>icons_letter/ASCII-73.png</file>
+        <file>icons_letter/ASCII-74.png</file>
+        <file>icons_letter/ASCII-75.png</file>
+        <file>icons_letter/ASCII-76.png</file>
+        <file>icons_letter/ASCII-77.png</file>
+        <file>icons_letter/ASCII-78.png</file>
+        <file>icons_letter/ASCII-79.png</file>
+        <file>icons_letter/ASCII-80.png</file>
+        <file>icons_letter/ASCII-81.png</file>
+        <file>icons_letter/ASCII-82.png</file>
+        <file>icons_letter/ASCII-83.png</file>
+        <file>icons_letter/ASCII-84.png</file>
+        <file>icons_letter/ASCII-85.png</file>
+        <file>icons_letter/ASCII-86.png</file>
+        <file>icons_letter/ASCII-87.png</file>
+        <file>icons_letter/ASCII-88.png</file>
+        <file>icons_letter/ASCII-89.png</file>
+        <file>icons_letter/ASCII-90.png</file>
         <file>icons_letter/ASCII-91.png</file>
         <file>icons_letter/ASCII-93.png</file>
         <file>icons_letter/ASCII-95.png</file>
+        <file>icons_letter/ASCII-97.png</file>
+        <file>icons_letter/ASCII-98.png</file>
+        <file>icons_letter/ASCII-99.png</file>
+        <file>icons_letter/ASCII-100.png</file>
+        <file>icons_letter/ASCII-101.png</file>
+        <file>icons_letter/ASCII-102.png</file>
+        <file>icons_letter/ASCII-103.png</file>
+        <file>icons_letter/ASCII-104.png</file>
+        <file>icons_letter/ASCII-105.png</file>
+        <file>icons_letter/ASCII-106.png</file>
+        <file>icons_letter/ASCII-107.png</file>
+        <file>icons_letter/ASCII-108.png</file>
+        <file>icons_letter/ASCII-109.png</file>
+        <file>icons_letter/ASCII-110.png</file>
+        <file>icons_letter/ASCII-111.png</file>
+        <file>icons_letter/ASCII-112.png</file>
+        <file>icons_letter/ASCII-113.png</file>
+        <file>icons_letter/ASCII-114.png</file>
+        <file>icons_letter/ASCII-115.png</file>
+        <file>icons_letter/ASCII-116.png</file>
+        <file>icons_letter/ASCII-117.png</file>
+        <file>icons_letter/ASCII-118.png</file>
+        <file>icons_letter/ASCII-119.png</file>
+        <file>icons_letter/ASCII-120.png</file>
+        <file>icons_letter/ASCII-121.png</file>
+        <file>icons_letter/ASCII-122.png</file>
         <file>icons_letter/ASCII-123.png</file>
         <file>icons_letter/ASCII-125.png</file>
         <file>icons_letter/ASCII-167.png</file>
@@ -48,60 +102,6 @@
         <file>icons_letter/ASCII-228.png</file>
         <file>icons_letter/ASCII-246.png</file>
         <file>icons_letter/ASCII-252.png</file>
-        <file>icons_letter/b.png</file>
-        <file>icons_letter/B.png</file>
-        <file>icons_letter/c.png</file>
-        <file>icons_letter/C.png</file>
-        <file>icons_letter/d.png</file>
-        <file>icons_letter/D.png</file>
-        <file>icons_letter/e.png</file>
-        <file>icons_letter/E.png</file>
-        <file>icons_letter/F.png</file>
-        <file>icons_letter/f.png</file>
-        <file>icons_letter/G.png</file>
-        <file>icons_letter/g.png</file>
-        <file>icons_letter/h.png</file>
-        <file>icons_letter/H.png</file>
-        <file>icons_letter/I.png</file>
-        <file>icons_letter/i.png</file>
-        <file>icons_letter/J.png</file>
-        <file>icons_letter/j.png</file>
-        <file>icons_letter/K.png</file>
-        <file>icons_letter/k.png</file>
-        <file>icons_letter/L.png</file>
-        <file>icons_letter/l.png</file>
-        <file>icons_letter/M.png</file>
-        <file>icons_letter/m.png</file>
-        <file>icons_letter/N.png</file>
-        <file>icons_letter/n.png</file>
-        <file>icons_letter/O.png</file>
-        <file>icons_letter/o.png</file>
-        <file>icons_letter/P.png</file>
-        <file>icons_letter/p.png</file>
-        <file>icons_letter/q.png</file>
-        <file>icons_letter/Q.png</file>
-        <file>icons_letter/R.png</file>
-        <file>icons_letter/r.png</file>
-        <file>icons_letter/S.png</file>
-        <file>icons_letter/s.png</file>
-        <file>icons_letter/t.png</file>
-        <file>icons_letter/T.png</file>
-        <file>icons_letter/u.png</file>
-        <file>icons_letter/U.png</file>
-        <file>icons_letter/v.png</file>
-        <file>icons_letter/V.png</file>
-        <file>icons_letter/W.png</file>
-        <file>icons_letter/w.png</file>
-        <file>icons_letter/X.png</file>
-        <file>icons_letter/x.png</file>
-        <file>icons_letter/y.png</file>
-        <file>icons_letter/Y.png</file>
-        <file>icons_letter/z.png</file>
-        <file>icons_letter/Z.png</file>
-        <file>speeklogo2.png</file>
-        <file>speek-icons.ttf</file>
-        <file>speeklogo-full.png</file>
-        <file>speeklogo-full-light.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

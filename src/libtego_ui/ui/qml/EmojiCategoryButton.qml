@@ -70,10 +70,6 @@ Rectangle {
         },
         State {
             name: "SELECTED"
-            /*PropertyChanges {
-                target: emojiCategoryButton
-                color: "#ADD6FF"
-            }*/
             PropertyChanges {
                 target: selectedIndicator
                 color: "#2b5278"
@@ -85,7 +81,7 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         onEntered: emojiText.color = palette.midlight == "#323232" ? "white" : "black"
-        onExited: emojiText.color = "gray"
+        onExited: emojiText.color = "#A2A2A2"
         onPressedChanged: pressedHandler()
         onClicked: clickedHandler()
     }

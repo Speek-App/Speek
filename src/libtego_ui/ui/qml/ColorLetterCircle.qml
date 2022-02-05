@@ -26,12 +26,9 @@ Rectangle {
                 if(typeof(name) === "undefined"){
                     return "";
                 }
-                var file_path1 = ":/icons/icons_letter/" + name.charAt(0) + ".png";
-                var file_path2 = ":/icons/icons_letter/ASCII-" + name.charCodeAt(0) + ".png";
-                if(utility.checkFileExists(file_path1))
-                    return "qrc" + file_path1
-                else if(utility.checkFileExists(file_path2))
-                    return "qrc" + file_path2
+                var file_path = ":/icons/icons_letter/ASCII-" + name.charCodeAt(0) + ".png";
+                if(utility.checkFileExists(file_path))
+                    return "qrc" + file_path
                 else
                     return "qrc:/icons/icons_letter/ASCII-63.png";
             }

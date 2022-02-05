@@ -216,22 +216,20 @@ FocusScope{
                 Button {
                     style: ButtonStyle {
                         background: Rectangle {
-                                implicitWidth: 20
-                                implicitHeight: 20
-                                //border.color: control.hovered ? "#dddddd" : "transparent"
-                                //border.width: 1
-                                radius: 5
-                                color: "transparent"
-                            }
-                            label: Text {
-                                text: "J"
-                                font.family: iconFont.name
-                                font.pixelSize: 20
-                                horizontalAlignment: Qt.AlignHCenter
-                                renderType: Text.QtRendering
-                                color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
-                            }
+                            implicitWidth: 20
+                            implicitHeight: 20
+                            radius: 5
+                            color: "transparent"
                         }
+                        label: Text {
+                            text: "J"
+                            font.family: iconFont.name
+                            font.pixelSize: 20
+                            horizontalAlignment: Qt.AlignHCenter
+                            renderType: Text.QtRendering
+                            color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
+                        }
+                    }
 
                     onClicked: {
                         richTextActive = !richTextActive
@@ -244,8 +242,6 @@ FocusScope{
                         background: Rectangle {
                                 implicitWidth: 20
                                 implicitHeight: 20
-                                //border.color: control.hovered ? "#dddddd" : "transparent"
-                                //border.width: 1
                                 radius: 5
                                 color: "transparent"
                             }
