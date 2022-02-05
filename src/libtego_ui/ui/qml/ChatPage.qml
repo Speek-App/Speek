@@ -276,7 +276,7 @@ FocusScope{
                     textFormat: richTextActive ? TextEdit.RichText : TextEdit.PlainText
 
                     font.pointSize: styleHelper.pointSize * 0.9
-                    font.family: "Helvetica"
+                    font.family: styleHelper.fontFamily
                     //textColor: "black"
                     textColor: palette.text
 

@@ -127,6 +127,7 @@ QtObject {
             property int pointSize: 12//(Qt.platform.os === "windows") ? 10 : fakeLabel.font.pointSize
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
+            property var fontFamily: "Noto"
         },
 
         Loader {

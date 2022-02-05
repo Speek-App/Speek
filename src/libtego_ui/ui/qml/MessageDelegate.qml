@@ -167,7 +167,7 @@ Column {
                 selectionColor: palette.highlight
                 selectedTextColor: palette.highlightedText
                 font.pointSize: styleHelper.pointSize * 0.9
-                font.family: "Helvetica"
+                font.family: styleHelper.fontFamily
 
                 wrapMode: TextEdit.Wrap
                 readOnly: true
