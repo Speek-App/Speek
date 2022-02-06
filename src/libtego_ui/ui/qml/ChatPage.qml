@@ -276,7 +276,7 @@ FocusScope{
                     textFormat: richTextActive ? TextEdit.RichText : TextEdit.PlainText
 
                     //font.pointSize: styleHelper.pointSize * 0.9
-                    font.pixelSize: 15
+                    font.pixelSize: 13
                     font.family: styleHelper.fontFamily
                     textColor: palette.text
 
@@ -296,9 +296,9 @@ FocusScope{
 
                     Text {
                         x: 5
-                        y: 2
+                        anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: 15
+                        font.pixelSize: 13
                         //font.pointSize: styleHelper.pointSize * 0.9
                         text: textInput.placeholderText
                         color: "#aaa"
