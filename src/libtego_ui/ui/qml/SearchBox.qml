@@ -13,12 +13,12 @@ TextArea {
     textFormat: TextEdit.PlainText
     flickableItem.interactive: false
 
-
     property string placeholderText: qsTr("Search")
 
     Text {
         x: 5
-        y: 6
+        //y: 6
+        anchors.verticalCenter: searchBox.verticalCenter
         font.pointSize: styleHelper.pointSize * 0.9
         text: searchBox.placeholderText
         color: "#aaa"

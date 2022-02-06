@@ -278,7 +278,6 @@ FocusScope{
                     //font.pointSize: styleHelper.pointSize * 0.9
                     font.pixelSize: 15
                     font.family: styleHelper.fontFamily
-                    //textColor: "black"
                     textColor: palette.text
 
                     verticalAlignment: Qt.AlignVCenter
@@ -287,9 +286,6 @@ FocusScope{
                     style: TextAreaStyle {
                             frame: Rectangle {
                             radius: 8
-                            //border.width: 0
-                            //border.color: "white"
-                            //color:"white"
                             color: palette.base
                             y:0
                         }
@@ -301,7 +297,9 @@ FocusScope{
                     Text {
                         x: 5
                         y: 2
-                        font.pointSize: styleHelper.pointSize * 0.9
+                        verticalAlignment: Text.AlignVCenter
+                        font.pixelSize: 15
+                        //font.pointSize: styleHelper.pointSize * 0.9
                         text: textInput.placeholderText
                         color: "#aaa"
                         visible: !textInput.getText(0, textInput.length)
