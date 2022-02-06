@@ -275,7 +275,8 @@ FocusScope{
                     wrapMode: TextEdit.Wrap
                     textFormat: richTextActive ? TextEdit.RichText : TextEdit.PlainText
 
-                    font.pointSize: styleHelper.pointSize * 0.9
+                    //font.pointSize: styleHelper.pointSize * 0.9
+                    font.pixelSize: 15
                     font.family: styleHelper.fontFamily
                     //textColor: "black"
                     textColor: palette.text

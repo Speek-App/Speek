@@ -166,7 +166,8 @@ Column {
                 }
                 selectionColor: palette.highlight
                 selectedTextColor: palette.highlightedText
-                font.pointSize: styleHelper.pointSize * 0.9
+                //font.pointSize: styleHelper.pointSize * 0.9
+                font.pixelSize: 15
                 font.family: styleHelper.fontFamily
 
                 wrapMode: TextEdit.Wrap

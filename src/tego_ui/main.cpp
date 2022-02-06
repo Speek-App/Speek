@@ -73,8 +73,12 @@ int main(int argc, char *argv[]) try
     // increase font size for better reading
     QFont defaultFont = QApplication::font();
     defaultFont.setFamily("Noto");
-    defaultFont.setPointSize(defaultFont.pointSize()+2);
-    qApp->setFont(defaultFont);
+    #ifdef Q_OS_WIN
+        defaultFont.setPointSize(12);
+    #else
+        defaultFont.setPointSize(10);
+    #endif
+        qApp->setFont(defaultFont);
 
     tego_context_t* tegoContext = nullptr;
     tego_initialize(&tegoContext, tego::throw_on_error());
