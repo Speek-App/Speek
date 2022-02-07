@@ -138,6 +138,13 @@ QtObject {
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
             property string fontFamily: "Noto Sans"
+            property bool darkMode: palette.midlight == "#323232" ? true : false
+            property var borderColor: darkMode ? "#222222" : "#dddddd"
+            property var chatIconColor: darkMode ? "#bbbbbb" : "#444444"
+            property var borderColor2: darkMode ? "#444444" : "#dddddd"
+            property var emojiPickerBackground: darkMode ? palette.window : "white"
+            property var outgoingMessageColor: darkMode ? "#222222" : "#eaeced"
+            property var incomingMessageColor: darkMode ? "#2b5278" : "#c4e7ff"
         },
 
         Loader {

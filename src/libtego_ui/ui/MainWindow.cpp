@@ -35,10 +35,11 @@
 #include "ui/Clipboard.h"
 #include "ui/ContactsModel.h"
 #include "ui/LanguagesModel.h"
+#include "ui/Base64CircleImageProvider.h"
+#include "ui/Base64ImageProvider.h"
 
 #include "utils/Settings.h"
 #include "utils/Useful.h"
-#include "utils/Base64CircleImageProvider.h"
 
 
 // shim replacements

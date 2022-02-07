@@ -28,7 +28,7 @@ Column {
             y: -3
             width: 200
             height: 31
-            color: palette.midlight == "#323232" ? "#222222" : "#eaeced"
+            color: styleHelper.outgoingMessageColor
             radius: 6
             opacity: 0.8
 
@@ -93,7 +93,7 @@ Column {
 
         property int __maxWidth: parent.width * 0.8
 
-        color: (model.status === ConversationModel.Error) ? "#ffdcc4" : palette.midlight == "#323232" ? ( model.isOutgoing ? "#222222" : "#2b5278" ) : ( model.isOutgoing ? "#eaeced" : "#c4e7ff" )
+        color: (model.status === ConversationModel.Error) ? "#ffdcc4" : ( model.isOutgoing ? styleHelper.outgoingMessageColor : styleHelper.incomingMessageColor )
         Behavior on color { ColorAnimation { } }
 
         Rectangle {
@@ -122,7 +122,7 @@ Column {
             anchors.bottom: parent.bottom
             opacity: (model.status === ConversationModel.Sending || model.status === ConversationModel.Queued || model.status === ConversationModel.Error) || (!model.isOutgoing) ? 0 : 1
             visible: opacity > 0
-            color: palette.midlight == "#323232" ? palette.highlight : Qt.darker(palette.highlight, 1.5)
+            color: styleHelper.darkMode ? palette.highlight : Qt.darker(palette.highlight, 1.5)
 
             Behavior on opacity { NumberAnimation { } }
         }
@@ -286,7 +286,7 @@ Column {
                                 implicitWidth: cancelButton.width
                                 implicitHeight: cancelButton.height
                                 radius: cancelButton.width / 2
-                                color: Qt.lighter(palette.midlight == "#323232" ? ( !model.isOutgoing ? "#222222" : "#2b5278" ) : ( !model.isOutgoing ? "#eaeced" : "#c4e7ff" ), control.hovered ? 1.3 : 1)
+                                color: Qt.lighter(( !model.isOutgoing ? styleHelper.outgoingMessageColor : styleHelper.incomingMessageColor ), control.hovered ? 1.3 : 1)
                             }
                         }
                         Label {
@@ -339,7 +339,7 @@ Column {
                                 implicitWidth: cancelButton.width
                                 implicitHeight: cancelButton.height
                                 radius: cancelButton.width / 2
-                                color: Qt.lighter(palette.midlight == "#323232" ? ( !model.isOutgoing ? "#222222" : "#2b5278" ) : ( !model.isOutgoing ? "#eaeced" : "#c4e7ff" ), control.hovered ? 1.3 : 1)
+                                color: Qt.lighter(( !model.isOutgoing ? styleHelper.outgoingMessageColor : styleHelper.incomingMessageColor ), control.hovered ? 1.3 : 1)
                             }
                         }
 

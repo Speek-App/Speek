@@ -80,7 +80,7 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        onEntered: emojiText.color = palette.midlight == "#323232" ? "white" : "black"
+        onEntered: emojiText.color = palette.text
         onExited: emojiText.color = "#A2A2A2"
         onPressedChanged: pressedHandler()
         onClicked: clickedHandler()

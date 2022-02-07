@@ -43,6 +43,8 @@ SOURCES += \
 HEADERS += \
     libtego_callbacks.hpp \
     shims/utility.h \
+    ui/Base64CircleImageProvider.h \
+    ui/Base64ImageProvider.h \
     ui/Clipboard.h \
     ui/ContactsModel.h \
     ui/LanguagesModel.h \

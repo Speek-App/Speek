@@ -160,7 +160,6 @@ FocusScope{
                     left: parent.left
                     right: parent.right
                 }
-                //Rectangle { width: parent.width; height: 1; color: palette.midlight == "#323232" ? "#222222" : "#dddddd" }
             }
         }
 
@@ -189,7 +188,7 @@ FocusScope{
 
             visible: emojiVisible
 
-            color: palette.midlight == "#323232" ? palette.window : "white"
+            color: styleHelper.emojiPickerBackground
             buttonWidth: 28
             textArea: textField     //the TextArea in which EmojiPicker is pasting the Emoji into
         }
@@ -203,8 +202,6 @@ FocusScope{
             }
             height: statusLayout.height + 20
             color: palette.base//Qt.lighter(palette.midlight, 1.14)
-
-            //Rectangle {anchors.top: parent.top; width: parent.width; height: 1; color: palette.midlight == "#323232" ? "#222222" : "#dddddd" }
 
             RowLayout {
                 id: statusLayout
@@ -227,7 +224,7 @@ FocusScope{
                             font.pixelSize: 20
                             horizontalAlignment: Qt.AlignHCenter
                             renderType: Text.QtRendering
-                            color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
+                            color: control.hovered ? palette.text : styleHelper.chatIconColor
                         }
                     }
 
@@ -251,7 +248,7 @@ FocusScope{
                               font.pixelSize: 20
                               horizontalAlignment: Qt.AlignHCenter
                               renderType: Text.QtRendering
-                              color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
+                              color: control.hovered ? palette.text : styleHelper.chatIconColor
                           }
                      }
 
@@ -263,7 +260,7 @@ FocusScope{
                 TextArea {
                     id: textInput
                     Layout.fillWidth: true
-                    y: 4
+                    y: 0
                     frameVisible: true
                     backgroundVisible: false
 
@@ -337,23 +334,7 @@ FocusScope{
                     }
 
                     function send() {
-                        /*
-                        function chunkSubstr(str, size) {
-                          const numChunks = Math.ceil(str.length / size)
-                          const chunks = new Array(numChunks)
-
-                          for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
-                            chunks[i] = str.substr(o, size)
-                          }
-
-                          return chunks
-                        }
-                        if (textInput.text.length > 63000){*/
-                            conversationModel.sendMessage(textInput.text)
-                        /*}
-                        else{
-                            conversationModel.sendMessage(textInput.text)
-                        }*/
+                        conversationModel.sendMessage(textInput.text)
                         textInput.remove(0, textInput.length)
                     }
 
@@ -385,7 +366,7 @@ FocusScope{
                             font.pixelSize: 20
                             horizontalAlignment: Qt.AlignHCenter
                             renderType: Text.QtRendering
-                            color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
+                            color: control.hovered ? palette.text : styleHelper.chatIconColor
                         }
                     }
 
@@ -401,8 +382,6 @@ FocusScope{
                         background: Rectangle {
                             implicitWidth: 20
                             implicitHeight: 20
-                            //border.color: control.hovered ? "#dddddd" : "transparent"
-                            //border.width: 1
                             radius: 5
                             color: "transparent"
                         }
@@ -412,7 +391,7 @@ FocusScope{
                             font.pixelSize: 20
                             horizontalAlignment: Qt.AlignHCenter
                             renderType: Text.QtRendering
-                            color: control.hovered ? palette.text : palette.midlight == "#323232" ? "#bbbbbb" : "#444444"
+                            color: control.hovered ? palette.text : styleHelper.chatIconColor
                         }
                     }
 
