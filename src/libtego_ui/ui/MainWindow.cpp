@@ -100,6 +100,7 @@ MainWindow::MainWindow(QObject *parent)
 
     qml = new QQmlApplicationEngine(this);
     qml->addImageProvider(QLatin1String("base64"), new Base64CircleImageProvider);
+    qml->addImageProvider(QLatin1String("base64n"), new Base64ImageProvider);
     qml->setNetworkAccessManagerFactory(new NetworkAccessBlockingFactory);
 
     qmlRegisterUncreatableType<shims::ContactUser>("im.ricochet", 1, 0, "ContactUser", QString());

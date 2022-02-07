@@ -114,8 +114,9 @@ Column {
         }
         Label{
             text: "E"
-            height: 14
+            //height: 14
             width: 16
+            font.pixelSize: 13
             font.family: iconFont.name
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -159,7 +160,6 @@ Column {
 
                 renderType: Text.NativeRendering
                 textFormat: text.includes("<html><head><meta name=\"qrichtext\"") ? TextEdit.RichText : TextEdit.PlainText
-                //color: text.includes("<html><head><meta name=\"qrichtext\"") ? "red" : "black"
                 color: palette.text
                 onLinkHovered: {
                     selected_image = link
@@ -167,7 +167,7 @@ Column {
                 selectionColor: palette.highlight
                 selectedTextColor: palette.highlightedText
                 //font.pointSize: styleHelper.pointSize * 0.9
-                font.pixelSize: 15
+                font.pixelSize: 13
                 font.family: styleHelper.fontFamily
 
                 wrapMode: TextEdit.Wrap
@@ -409,6 +409,17 @@ Column {
                     const regex = '<a href="' + copy_selected_image + '"><img.* src="data:image/([a-zA-Z]+);base64,([A-Za-z0-9+/=]+)';
                     const found = textField.text.match(regex);
                     utility.saveBase64(found[2],"1",found[1])
+                }
+            }
+            MenuItem {
+                //: Context menu quote message
+                text: qsTr("View Image")
+                visible: copy_selected_image != "" ? true : false
+                onTriggered: {
+                    const regex = '<a href="' + copy_selected_image + '"><img.* src="data:image/([a-zA-Z]+);base64,([A-Za-z0-9+/=]+)';
+                    const found = textField.text.match(regex);
+                    var object = createDialog("ImageViewerDialog.qml", { "imageData": found[2] }, window)
+                    object.visible = true
                 }
             }
         }

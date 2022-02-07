@@ -114,6 +114,16 @@ QtObject {
         },
 
         FontLoader {
+            id: notoFont
+            source: "qrc:/fonts/NotoSans-Regular.ttf"
+        },
+
+        FontLoader {
+            id: notoBoldFont
+            source: "qrc:/fonts/NotoSans-Bold.ttf"
+        },
+
+        FontLoader {
             id: emojiFont
             source: "qrc:/fonts/NotoColorEmoji.ttf"
         },
@@ -127,7 +137,7 @@ QtObject {
             property int pointSize: (Qt.platform.os === "windows") ? 10 : 12
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
-            property var fontFamily: "Noto"
+            property string fontFamily: "Noto Sans"
         },
 
         Loader {
