@@ -6,7 +6,7 @@ ApplicationWindow {
     id: window
     width: minimumWidth
     height: minimumHeight
-    minimumWidth: 400
+    minimumWidth: 500
     maximumWidth: minimumWidth
     minimumHeight: visibleItem.height + 16
     maximumHeight: minimumHeight
@@ -94,21 +94,28 @@ ApplicationWindow {
 
         Column {
             spacing: 8
-
+            /*
             Label {
                 width: parent.width
                 //: A label with directions for when to use the 'Connect' button
-                text: qsTr("This computer's Internet connection is free of obstacles. I would like to connect directly to the Tor network.")
+                //text: qsTr("This computer's Internet connection is free of obstacles. I would like to connect directly to the Tor network.")
+                text: qsTr("This computer's Internet connection is free of obstacles.")
                 wrapMode: Text.Wrap
                 horizontalAlignment: Qt.AlignHCenter
                 Accessible.role: Accessible.StaticText
                 Accessible.name: text
+            }*/
+            Image{
+                source: "qrc:/icons/start.png"
+                width: 150
+                height: 150
+                anchors.horizontalCenter: parent.horizontalCenter
             }
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: Label for button to connect to the Tor network
-                text: qsTr("Connect")
+                text: qsTr("Launch Speek.Chat")
                 isDefault: true
                 onClicked: {
                     // Reset to defaults and proceed to bootstrap page
