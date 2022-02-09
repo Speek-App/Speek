@@ -1,11 +1,11 @@
-import QtQuick 2.0
+import QtQuick 2.2
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 
 ApplicationWindow {
     id: viewIdDialog_
     width: 740
-    height: 275
+    height: 290
     minimumWidth: width
     maximumWidth: width
     minimumHeight: height
@@ -64,6 +64,27 @@ ApplicationWindow {
             readOnly: true
             text: userIdentity.contactID
             horizontalAlignment: Qt.AlignLeft
+        }
+    }
+
+    RowLayout {
+        id: buttonRow
+        anchors {
+            right: parent.right
+            bottom: parent.bottom
+            rightMargin: 16
+            bottomMargin: 8
+        }
+
+        Button {
+            //: label for button which dismisses a dialog
+            text: qsTr("Close")
+            onClicked: viewIdDialog_.close()
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: description for 'Close' button accessibility tech like screen readers
+            Accessible.description: qsTr("Closes the view speek id window")
+            Accessible.onPressAction: viewIdDialog_.close()
         }
     }
 

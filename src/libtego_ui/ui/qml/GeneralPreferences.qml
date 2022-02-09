@@ -33,12 +33,14 @@ ColumnLayout {
             Accessible.name: text
         }
 
-        TextArea {
+        TextField {
             id: usernameText
 
             text: typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek User"
             Layout.minimumWidth: 200
             Layout.maximumHeight: 33
+
+            validator: RegExpValidator{regExp: /^[a-zA-Z0-9\-_, ]+$/}
 
             onTextChanged: {
                 if (length > 40) remove(40, length);

@@ -42,6 +42,8 @@ GridLayout {
         Layout.fillWidth: true
         readOnly: contactFields.readOnly
 
+        validator: RegExpValidator{regExp: /^[a-zA-Z0-9\-_, ]+$/}
+
         Accessible.role: Accessible.Dialog
         Accessible.name: text
         //: Description of textbox for setting a contact's nickname for accessibility tech like screen readers

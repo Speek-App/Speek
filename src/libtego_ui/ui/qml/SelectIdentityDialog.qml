@@ -6,7 +6,7 @@ import im.utility 1.0
 ApplicationWindow {
     id: selectIdentityDialog
     width: 740
-    height: 400
+    height: 430
     minimumWidth: width
     maximumWidth: width
     minimumHeight: height
@@ -149,14 +149,15 @@ ApplicationWindow {
             bottomMargin: 8
         }
 
-        TextArea {
+        TextField {
             selectByMouse: true
             id: newIdentityName
             text: ""
 
             enabled: true
             Layout.minimumWidth: 150
-            Layout.maximumHeight: 33
+
+            validator: RegExpValidator{regExp: /^[a-zA-Z0-9\-_, ]+$/}
 
             Accessible.role: Accessible.EditableText
             //: Name of the text input used to add a new identity
@@ -180,6 +181,17 @@ ApplicationWindow {
             //: description for 'Add' button for accessibility tech like screen readres
             Accessible.description: qsTr("Adds a new identity")
             Accessible.onPressAction: addContactWindow.close()
+        }
+
+        Button {
+            //: label for button which dismisses a dialog
+            text: qsTr("Close")
+            onClicked: selectIdentityDialog.close()
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: description for 'Close' button accessibility tech like screen readers
+            Accessible.description: qsTr("Closes the view other identity window")
+            Accessible.onPressAction: selectIdentityDialog.close()
         }
     }
 

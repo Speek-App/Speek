@@ -58,9 +58,12 @@ public:
         painter.drawImage(0, 0, image1);
         QBuffer buffer;
         buffer.open(QIODevice::WriteOnly);
-        //if(image2.width() > 300)
-            //image2 = image2.scaled(300, 300, Qt::KeepAspectRatio);
-        image2.save(&buffer, "jpeg", 80);
+
+        const int maxs_total = 900;
+        if(image2.width() > maxs_total || image2.height() > maxs_total)
+            image2 = image2.scaled(maxs_total, maxs_total, Qt::KeepAspectRatio);
+
+        image2.save(&buffer, "jpeg", 70);
         QString encoded = buffer.data().toBase64();
         int w = image2.width(), h = image2.height();
         int maxs = 550;

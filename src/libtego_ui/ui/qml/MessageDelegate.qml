@@ -164,7 +164,7 @@ Column {
                 onLinkHovered: {
                     selected_image = link
                 }
-                selectionColor: palette.highlight
+                selectionColor: !model.isOutgoing ? styleHelper.outgoingMessageColor : styleHelper.incomingMessageColor
                 selectedTextColor: palette.highlightedText
                 //font.pointSize: styleHelper.pointSize * 0.9
                 font.pixelSize: 13

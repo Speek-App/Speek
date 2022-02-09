@@ -90,7 +90,7 @@ ApplicationWindow {
 
         Component.onCompleted: {
             contactId.text = request.contactId
-            name.text = request.message.split("+")[1]
+            name.text = request.message.split("+")[1].replace(/[^a-zA-Z0-9\-_, ]/g,'')
             name.readOnly = false
             name.focus = true
             if(request.message.indexOf("+") !== 0)
