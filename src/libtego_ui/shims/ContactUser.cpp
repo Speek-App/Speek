@@ -113,9 +113,9 @@ namespace shims
         emit this->contactDeleted(this);
     }
 
-    void ContactUser::sendFile()
+    void ContactUser::sendFile(QString path)
     {
-        this->conversationModel->sendFile();
+        this->conversationModel->sendFile(path);
     }
 
     bool ContactUser::exportConversation()

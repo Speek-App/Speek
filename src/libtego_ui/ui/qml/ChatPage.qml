@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.2
 import im.ricochet 1.0
 import im.utility 1.0
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.3
 
 FocusScope{
     property ContactUser contact
@@ -21,6 +21,21 @@ FocusScope{
 
     function sendFile() {
         contact.sendFile();
+    }
+
+    function sendFileWithPath(path) {
+        contact.sendFile(path);
+    }
+
+    Timer {
+        id: timer
+    }
+
+    function delay(delayTime, cb) {
+        timer.interval = delayTime;
+        timer.repeat = false;
+        timer.triggered.connect(cb);
+        timer.start();
     }
 
     Utility {
@@ -43,6 +58,87 @@ FocusScope{
                 var b = utility.toBase64(fileDialog.fileUrl.toString());
                 textInput.insert(textInput.cursorPosition, '&nbsp;' + b + ' ')
             }
+        }
+
+        FileDialog {
+            id: multiFileDialog
+            selectMultiple: true
+            onAccepted: {
+                console.log(multiFileDialog.fileUrls)
+                var files_list = [];
+                for(var i = 0; i < multiFileDialog.fileUrls.length; i++){
+                    files_list.push(String(multiFileDialog.fileUrls[i]))
+                }
+
+                var b = utility.makeTempZipFromMultipleFiles(files_list);
+                console.log(b);
+                if(b.error === ""){
+                    sendZipDialog.fileToSend = b.filePath
+                    sendZipDialog.text = qsTr("Are you sure you want to send the archive %1 to %2? (size: %3)").arg(b.fileName).arg(contact.nickname).arg(b.size)
+                    sendZipDialog.visible = true;
+                }
+                else{
+                    sendZipDialogError.text = qsTr("Error when creating the zip archive <%1>").arg(b.error)
+                    sendZipDialogError.visible = true;
+                }
+            }
+        }
+
+        FileDialog {
+            id: folderDialog
+            selectFolder: true
+            onAccepted: {
+                var b = utility.makeTempZipFromFolder(folderDialog.folder);
+                if(b.error === ""){
+                    sendZipDialog.fileToSend = b.filePath
+                    sendZipDialog.text = qsTr("Are you sure you want to send the archive %1 to %2? (size: %3)").arg(b.fileName).arg(contact.nickname).arg(b.size)
+                    sendZipDialog.visible = true;
+                }
+                else{
+                    sendZipDialogError.text = qsTr("Error when creating the zip archive <%1>").arg(b.error)
+                    sendZipDialogError.visible = true;
+                }
+            }
+        }
+
+        MessageDialog {
+            id: sendZipDialog
+
+            title: qsTr("File Transfer")
+            icon: StandardIcon.Question
+            text: ""
+            standardButtons: StandardButton.Yes | StandardButton.Cancel | StandardButton.Open
+
+            visible: false
+
+            property string fileToSend: ""
+
+            onButtonClicked: {
+                if (clickedButton === StandardButton.Yes) {
+                    visible = false;
+                    console.log(fileToSend)
+                    sendFileWithPath(fileToSend);
+                }
+                else if (clickedButton === StandardButton.Open) {
+                    utility.openWithDefaultApplication(fileToSend)
+                    delay(200, function() {
+                        sendZipDialog.open()
+                    })
+                }
+            }
+        }
+
+        MessageDialog {
+            id: sendZipDialogError
+
+            title: qsTr("File Transfer")
+            icon: StandardIcon.Warning
+            text: ""
+            standardButtons: StandardButton.Ok
+
+            visible: false
+
+            onAccepted: visible = false;
         }
 
         onVisibleChanged: if (visible) forceActiveFocus()
@@ -370,8 +466,36 @@ FocusScope{
                         }
                     }
 
-                    onClicked: {
-                        sendFile()
+                    MouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
+                        onClicked: {
+                            if (mouse.button === Qt.RightButton) { // 'mouse' is a MouseEvent argument passed into the onClicked signal handler
+                                sendFileContextMenu.popup()
+                            } else if (mouse.button === Qt.LeftButton) {
+                                sendFile()
+                            }
+                        }
+                    }
+
+                    Menu {
+                        id: sendFileContextMenu
+
+                        /* QT automatically sets Accessible.text to MenuItem.text */
+                        MenuItem {
+                            //: File send context menu command to send a whole folder as a zip archive
+                            text: qsTr("Send folder as zip archive")
+                            onTriggered: {
+                                folderDialog.open();
+                            }
+                        }
+                        MenuItem {
+                            //: File send context menu command to send multiple files combined as a zip archive
+                            text: qsTr("Send multiple files as zip archive")
+                            onTriggered: {
+                                multiFileDialog.open();
+                            }
+                        }
                     }
                 }
 

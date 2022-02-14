@@ -282,6 +282,27 @@ ColumnLayout {
         }
     }
 
+    RowLayout {
+        z: 2
+        Label {
+            //: Label for button which allows the exporting of the current identity
+            text: qsTr("Backup")
+            Accessible.role: Accessible.StaticText
+            Accessible.name: text
+        }
+
+        Button {
+            //: Label for button which allows the exporting of the current identity
+            text: qsTr("Export Identity")
+            Layout.minimumWidth: 200
+            onClicked: utility.exportBackup(usernameText.text)
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: Description of button which allows the exporting of the current identity for accessibility tech like screen readers
+            Accessible.description: qsTr("Create a backup of the current identity")
+        }
+    }
+
     Item {
         Layout.fillHeight: true
         Layout.fillWidth: true

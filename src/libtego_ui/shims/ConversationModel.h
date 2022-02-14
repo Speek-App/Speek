@@ -89,7 +89,7 @@ namespace shims
         int getUnreadCount() const;
         Q_INVOKABLE void resetUnreadCount();
 
-        void sendFile();
+        void sendFile(QString path = "");
         bool hasEventsToExport();
         Q_INVOKABLE int getConversationEventCount() const { return this->events.size(); }
         bool exportConversation();

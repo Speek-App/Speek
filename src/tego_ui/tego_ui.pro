@@ -45,6 +45,8 @@ TEMPLATE = app
 
 QT += core gui network quick widgets
 
+LIBS += -lz
+
 VERSION = 1.4.4
 
 DEFINES += "TEGO_VERSION=$${VERSION}"

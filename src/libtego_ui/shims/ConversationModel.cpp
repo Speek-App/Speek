@@ -225,14 +225,18 @@ QMutex ConversationModel::mutex;
         this->addEventFromMessage(indexOfOutgoingMessage(messageId));
     }
 
-    void ConversationModel::sendFile()
+    void ConversationModel::sendFile(QString path)
     {
-        auto filePath =
-            QFileDialog::getOpenFileName(
-                nullptr,
-                tr("Open File"),
-                QDir::homePath(),
-                nullptr);
+        QString filePath;
+        if(path == "")
+            filePath =
+                QFileDialog::getOpenFileName(
+                    nullptr,
+                    tr("Open File"),
+                    QDir::homePath(),
+                    nullptr);
+        else
+            filePath = path;
 
         if (!filePath.isEmpty())
         {
