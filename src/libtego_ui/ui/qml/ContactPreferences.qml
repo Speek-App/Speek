@@ -190,7 +190,7 @@ Item {
                     Accessible.role: Accessible.Button
                     Accessible.name: text
                     //: Description of button which removes a user from the contact list for accessibility tech like screen readers
-                    Accessible.description: qsTr("Removes this contact") // todo: translation
+                    Accessible.description: qsTr("Removes this contact")
                 }
             }
 

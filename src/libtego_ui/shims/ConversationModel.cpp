@@ -286,25 +286,27 @@ QMutex ConversationModel::mutex;
     void ConversationModel::deserializeTextMessageEventToFile(const EventData &event, std::ofstream &ofile) const
     {
         auto &md = this->messages[this->messages.size() - event.messageData.reverseIndex];
+        QString text = md.text;
+        text.remove(QRegExp("[\\n\\t\\r]"));
         switch (md.status)
         {
             case Received:
                 fmt::print(ofile, "[{}] <{}>: {}\n",
                                     md.time.toString().toStdString(),
                                     this->contact()->getNickname().toStdString(),
-                                    md.text.toStdString()); break;
+                                    text.toStdString()); break;
             case Delivered:
                 fmt::print(ofile, "[{}] <{}>: {}\n",
                                     md.time.toString().toStdString(),
                                     tr("me").toStdString(),
-                                    md.text.toStdString()); break;
+                                    text.toStdString()); break;
             default:
                 // messages we sent that weren't delivered
                 fmt::print(ofile, "[{}] <{}> ({}): {}\n",
                                     md.time.toString().toStdString(),
                                     tr("me").toStdString(),
                                     getMessageStatusString(md.status),
-                                    md.text.toStdString()); break;
+                                    text.toStdString()); break;
         }
     }
 

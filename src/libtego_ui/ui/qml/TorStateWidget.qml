@@ -35,7 +35,7 @@ Label {
         }
     }
 
-    Accessible.name: qsTr("Tor status") // todo: translation
+    Accessible.name: qsTr("Tor status")
     Accessible.role: Accessible.StaticText
     Accessible.description: text
 }

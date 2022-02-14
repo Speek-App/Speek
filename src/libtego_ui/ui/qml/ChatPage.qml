@@ -345,7 +345,7 @@ FocusScope{
 
                     Accessible.role: Accessible.EditableText
                     //: label for accessibility tech like screen readers
-                    Accessible.name: qsTr("Message area") // todo: translation
+                    Accessible.name: qsTr("Message area")
                     //: description of the text area used to send messages for accessibility tech like screen readers
                     Accessible.description: qsTr("Write the message to be sent here. Press enter to send")
                 }

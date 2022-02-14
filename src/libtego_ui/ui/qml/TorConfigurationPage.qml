@@ -222,7 +222,7 @@ Column {
 
                     Accessible.role: Accessible.EditableText
                     //: Name of the allowed ports label, used by accessibility tech such as screen readers
-                    Accessible.name: qsTr("Allowed ports") // todo: translations
+                    Accessible.name: qsTr("Allowed ports")
                     Accessible.description: placeholderText
                 }
             }
