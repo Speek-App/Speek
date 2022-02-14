@@ -60,7 +60,6 @@ ApplicationWindow {
                 border.width: 1
             }
             frame: Rectangle { color: palette.window; border.color: styleHelper.borderColor2; border.width: 1 }
-            //tabBar: Rectangle { color: "red"; anchors.fill: parent }
         }
 
         /* QT will automatically set Accessible.text, also tabs fail to load if
@@ -81,6 +80,12 @@ ApplicationWindow {
             //: Title of the tor tab, contains tor settings and logs
             title: qsTr("Tor")
             source: Qt.resolvedUrl("TorPreferences.qml")
+        }
+
+        Tab {
+            //: Title of the backup tab
+            title: qsTr("Backup")
+            source: Qt.resolvedUrl("BackupIdentity.qml")
         }
 
         Tab {

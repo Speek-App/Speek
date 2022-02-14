@@ -426,6 +426,11 @@ public:
     Q_INVOKABLE void openWithDefaultApplication(QString file) {
         QDesktopServices::openUrl(QUrl::fromLocalFile(file));
     }
+
+    Q_INVOKABLE void openUserDataLocation() {
+        QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+        openWithDefaultApplication(dir.path());
+    }
 };
 
 #endif // UTILITY_H

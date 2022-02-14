@@ -94,17 +94,6 @@ ApplicationWindow {
 
         Column {
             spacing: 8
-            /*
-            Label {
-                width: parent.width
-                //: A label with directions for when to use the 'Connect' button
-                //text: qsTr("This computer's Internet connection is free of obstacles. I would like to connect directly to the Tor network.")
-                text: qsTr("This computer's Internet connection is free of obstacles.")
-                wrapMode: Text.Wrap
-                horizontalAlignment: Qt.AlignHCenter
-                Accessible.role: Accessible.StaticText
-                Accessible.name: text
-            }*/
             Image{
                 source: "qrc:/icons/start.png"
                 width: 150
