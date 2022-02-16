@@ -3,6 +3,7 @@ import QtQuick.Window 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import im.ricochet 1.0
+import Qt.labs.platform 1.1
 import "ContactWindow.js" as ContactWindow
 
 ApplicationWindow {
@@ -18,6 +19,35 @@ ApplicationWindow {
     minimumWidth: uiSettings.data.combinedChatWindow ? 750 : 350
 
     onMinimumWidthChanged: width = Math.max(width, minimumWidth)
+
+    onVisibilityChanged: {
+        if(visibility == 3 && uiSettings.data.minimizeToSystemtray){
+            this.visible = false;
+        }
+    }
+
+    onClosing: {
+        Qt.quit()
+    }
+
+    SystemTrayIcon {
+        id: systray
+        visible: uiSettings.data.minimizeToSystemtray
+        icon.source: "qrc:/icons/speek.png"
+
+        onActivated: {
+            window.show()
+            window.raise()
+            window.requestActivate()
+        }
+
+        menu: Menu {
+            MenuItem {
+                text: qsTr("Quit")
+                onTriggered: Qt.quit()
+            }
+        }
+    }
 
     // OS X Menu
     Loader {
@@ -44,6 +74,8 @@ ApplicationWindow {
                     w = ContactWindow.getWindow(user)
                 // On OS X, avoid bouncing the dock icon forever
                 w.alert(Qt.platform.os == "osx" ? 1000 : 0)
+                if(!window.visible && uiSettings.data.showNotificationSystemtray)
+                    systray.showMessage(qsTr("Update"), ("New Message from %1").arg(user.nickname),SystemTrayIcon.Information, 3000)
             }
         }
         function onContactStatusChanged(user, status) {

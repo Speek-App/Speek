@@ -8,8 +8,8 @@ ApplicationWindow {
     id: preferencesWindow
     width: 900
     minimumWidth: 820
-    height: 400
-    minimumHeight: 400
+    height: 420
+    minimumHeight: 420
     title: qsTr("Speek Preferences")
 
     signal closed

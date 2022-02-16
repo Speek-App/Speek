@@ -101,6 +101,37 @@ ColumnLayout {
     }
 
     CheckBox {
+        //: Text description of an option to minimize to the systemtray
+        text: qsTr("Minimize to Systemtray")
+        checked: uiSettings.data.minimizeToSystemtray || false
+        onCheckedChanged: {
+            uiSettings.write("minimizeToSystemtray", checked)
+        }
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: text
+        Accessible.onPressAction: {
+            uiSettings.write("minimizeToSystemtray", checked)
+        }
+    }
+
+    CheckBox {
+        visible: typeof(uiSettings.data.minimizeToSystemtray) !== "undefined" ? uiSettings.data.minimizeToSystemtray : false
+        //: Text description of an option to show a notification in the Systemtray when a new message arrives
+        text: qsTr("Show notification in Systemtray when a new message arrives and window is minimized")
+        checked: uiSettings.data.showNotificationSystemtray || false
+        onCheckedChanged: {
+            uiSettings.write("showNotificationSystemtray", checked)
+        }
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: text
+        Accessible.onPressAction: {
+            uiSettings.write("showNotificationSystemtray", checked)
+        }
+    }
+
+    CheckBox {
         //: Text description of an option to play audio notifications when contacts log in, log out, and send messages
         text: qsTr("Play audio notifications")
         checked: uiSettings.data.playAudioNotification || false
@@ -279,27 +310,6 @@ ColumnLayout {
             Accessible.name: qsTr("Language")
             //: Description of what the language combox is for for accessibility tech like screen readers
             Accessible.description: qsTr("What language Speek will use")
-        }
-    }
-
-    RowLayout {
-        z: 2
-        Label {
-            //: Label for button which allows the exporting of the current identity
-            text: qsTr("Backup")
-            Accessible.role: Accessible.StaticText
-            Accessible.name: text
-        }
-
-        Button {
-            //: Label for button which allows the exporting of the current identity
-            text: qsTr("Export Identity")
-            Layout.minimumWidth: 200
-            onClicked: utility.exportBackup(usernameText.text)
-            Accessible.role: Accessible.Button
-            Accessible.name: text
-            //: Description of button which allows the exporting of the current identity for accessibility tech like screen readers
-            Accessible.description: qsTr("Create a backup of the current identity")
         }
     }
 
