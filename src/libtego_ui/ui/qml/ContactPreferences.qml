@@ -30,7 +30,7 @@ Item {
 
         ContactList {
             id: contacts
-            Layout.preferredWidth: 200
+            Layout.preferredWidth: 210
             Layout.minimumWidth: 150
             Layout.fillHeight: true
 
