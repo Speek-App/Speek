@@ -97,10 +97,10 @@ ApplicationWindow {
                     id: ma
                     anchors.fill: parent
                     onClicked: {
-                        if(model.sid !== "Contacts")
+                        if(index !== 0)
                             utility.startNewInstance(model.name)
                     }
-                    hoverEnabled: true
+                    hoverEnabled: index !== 0 ? true : false
                     property bool hovered: false
                     onEntered: hovered = true
                     onExited: hovered = false

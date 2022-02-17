@@ -120,12 +120,14 @@ ApplicationWindow {
             }
 
             Rectangle {
+                visible: !(Qt.platform.os == 'osx')
                 height: 1
                 width: parent.width
                 color: palette.mid
             }
 
             Label {
+                visible: !(Qt.platform.os == 'osx')
                 width: parent.width
                 //: A label with directions for when to use the 'Configure' button
                 text: qsTr("This computer's Internet connection is censored, filtered, or proxied. I need to configure network settings.")
@@ -136,6 +138,7 @@ ApplicationWindow {
             }
 
             Button {
+                visible: !(Qt.platform.os == 'osx')
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: Label for button to configure the Tor daemon beore connecting to the Tor network
                 text: qsTr("Configure")

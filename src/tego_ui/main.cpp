@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) try
     #endif
         qApp->setFont(defaultFont);
 
-    a.setQuitOnLastWindowClosed(false);
+    //a.setQuitOnLastWindowClosed(false);
 
     tego_context_t* tegoContext = nullptr;
     tego_initialize(&tegoContext, tego::throw_on_error());
