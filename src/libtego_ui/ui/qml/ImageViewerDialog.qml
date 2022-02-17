@@ -6,8 +6,7 @@ ApplicationWindow {
     id: imageViewerDialog
     width: image.width > 3400 ? 3400 : image.width
     height: image.height > 1600 ? 1600 : image.height
-    flags: styleHelper.dialogWindowFlags
-    modality: Qt.WindowModal
+    flags: Qt.Window
     title: mainWindow.title
 
     property string imageData

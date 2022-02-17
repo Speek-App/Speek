@@ -168,6 +168,7 @@ ToolBar {
             }
             MenuSeparator { }
             MenuItem {
+                visible: !(Qt.platform.os == 'osx')
                 //: Context menu command to remove a contact from the contact list
                 text: qsTr("Open other Identity")
                 onTriggered: {
