@@ -32,11 +32,11 @@ ApplicationWindow {
 
     Action {
         shortcut: StandardKey.Close
-        onTriggered: addContactWindow.close()
+        onTriggered: imageViewerDialog.close()
     }
 
     Action {
         shortcut: "Escape"
-        onTriggered: addContactWindow.close()
+        onTriggered: imageViewerDialog.close()
     }
 }
