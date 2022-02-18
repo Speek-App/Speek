@@ -44,6 +44,7 @@
         <file>SearchBox.qml</file>
         <file>ImageViewerDialog.qml</file>
         <file>BackupIdentity.qml</file>
+        <file>StylePreferences.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>

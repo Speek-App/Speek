@@ -45,15 +45,15 @@ Column {
                 console.log("SETCONF error:", command.errorMessage)
         })
     }
-
+/*
     Label {
         width: parent.width
-        text: qsTr("Does this computer need a proxy to access the internet?")
+        text: qsTr("Proxy Setup:")//qsTr("Does this computer need a proxy to access the internet?")
         wrapMode: Text.Wrap
 
         Accessible.role: Accessible.StaticText
         Accessible.name: text
-    }
+    }*/
 
     GroupBox {
         width: setup.width
@@ -184,17 +184,17 @@ Column {
     }
 
     Item { height: 4; width: 1 }
-
+/*
     Label {
         width: parent.width
         //: Description for the purpose of the Allowed Ports textbox
-        text: qsTr("Does this computer's Internet connection go through a firewall that only allows connections to certain ports?")
+        text: qsTr("Allowed ports:") //qsTr("Does this computer's Internet connection go through a firewall that only allows connections to certain ports?")
         wrapMode: Text.Wrap
 
         Accessible.role: Accessible.StaticText
         Accessible.name: text
     }
-
+*/
     GroupBox {
         width: parent.width
         // Workaround OS X visual bug
@@ -230,17 +230,17 @@ Column {
     }
 
     Item { height: 4; width: 1 }
-
+/*
     Label {
         width: parent.width
 
-        text: qsTr("If this computer's Internet connection is censored, you will need to obtain and use bridge relays.")
+        text: qsTr("Bridge relays:") //qsTr("If this computer's Internet connection is censored, you will need to obtain and use bridge relays.")
         wrapMode: Text.Wrap
 
         Accessible.role: Accessible.StaticText
         Accessible.name: text
     }
-
+*/
     GroupBox {
         width: parent.width
         ColumnLayout {

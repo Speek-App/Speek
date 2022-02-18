@@ -125,7 +125,7 @@ ApplicationWindow {
                 width: parent.width
                 color: palette.mid
             }
-
+/*
             Label {
                 visible: !(Qt.platform.os == 'osx')
                 width: parent.width
@@ -136,12 +136,12 @@ ApplicationWindow {
                 Accessible.role: Accessible.StaticText
                 Accessible.name: text
             }
-
+*/
             Button {
                 visible: !(Qt.platform.os == 'osx')
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: Label for button to configure the Tor daemon beore connecting to the Tor network
-                text: qsTr("Configure")
+                text: qsTr("Configure Network")
                 onClicked: window.openConfig()
 
                 Accessible.role: Accessible.Button

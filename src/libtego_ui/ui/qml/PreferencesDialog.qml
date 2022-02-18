@@ -71,6 +71,12 @@ ApplicationWindow {
         }
 
         Tab {
+            //: Title of the general settings tab
+            title: qsTr("Style")
+            source: Qt.resolvedUrl("StylePreferences.qml")
+        }
+
+        Tab {
             //: Title of the contacts list tab
             title: qsTr("Contacts")
             source: Qt.resolvedUrl("ContactPreferences.qml")
