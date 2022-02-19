@@ -8,8 +8,10 @@
 #include <QDir>
 #include <QDesktopServices>
 
+#ifndef _WIN32
 #include <quazip/quazip.h>
 #include <quazip/quazipfile.h>
+#endif
 
 
 class Utility : public QObject
@@ -177,6 +179,7 @@ public:
     static QTemporaryDir tempDir;
 
     static bool createZipFromMultipleFiles(QStringList sl, QString fileName){
+        #ifndef _WIN32
         QuaZip zip(fileName);
         zip.setFileNameCodec("IBM866");
 
@@ -235,11 +238,30 @@ public:
         if (zip.getZipError() != 0) {
             return false;
         }
+        #else
+        QString filename(QStringLiteral("/7z/7z.exe"));
+        QString path = qApp->applicationDirPath();
 
+        if (QFile::exists(path + filename))
+            path = path + filename;
+        else
+            return false;
+
+        QStringList arguments;
+        arguments << "a" << "-tzip" << fileName;
+        foreach (QString fn, sl)
+            arguments << fn.replace("file:///", "").replace("/","\\\\");
+
+        QProcess process;
+        process.start(path, arguments);
+        process.waitForFinished();
+        process.close();
+        #endif
         return true;
     }
 
     static bool createZipFromFolder(QDir dir, QString fileName){
+#ifndef _WIN32
         QuaZip zip(fileName);
         zip.setFileNameCodec("IBM866");
 
@@ -299,7 +321,23 @@ public:
         if (zip.getZipError() != 0) {
             return false;
         }
+        #else
+        QString filename(QStringLiteral("/7z/7z.exe"));
+        QString path = qApp->applicationDirPath();
 
+        if (QFile::exists(path + filename))
+            path = path + filename;
+        else
+            return false;
+
+        QStringList arguments;
+        arguments << "a" << "-tzip" << fileName << dir.path();
+
+        QProcess process;
+        process.start(path, arguments);
+        process.waitForFinished();
+        process.close();
+        #endif
         return true;
     }
 

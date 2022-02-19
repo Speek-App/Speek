@@ -65,4 +65,6 @@ HEADERS += \
 include($${QMAKE_INCLUDES}/protobuf.pri)
 include($${QMAKE_INCLUDES}/openssl.pri)
 include($${PWD}/../libtego/libtego.pri)
-include($${PWD}/../libtego_ui/quazip/quazip.pri)
+!win32{
+    include($${PWD}/../libtego_ui/quazip/quazip.pri)
+}
