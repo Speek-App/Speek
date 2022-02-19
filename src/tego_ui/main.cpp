@@ -73,12 +73,12 @@ int main(int argc, char *argv[]) try
     // increase font size for better reading
     QFont defaultFont = QApplication::font();
     defaultFont.setFamily("Noto Sans");
-    #ifdef Q_OS_WIN
-        defaultFont.setPointSize(12);
-    #else
-        defaultFont.setPointSize(9);
-    #endif
-        qApp->setFont(defaultFont);
+    //#ifdef Q_OS_WIN
+    //    defaultFont.setPointSize(12);
+    //#else
+    defaultFont.setPointSize(9);
+    //#endif
+    qApp->setFont(defaultFont);
 
     //a.setQuitOnLastWindowClosed(false);
 
