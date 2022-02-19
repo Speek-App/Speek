@@ -99,8 +99,6 @@ ToolBar {
                 background: Rectangle {
                     implicitWidth: 28
                     implicitHeight: 28
-                    border.color: control.hovered ? "#dddddd" : "transparent"
-                    border.width: 1
                     radius: 5
                     color: "transparent"
 
@@ -111,7 +109,7 @@ ToolBar {
                     font.pointSize: styleHelper.pointSize * 1.1
                     font.bold: true
                     text: control.text
-                    color: palette.text
+                    color: control.hovered ? palette.text : styleHelper.chatIconColor
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                  }

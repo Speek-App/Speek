@@ -211,8 +211,6 @@ FocusScope{
                     background: Rectangle {
                         implicitWidth: 28
                         implicitHeight: 28
-                        border.color: control.hovered ? "#dddddd" : "transparent"
-                        border.width: 1
                         radius: 5
                         color: "transparent"
 
@@ -222,7 +220,7 @@ FocusScope{
                         font.family: iconFont.name
                         font.pointSize: styleHelper.pointSize * 1.2
                         text: control.text
-                        color: palette.text
+                        color: control.hovered ? palette.text : styleHelper.chatIconColor
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                      }

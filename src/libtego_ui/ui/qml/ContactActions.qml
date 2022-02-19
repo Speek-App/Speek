@@ -79,11 +79,12 @@ Item {
             text: qsTr("Rename")
             onTriggered: renameTriggered()
         }
+        /*
         MenuItem {
             //: Context menu command to initiate a file transfer, opens a system file dialog
             text: qsTr("Send File...")
             onTriggered: sendFile()
-        }
+        }*/
         MenuItem {
             //: Context menu command to initiate a chat log export, opens a system file dialog to export to
             enabled: canExportConversation()   // only enable if we have anything to export
