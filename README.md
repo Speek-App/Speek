@@ -9,7 +9,7 @@ Speek.Chat is an experimental kind of instant messaging that **doesn't trust any
 * There are no servers or operators that could be compromised, exposing your information.
 * It's cross-platform and easy for non-technical users.
 
-![Screenshot](ricochetscreen.png)
+![Screenshot](images/Screenshot1.png)
 
 ### How it works
 Speek.Chat is a peer-to-peer instant messaging system built on the Tor Network [hidden services](https://www.torproject.org/docs/hidden-services.html.en). Your login is your hidden service address, and contacts connect to you (not an intermediate server) through Tor. The rendezvous system makes it extremely hard for anyone to learn your identity from your address.
