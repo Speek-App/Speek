@@ -120,7 +120,7 @@ ApplicationWindow {
             }
 
             Rectangle {
-                visible: !(Qt.platform.os == 'osx')
+                //visible: !(Qt.platform.os == 'osx')
                 height: 1
                 width: parent.width
                 color: palette.mid
@@ -138,7 +138,7 @@ ApplicationWindow {
             }
 */
             Button {
-                visible: !(Qt.platform.os == 'osx')
+                //visible: !(Qt.platform.os == 'osx')
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: Label for button to configure the Tor daemon beore connecting to the Tor network
                 text: qsTr("Configure Network")

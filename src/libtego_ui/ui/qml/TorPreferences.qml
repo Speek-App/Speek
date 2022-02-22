@@ -133,7 +133,7 @@ Item {
 
         Button {
             text: qsTr("Configure")
-            visible: torControl.hasOwnership ? !(Qt.platform.os == 'osx') : false
+            //visible: torControl.hasOwnership ? !(Qt.platform.os == 'osx') : false
             onClicked: {
                 var object = createDialog("NetworkSetupWizard.qml")
                 object.visible = true
