@@ -27,6 +27,10 @@ FocusScope{
         contact.sendFile(path);
     }
 
+    function _openPreferences() {
+        root.openPreferences("ContactPreferences.qml", { 'selectedContact': contact })
+    }
+
     Timer {
         id: timer
     }
@@ -44,9 +48,6 @@ FocusScope{
 
     FocusScope {
         visible: contact.status == 0 || contact.status == 1 ? true : false
-        function openPreferences() {
-            root.openPreferences("ContactPreferences.qml", { 'selectedContact': contact })
-        }
 
         anchors.fill: parent
         id: chatPage
@@ -202,7 +203,7 @@ FocusScope{
                 implicitWidth: 32
 
                 onClicked: {
-                    openPreferences()
+                    _openPreferences()
                 }
 
                 text: "K"
