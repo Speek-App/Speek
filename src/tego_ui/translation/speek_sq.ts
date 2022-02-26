@@ -62,60 +62,127 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="100"/>
+        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="102"/>
         <source>Field for your nickname</source>
         <extracomment>Description of textbox for setting a your nickname for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="125"/>
+        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="127"/>
         <source>Cancel</source>
         <extracomment>label for button which dismisses a dialog</extracomment>
         <translation>Anulojeni</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="130"/>
+        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="132"/>
         <source>Closes the contact add window</source>
         <extracomment>description for &apos;Cancel&apos; button accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="136"/>
+        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="138"/>
         <source>Add</source>
         <extracomment>button label to finish adding a contact/friend</extracomment>
         <translation>Shtoje</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="144"/>
+        <location filename="../../libtego_ui/ui/qml/AddContactDialog.qml" line="146"/>
         <source>Adds the contact to your contact list</source>
         <extracomment>description for &apos;Add&apos; button for accessibility tech like screen readres</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
+    <name>BackupIdentity</name>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/BackupIdentity.qml" line="24"/>
+        <source>Below you can export your whole user data including all contacts as a zip archive. Please consider the backup like a private key and therefore keep the backup in a safe place. Also don&apos;t, under any cirumstances, share it with other people. Remember we will never ask you for your user data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/BackupIdentity.qml" line="36"/>
+        <source>Export Identity</source>
+        <extracomment>Label for button which allows the exporting of the current identity</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/BackupIdentity.qml" line="42"/>
+        <source>Create a backup of the current identity</source>
+        <extracomment>Description of button which allows the exporting of the current identity for accessibility tech like screen readers</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/BackupIdentity.qml" line="50"/>
+        <source>Show data location</source>
+        <extracomment>Label for button which allows the exporting of the current identity</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/BackupIdentity.qml" line="56"/>
+        <source>Shows the user data location</source>
+        <extracomment>Description of button which allows the opening of the user data folder via the native file explorer</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="134"/>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="78"/>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="95"/>
+        <source>Are you sure you want to send the archive %1 to %2? (size: %3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="82"/>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="99"/>
+        <source>Error when creating the zip archive &lt;%1&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="108"/>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="135"/>
+        <source>File Transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="232"/>
         <source>Open Contact Settings</source>
         <extracomment>Name of the button for opening the conatct settings for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="136"/>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="234"/>
         <source>Shows the contact settings</source>
         <extracomment>Description of the &apos;Open Contact Settings&apos; button for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="357"/>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="387"/>
+        <source>Write a message...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="443"/>
         <source>Message area</source>
         <extracomment>label for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="359"/>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="445"/>
         <source>Write the message to be sent here. Press enter to send</source>
         <extracomment>description of the text area used to send messages for accessibility tech like screen readers</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="486"/>
+        <source>Send folder as zip archive</source>
+        <extracomment>File send context menu command to send a whole folder as a zip archive</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/ChatPage.qml" line="493"/>
+        <source>Send multiple files as zip archive</source>
+        <extracomment>File send context menu command to send multiple files combined as a zip archive</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -150,24 +217,18 @@
         <translation>Riemërtojeni</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactActions.qml" line="84"/>
-        <source>Send File...</source>
-        <extracomment>Context menu command to initiate a file transfer, opens a system file dialog</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/ContactActions.qml" line="90"/>
+        <location filename="../../libtego_ui/ui/qml/ContactActions.qml" line="91"/>
         <source>Export Conversation...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactActions.qml" line="96"/>
+        <location filename="../../libtego_ui/ui/qml/ContactActions.qml" line="97"/>
         <source>Remove</source>
         <extracomment>Context menu command to remove a contact from the contact list</extracomment>
         <translation>Hiqe</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactActions.qml" line="103"/>
+        <location filename="../../libtego_ui/ui/qml/ContactActions.qml" line="104"/>
         <source>Contact options</source>
         <extracomment>Description of the items in the context menu for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
@@ -226,31 +287,31 @@
 <context>
     <name>ContactList</name>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="74"/>
+        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="100"/>
         <source>Online</source>
         <extracomment>Section header in the contact list for users which are online</extracomment>
         <translation>Në linjë</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="76"/>
+        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="102"/>
         <source>Offline</source>
         <extracomment>Section header in the contact list for users which are offline</extracomment>
         <translation>Jo në linjë</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="78"/>
+        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="104"/>
         <source>Requests</source>
         <extracomment>Section header in the contact list for users requesting to be added to the user&apos;s contact list</extracomment>
         <translation>Kërkesa</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="80"/>
+        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="106"/>
         <source>Rejected</source>
         <extracomment>Section header in the contact list for users that have rejected the user&apos;s request to be added to their contact list</extracomment>
         <translation>E hedhur tej</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="87"/>
+        <location filename="../../libtego_ui/ui/qml/ContactList.qml" line="113"/>
         <source>Status for the given contacts</source>
         <extracomment>Description of the section header for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
@@ -304,92 +365,92 @@
         <translation type="vanished">Përgjigje:</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="40"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="39"/>
         <source>Contact list</source>
         <extracomment>Description of the list of contacts for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="124"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="123"/>
         <source>Contact ID for </source>
         <extracomment>Description of text box containing a contact&apos;s contact id for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="128"/>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="209"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="127"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="208"/>
         <source>Unknown user</source>
         <extracomment>A placeholder name for a contact whose name we do not know</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="143"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="142"/>
         <source>Profile Picture: </source>
         <extracomment>Label for text input where users can specify their username</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="150"/>
-        <source>Select Profile Picture</source>
-        <extracomment>Label for button which allows the changing of an user profile picture</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="155"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="154"/>
         <source>Select icon for this contact</source>
         <extracomment>Description of button which allows the selection of a profile picture for an user for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="159"/>
-        <source>Remove Profile Picture</source>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="149"/>
+        <source>Select Picture</source>
+        <extracomment>Label for button which allows the changing of an user profile picture</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="158"/>
+        <source>Remove Picture</source>
         <extracomment>Label for button which allows the removal of a profile picture</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="166"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="165"/>
         <source>Remove icon for this contact</source>
         <extracomment>Description of button which allows the removal of a profile picture for an user for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="177"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="176"/>
         <source>Rename</source>
         <extracomment>Label for button which allows renaming of a contact</extracomment>
         <translation>Riemërtojeni</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="182"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="181"/>
         <source>Renames this contact</source>
         <extracomment>Description of button which renames a contact for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="189"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="188"/>
         <source>Remove</source>
         <extracomment>Label for button which removes a contact from the contact list</extracomment>
         <translation>Hiqe</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="194"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="193"/>
         <source>Removes this contact</source>
         <extracomment>Description of button which removes a user from the contact list for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="205"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="204"/>
         <source>Preferences for contact </source>
         <extracomment>Description of the contents of the &apos;Contacts&apos; window for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="214"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="213"/>
         <source>Contact Preferences Window</source>
         <extracomment>Name of the contact preferences window for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="216"/>
+        <location filename="../../libtego_ui/ui/qml/ContactPreferences.qml" line="215"/>
         <source>A list of all your contacts, with their Speek IDs, and options such as renaming and removing</source>
         <extracomment>Description of what user can do in the contact preferences window for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
@@ -460,19 +521,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactRequestFields.qml" line="48"/>
+        <location filename="../../libtego_ui/ui/qml/ContactRequestFields.qml" line="50"/>
         <source>Field for the contact&apos;s nickname</source>
         <extracomment>Description of textbox for setting a contact&apos;s nickname for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactRequestFields.qml" line="53"/>
+        <location filename="../../libtego_ui/ui/qml/ContactRequestFields.qml" line="55"/>
         <source>Message:</source>
         <extracomment>Label for the contact greeting message text box in the &apos;add new contact&apos; window</extracomment>
         <translation>Mesazh:</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/ContactRequestFields.qml" line="68"/>
+        <location filename="../../libtego_ui/ui/qml/ContactRequestFields.qml" line="70"/>
         <source>Field for the contact&apos;s greeting message</source>
         <extracomment>Description of textbox for setting a new contact&apos;s initial greeting message for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
@@ -481,10 +542,9 @@
 <context>
     <name>GeneralPreferences</name>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="58"/>
         <source>Use a single window for conversations</source>
         <extracomment>Text description of an option to use one single program window for the contact list and the chats</extracomment>
-        <translation>Përdor një dritare të vetme për bisedat</translation>
+        <translation type="vanished">Përdor një dritare të vetme për bisedat</translation>
     </message>
     <message>
         <source>Open links in default browser without prompting</source>
@@ -492,44 +552,50 @@
         <translation type="vanished">Hapi lidhjet në shfletuesin parazgjedhje, pa pyetur</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="31"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="22"/>
         <source>Username</source>
         <extracomment>Label for text input where users can specify their username</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="50"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="43"/>
         <source>Username input field</source>
         <extracomment>Name of the text input used to select the own username</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="52"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="45"/>
         <source>What the own username should be</source>
         <extracomment>Description of what the username text input is for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="73"/>
-        <source>Activate light mode (restart required)</source>
-        <extracomment>Text description of an option to activate a light mode theme</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="88"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="51"/>
         <source>Disable default Rich Text editing</source>
         <extracomment>Text description of an option to activate rich text editing by default which allows the input of emojis and images</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="103"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="66"/>
+        <source>Minimize to Systemtray</source>
+        <extracomment>Text description of an option to minimize to the systemtray</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="82"/>
+        <source>Show notification in Systemtray when a new message arrives and window is minimized</source>
+        <extracomment>Text description of an option to show a notification in the Systemtray when a new message arrives</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="97"/>
         <source>Play audio notifications</source>
         <extracomment>Text description of an option to play audio notifications when contacts log in, log out, and send messages</extracomment>
         <translation>Luaji njoftimet audion</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="120"/>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="136"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="114"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="130"/>
         <source>Volume</source>
         <extracomment>Label for a slider used to adjust audio notification volume
 ----------
@@ -537,59 +603,8 @@ Name of the slider used to adjust audio notification volume for accessibility te
         <translation>Volum</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="148"/>
-        <source>Use custom chat area background</source>
-        <extracomment>Text description of an option to play audio notifications when contacts log in, log out, and send messages</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="166"/>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="190"/>
-        <source>Chat Area Background</source>
-        <extracomment>Label for combobox where users can specify the Background for the chat area
-----------
-Name of the combobox used to select UI langauge for accessibility tech like screen readers</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="192"/>
-        <source>What background the Chat Area uses</source>
-        <extracomment>Description of what the language combox is for for accessibility tech like screen readers</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="201"/>
-        <source>Custom Chat Area Background</source>
-        <extracomment>Label for text input for custom chat area background</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="219"/>
-        <source>Custom chat area background input field</source>
-        <extracomment>Name of the text input used to set a custom chat area background</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="221"/>
-        <source>What the custom chat area background should be</source>
-        <extracomment>Description of what the Custom chat area background input is for accessibility tech like screen readers</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="226"/>
-        <source>Select Image</source>
-        <extracomment>Label for button which allows the selecting of a custom chat area background</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="231"/>
-        <source>Select a custom chat area background image</source>
-        <extracomment>Description of button which allows the selection of a custom chat area background for accessibility tech like screen readers</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="239"/>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="277"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="144"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="182"/>
         <source>Language</source>
         <extracomment>Label for combobox where users can specify the UI language
 ----------
@@ -597,12 +612,12 @@ Name of the combobox used to select UI langauge for accessibility tech like scre
         <translation type="unfinished">Gjuhë</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="265"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="170"/>
         <source>Restart Speek to apply changes</source>
         <translation type="unfinished">Riniseni Speek-in që të zbatohen ndryshimet</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="279"/>
+        <location filename="../../libtego_ui/ui/qml/GeneralPreferences.qml" line="184"/>
         <source>What language Speek will use</source>
         <extracomment>Description of what the language combox is for for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
@@ -622,7 +637,7 @@ Name of the combobox used to select UI langauge for accessibility tech like scre
 <context>
     <name>LanguagesModel</name>
     <message>
-        <location filename="../../libtego_ui/ui/LanguagesModel.cpp" line="40"/>
+        <location filename="../../libtego_ui/ui/LanguagesModel.cpp" line="41"/>
         <source>System default</source>
         <translation>Parazgjedhje sistemi</translation>
     </message>
@@ -630,7 +645,7 @@ Name of the combobox used to select UI langauge for accessibility tech like scre
 <context>
     <name>Main</name>
     <message>
-        <location filename="../main.cpp" line="103"/>
+        <location filename="../main.cpp" line="111"/>
         <source>Speek Error</source>
         <translation>Gabim Speek-i</translation>
     </message>
@@ -638,9 +653,9 @@ Name of the combobox used to select UI langauge for accessibility tech like scre
 <context>
     <name>MainToolBar</name>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="31"/>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="33"/>
         <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="133"/>
-        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="164"/>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="159"/>
         <source>Add Contact</source>
         <extracomment>Tooltip text for the button that launches the dialog box for adding a new contact
 ----------
@@ -650,19 +665,19 @@ Context menu command to open the chat screen in a separate window</extracomment>
         <translation>Shtoni Kontakt</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="41"/>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="43"/>
         <source>View Id</source>
         <extracomment>Tooltip text for the button that launches the dialog box for adding a new contact</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="51"/>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="53"/>
         <source>Preferences</source>
         <extracomment>Tooltip text for the button that launches program preferences window</extracomment>
         <translation>Parapëlqime</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="81"/>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="83"/>
         <source>Online</source>
         <translation type="unfinished">Në linjë</translation>
     </message>
@@ -679,19 +694,31 @@ Context menu command to open the chat screen in a separate window</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="169"/>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="148"/>
+        <source>Contact search</source>
+        <extracomment>Name of the text input used to filter the contacts</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="150"/>
+        <source>Which contact to find</source>
+        <extracomment>Description of what the contact search filter is for accessibility tech like screen readers</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="164"/>
         <source>View Speek ID</source>
         <extracomment>Context menu command to open a window showing the selected contact&apos;s details</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="175"/>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="171"/>
         <source>Open other Identity</source>
         <extracomment>Context menu command to remove a contact from the contact list</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="183"/>
+        <location filename="../../libtego_ui/ui/qml/MainToolBar.qml" line="179"/>
         <source>Settings</source>
         <extracomment>Context menu command to open the settings dialog</extracomment>
         <translation type="unfinished"></translation>
@@ -700,34 +727,44 @@ Context menu command to open the chat screen in a separate window</extracomment>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../libtego_ui/ui/MainWindow.cpp" line="155"/>
+        <location filename="../../libtego_ui/ui/MainWindow.cpp" line="158"/>
         <source>Version Seperator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/MainWindow.cpp" line="189"/>
+        <location filename="../../libtego_ui/ui/MainWindow.cpp" line="192"/>
         <source>Remove %1</source>
         <translation>Hiqe</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/MainWindow.cpp" line="190"/>
+        <location filename="../../libtego_ui/ui/MainWindow.cpp" line="193"/>
         <source>Do you want to permanently remove %1?</source>
         <translation>Doni të hiqet %1 përgjithmonë?</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="70"/>
+        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="46"/>
+        <source>Quit</source>
+        <translation type="unfinished">Dilni</translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="78"/>
+        <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="104"/>
         <source>Main Toolbar</source>
         <extracomment>Name of the main toolbar for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="72"/>
+        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="106"/>
         <source>Toolbar with connection status, add contact button, and preferences button</source>
         <extracomment>Description of the main toolbar for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="94"/>
+        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="128"/>
         <source>Contact pane</source>
         <extracomment>Name of the pane holding the user&apos;s contacts for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
@@ -736,77 +773,83 @@ Context menu command to open the chat screen in a separate window</extracomment>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="30"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="40"/>
         <source>%1 is offline</source>
         <extracomment>%1 nickname</extracomment>
         <translation>%1 s’është në linjë</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="208"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="223"/>
         <source>File transfer file name</source>
         <extracomment>Description of the text displaying the filename of a file transfer, used by accessibility tech like screen readres</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="227"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="242"/>
         <source>File transfer progress</source>
         <extracomment>Description of progress bar displaying the file transfer progress, used by accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="242"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="257"/>
         <source>File transfer status</source>
         <extracomment>Description of label displaying the current status of a file transfer, used by accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="248"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="263"/>
         <source>Download &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="265"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="280"/>
         <source>Download</source>
         <extracomment>Label for file transfer &apos;Download&apos; button for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="267"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="282"/>
         <source>Download file</source>
         <extracomment>Description of what the file transfer &apos;Download&apos; button does for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="282"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="306"/>
         <source>Reject file transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="290"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="314"/>
         <source>Cancel file transfer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="309"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="333"/>
         <source>Cancel or reject</source>
         <extracomment>Label for file transfer &apos;Cancel&apos; button for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="311"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="335"/>
         <source>Cancels or rejects a file transfer</source>
         <extracomment>Description of what the file transfer &apos;Cancel&apos; button does for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="364"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="398"/>
         <source>Quote</source>
         <extracomment>Context menu quote message</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="372"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="406"/>
         <source>Save Image</source>
+        <extracomment>Context menu quote message</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="416"/>
+        <source>View Image</source>
         <extracomment>Context menu quote message</extracomment>
         <translation type="unfinished"></translation>
     </message>
@@ -830,14 +873,14 @@ Context menu command to open the chat screen in a separate window</extracomment>
         <translation type="vanished">Shtojeni si Kontakt</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="341"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="375"/>
         <source>Copy Message</source>
         <extracomment>Text for context menu command to copy an entire message to clipboard</extracomment>
         <translation>Kopjo Mesazhin</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="350"/>
-        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="357"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="384"/>
+        <location filename="../../libtego_ui/ui/qml/MessageDelegate.qml" line="391"/>
         <source>Copy Selection</source>
         <extracomment>Text for context menu command to copy selected text to clipboard</extracomment>
         <translation>Kopjo Përzgjedhjen</translation>
@@ -867,28 +910,36 @@ Context menu command to open the chat screen in a separate window</extracomment>
 <context>
     <name>NetworkSetupWizard</name>
     <message>
-        <location filename="../../libtego_ui/ui/qml/NetworkSetupWizard.qml" line="101"/>
         <source>This computer&apos;s Internet connection is free of obstacles. I would like to connect directly to the Tor network.</source>
         <extracomment>A label with directions for when to use the &apos;Connect&apos; button</extracomment>
-        <translation>Lidhja në Internet e këtij kompjuteri është pa pengesa. Do të doja të lidhem drejtpërsëdrejti me rrjetin Tor.</translation>
+        <translation type="vanished">Lidhja në Internet e këtij kompjuteri është pa pengesa. Do të doja të lidhem drejtpërsëdrejti me rrjetin Tor.</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/NetworkSetupWizard.qml" line="111"/>
         <source>Connect</source>
         <extracomment>Label for button to connect to the Tor network</extracomment>
-        <translation>Lidhu</translation>
+        <translation type="vanished">Lidhu</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/NetworkSetupWizard.qml" line="135"/>
         <source>This computer&apos;s Internet connection is censored, filtered, or proxied. I need to configure network settings.</source>
         <extracomment>A label with directions for when to use the &apos;Configure&apos; button</extracomment>
-        <translation>Lidhja në Internet e këtij kompjuteri është e censuruar, e filtruar ose bëhet përmes një ndërmjetësi. Kam nevojë të formësoj rregullime rrjeti.</translation>
+        <translation type="vanished">Lidhja në Internet e këtij kompjuteri është e censuruar, e filtruar ose bëhet përmes një ndërmjetësi. Kam nevojë të formësoj rregullime rrjeti.</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/NetworkSetupWizard.qml" line="145"/>
         <source>Configure</source>
         <extracomment>Label for button to configure the Tor daemon beore connecting to the Tor network</extracomment>
-        <translation>Formësojeni</translation>
+        <translation type="vanished">Formësojeni</translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/NetworkSetupWizard.qml" line="107"/>
+        <source>Launch Speek.Chat</source>
+        <extracomment>Label for button to connect to the Tor network</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/NetworkSetupWizard.qml" line="144"/>
+        <source>Configure Network</source>
+        <extracomment>Label for button to configure the Tor daemon beore connecting to the Tor network</extracomment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -948,40 +999,52 @@ Context menu command to open the chat screen in a separate window</extracomment>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="12"/>
+        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="13"/>
         <source>Speek Preferences</source>
         <translation>Parapëlqime për Speek-in</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="43"/>
+        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="44"/>
         <source>Menu Tabs</source>
         <extracomment>Name of the tab bar for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="49"/>
+        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="69"/>
         <source>General</source>
         <extracomment>Title of the general settings tab</extracomment>
         <translation>Të përgjithshme</translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="75"/>
+        <source>Style</source>
+        <extracomment>Title of the general settings tab</extracomment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Language</source>
         <translation type="vanished">Gjuhë</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="55"/>
+        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="81"/>
         <source>Contacts</source>
         <extracomment>Title of the contacts list tab</extracomment>
         <translation>Kontakte</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="61"/>
+        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="87"/>
         <source>Tor</source>
         <extracomment>Title of the tor tab, contains tor settings and logs</extracomment>
         <translation>Tor</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="67"/>
+        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="93"/>
+        <source>Backup</source>
+        <extracomment>Title of the backup tab</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/PreferencesDialog.qml" line="99"/>
         <source>About</source>
         <extracomment>Title of the about tab, contains license information and speek version</extracomment>
         <translation>Mbi</translation>
@@ -990,9 +1053,17 @@ Context menu command to open the chat screen in a separate window</extracomment>
 <context>
     <name>QCocoaMenuItem</name>
     <message>
-        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="27"/>
+        <location filename="../../libtego_ui/ui/qml/MainWindow.qml" line="59"/>
         <source>Preference</source>
         <translation>Parapëlqim</translation>
+    </message>
+</context>
+<context>
+    <name>SearchBox</name>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/SearchBox.qml" line="16"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1003,27 +1074,39 @@ Context menu command to open the chat screen in a separate window</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="163"/>
+        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="164"/>
         <source>Add new identity text input field</source>
         <extracomment>Name of the text input used to add a new identity</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="165"/>
+        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="166"/>
         <source>How the new identity should be named</source>
         <extracomment>Description of what the add new identity text input is for accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="170"/>
+        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="171"/>
         <source>Add</source>
         <extracomment>button label to add a new identity</extracomment>
         <translation type="unfinished">Shtoje</translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="181"/>
+        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="182"/>
         <source>Adds a new identity</source>
         <extracomment>description for &apos;Add&apos; button for accessibility tech like screen readres</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="188"/>
+        <source>Close</source>
+        <extracomment>label for button which dismisses a dialog</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/SelectIdentityDialog.qml" line="193"/>
+        <source>Closes the view other identity window</source>
+        <extracomment>description for &apos;Close&apos; button accessibility tech like screen readers</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1040,6 +1123,72 @@ Context menu command to open the chat screen in a separate window</extracomment>
         <source>Quit</source>
         <extracomment>Button title to quit/terminate the program</extracomment>
         <translation>Dilni</translation>
+    </message>
+</context>
+<context>
+    <name>StylePreferences</name>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="29"/>
+        <source>Use a single window for conversations</source>
+        <extracomment>Text description of an option to use one single program window for the contact list and the chats</extracomment>
+        <translation type="unfinished">Përdor një dritare të vetme për bisedat</translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="44"/>
+        <source>Activate light mode (restart required)</source>
+        <extracomment>Text description of an option to activate a light mode theme</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="59"/>
+        <source>Use custom chat area background</source>
+        <extracomment>Text description of an option to play audio notifications when contacts log in, log out, and send messages</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="77"/>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="101"/>
+        <source>Chat Area Background</source>
+        <extracomment>Label for combobox where users can specify the Background for the chat area
+----------
+Name of the combobox used to select UI langauge for accessibility tech like screen readers</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="103"/>
+        <source>What background the Chat Area uses</source>
+        <extracomment>Description of what the language combox is for for accessibility tech like screen readers</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="112"/>
+        <source>Custom Chat Area Background</source>
+        <extracomment>Label for text input for custom chat area background</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="130"/>
+        <source>Custom chat area background input field</source>
+        <extracomment>Name of the text input used to set a custom chat area background</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="132"/>
+        <source>What the custom chat area background should be</source>
+        <extracomment>Description of what the Custom chat area background input is for accessibility tech like screen readers</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="137"/>
+        <source>Select Image</source>
+        <extracomment>Label for button which allows the selecting of a custom chat area background</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/StylePreferences.qml" line="142"/>
+        <source>Select a custom chat area background image</source>
+        <extracomment>Description of button which allows the selection of a custom chat area background for accessibility tech like screen readers</extracomment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1111,9 +1260,8 @@ Context menu command to open the chat screen in a separate window</extracomment>
 <context>
     <name>TorConfigurationPage</name>
     <message>
-        <location filename="../../libtego_ui/ui/qml/TorConfigurationPage.qml" line="51"/>
         <source>Does this computer need a proxy to access the internet?</source>
-        <translation>Ka nevojë për ndërmjetës ky kompjuter, që të lidhet në internet?</translation>
+        <translation type="vanished">Ka nevojë për ndërmjetës ky kompjuter, që të lidhet në internet?</translation>
     </message>
     <message>
         <location filename="../../libtego_ui/ui/qml/TorConfigurationPage.qml" line="70"/>
@@ -1212,10 +1360,9 @@ Context menu command to open the chat screen in a separate window</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/TorConfigurationPage.qml" line="191"/>
         <source>Does this computer&apos;s Internet connection go through a firewall that only allows connections to certain ports?</source>
         <extracomment>Description for the purpose of the Allowed Ports textbox</extracomment>
-        <translation>A kalon përmes një firewall-i lidhja internet e këtij kompjuteri, i cili lejon lidhje vetëm te disa prej portave?</translation>
+        <translation type="vanished">A kalon përmes një firewall-i lidhja internet e këtij kompjuteri, i cili lejon lidhje vetëm te disa prej portave?</translation>
     </message>
     <message>
         <location filename="../../libtego_ui/ui/qml/TorConfigurationPage.qml" line="212"/>
@@ -1236,9 +1383,8 @@ Context menu command to open the chat screen in a separate window</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/ui/qml/TorConfigurationPage.qml" line="237"/>
         <source>If this computer&apos;s Internet connection is censored, you will need to obtain and use bridge relays.</source>
-        <translation>Nëse lidhja në Internet e këtij kompjuteri është e censuruar, do t’ju duhet të merrni dhe përdorni &lt;i&gt;bridge relays&lt;/i&gt;.</translation>
+        <translation type="vanished">Nëse lidhja në Internet e këtij kompjuteri është e censuruar, do t’ju duhet të merrni dhe përdorni &lt;i&gt;bridge relays&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../../libtego_ui/ui/qml/TorConfigurationPage.qml" line="252"/>
@@ -1424,8 +1570,35 @@ Context menu command to open the chat screen in a separate window</extracomment>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../../libtego_ui/shims/utility.h" line="34"/>
+        <location filename="../../libtego_ui/shims/utility.h" line="42"/>
         <source>Save Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/shims/utility.h" line="345"/>
+        <source>Save File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/shims/utility.h" line="405"/>
+        <source>All files combined too big (max 100MB)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/shims/utility.h" line="418"/>
+        <location filename="../../libtego_ui/shims/utility.h" line="450"/>
+        <source>Invalid folder path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/shims/utility.h" line="427"/>
+        <location filename="../../libtego_ui/shims/utility.h" line="459"/>
+        <source>Unable to create zip archive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/shims/utility.h" line="435"/>
+        <source>No files selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1436,6 +1609,18 @@ Context menu command to open the chat screen in a separate window</extracomment>
         <source>Share your Speek ID to allow connection requests</source>
         <extracomment>tells the user the purpose of their Speek ID, which is basically a username</extracomment>
         <translation type="unfinished">Ndani me të tjerët ID-në tuaj Speek që të lejoni kërkesa lidhjesh</translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/ViewIdDialog.qml" line="81"/>
+        <source>Close</source>
+        <extracomment>label for button which dismisses a dialog</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../libtego_ui/ui/qml/ViewIdDialog.qml" line="86"/>
+        <source>Closes the view speek id window</source>
+        <extracomment>description for &apos;Close&apos; button accessibility tech like screen readers</extracomment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1491,21 +1676,21 @@ Context menu command to open the chat screen in a separate window</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="233"/>
+        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="235"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="299"/>
         <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="305"/>
-        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="319"/>
-        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="360"/>
+        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="311"/>
+        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="325"/>
+        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="366"/>
         <source>me</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="411"/>
-        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="451"/>
+        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="417"/>
+        <location filename="../../libtego_ui/shims/ConversationModel.cpp" line="457"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
