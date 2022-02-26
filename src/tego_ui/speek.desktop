@@ -2,8 +2,7 @@
 Encoding=UTF-8
 Type=Application
 Name=Speek.Chat
-Categories=Network;InstantMessaging;Chat;FileTransfer;Qt
+Categories=Network;InstantMessaging;Chat;FileTransfer;Qt;
 Comment=Anonymous instant messaging
 Icon=speek
 Exec=speek
-Name[en_US]=speek.desktop
