@@ -1,9 +1,9 @@
 # Maintainer: Speek <contact@speek.network>
 
 pkgname=speek-chat
-pkgver=1.4.2
+pkgver=1.5.0
 pkgrel=1
-pkgdesc="Anonymous metadata-resistant instant messaging with Tor Onion Services v3 support."
+pkgdesc="Messaging app that is anonymous and censorship-resistant by design."
 arch=('i686' 'x86_64')
 url="https://www.speek.network/"
 license=('BSD 3-Clause')
