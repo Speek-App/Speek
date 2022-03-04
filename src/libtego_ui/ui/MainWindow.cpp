@@ -161,9 +161,26 @@ QString MainWindow::accessibleVersion() const
     return retval;
 }
 
+bool MainWindow::appstore_compliant() const
+{
+    #ifdef APPSTORE_COMPLIANT
+        return true;
+    #else
+        return false;
+    #endif
+}
+
 QString MainWindow::aboutText() const
 {
     QFile file(QStringLiteral(":/text/LICENSE"));
+    file.open(QIODevice::ReadOnly);
+    QString text = QString::fromUtf8(file.readAll());
+    return text;
+}
+
+QString MainWindow::eulaText() const
+{
+    QFile file(QStringLiteral(":/text/EULA"));
     file.open(QIODevice::ReadOnly);
     QString text = QString::fromUtf8(file.readAll());
     return text;

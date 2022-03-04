@@ -52,6 +52,8 @@ class MainWindow : public QObject
     Q_PROPERTY(QString version READ version CONSTANT)
     Q_PROPERTY(QString accessibleVersion READ accessibleVersion CONSTANT)
     Q_PROPERTY(QString aboutText READ aboutText CONSTANT)
+    Q_PROPERTY(bool appstore_compliant READ appstore_compliant CONSTANT)
+    Q_PROPERTY(QString eulaText READ eulaText CONSTANT)
     Q_PROPERTY(QVariantMap screens READ screens CONSTANT)
 
 public:
@@ -61,9 +63,11 @@ public:
     bool showUI();
 
     QString aboutText() const;
+    QString eulaText() const;
     QString version() const;
     QString accessibleVersion() const;
     QVariantMap screens() const;
+    bool appstore_compliant() const;
 
     Q_INVOKABLE bool showRemoveContactDialog(shims::ContactUser *user);
 

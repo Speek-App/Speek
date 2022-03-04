@@ -133,7 +133,7 @@ Item {
 
         Button {
             text: qsTr("Configure")
-            visible: torControl.hasOwnership
+            visible: torControl.hasOwnership ? !uiMain.appstore_compliant : false
             onClicked: {
                 var object = createDialog("NetworkSetupWizard.qml")
                 object.visible = true

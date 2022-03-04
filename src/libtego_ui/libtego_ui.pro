@@ -14,6 +14,10 @@ CONFIG(release,debug|release):DEFINES += QT_NO_DEBUG_OUTPUT QT_NO_WARNING_OUTPUT
 # INCLUDEPATH += $${PWD}
 # INCLUDEPATH += $${PWD}/../extern/fmt/include
 
+!isEmpty(APPSTORE_COMPLIANT) {
+    DEFINES += "APPSTORE_COMPLIANT=1"
+}
+
 macx {
     QT += macextras
 }

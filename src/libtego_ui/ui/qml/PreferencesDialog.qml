@@ -47,7 +47,7 @@ ApplicationWindow {
             frameOverlap: 1
             tab: Rectangle {
                 color: styleData.selected ? palette.window : palette.base
-                implicitWidth: Math.max(text.width + 4, 80)
+                implicitWidth: Math.max(text.width + 16, 80)
                 implicitHeight: 30
                 radius: 2
                 Text {
@@ -98,6 +98,13 @@ ApplicationWindow {
             //: Title of the about tab, contains license information and speek version
             title: qsTr("About")
             source: Qt.resolvedUrl("AboutPreferences.qml")
+        }
+
+        Tab {
+            parent: uiMain.appstore_compliant ? parent : null
+            //: Title of the about tab, contains help and contact information
+            title: qsTr("Help&Contact")
+            source: Qt.resolvedUrl("HelpAndContactPreferences.qml")
         }
     }
 

@@ -95,16 +95,32 @@ ApplicationWindow {
         Column {
             spacing: 8
             Image{
+                visible: !uiMain.appstore_compliant
                 source: "qrc:/icons/start.png"
                 width: 150
                 height: 150
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 
+            TextArea {
+                visible: uiMain.appstore_compliant
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                width: parent.width
+
+                readOnly: true
+                text: uiMain.eulaText
+                textFormat: TextEdit.PlainText
+                wrapMode: TextEdit.Wrap
+
+                Accessible.description: qsTr("The EULA of Speek")
+                Accessible.name: qsTr("EULA")
+            }
+
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: Label for button to connect to the Tor network
-                text: qsTr("Launch Speek.Chat")
+                text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek.Chat") : qsTr("Launch Speek.Chat")
                 isDefault: true
                 onClicked: {
                     // Reset to defaults and proceed to bootstrap page
@@ -120,12 +136,14 @@ ApplicationWindow {
             }
 
             Rectangle {
+                visible: !uiMain.appstore_compliant
                 height: 1
                 width: parent.width
                 color: palette.mid
             }
 
             Button {
+                visible: !uiMain.appstore_compliant
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: Label for button to configure the Tor daemon beore connecting to the Tor network
                 text: qsTr("Configure Network")

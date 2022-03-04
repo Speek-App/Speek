@@ -422,6 +422,15 @@ Column {
                     object.visible = true
                 }
             }
+
+            MenuItem {
+                //: Text for context menu command to copy selected text to clipboard
+                text: qsTr("Remove Message")
+                visible: !model.isOutgoing
+                onTriggered: {
+                    textField.text = "Removed"
+                }
+            }
         }
     }
 }
