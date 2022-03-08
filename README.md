@@ -2,9 +2,9 @@
 
 Speek.Chat is currently available for OS X (10.12 or later), Linux and Windows. Visit the [releases page](https://github.com/Speek-App/Speek/releases) for the latest version and changelog. Alternatively, the newest version of Speek.Chat is also available on the [Microsoft Store](https://www.microsoft.com/en-us/p/speek/9plhbg7k1wzn?activetab=pivot:overviewtab).
 
-Speek is the first messaging app that is anonymous and censorship-resistant by design. In addition, it makes no compromise on easy-of-use and is as easy to use as popular messaging applications.
+Speek is the first messaging app that is anonymous and censorship-resistant by design. In addition, it makes no compromise on ease-of-use and is as easy to use as popular messaging applications.
 
-Though, in comparison to popular messaging applications like Telegram, WhatsApp and Signal, Speek is by far the most secure way to converse. Speek is serverless, stores no metadata, requires no ID or phone number and all the messages are end-to-end encrypted and routed via the Tor network. This makes it possible that the IP addresses are never public and the users can stay anonymous.
+Though, in comparison to popular messaging applications like Telegram, WhatsApp and Signal, Speek is by far the most secure way to converse. Speek is serverless, stores no metadata, requires no ID or phone number and all messages are end-to-end encrypted and routed via the Tor network. This makes it possible that IP addresses are never public and users can stay anonymous.
 
 The users are only identified with public keys. Each user can share their public key with others to add them to the contacts list.
 
