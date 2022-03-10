@@ -39,6 +39,8 @@
 #include "error.hpp"
 #include "signals.hpp"
 #include "globals.hpp"
+
+#include <QMessageBox>
 using tego::g_globals;
 
 using namespace Tor;
@@ -194,7 +196,16 @@ void TorManager::start()
     }
 
     QFile torrc(d->dataDir + QStringLiteral("torrc"));
-    if (!torrc.exists() || torrc.size() == 0) {
+
+    torrc.open(QIODevice::ReadOnly);
+    bool disableNetworkSet = false;
+    QTextStream in (&torrc);
+    if (in.readAll().contains("DisableNetwork", Qt::CaseSensitive)) {
+        disableNetworkSet = true;
+    }
+    torrc.close();
+
+    if (!torrc.exists() || torrc.size() == 0 || disableNetworkSet == false) {
         d->configNeeded = true;
         emit configurationNeededChanged();
     }

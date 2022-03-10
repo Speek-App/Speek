@@ -126,12 +126,14 @@ ApplicationWindow {
                     // Reset to defaults and proceed to bootstrap page
                     configPage.reset()
                     configPage.save()
+                    uiSettings.write("eulaAccepted", "true")
                 }
                 Accessible.role: Accessible.Button
                 Accessible.name: text
                 Accessible.onPressAction: {
                     configPage.reset()
                     configPage.save()
+                    uiSettings.write("eulaAccepted", "true")
                 }
             }
 

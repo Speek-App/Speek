@@ -91,7 +91,7 @@ ApplicationWindow {
             }
             delegate: Rectangle{
                 color: ma.hovered === false ? palette.base : palette.alternateBase
-                width: parent.width
+                width: infoArea.width
                 height: 40
                 MouseArea{
                     id: ma
