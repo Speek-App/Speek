@@ -17,107 +17,140 @@ FocusScope {
     property alias acceptableInput: field.acceptableInput
     property bool showCopyButton: true
 
-    RowLayout {
-        id: layout
-        width: parent.width
+    Rectangle{
+        anchors.fill: parent
+        color: palette.base
+        radius: 3
 
-        TextField {
-            id: field
-            Layout.fillWidth: true
-            font.family: "Courier"
-            validator: readOnly ? null : idValidator
-            placeholderText: "speek:"
-            focus: true
+        RowLayout {
+            id: layout
+            width: parent.width
+            spacing: 0
 
-            ContactIDValidator {
-                id: idValidator
+            TextField {
+                id: field
+                Layout.fillWidth: true
+                font.family: "Courier"
+                validator: readOnly ? null : idValidator
+                placeholderText: "speek:"
+                focus: true
+                implicitHeight: contactId.height
 
-                onFailed: {
-                    var contact
-                    if ((contact = matchingContact(field.text)))
-                    {
-                        //: Error message showed when user attempts to add a contact already in their contact list
-                        errorBubble.show(qsTr("<b>%1</b> is already your contact").arg(Utils.htmlEscaped(contact.nickname)))
+                ContactIDValidator {
+                    id: idValidator
+
+                    onFailed: {
+                        var contact
+                        if ((contact = matchingContact(field.text)))
+                        {
+                            //: Error message showed when user attempts to add a contact already in their contact list
+                            errorBubble.show(qsTr("<b>%1</b> is already your contact").arg(Utils.htmlEscaped(contact.nickname)))
+                        }
+                        else if (!isValidID(field.text))
+                        {
+                            //: Error message showed when the id doesn't comply with spec https://gitweb.torproject.org/torspec.git/tree/rend-spec-v3.txt
+                            errorBubble.show(qsTr("This ID is invalid"));
+                        }
+                        else if (matchesIdentity(field.text))
+                        {
+                            //: Error message showed when user attempts to add themselves as a contact in their contact list
+                            errorBubble.show(qsTr("You can't add yourself as a contact"))
+                        }
+                        else
+                        {
+                            //: Error message showed when the provided Speek id is invalid
+                            errorBubble.show(qsTr("Enter an ID starting with <b>speek:</b>"))
+                        }
                     }
-                    else if (!isValidID(field.text))
-                    {
-                        //: Error message showed when the id doesn't comply with spec https://gitweb.torproject.org/torspec.git/tree/rend-spec-v3.txt
-                        errorBubble.show(qsTr("This ID is invalid"));
-                    }
-                    else if (matchesIdentity(field.text))
-                    {
-                        //: Error message showed when user attempts to add themselves as a contact in their contact list
-                        errorBubble.show(qsTr("You can't add yourself as a contact"))
-                    }
-                    else
-                    {
-                        //: Error message showed when the provided Speek id is invalid
-                        errorBubble.show(qsTr("Enter an ID starting with <b>speek:</b>"))
+
+                    onSuccess: {
+                        errorBubble.clear()
                     }
                 }
 
-                onSuccess: {
-                    errorBubble.clear()
+                Bubble {
+                    id: errorBubble
+                    target: field
+                    horizontalAlignment: Qt.AlignLeft
+                    textFormat: Text.RichText
+
+                    function show(value) {
+                        text = value
+                        opacity = 1
+                    }
+
+                    function clear() {
+                        opacity = 0
+                    }
+                }
+
+                function copyLoudly() {
+                    // The Clipboard helper also copies to the X11 selection clipboard
+                    Clipboard.copyText(field.text)
+                    copyBubble.displayed = true
+                    bubbleResetTimer.start()
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    enabled: field.readOnly
+                    onClicked: field.copyLoudly()
+                }
+
+                Bubble {
+                    id: copyBubble
+                    target: field
+                    //: Message displayed when text is copied to the user's clipboard
+                    text: qsTr("Copied to clipboard")
+                    displayed: false
+                    Accessible.role: Accessible.StaticText
+                    Accessible.name: text
+                }
+
+                Timer {
+                    id: bubbleResetTimer
+                    interval: 1000
+                    onTriggered: copyBubble.displayed = false
                 }
             }
-
-            Bubble {
-                id: errorBubble
-                target: field
-                horizontalAlignment: Qt.AlignLeft
-                textFormat: Text.RichText
-
-                function show(value) {
-                    text = value
-                    opacity = 1
-                }
-
-                function clear() {
-                    opacity = 0
-                }
+            Rectangle{
+                implicitWidth:1
+                implicitHeight: parent.height
+                color: palette.window
             }
 
-            function copyLoudly() {
-                // The Clipboard helper also copies to the X11 selection clipboard
-                Clipboard.copyText(field.text)
-                copyBubble.displayed = true
-                bubbleResetTimer.start()
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                enabled: field.readOnly
+            Button {
+                //: Text displayed on a button used to copy somethign to the user's clipboard
+                text: qsTr("Copy")
+                visible: contactId.showCopyButton
                 onClicked: field.copyLoudly()
-            }
+                implicitWidth: 50
+                implicitHeight: 30
 
-            Bubble {
-                id: copyBubble
-                target: field
-                //: Message displayed when text is copied to the user's clipboard
-                text: qsTr("Copied to clipboard")
-                displayed: false
-                Accessible.role: Accessible.StaticText
+                style: ButtonStyle {
+                    background: Rectangle {
+                        radius: 0
+                        color: "transparent"
+                        height: contactId.height
+                        width: 50
+                    }
+                    label: Text {
+                        text: "B"
+                        font.family: iconFont.name
+                        font.pixelSize: 18
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        renderType: Text.QtRendering
+                        color: control.hovered ? palette.text : styleHelper.chatIconColor
+                    }
+                }
+
+                Accessible.role: Accessible.Button
                 Accessible.name: text
+                //: Text description of Speek id copy button for accessibility tech like screen readers
+                Accessible.description: qsTr("Copies the Speek id to the clipboard")
+                Accessible.onPressAction: field.copyLoudly()
             }
-
-            Timer {
-                id: bubbleResetTimer
-                interval: 1000
-                onTriggered: copyBubble.displayed = false
-            }
-        }
-
-        Button {
-            //: Text displayed on a button used to copy somethign to the user's clipboard
-            text: qsTr("Copy")
-            visible: contactId.showCopyButton
-            onClicked: field.copyLoudly()
-
-            Accessible.role: Accessible.Button
-            Accessible.name: text
-            //: Text description of Speek id copy button for accessibility tech like screen readers
-            Accessible.description: qsTr("Copies the Speek id to the clipboard")
-            Accessible.onPressAction: field.copyLoudly()
         }
     }
 }

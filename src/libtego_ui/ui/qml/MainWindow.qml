@@ -75,7 +75,7 @@ ApplicationWindow {
                 // On OS X, avoid bouncing the dock icon forever
                 w.alert(Qt.platform.os == "osx" ? 1000 : 0)
                 if(!window.visible && uiSettings.data.showNotificationSystemtray)
-                    systray.showMessage(qsTr("Update"), ("New Message from %1").arg(user.nickname),SystemTrayIcon.Information, 3000)
+                    systray.showMessage(qsTr("New Message"), ("You just received a new message from %1").arg(user.nickname),SystemTrayIcon.Information, 3000)
             }
         }
         function onContactStatusChanged(user, status) {

@@ -134,7 +134,7 @@ QtObject {
             Label { id: fakeLabel }
             Label { id: fakeLabelSized; font.pointSize: styleHelper.pointSize > 0 ? styleHelper.pointSize : 1 }
 
-            property int pointSize: (Qt.platform.os === "windows") ? 10 : 12
+            property int pointSize: (Qt.platform.os === "windows") ? 10 : (Qt.platform.os === "osx") ? 14 : 12
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
             property string fontFamily: "Noto Sans"
