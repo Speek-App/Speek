@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
+import QtQuick.Controls.Styles 1.2
 import im.utility 1.0
 import im.ricochet 1.0
 
@@ -57,12 +58,69 @@ Item {
 
             Item { height: 1; width: 1 }
 
-            ColorLetterCircle {
+            Rectangle{
                 width: 80
                 height: 80
-                name: visible ? contactInfo.contact.nickname : ""
-                icon: visible ? typeof(contactInfo.contact.icon) !== "undefined" ? contactInfo.contact.icon : "" : ""
                 Layout.alignment: Qt.AlignCenter
+                color: "transparent"
+
+                ColorLetterCircle {
+                    width: parent.width
+                    height: parent.height
+                    name: visible ? contactInfo.contact.nickname : ""
+                    icon: visible ? typeof(contactInfo.contact.icon) !== "undefined" ? contactInfo.contact.icon : "" : ""
+                }
+                Button{
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    width: 35
+                    height: 35
+
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            implicitWidth: 35
+                            implicitHeight: 35
+                            radius: 18
+                            color: palette.base
+                            border.color: styleHelper.borderColor2
+                            border.width: 1
+                        }
+                        label: Text {
+                            text: "I"
+                            font.family: iconFont.name
+                            font.pixelSize: 18
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                            renderType: Text.QtRendering
+                            color: control.hovered ? palette.text : styleHelper.chatIconColor
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
+                        onClicked: {
+                            if (mouse.button === Qt.RightButton) { // 'mouse' is a MouseEvent argument passed into the onClicked signal handler
+                                profilePictureContextMenu.popup()
+                            } else if (mouse.button === Qt.LeftButton) {
+                                fileDialog.open()
+                            }
+                        }
+                    }
+
+                    Menu {
+                        id: profilePictureContextMenu
+
+                        /* QT automatically sets Accessible.text to MenuItem.text */
+                        MenuItem {
+                            //: Profile picture context menu command to remove the image and reset to the default
+                            text: qsTr("Remove Picture")
+                            onTriggered: {
+                                contactInfo.contact.icon = ""
+                            }
+                        }
+                    }
+                }
             }
 
             Label {
@@ -134,7 +192,7 @@ Item {
                 height: 1
                 Layout.fillWidth: true
             }
-
+/*
             RowLayout {
                 z: 2
                 Label {
@@ -165,7 +223,7 @@ Item {
                     Accessible.description: qsTr("Remove icon for this contact")
                 }
             }
-
+*/
             Item { height: 1; width: 1 }
 
             RowLayout {

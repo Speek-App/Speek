@@ -117,6 +117,7 @@ FocusScope {
                 implicitWidth:1
                 implicitHeight: parent.height
                 color: palette.window
+                //visible: contactId.showCopyButton
             }
 
             Button {
@@ -150,6 +151,33 @@ FocusScope {
                 //: Text description of Speek id copy button for accessibility tech like screen readers
                 Accessible.description: qsTr("Copies the Speek id to the clipboard")
                 Accessible.onPressAction: field.copyLoudly()
+            }
+
+            Button {
+                visible: !contactId.showCopyButton
+                implicitWidth: 52
+                implicitHeight: 30
+
+                style: ButtonStyle {
+                    background: Rectangle {
+                        radius: 0
+                        color: "transparent"
+                        height: contactId.height
+                        width: 52
+                    }
+                    label: Text {
+                        text: acceptableInput ? "h" : "g"
+                        font.family: iconFont.name
+                        font.pixelSize: 18
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        renderType: Text.QtRendering
+                        color: acceptableInput ? "#004E00" : styleHelper.chatIconColor
+                    }
+                }
+
+                Accessible.role: Accessible.Button
+                Accessible.name: text
             }
         }
     }

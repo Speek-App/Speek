@@ -38,6 +38,7 @@ Rectangle {
     }
 
     ListView {
+        clip: true
         id: contactListView
         model: contactsModel
         currentIndex: -1
