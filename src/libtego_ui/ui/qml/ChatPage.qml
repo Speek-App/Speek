@@ -296,7 +296,7 @@ FocusScope{
                 bottom: parent.bottom
             }
             height: statusLayout.height + 20
-            color: palette.base//Qt.lighter(palette.midlight, 1.14)
+            color: palette.base
 
             RowLayout {
                 id: statusLayout
@@ -306,6 +306,8 @@ FocusScope{
                 Rectangle {width: 3; height: parent.height; color: "transparent"; }
 
                 Button {
+                    tooltip: "Disable rich text editing"
+
                     style: ButtonStyle {
                         background: Rectangle {
                             implicitWidth: 20
@@ -330,6 +332,8 @@ FocusScope{
                 }
                 Button {
                     visible: richTextActive
+                    tooltip: "Show emoji menu"
+
                     style: ButtonStyle {
                         background: Rectangle {
                                 implicitWidth: 20
@@ -450,8 +454,6 @@ FocusScope{
                         background: Rectangle {
                             implicitWidth: 20
                             implicitHeight: 20
-                            //border.color: control.hovered ? "#dddddd" : "transparent"
-                            //border.width: 1
                             radius: 5
                             color: "transparent"
                         }
@@ -464,6 +466,8 @@ FocusScope{
                             color: control.hovered ? palette.text : styleHelper.chatIconColor
                         }
                     }
+
+                    tooltip: "Send a file"
 
                     MouseArea {
                         anchors.fill: parent
@@ -501,6 +505,8 @@ FocusScope{
                 Button {
                     id: img1
                     visible: richTextActive
+                    tooltip: "Attach a image"
+
                     style: ButtonStyle {
                         background: Rectangle {
                             implicitWidth: 20

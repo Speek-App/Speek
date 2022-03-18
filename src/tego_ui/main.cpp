@@ -476,7 +476,7 @@ static void initTheme()
     lightPalette.setColor(QPalette::Disabled, QPalette::HighlightedText,QColor(115, 115, 115));
 
     SettingsObject settings;
-    if(settings.read("ui.lightMode").toBool() == false || QPalette().color(QPalette::WindowText).value() > QPalette().color(QPalette::Window).value()){
+    if(settings.read("ui.lightMode").toBool() == false/* || QPalette().color(QPalette::WindowText).value() > QPalette().color(QPalette::Window).value()*/){
         qApp->setPalette(darkPalette);
     }
     else{

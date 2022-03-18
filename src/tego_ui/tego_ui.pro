@@ -47,7 +47,7 @@ QT += core gui network quick widgets
 
 LIBS += -lz
 
-VERSION = 1.5.0
+VERSION = 1.5.1
 
 DEFINES += "TEGO_VERSION=$${VERSION}"
 
