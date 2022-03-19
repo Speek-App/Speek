@@ -96,7 +96,7 @@ ApplicationWindow {
             spacing: 8
             Image{
                 visible: !uiMain.appstore_compliant
-                source: "qrc:/icons/start.png"
+                source: "qrc:/icons/speek_light.png"
                 width: 150
                 height: 150
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -120,7 +120,7 @@ ApplicationWindow {
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: Label for button to connect to the Tor network
-                text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek.Chat") : qsTr("Launch Speek.Chat")
+                text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek.Chat") : qsTr("Launch Speek.Chat with default settings")
                 isDefault: true
                 onClicked: {
                     // Reset to defaults and proceed to bootstrap page
@@ -148,7 +148,7 @@ ApplicationWindow {
                 visible: !uiMain.appstore_compliant
                 anchors.horizontalCenter: parent.horizontalCenter
                 //: Label for button to configure the Tor daemon beore connecting to the Tor network
-                text: qsTr("Configure Network")
+                text: qsTr("Advanced Network Configuration")
                 onClicked: window.openConfig()
 
                 Accessible.role: Accessible.Button

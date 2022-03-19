@@ -6,7 +6,7 @@ Rectangle {
     radius: 4
     width: number.width ? Math.max(height, number.width + 4) : 0
     height: number.height ? number.height + 4 : 0
-    color: "#d80000"
+    color: styleHelper.unreadCountBadge
 
     property int value
 

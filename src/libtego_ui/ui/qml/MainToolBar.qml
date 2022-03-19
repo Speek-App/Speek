@@ -109,7 +109,7 @@ ToolBar {
                     font.pointSize: styleHelper.pointSize * 1.1
                     font.bold: true
                     text: control.text
-                    color: control.hovered ? palette.text : styleHelper.chatIconColor
+                    color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                  }

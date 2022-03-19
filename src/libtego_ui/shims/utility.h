@@ -99,12 +99,12 @@ public:
         painter.end();
         QBuffer buffer;
         buffer.open(QIODevice::WriteOnly);
-        if(image2.width() > w_ || image2.height() > h_)
-            image2 = image2.scaled(w_, h_, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        image2.save(&buffer, "png");
+
+        image2 = image2.scaled(w_, h_, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+        image2.save(&buffer, "jpg", 65);
         QString encoded = buffer.data().toBase64();
 
-        encoded = "data:image/png;base64," + encoded;
+        encoded = "data:image/jpg;base64," + encoded;
         return encoded;
     }
 

@@ -23,8 +23,10 @@ QPalette::Disabled QPalette::Highlight 190,190,190
 QPalette::Disabled QPalette::HighlightedText 115,115,115
 darkMode false
 borderColor #dddddd
-chatIconColor #444444
+chatIconColor #a8a8a8
 borderColor2 #dddddd
 emojiPickerBackground #ffffff
 outgoingMessageColor #eaeced
 incomingMessageColor #c4e7ff
+chatIconColorHover #757575
+unreadCountBadge #4bbbef

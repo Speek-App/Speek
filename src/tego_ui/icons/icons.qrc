@@ -102,7 +102,7 @@
         <file>icons_letter/ASCII-228.png</file>
         <file>icons_letter/ASCII-246.png</file>
         <file>icons_letter/ASCII-252.png</file>
-        <file>start.png</file>
+        <file>speek_light.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

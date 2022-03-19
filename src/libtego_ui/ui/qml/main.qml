@@ -145,6 +145,8 @@ QtObject {
             property var emojiPickerBackground: uiMain.themeColor.emojiPickerBackground//darkMode ? palette.window : "white"
             property var outgoingMessageColor: uiMain.themeColor.outgoingMessageColor//darkMode ? "#222222" : "#eaeced"
             property var incomingMessageColor: uiMain.themeColor.incomingMessageColor//darkMode ? "#2b5278" : "#c4e7ff"
+            property var chatIconColorHover: uiMain.themeColor.chatIconColorHover
+            property var unreadCountBadge: uiMain.themeColor.unreadCountBadge
         },
 
         Loader {

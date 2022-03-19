@@ -20,7 +20,7 @@ public:
        //int h = requestedSize.height() > 0 ? requestedSize.height() : size->height();
 
        QString data_string = id;
-       const QByteArray data = QByteArray::fromBase64(data_string.replace("data:image/png;base64,", "").toUtf8());
+       const QByteArray data = QByteArray::fromBase64(data_string.replace("data:image/png;base64,", "").replace("data:image/jpg;base64,", "").toUtf8());
        QPixmap pixmap;
        pixmap.loadFromData(data);
 

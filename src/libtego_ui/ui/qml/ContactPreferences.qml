@@ -18,8 +18,8 @@ Item {
             id: fileDialog
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
-                var b = utility.toBase64_PNG(fileDialog.fileUrl.toString(), 100, 100);
-                if(b.length < 36000)
+                var b = utility.toBase64_PNG(fileDialog.fileUrl.toString(), 200, 200);
+                if(b.length < 55000)
                     contactInfo.contact.icon = b
             }
         }
@@ -34,6 +34,7 @@ Item {
             Layout.preferredWidth: 210
             Layout.minimumWidth: 150
             Layout.fillHeight: true
+            startIndex: 0
 
             Accessible.role: Accessible.List
             //: Description of the list of contacts for accessibility tech like screen readers
@@ -123,14 +124,11 @@ Item {
                 }
             }
 
-            Label {
-                id: nickname
-                Layout.fillWidth: true
-                text: visible ? contactInfo.contact.nickname : ""
-                textFormat: Text.PlainText
-                horizontalAlignment: Qt.AlignHCenter
-                font.pointSize: styleHelper.pointSize + 1
 
+
+
+            RowLayout {
+                id: nicknameLayout
                 property bool renameMode
                 property Item renameItem
                 onRenameModeChanged: {
@@ -146,28 +144,65 @@ Item {
                     }
                 }
 
-                MouseArea { anchors.fill: parent; onDoubleClicked: nickname.renameMode = true }
+                spacing: 0
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignCenter
 
-                Component {
-                    id: renameComponent
+                Label {
+                    id: nickname
+                    Layout.fillWidth: nicknameLayout.renameMode
+                    text: visible ? contactInfo.contact.nickname : ""
+                    textFormat: Text.PlainText
+                    horizontalAlignment: Qt.AlignHCenter
+                    Layout.alignment: Qt.AlignCenter
+                    font.pointSize: styleHelper.pointSize + 1
 
-                    TextField {
-                        id: nameField
-                        anchors {
-                            left: parent.left
-                            right: parent.right
-                            verticalCenter: parent.verticalCenter
+                    MouseArea { anchors.fill: parent; onDoubleClicked: nicknameLayout.renameMode = true }
+
+                    Component {
+                        id: renameComponent
+
+                        TextField {
+                            id: nameField
+                            anchors {
+                                left: parent.left
+                                right: parent.right
+                                verticalCenter: parent.verticalCenter
+                            }
+                            text: contactInfo.contact.nickname
+                            horizontalAlignment: nickname.horizontalAlignment
+                            font.pointSize: nickname.font.pointSize
+                            onEditingFinished: {
+                                contactInfo.contact.nickname = text
+                                nicknameLayout.renameMode = false
+                            }
                         }
-                        text: contactInfo.contact.nickname
-                        horizontalAlignment: nickname.horizontalAlignment
-                        font.pointSize: nickname.font.pointSize
-                        onEditingFinished: {
-                            contactInfo.contact.nickname = text
-                            nickname.renameMode = false
+                    }
+                }
+
+                Button {
+                    Layout.alignment: Qt.AlignTop
+                    onClicked: nicknameLayout.renameMode = !nicknameLayout.renameMode
+
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            implicitWidth: 14
+                            implicitHeight: 14
+                            color: "transparent"
+                        }
+                        label: Text {
+                            text: nicknameLayout.renameMode ? "h" : "A"
+                            font.family: iconFont.name
+                            font.pixelSize: 14
+                            horizontalAlignment: Qt.AlignLeft
+                            renderType: Text.QtRendering
+                            color: control.hovered ? palette.text : styleHelper.chatIconColor
                         }
                     }
                 }
             }
+
+
             Item { height: 1; width: 1 }
 
             ContactIDField {
@@ -187,57 +222,19 @@ Item {
             }
 
             Item { height: 1; width: 1 }
-            Rectangle {
-                color: palette.mid
-                height: 1
-                Layout.fillWidth: true
-            }
-/*
-            RowLayout {
-                z: 2
-                Label {
-                    //: Label for text input where users can specify their username
-                    text: qsTr("Profile Picture: ")
-                    Accessible.role: Accessible.StaticText
-                    Accessible.name: text
-                }
-
-                Button {
-                    //: Label for button which allows the changing of an user profile picture
-                    text: qsTr("Select Picture")
-                    onClicked: fileDialog.open()
-                    Accessible.role: Accessible.Button
-                    Accessible.name: text
-                    //: Description of button which allows the selection of a profile picture for an user for accessibility tech like screen readers
-                    Accessible.description: qsTr("Select icon for this contact")
-                }
-                Button {
-                    //: Label for button which allows the removal of a profile picture
-                    text: qsTr("Remove Picture")
-                    onClicked: {
-                        contactInfo.contact.icon = ""
-                    }
-                    Accessible.role: Accessible.Button
-                    Accessible.name: text
-                    //: Description of button which allows the removal of a profile picture for an user for accessibility tech like screen readers
-                    Accessible.description: qsTr("Remove icon for this contact")
-                }
-            }
-*/
-            Item { height: 1; width: 1 }
 
             RowLayout {
                 Layout.fillWidth: true
-
+                /*
                 Button {
                     //: Label for button which allows renaming of a contact
                     text: qsTr("Rename")
-                    onClicked: nickname.renameMode = !nickname.renameMode
+                    onClicked: nicknameLayout.renameMode = !nicknameLayout.renameMode
                     Accessible.role: Accessible.Button
                     Accessible.name: text
                     //: Description of button which renames a contact for accessibility tech like screen readers
                     Accessible.description: qsTr("Renames this contact")
-                }
+                }*/
 
                 Item { Layout.fillWidth: true; height: 1 }
 

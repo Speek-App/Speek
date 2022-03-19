@@ -26,3 +26,5 @@ borderColor2 #444444
 emojiPickerBackground #1c1c1c
 outgoingMessageColor #222222
 incomingMessageColor #2b5278
+chatIconColorHover #ffffff
+unreadCountBadge #4bbbef

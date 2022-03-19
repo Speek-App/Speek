@@ -221,7 +221,7 @@ FocusScope{
                         font.family: iconFont.name
                         font.pointSize: styleHelper.pointSize * 1.2
                         text: control.text
-                        color: control.hovered ? palette.text : styleHelper.chatIconColor
+                        color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                      }
@@ -321,7 +321,7 @@ FocusScope{
                             font.pixelSize: 20
                             horizontalAlignment: Qt.AlignHCenter
                             renderType: Text.QtRendering
-                            color: control.hovered ? palette.text : styleHelper.chatIconColor
+                            color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
                         }
                     }
 
@@ -347,7 +347,7 @@ FocusScope{
                               font.pixelSize: 20
                               horizontalAlignment: Qt.AlignHCenter
                               renderType: Text.QtRendering
-                              color: control.hovered ? palette.text : styleHelper.chatIconColor
+                              color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
                           }
                      }
 
@@ -463,7 +463,7 @@ FocusScope{
                             font.pixelSize: 20
                             horizontalAlignment: Qt.AlignHCenter
                             renderType: Text.QtRendering
-                            color: control.hovered ? palette.text : styleHelper.chatIconColor
+                            color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
                         }
                     }
 
@@ -520,7 +520,7 @@ FocusScope{
                             font.pixelSize: 20
                             horizontalAlignment: Qt.AlignHCenter
                             renderType: Text.QtRendering
-                            color: control.hovered ? palette.text : styleHelper.chatIconColor
+                            color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
                         }
                     }
 

@@ -6,6 +6,7 @@ import im.ricochet 1.0
 Rectangle {
     id: scroll
     color: palette.base
+    property var startIndex: -1
 
     data: [
         ContactsModel {
@@ -41,7 +42,7 @@ Rectangle {
         clip: true
         id: contactListView
         model: contactsModel
-        currentIndex: -1
+        currentIndex: startIndex
 
 
         pixelAligned: true

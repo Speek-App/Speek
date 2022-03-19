@@ -94,13 +94,13 @@ Item {
                 textFormat: Text.PlainText
             }
         }
-
+/*
         Rectangle {
             width: parent.width
             height: 1
             color: palette.mid
         }
-
+*/
         Label {
             text: bootstrap.summary
             visible: bootstrap.tag !== 'done'

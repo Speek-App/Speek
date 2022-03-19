@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
+import QtQuick.Controls.Styles 1.2
 import im.utility 1.0
 import im.ricochet 1.0
 
@@ -17,11 +18,35 @@ ColumnLayout {
 
     RowLayout {
         z: 2
-        Label {
-            //: Label for text input where users can specify their username
-            text: qsTr("Username")
-            Accessible.role: Accessible.StaticText
-            Accessible.name: text
+        RowLayout {
+            spacing: 0
+            Label {
+                //: Label for text input where users can specify their username
+                text: qsTr("Username")
+                Accessible.role: Accessible.StaticText
+                Accessible.name: text
+            }
+
+            Button {
+                Layout.alignment: Qt.AlignTop
+                tooltip: "Username that gets automatically filled into the \"your username\" field of a contact request. This recommends the contact a username to use for you."
+
+                style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 10
+                        implicitHeight: 10
+                        color: "transparent"
+                    }
+                    label: Text {
+                        text: "N"
+                        font.family: iconFont.name
+                        font.pixelSize: 10
+                        horizontalAlignment: Qt.AlignLeft
+                        renderType: Text.QtRendering
+                        color: control.hovered ? palette.text : styleHelper.chatIconColor
+                    }
+                }
+            }
         }
 
         TextField {
