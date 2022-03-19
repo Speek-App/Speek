@@ -93,7 +93,8 @@ RESOURCES +=\
     backgrounds.qrc \
     fonts.qrc \
     icons/icons.qrc \
-    sounds/sounds.qrc
+    sounds/sounds.qrc \
+    themes.qrc
 
 win32:RC_ICONS = icons/speek.ico
 OTHER_FILES += $${PWD}/../libtego_ui/ui/qml/*

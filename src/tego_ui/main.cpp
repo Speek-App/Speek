@@ -37,6 +37,7 @@
 
 #include <libtego_callbacks.hpp>
 #include <QStyleFactory>
+#include <QtCore/QMetaProperty>
 
 // shim replacements
 #include "shims/TorControl.h"
@@ -46,7 +47,6 @@
 
 static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &errorMessage);
 static void initTranslation();
-static void initTheme();
 
 int main(int argc, char *argv[]) try
 {
@@ -114,7 +114,9 @@ int main(int argc, char *argv[]) try
     QScopedPointer<QLockFile> lockFile(lock);
 
     initTranslation();
-    initTheme();
+
+    QVariantMap theme_color;
+    initTheme(&theme_color);
 
     // init our tor shims
     shims::TorControl::torControl = new shims::TorControl(tegoContext);
@@ -249,7 +251,7 @@ int main(int argc, char *argv[]) try
 
     /* Window */
     QScopedPointer<MainWindow> w(new MainWindow);
-    if (!w->showUI())
+    if (!w->showUI(theme_color))
         return 1;
 
     return a.exec();
@@ -422,66 +424,6 @@ static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &
     }
 
     return true;
-}
-
-static void initTheme()
-{
-    // modify palette to dark
-    QPalette darkPalette;
-    darkPalette.setColor(QPalette::Window,QColor(28,28,28));
-    darkPalette.setColor(QPalette::WindowText,Qt::white);
-    darkPalette.setColor(QPalette::Disabled,QPalette::WindowText,QColor(127,127,127));
-    darkPalette.setColor(QPalette::Base,QColor(18,18,18));
-    darkPalette.setColor(QPalette::AlternateBase,QColor(66,66,66));
-    darkPalette.setColor(QPalette::ToolTipBase,QColor(40,40,40));
-    darkPalette.setColor(QPalette::ToolTipText,Qt::white);
-    darkPalette.setColor(QPalette::Text,Qt::white);
-    darkPalette.setColor(QPalette::Disabled,QPalette::Text,QColor(127,127,127));
-    darkPalette.setColor(QPalette::Dark,QColor(35,35,35));
-    darkPalette.setColor(QPalette::Shadow,QColor(20,20,20));
-    darkPalette.setColor(QPalette::Button,QColor(33,33,33));
-    darkPalette.setColor(QPalette::ButtonText,Qt::white);
-    darkPalette.setColor(QPalette::Disabled,QPalette::ButtonText,QColor(127,127,127));
-    darkPalette.setColor(QPalette::BrightText,Qt::red);
-    darkPalette.setColor(QPalette::Link,QColor(43, 82, 120));
-    darkPalette.setColor(QPalette::Highlight,QColor(43, 82, 120));
-    darkPalette.setColor(QPalette::Disabled,QPalette::Highlight,QColor(80,80,80));
-    darkPalette.setColor(QPalette::HighlightedText,Qt::white);
-    darkPalette.setColor(QPalette::Disabled,QPalette::HighlightedText,QColor(127,127,127));
-    darkPalette.setColor(QPalette::Midlight,QColor(50,50,50));
-
-    QPalette lightPalette;
-    lightPalette.setColor(QPalette::WindowText, QColor(0, 0, 0));
-    lightPalette.setColor(QPalette::Button, QColor(240, 240, 240));
-    lightPalette.setColor(QPalette::Light, QColor(180, 180, 180));
-    lightPalette.setColor(QPalette::Midlight, QColor(200, 200, 200));
-    lightPalette.setColor(QPalette::Dark, QColor(225, 225, 225));
-    lightPalette.setColor(QPalette::Text, QColor(0, 0, 0));
-    lightPalette.setColor(QPalette::BrightText, QColor(0, 0, 0));
-    lightPalette.setColor(QPalette::ButtonText, QColor(0, 0, 0));
-    lightPalette.setColor(QPalette::Base, QColor(255, 255, 255));
-    lightPalette.setColor(QPalette::Window, QColor(240, 240, 240));
-    lightPalette.setColor(QPalette::Shadow, QColor(20, 20, 20));
-    lightPalette.setColor(QPalette::Highlight, QColor(196, 231, 255));
-    lightPalette.setColor(QPalette::HighlightedText, QColor(0, 0, 0));
-    lightPalette.setColor(QPalette::Link, QColor(0, 162, 232));
-    lightPalette.setColor(QPalette::AlternateBase, QColor(225, 225, 225));
-    lightPalette.setColor(QPalette::ToolTipBase, QColor(240, 240, 240));
-    lightPalette.setColor(QPalette::ToolTipText, QColor(0, 0, 0));
-    lightPalette.setColor(QPalette::LinkVisited, QColor(222, 222, 222));
-    lightPalette.setColor(QPalette::Disabled, QPalette::WindowText,QColor(115, 115, 115));
-    lightPalette.setColor(QPalette::Disabled, QPalette::Text,QColor(115, 115, 115));
-    lightPalette.setColor(QPalette::Disabled, QPalette::ButtonText,QColor(115, 115, 115));
-    lightPalette.setColor(QPalette::Disabled, QPalette::Highlight,QColor(190, 190, 190));
-    lightPalette.setColor(QPalette::Disabled, QPalette::HighlightedText,QColor(115, 115, 115));
-
-    SettingsObject settings;
-    if(settings.read("ui.lightMode").toBool() == false/* || QPalette().color(QPalette::WindowText).value() > QPalette().color(QPalette::Window).value()*/){
-        qApp->setPalette(darkPalette);
-    }
-    else{
-        qApp->setPalette(lightPalette);
-    }
 }
 
 static void initTranslation()

@@ -469,6 +469,36 @@ public:
         QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
         openWithDefaultApplication(dir.path());
     }
+
+    Q_INVOKABLE bool createNewTheme(QString name) {
+        QString fileName = QFileDialog::getSaveFileName(nullptr, tr("Save File"), "my_speek_theme", "");
+        if (fileName.isEmpty()) {
+            return false;
+        }
+
+        QString data;
+
+        QFile file(":/themes/"+name);
+        if(!file.open(QIODevice::ReadOnly))
+            return false;
+        else
+            data = file.readAll();
+
+        file.close();
+
+        QFile file2(fileName);
+        if (file2.open(QIODevice::ReadWrite)) {
+            QTextStream stream(&file2);
+            stream << data;
+        }
+        else{
+            return false;
+        }
+
+        file2.close();
+
+        return true;
+    }
 };
 
 #endif // UTILITY_H

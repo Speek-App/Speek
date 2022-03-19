@@ -123,8 +123,18 @@ MainWindow::~MainWindow()
 {
 }
 
-bool MainWindow::showUI()
+void MainWindow::reloadTheme(){
+    QVariantMap _theme_color;
+    initTheme(&_theme_color);
+
+    theme_color = _theme_color;
+
+    emit themeColorChanged();
+}
+
+bool MainWindow::showUI(QVariantMap _theme_color)
 {
+    theme_color = _theme_color;
     qml->rootContext()->setContextProperty(QLatin1String("userIdentity"), shims::UserIdentity::userIdentity);
     qml->rootContext()->setContextProperty(QLatin1String("torControl"), shims::TorControl::torControl);
     qml->rootContext()->setContextProperty(QLatin1String("torInstance"), shims::TorManager::torManager);

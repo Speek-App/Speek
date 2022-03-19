@@ -138,13 +138,13 @@ QtObject {
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
             property string fontFamily: "Noto Sans"
-            property bool darkMode: palette.midlight == "#323232" ? true : false
-            property var borderColor: darkMode ? "#222222" : "#dddddd"
-            property var chatIconColor: darkMode ? "#bbbbbb" : "#444444"
-            property var borderColor2: darkMode ? "#444444" : "#dddddd"
-            property var emojiPickerBackground: darkMode ? palette.window : "white"
-            property var outgoingMessageColor: darkMode ? "#222222" : "#eaeced"
-            property var incomingMessageColor: darkMode ? "#2b5278" : "#c4e7ff"
+            property bool darkMode: uiMain.themeColor.darkMode == "true" ? true : false//palette.midlight == "#323232" ? true : false
+            property var borderColor: uiMain.themeColor.borderColor//darkMode ? "#222222" : "#dddddd"
+            property var chatIconColor: uiMain.themeColor.chatIconColor//darkMode ? "#bbbbbb" : "#444444"
+            property var borderColor2: uiMain.themeColor.borderColor2//darkMode ? "#444444" : "#dddddd"
+            property var emojiPickerBackground: uiMain.themeColor.emojiPickerBackground//darkMode ? palette.window : "white"
+            property var outgoingMessageColor: uiMain.themeColor.outgoingMessageColor//darkMode ? "#222222" : "#eaeced"
+            property var incomingMessageColor: uiMain.themeColor.incomingMessageColor//darkMode ? "#2b5278" : "#c4e7ff"
         },
 
         Loader {

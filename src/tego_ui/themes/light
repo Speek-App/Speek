@@ -1,0 +1,30 @@
+QPalette::WindowText 0,0,0
+QPalette::Button 240,240,240
+QPalette::Light 180,180,180
+QPalette::Midlight 200,200,200
+QPalette::Dark 225,225,225
+QPalette::Text 0,0,0
+QPalette::BrightText 0,0,0
+QPalette::ButtonText 0,0,0
+QPalette::Base 255,255,255
+QPalette::Window 240,240,240
+QPalette::Shadow 20,20,20
+QPalette::Highlight 196,231,255
+QPalette::HighlightedText 0,0,0
+QPalette::Link 0,162,232
+QPalette::AlternateBase 225,225,225
+QPalette::ToolTipBase 240,240,240
+QPalette::ToolTipText 0,0,0
+QPalette::LinkVisited 222,222,222
+QPalette::Disabled QPalette::WindowText 115,115,115
+QPalette::Disabled QPalette::Text 115,115,115
+QPalette::Disabled QPalette::ButtonText 115,115,115
+QPalette::Disabled QPalette::Highlight 190,190,190
+QPalette::Disabled QPalette::HighlightedText 115,115,115
+darkMode false
+borderColor #dddddd
+chatIconColor #444444
+borderColor2 #dddddd
+emojiPickerBackground #ffffff
+outgoingMessageColor #eaeced
+incomingMessageColor #c4e7ff

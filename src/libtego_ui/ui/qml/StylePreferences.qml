@@ -19,6 +19,16 @@ ColumnLayout {
         }
     }
 
+    FileDialog {
+        id: fileDialogTheme
+        onAccepted: {
+            var path = fileDialogTheme.fileUrl.toString();
+            path = path.replace(/^(file:\/{2})/,"");
+            path = decodeURIComponent(path);
+            customTheme.text = path;
+        }
+    }
+
     anchors {
         fill: parent
         margins: 8
@@ -55,7 +65,6 @@ ColumnLayout {
     }
 
     CheckBox {
-        //: Text description of an option to play audio notifications when contacts log in, log out, and send messages
         text: qsTr("Use custom chat area background")
         checked: uiSettings.data.UseCustomChatAreaBackground || false
         onCheckedChanged: {
@@ -140,6 +149,96 @@ ColumnLayout {
             Accessible.name: text
             //: Description of button which allows the selection of a custom chat area background for accessibility tech like screen readers
             Accessible.description: qsTr("Select a custom chat area background image")
+        }
+    }
+
+    Rectangle{
+        color: "transparent"
+        height: 10
+        width: 10
+    }
+
+    RowLayout {
+        z: 2
+        Label {
+            //: Label for the advanced style options
+            text: qsTr("Advanced Options:")
+            Accessible.role: Accessible.StaticText
+            Accessible.name: text
+        }
+    }
+
+    CheckBox {
+        text: qsTr("Use custom theme")
+        checked: uiSettings.data.useCustomTheme || false
+        onCheckedChanged: {
+            uiSettings.write("useCustomTheme", checked)
+        }
+
+        Accessible.role: Accessible.CheckBox
+        Accessible.name: text
+        Accessible.onPressAction: {
+            uiSettings.write("useCustomTheme", checked)
+        }
+    }
+
+    RowLayout {
+        visible: typeof(uiSettings.data.useCustomTheme) !== "undefined" ? uiSettings.data.useCustomTheme : false
+        z: 2
+        Label {
+            //: Label for a custome theme
+            text: qsTr("Custom Theme")
+            Accessible.role: Accessible.StaticText
+            Accessible.name: text
+        }
+
+        TextArea {
+            id: customTheme
+
+            text: typeof(uiSettings.data.customTheme) !== "undefined" ? uiSettings.data.customTheme : ""
+            Layout.minimumWidth: 300
+            Layout.maximumHeight: 33
+
+            onTextChanged: {
+                uiSettings.write("customTheme", customTheme.text)
+            }
+
+            Accessible.role: Accessible.EditableText
+            //: Name of the text input used to set a custom theme
+            Accessible.name: qsTr("Custom theme input field")
+            //: Description of what the Custom theme input is for accessibility tech like screen readers
+            Accessible.description: qsTr("What the custom theme should be")
+        }
+
+        Button {
+            //: Label for button which allows the selecting of a custom theme
+            text: qsTr("Select Theme")
+            onClicked: fileDialogTheme.open()
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: Description of button which allows the selection of a custom theme for accessibility tech like screen readers
+            Accessible.description: qsTr("Select a custom theme file")
+        }
+
+        Button {
+            //: Label for button which allows the creation of a new custom theme
+            text: qsTr("Create New Theme")
+            tooltip: qsTr("Create a new theme based on the currently selected color scheme")
+            onClicked: utility.createNewTheme(uiSettings.data.lightMode ? "light" : "dark")
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: Description of button which allows the creation of a new custom theme for accessibility tech like screen readers
+            Accessible.description: qsTr("Create a new custom theme file")
+        }
+
+        Button {
+            //: Label for button which reloads the theme
+            text: qsTr("Reload Theme")
+            onClicked: uiMain.reloadTheme()
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: Description of button which reloads the theme for accessibility tech like screen readers
+            Accessible.description: qsTr("Reload the theme")
         }
     }
 
