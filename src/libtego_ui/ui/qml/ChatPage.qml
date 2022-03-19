@@ -7,6 +7,7 @@ import im.utility 1.0
 import QtQuick.Dialogs 1.3
 
 FocusScope{
+    id: chatFocusScope
     property ContactUser contact
     property TextArea textField: textInput
     property alias textInputMain: textInput
@@ -44,6 +45,14 @@ FocusScope{
 
     Utility {
        id: utility
+    }
+
+    onVisibleChanged: if (visible) forceActiveFocus()
+
+    property bool active: visible && activeFocusItem !== null
+    onActiveChanged: {
+        if (active)
+            conversationModel.resetUnreadCount()
     }
 
     FocusScope {
@@ -140,14 +149,6 @@ FocusScope{
             visible: false
 
             onAccepted: visible = false;
-        }
-
-        onVisibleChanged: if (visible) forceActiveFocus()
-
-        property bool active: visible && activeFocusItem !== null
-        onActiveChanged: {
-            if (active)
-                conversationModel.resetUnreadCount()
         }
 
         Connections {
