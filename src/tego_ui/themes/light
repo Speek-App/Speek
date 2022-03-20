@@ -30,3 +30,8 @@ outgoingMessageColor #eaeced
 incomingMessageColor #c4e7ff
 chatIconColorHover #757575
 unreadCountBadge #4bbbef
+scrollBar #bbbbbb
+searchBoxText #aaaaaa
+messageBoxText #aaaaaa
+chatBoxBorderColor transparent
+chatBoxBorderColorLeft #dddddd

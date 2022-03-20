@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.0
 
 ApplicationWindow {
     id: contactRequestDialog
-    width: 640
+    width: 740
     height: 200
     minimumWidth: width
     maximumWidth: width
@@ -64,7 +64,7 @@ ApplicationWindow {
         }
 
         Item { height: 1 }
-
+/*
         Rectangle {
             color: palette.mid
             height: 1
@@ -72,7 +72,7 @@ ApplicationWindow {
             Layout.columnSpan: 2
         }
 
-        Item { height: 1 }
+        Item { height: 1 }*/
     }
 
     ContactRequestFields {

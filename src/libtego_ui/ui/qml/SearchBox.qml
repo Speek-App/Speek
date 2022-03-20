@@ -21,7 +21,7 @@ TextArea {
         anchors.verticalCenter: searchBox.verticalCenter
         font.pointSize: styleHelper.pointSize * 0.9
         text: searchBox.placeholderText
-        color: "#aaa"
+        color: styleHelper.searchBoxText
         visible: !searchBox.text
     }
 

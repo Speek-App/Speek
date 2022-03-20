@@ -36,7 +36,7 @@ Rectangle {
         x: parent.width - width - 3
         z: 1000
         visible: messageView.visibleArea.heightRatio < 1
-        color: "#bbbbbb"
+        color: styleHelper.scrollBar
         radius: 14
     }
 

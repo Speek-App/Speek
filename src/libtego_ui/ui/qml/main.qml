@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.0
+import Qt.labs.platform 1.1
 import im.ricochet 1.0
 import "ContactWindow.js" as ContactWindow
 
@@ -83,8 +84,20 @@ QtObject {
                 console.log(request.message)
                 if(request.message !== "123")
                     request.reject();*/
+                //var object = createDialog("ContactRequestDialog.qml", { 'request': request })
+                //object.visible = true
+                if(mainWindow.contactRequestDialogs.length > 1000){
+                    return;
+                }
                 var object = createDialog("ContactRequestDialog.qml", { 'request': request })
-                object.visible = true
+                mainWindow.contactRequestDialogs.push(object)
+
+                if(!mainWindow.visible && uiSettings.data.showNotificationSystemtray){
+                    mainWindow.systray.showMessage(qsTr("New Contact Request"), ("You just received a new contact request"),SystemTrayIcon.Information, 3000)
+                }
+                else{
+                    object.visible = true
+                }
             }
         },
 
@@ -147,6 +160,11 @@ QtObject {
             property var incomingMessageColor: uiMain.themeColor.incomingMessageColor//darkMode ? "#2b5278" : "#c4e7ff"
             property var chatIconColorHover: uiMain.themeColor.chatIconColorHover
             property var unreadCountBadge: uiMain.themeColor.unreadCountBadge
+            property var scrollBar: uiMain.themeColor.scrollBar
+            property var searchBoxText: uiMain.themeColor.searchBoxText
+            property var messageBoxText: uiMain.themeColor.messageBoxText
+            property var chatBoxBorderColor: uiMain.themeColor.chatBoxBorderColor
+            property var chatBoxBorderColorLeft: uiMain.themeColor.chatBoxBorderColorLeft
         },
 
         Loader {

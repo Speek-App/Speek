@@ -256,6 +256,7 @@ FocusScope{
                     left: parent.left
                     right: parent.right
                 }
+                Rectangle { visible: styleHelper.chatBoxBorderColor == "transparent" ? false : true; width: parent.width; height: 1; color: styleHelper.chatBoxBorderColor }
             }
         }
 
@@ -298,6 +299,8 @@ FocusScope{
             }
             height: statusLayout.height + 20
             color: palette.base
+
+            Rectangle {visible: styleHelper.chatBoxBorderColor == "transparent" ? false : true; anchors.top: parent.top; width: parent.width; height: 1; color: styleHelper.chatBoxBorderColor }
 
             RowLayout {
                 id: statusLayout
@@ -398,7 +401,7 @@ FocusScope{
                         font.pixelSize: 13
                         //font.pointSize: styleHelper.pointSize * 0.9
                         text: textInput.placeholderText
-                        color: "#aaa"
+                        color: styleHelper.messageBoxText
                         visible: !textInput.getText(0, textInput.length)
                     }
 

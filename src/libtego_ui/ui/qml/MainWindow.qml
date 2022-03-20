@@ -12,6 +12,8 @@ ApplicationWindow {
     visibility: Window.AutomaticVisibility
 
     property alias searchUserText: toolBar.searchUserText
+    property alias systray: systray
+    property var contactRequestDialogs: []
 
     width: 950
     height: 600
@@ -23,6 +25,11 @@ ApplicationWindow {
     onVisibilityChanged: {
         if(visibility == 3 && uiSettings.data.minimizeToSystemtray){
             this.visible = false;
+        }
+        if(visible){
+            for(var i = 0; i<contactRequestDialogs.length; i++){
+                contactRequestDialogs[i].visible = true;
+            }
         }
     }
 
@@ -141,7 +148,7 @@ ApplicationWindow {
             visible: combinedChatView.visible
             width: 1
             Layout.fillHeight: true
-            color: styleHelper.borderColor
+            color: styleHelper.chatBoxBorderColorLeft
         }
 
         PageView {
