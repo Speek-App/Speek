@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
+import QtQuick.Controls.Styles 1.2
 
 ApplicationWindow {
     id: window
@@ -155,6 +156,18 @@ ApplicationWindow {
                 Accessible.name: text
                 Accessible.onPressAction: {
                     window.openConfig()
+                }
+                style: ButtonStyle {
+                    background: Rectangle {
+                        color: "transparent"
+                    }
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        text: control.text
+                        color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                     }
                 }
             }
         }

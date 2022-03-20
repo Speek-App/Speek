@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Window 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
+import QtQuick.Controls.Styles 1.2
 import im.ricochet 1.0
 import Qt.labs.platform 1.1
 import "ContactWindow.js" as ContactWindow
@@ -14,6 +15,10 @@ ApplicationWindow {
     property alias searchUserText: toolBar.searchUserText
     property alias systray: systray
     property var contactRequestDialogs: []
+    property var contactRequestDialogsLength: 0
+    property alias contactRequestSelectionDialog: toolBar.contactRequestSelectionDialog
+    property var appNotificationsModel: []
+    property alias appNotifications: appNotifications
 
     width: 950
     height: 600
@@ -26,11 +31,11 @@ ApplicationWindow {
         if(visibility == 3 && uiSettings.data.minimizeToSystemtray){
             this.visible = false;
         }
-        if(visible){
+        /*if(visible){
             for(var i = 0; i<contactRequestDialogs.length; i++){
                 contactRequestDialogs[i].visible = true;
             }
-        }
+        }*/
     }
 
     onClosing: {
@@ -90,6 +95,14 @@ ApplicationWindow {
                 audioNotifications.contactOnline.play()
             }
         }
+    }
+
+    AppNotifications{
+        id: appNotifications
+        anchors.right: parent.right
+        anchors.top: parent.top
+        z: 99
+        model: appNotificationsModel
     }
 
     RowLayout {

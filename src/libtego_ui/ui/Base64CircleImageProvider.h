@@ -15,9 +15,8 @@ public:
 
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override
     {
-       Q_UNUSED(size);Q_UNUSED(requestedSize);
-       //int w = requestedSize.width() > 0 ? requestedSize.width() : size->width();
-       //int h = requestedSize.height() > 0 ? requestedSize.height() : size->height();
+       int w = requestedSize.width() > 0 ? requestedSize.width() : size->width();
+       int h = requestedSize.height() > 0 ? requestedSize.height() : size->height();
 
        QString data_string = id;
        const QByteArray data = QByteArray::fromBase64(data_string.replace("data:image/png;base64,", "").replace("data:image/jpg;base64,", "").toUtf8());
@@ -29,12 +28,12 @@ public:
 
        QPainter painter( &map );
        painter.setBrush(Qt::color1);
-       //painter.drawRoundedRect(0,0,pixmap.width(),pixmap.height(),pixmap.width()/2,pixmap.height()/2);
-       painter.drawEllipse(2,2,pixmap.width()-4,pixmap.height()-4);
+       painter.drawEllipse(3,3,pixmap.width()-6,pixmap.height()-6);
        painter.setRenderHint(QPainter::Antialiasing);
 
        pixmap.setMask(map);
-       pixmap = pixmap.scaled(150,150,Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+
+       pixmap = pixmap.scaled(w,h,Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
 
        return pixmap;
     }

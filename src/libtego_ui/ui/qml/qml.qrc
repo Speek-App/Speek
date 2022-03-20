@@ -46,6 +46,8 @@
         <file>BackupIdentity.qml</file>
         <file>StylePreferences.qml</file>
         <file>HelpAndContactPreferences.qml</file>
+        <file>ContactRequestSelectionDialog.qml</file>
+        <file>AppNotifications.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>

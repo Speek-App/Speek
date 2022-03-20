@@ -15,6 +15,7 @@ ToolBar {
     property Action addContact: addContactAction
     property Action preferences: preferencesAction
     property alias searchUserText: searchUser.text
+    property var contactRequestSelectionDialog
 
     style: ToolBarStyle {
         panel: Rectangle {
@@ -74,7 +75,7 @@ ToolBar {
     RowLayout {
         id: toolBarLayout
         width: parent.width
-        spacing: 0
+        spacing: 5
         height: 50
 
         TorStateWidget {
@@ -87,11 +88,7 @@ ToolBar {
             visible: !torstatewidget.visible
             id: contextMenuButton
             implicitHeight: 32
-            implicitWidth: 42
-
-            onClicked: {
-                action: mainContextMenu.popup()
-            }
+            implicitWidth: 32
 
             text: "F"
 
@@ -99,9 +96,7 @@ ToolBar {
                 background: Rectangle {
                     implicitWidth: 28
                     implicitHeight: 28
-                    radius: 5
                     color: "transparent"
-
                 }
                 label: Text {
                     renderType: Text.NativeRendering
@@ -112,6 +107,25 @@ ToolBar {
                     color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
+                    Rectangle{
+                        visible: mainWindow.contactRequestDialogsLength > 0 ? true : false
+                        anchors.right: parent.right
+                        y: -4
+                        width: 16
+                        height: 16
+                        color: styleHelper.unreadCountBadge
+                        radius: width/2
+                        Label{
+                            anchors.right: parent.right
+                            anchors.top: parent.top
+                            width: 16
+                            height: 16
+                            font.pixelSize: 12
+                            text: mainWindow.contactRequestDialogsLength > 99 ? "99" : mainWindow.contactRequestDialogsLength
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                    }
                  }
             }
 
@@ -125,6 +139,14 @@ ToolBar {
                     maximumWidth: toolBarLayout.width
                     //: Tooltip that displays on first launch indicating how to add a new contact
                     text: qsTr("Click to add contacts")
+                }
+            }
+
+            MouseArea{
+                cursorShape: Qt.PointingHandCursor
+                anchors.fill: parent
+                onClicked: {
+                    action: mainContextMenu.popup()
                 }
             }
 
@@ -149,29 +171,44 @@ ToolBar {
             //: Description of what the contact search filter is for accessibility tech like screen readers
             Accessible.description: qsTr("Which contact to find")
         }
+        Rectangle{
+            width: 1
+            height: 1
+            color: "transparent"
+        }
 
         Menu {
             id: mainContextMenu
 
             /* QT automatically sets Accessible.text to MenuItem.text */
             MenuItem {
-                //: Context menu command to open the chat screen in a separate window
+                //: Context menu entry to open the chat screen in a separate window
                 text: qsTr("Add Contact")
                 onTriggered: addContactAction.trigger()
             }
             MenuItem {
-                //: Context menu command to open a window showing the selected contact's details
+                //: Context menu entry to open a window showing the selected contact's details
                 text: qsTr("View Speek ID")
                 onTriggered: viewIdAction.trigger()
             }
-            MenuSeparator { }
+
             MenuItem {
                 visible: !(Qt.platform.os == 'osx')
-                //: Context menu command to remove a contact from the contact list
+                //: Context menu entry to remove a contact from the contact list
                 text: qsTr("Open other Identity")
                 onTriggered: {
                     var object = createDialog("SelectIdentityDialog.qml", { }, window)
                     object.visible = true
+                }
+            }
+            MenuItem {
+                visible: !(Qt.platform.os == 'osx')
+                //: Context menu entry to open the dialog to view all received contact requests
+                text: qsTr("View Contact Requests") + (mainWindow.contactRequestDialogsLength > 0 ? " (" + mainWindow.contactRequestDialogsLength + ")" : "")
+                onTriggered: {
+                    var object = createDialog("ContactRequestSelectionDialog.qml", { }, window)
+                    object.visible = true
+                    contactRequestSelectionDialog = object
                 }
             }
             MenuItem {

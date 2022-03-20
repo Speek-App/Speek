@@ -16,7 +16,7 @@ TextArea {
     property string placeholderText: qsTr("Search")
 
     Text {
-        x: 5
+        x: 10
         //y: 6
         anchors.verticalCenter: searchBox.verticalCenter
         font.pointSize: styleHelper.pointSize * 0.9
@@ -30,6 +30,7 @@ TextArea {
 
     style: TextAreaStyle {
         padding.top: 3
+        padding.left:5
             frame: Rectangle {
                 radius: 8
                 color: palette.window

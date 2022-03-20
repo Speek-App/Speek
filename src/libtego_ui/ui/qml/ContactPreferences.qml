@@ -18,7 +18,7 @@ Item {
             id: fileDialog
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
-                var b = utility.toBase64_PNG(fileDialog.fileUrl.toString(), 200, 200);
+                var b = utility.toBase64_PNG(fileDialog.fileUrl.toString(), 300, 300);
                 if(b.length < 55000)
                     contactInfo.contact.icon = b
             }

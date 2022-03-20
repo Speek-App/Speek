@@ -20,6 +20,8 @@ Rectangle {
     Image {
         height: parent.height
         width: parent.width
+        sourceSize.height: parent.height
+        sourceSize.width: parent.width
         anchors.fill: parent
         source: {
             if(icon == "" || typeof(icon) === "undefined"){

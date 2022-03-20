@@ -40,7 +40,7 @@ GridLayout {
         text: qsTr("Contact Name")
         id: nameField
         Layout.fillWidth: true
-        readOnly: contactFields.readOnly
+        //readOnly: contactFields.readOnly
 
         validator: RegExpValidator{regExp: /^[a-zA-Z0-9\-_, ]+$/}
 

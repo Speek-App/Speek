@@ -203,10 +203,6 @@ FocusScope{
                 implicitHeight: 32
                 implicitWidth: 32
 
-                onClicked: {
-                    _openPreferences()
-                }
-
                 text: "K"
 
                 style: ButtonStyle {
@@ -226,6 +222,14 @@ FocusScope{
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                      }
+                }
+
+                MouseArea{
+                    cursorShape: Qt.PointingHandCursor
+                    anchors.fill: parent
+                    onClicked: {
+                        _openPreferences()
+                    }
                 }
 
                 Accessible.role: Accessible.Button
@@ -329,9 +333,13 @@ FocusScope{
                         }
                     }
 
-                    onClicked: {
-                        richTextActive = !richTextActive
-                        textInput.text = ""
+                    MouseArea{
+                        cursorShape: Qt.PointingHandCursor
+                        anchors.fill: parent
+                        onClicked: {
+                            richTextActive = !richTextActive
+                            textInput.text = ""
+                        }
                     }
                 }
                 Button {
@@ -355,8 +363,12 @@ FocusScope{
                           }
                      }
 
-                    onClicked: {
-                        emojiVisible = !emojiVisible
+                    MouseArea{
+                        cursorShape: Qt.PointingHandCursor
+                        anchors.fill: parent
+                        onClicked: {
+                            emojiVisible = !emojiVisible
+                        }
                     }
                 }
 
@@ -474,6 +486,7 @@ FocusScope{
                     tooltip: "Send a file"
 
                     MouseArea {
+                        cursorShape: Qt.PointingHandCursor
                         anchors.fill: parent
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
                         onClicked: {
@@ -528,8 +541,12 @@ FocusScope{
                         }
                     }
 
-                    onClicked: {
-                        fileDialog.open()
+                    MouseArea{
+                        cursorShape: Qt.PointingHandCursor
+                        anchors.fill: parent
+                        onClicked: {
+                            fileDialog.open()
+                        }
                     }
                 }
             }

@@ -22,7 +22,33 @@ QtObject {
         var object = component.createObject(parent ? parent : null, (properties !== undefined) ? properties : { })
         if (!object)
             console.log("openDialog:", component.errorString())
-        object.closed.connect(function() { object.destroy() })
+        object.closed.connect(function() {
+            object.destroy();
+        })
+        return object
+    }
+
+    function createDialogRequest(component, properties, parent) {
+        if (typeof(component) === "string")
+            component = Qt.createComponent(component)
+        if (component.status !== Component.Ready)
+            console.log("openDialog:", component.errorString())
+        var object = component.createObject(parent ? parent : null, (properties !== undefined) ? properties : { })
+        if (!object)
+            console.log("openDialog:", component.errorString())
+        object.closed.connect(function() {
+            mainWindow.contactRequestDialogs.splice(mainWindow.contactRequestDialogs.indexOf(object), 1);
+
+            if(mainWindow.appNotificationsModel.indexOf(object) != -1){
+                mainWindow.appNotificationsModel.splice(mainWindow.appNotificationsModel.indexOf(object), 1);
+                mainWindow.appNotifications.model = mainWindow.appNotificationsModel
+            }
+
+            object.destroy();
+            if(typeof(mainWindow.contactRequestSelectionDialog) != "undefined")
+                mainWindow.contactRequestSelectionDialog.contactRequestDialogsChanged();
+            mainWindow.contactRequestDialogsLength = mainWindow.contactRequestDialogs.length;
+        })
         return object
     }
 
@@ -89,14 +115,20 @@ QtObject {
                 if(mainWindow.contactRequestDialogs.length > 1000){
                     return;
                 }
-                var object = createDialog("ContactRequestDialog.qml", { 'request': request })
+                var object = createDialogRequest("ContactRequestDialog.qml", { 'request': request })
                 mainWindow.contactRequestDialogs.push(object)
+                mainWindow.contactRequestDialogsLength = mainWindow.contactRequestDialogs.length
+
+                if(request.message.length > 0 && mainWindow.appNotificationsModel.length <= 3){
+                    mainWindow.appNotificationsModel.push(object)
+                    mainWindow.appNotifications.model = mainWindow.appNotificationsModel
+                }
 
                 if(!mainWindow.visible && uiSettings.data.showNotificationSystemtray){
                     mainWindow.systray.showMessage(qsTr("New Contact Request"), ("You just received a new contact request"),SystemTrayIcon.Information, 3000)
                 }
                 else{
-                    object.visible = true
+                    //object.visible = true
                 }
             }
         },

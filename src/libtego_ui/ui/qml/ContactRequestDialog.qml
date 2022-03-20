@@ -15,10 +15,14 @@ ApplicationWindow {
     title: mainWindow.title
 
     signal closed
-    onVisibleChanged: if (!visible) closed()
+    //onVisibleChanged: if (!visible) closed()
 
     property QtObject request
     property bool hasValidContact: request != null && request.hostname != "" && fields.name.text.length
+
+    property alias contactIdRequest: fields.contactId
+    property alias nameRequest: fields.name
+    property alias messageRequest: fields.message
 
     function close() {
         visible = false
@@ -28,11 +32,13 @@ ApplicationWindow {
         request.nickname = fields.name.text
         request.accept()
         close()
+        closed()
     }
 
     function reject() {
         request.reject()
         close()
+        closed()
     }
 
     function deny() {
@@ -90,7 +96,8 @@ ApplicationWindow {
 
         Component.onCompleted: {
             contactId.text = request.contactId
-            name.text = request.message.split("+")[1].replace(/[^a-zA-Z0-9\-_, ]/g,'')
+            if(request.message.length > 0)
+                name.text = request.message.split("+")[1].replace(/[^a-zA-Z0-9\-_, ]/g,'')
             name.readOnly = false
             name.focus = true
             if(request.message.indexOf("+") !== 0)
@@ -113,8 +120,8 @@ ApplicationWindow {
 
         Button {
             //: Label for button which rejects a contact request when pressed
-            text: qsTr("Reject")
-            onClicked: contactRequestDialog.deny()
+            text: qsTr("Dismiss")
+            onClicked: contactRequestDialog.close()
             Accessible.role: Accessible.Button
             Accessible.name: text
             //: Description of what 'Reject' button does for accessibility tech like screen readers

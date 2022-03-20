@@ -34,7 +34,7 @@ Rectangle {
         rotation: 45
         width: 10
         height: 10
-        x: (horizontalAlignment == Qt.AlignLeft) ? 20 : parent.width - 20
+        x: (horizontalAlignment == Qt.AlignLeft) ? 15 : parent.width - 20
         y: -5
         color: parent.color
         border.color: parent.border.color
