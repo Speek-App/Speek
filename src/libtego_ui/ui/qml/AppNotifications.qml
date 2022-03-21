@@ -24,7 +24,7 @@ ListView {
         opacity: 0.85
         radius: 5
         ColumnLayout{
-            width: parent.width
+            anchors.fill: parent
             spacing: 3
             Item{
                 height: 1
@@ -107,6 +107,9 @@ ListView {
                 Item{
                     width: 5
                 }
+            }
+            Item{
+                height: 1
             }
         }
     }

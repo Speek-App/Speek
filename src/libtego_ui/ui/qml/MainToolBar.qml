@@ -201,7 +201,6 @@ ToolBar {
                 }
             }
             MenuItem {
-                visible: !(Qt.platform.os == 'osx')
                 //: Context menu entry to open the dialog to view all received contact requests
                 text: qsTr("View Contact Requests") + (mainWindow.contactRequestDialogsLength > 0 ? " (" + mainWindow.contactRequestDialogsLength + ")" : "")
                 onTriggered: {
