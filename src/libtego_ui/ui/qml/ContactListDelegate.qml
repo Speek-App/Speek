@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles 1.2
 Rectangle {
     id: delegate
     //color: highlighted ? "#c4e7ff" : palette.base
-    color: highlighted ? palette.highlight : palette.base
+    color: ma.containsMouse ? highlighted ? Qt.lighter(palette.highlight, 0.9): styleHelper.contactListHover : highlighted ? palette.highlight : palette.base
     width: parent != null ? parent.width : 0
     height: search_visible() ? 55 : 0
     visible: search_visible()
@@ -88,8 +88,10 @@ Rectangle {
     }
 
     MouseArea {
+        id: ma
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
+        hoverEnabled: true
 
         onPressed: {
             if (!delegate.ListView.isCurrentItem)

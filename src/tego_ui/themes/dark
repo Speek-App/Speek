@@ -34,3 +34,4 @@ messageBoxText #aaa
 chatBoxBorderColor transparent
 chatBoxBorderColorLeft #222222
 notificationBackground #191919
+contactListHover #191919

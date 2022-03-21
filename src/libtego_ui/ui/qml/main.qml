@@ -178,13 +178,13 @@ QtObject {
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
             property string fontFamily: "Noto Sans"
-            property bool darkMode: uiMain.themeColor.darkMode == "true" ? true : false//palette.midlight == "#323232" ? true : false
-            property var borderColor: uiMain.themeColor.borderColor//darkMode ? "#222222" : "#dddddd"
-            property var chatIconColor: uiMain.themeColor.chatIconColor//darkMode ? "#bbbbbb" : "#444444"
-            property var borderColor2: uiMain.themeColor.borderColor2//darkMode ? "#444444" : "#dddddd"
-            property var emojiPickerBackground: uiMain.themeColor.emojiPickerBackground//darkMode ? palette.window : "white"
-            property var outgoingMessageColor: uiMain.themeColor.outgoingMessageColor//darkMode ? "#222222" : "#eaeced"
-            property var incomingMessageColor: uiMain.themeColor.incomingMessageColor//darkMode ? "#2b5278" : "#c4e7ff"
+            property bool darkMode: uiMain.themeColor.darkMode == "true" ? true : false
+            property var borderColor: uiMain.themeColor.borderColor
+            property var chatIconColor: uiMain.themeColor.chatIconColor
+            property var borderColor2: uiMain.themeColor.borderColor2
+            property var emojiPickerBackground: uiMain.themeColor.emojiPickerBackground
+            property var outgoingMessageColor: uiMain.themeColor.outgoingMessageColor
+            property var incomingMessageColor: uiMain.themeColor.incomingMessageColor
             property var chatIconColorHover: uiMain.themeColor.chatIconColorHover
             property var unreadCountBadge: uiMain.themeColor.unreadCountBadge
             property var scrollBar: uiMain.themeColor.scrollBar
@@ -193,6 +193,7 @@ QtObject {
             property var chatBoxBorderColor: uiMain.themeColor.chatBoxBorderColor
             property var chatBoxBorderColorLeft: uiMain.themeColor.chatBoxBorderColorLeft
             property var notificationBackground: uiMain.themeColor.notificationBackground
+            property var contactListHover: uiMain.themeColor.contactListHover
         },
 
         Loader {
