@@ -225,16 +225,6 @@ Item {
 
             RowLayout {
                 Layout.fillWidth: true
-                /*
-                Button {
-                    //: Label for button which allows renaming of a contact
-                    text: qsTr("Rename")
-                    onClicked: nicknameLayout.renameMode = !nicknameLayout.renameMode
-                    Accessible.role: Accessible.Button
-                    Accessible.name: text
-                    //: Description of button which renames a contact for accessibility tech like screen readers
-                    Accessible.description: qsTr("Renames this contact")
-                }*/
 
                 Item { Layout.fillWidth: true; height: 1 }
 

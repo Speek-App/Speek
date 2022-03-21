@@ -110,8 +110,6 @@ QtObject {
                 console.log(request.message)
                 if(request.message !== "123")
                     request.reject();*/
-                //var object = createDialog("ContactRequestDialog.qml", { 'request': request })
-                //object.visible = true
                 if(mainWindow.contactRequestDialogs.length > 1000){
                     return;
                 }
@@ -126,9 +124,6 @@ QtObject {
 
                 if(!mainWindow.visible && uiSettings.data.showNotificationSystemtray){
                     mainWindow.systray.showMessage(qsTr("New Contact Request"), ("You just received a new contact request"),SystemTrayIcon.Information, 3000)
-                }
-                else{
-                    //object.visible = true
                 }
             }
         },

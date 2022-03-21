@@ -145,14 +145,7 @@ ApplicationWindow {
                     uiSettings.write("eulaAccepted", "true")
                 }
             }
-/*
-            Rectangle {
-                visible: !uiMain.appstore_compliant
-                height: 1
-                width: parent.width
-                color: palette.mid
-            }
-*/
+
             Button {
                 visible: !uiMain.appstore_compliant
                 anchors.horizontalCenter: parent.horizontalCenter

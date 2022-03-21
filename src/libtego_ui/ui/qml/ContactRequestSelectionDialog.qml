@@ -60,10 +60,8 @@ ApplicationWindow {
                 RowLayout{
                     width: parent.width
                     height: parent.height
-                    Rectangle{
+                    Item{
                         width:20
-                        height:1
-                        color:"transparent"
                     }
                     Label{
                         Layout.minimumWidth: (parent.width - 40) / 4
@@ -84,10 +82,8 @@ ApplicationWindow {
                         verticalAlignment: Qt.AlignVCenter
                         text: qsTr("Speek ID")
                     }
-                    Rectangle{
+                    Item{
                         width:20
-                        height:1
-                        color:"transparent"
                     }
                 }
             }
@@ -126,10 +122,8 @@ ApplicationWindow {
                 RowLayout{
                     width: parent.width
                     height: parent.height
-                    Rectangle{
+                    Item{
                         width:20
-                        height:1
-                        color:"transparent"
                     }
                     Label{
                         Layout.minimumWidth: (parent.width - 40) / 4
@@ -156,10 +150,8 @@ ApplicationWindow {
                         text: mainWindow.contactRequestDialogs[index].contactIdRequest.text
                         elide: Text.ElideMiddle
                     }
-                    Rectangle{
+                    Item{
                         width:20
-                        height:1
-                        color:"transparent"
                     }
                 }
             }

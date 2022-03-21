@@ -49,22 +49,6 @@ ColumnLayout {
         }
     }
 
-    /*
-    CheckBox {
-        //: Text description of an option to activate a light mode theme
-        text: qsTr("Activate light mode (restart required)")
-        checked: uiSettings.data.lightMode || false
-        onCheckedChanged: {
-            uiSettings.write("lightMode", checked)
-        }
-
-        Accessible.role: Accessible.CheckBox
-        Accessible.name: text
-        Accessible.onPressAction: {
-            uiSettings.write("lightMode", checked)
-        }
-    }*/
-
     RowLayout {
         visible: typeof(uiSettings.data.UseCustomChatAreaBackground) !== "undefined" ? !uiSettings.data.UseCustomChatAreaBackground : true
         z: 2
@@ -186,10 +170,8 @@ ColumnLayout {
         }
     }
 
-    Rectangle{
-        color: "transparent"
+    Item{
         height: 10
-        width: 10
     }
 
     RowLayout {

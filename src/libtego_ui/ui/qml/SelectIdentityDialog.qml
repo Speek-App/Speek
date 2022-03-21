@@ -124,10 +124,8 @@ ApplicationWindow {
                 RowLayout{
                     width: parent.width
                     height: parent.height
-                    Rectangle{
+                    Item{
                         width:20
-                        height:1
-                        color:"transparent"
                     }
                     Label{
                         Layout.minimumWidth: parent.width / 4

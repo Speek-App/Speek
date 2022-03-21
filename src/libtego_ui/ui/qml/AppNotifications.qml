@@ -12,10 +12,9 @@ ListView {
     height: parent.height/2
     visible: model.length > 0
 
-    header: Rectangle{
+    header: Item{
         width: 5
         height: 8
-        color: "transparent"
     }
 
     delegate: Rectangle{
@@ -27,15 +26,12 @@ ListView {
         ColumnLayout{
             width: parent.width
             spacing: 3
-            Rectangle{
+            Item{
                 width: 5
-                height: 1
-                color: "transparent"
             }
             RowLayout{
-                Rectangle{
+                Item{
                     width: 5
-                    color: "transparent"
                     height: 1
                 }
                 Text{
@@ -45,10 +41,8 @@ ListView {
             }
             RowLayout{
                 width: parent.width
-                Rectangle{
+                Item{
                     Layout.fillWidth: true
-                    color: "transparent"
-                    height: 1
                 }
                 Button {
                     text: qsTr("Dismiss")
@@ -82,10 +76,8 @@ ListView {
                          }
                     }
                 }
-                Rectangle{
+                Item{
                     width: 5
-                    color: "transparent"
-                    height: 1
                 }
                 Button {
                     text: qsTr("View")
@@ -109,18 +101,14 @@ ListView {
                          }
                     }
                 }
-                Rectangle{
+                Item{
                     width: 5
-                    color: "transparent"
-                    height: 1
                 }
             }
         }
     }
 
-    Rectangle{
-        width: 5
+    Item{
         Layout.fillHeight: true
-        color: "transparent"
     }
 }

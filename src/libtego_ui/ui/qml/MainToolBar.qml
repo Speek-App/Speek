@@ -171,10 +171,9 @@ ToolBar {
             //: Description of what the contact search filter is for accessibility tech like screen readers
             Accessible.description: qsTr("Which contact to find")
         }
-        Rectangle{
+        Item{
             width: 1
             height: 1
-            color: "transparent"
         }
 
         Menu {

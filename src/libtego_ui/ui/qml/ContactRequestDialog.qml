@@ -70,15 +70,6 @@ ApplicationWindow {
         }
 
         Item { height: 1 }
-/*
-        Rectangle {
-            color: palette.mid
-            height: 1
-            Layout.fillWidth: true
-            Layout.columnSpan: 2
-        }
-
-        Item { height: 1 }*/
     }
 
     ContactRequestFields {
