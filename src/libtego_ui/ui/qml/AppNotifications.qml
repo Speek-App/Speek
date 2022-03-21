@@ -27,7 +27,7 @@ ListView {
             width: parent.width
             spacing: 3
             Item{
-                width: 5
+                height: 1
             }
             RowLayout{
                 Item{
@@ -38,6 +38,9 @@ ListView {
                     text: "New Contact Request"
                     color: styleHelper.chatIconColorHover
                 }
+            }
+            Item{
+                Layout.fillHeight: true
             }
             RowLayout{
                 width: parent.width
