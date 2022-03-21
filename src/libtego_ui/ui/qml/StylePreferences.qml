@@ -49,6 +49,7 @@ ColumnLayout {
         }
     }
 
+    /*
     CheckBox {
         //: Text description of an option to activate a light mode theme
         text: qsTr("Activate light mode (restart required)")
@@ -61,6 +62,39 @@ ColumnLayout {
         Accessible.name: text
         Accessible.onPressAction: {
             uiSettings.write("lightMode", checked)
+        }
+    }*/
+
+    RowLayout {
+        visible: typeof(uiSettings.data.UseCustomChatAreaBackground) !== "undefined" ? !uiSettings.data.UseCustomChatAreaBackground : true
+        z: 2
+        Label {
+            //: Label for combobox where users can specify the color theme
+            text: qsTr("Theme")
+            Accessible.role: Accessible.StaticText
+            Accessible.name: text
+        }
+
+        ComboBox {
+            currentIndex: typeof(uiSettings.data.theme) !== "undefined" ? model.indexOf(uiSettings.data.theme) : 0
+            Layout.minimumWidth: 200
+            model: [
+                "Dark-Blue",
+                "Dark",
+                "Light",
+            ]
+
+            onActivated: {
+                var back = model[index]
+                uiSettings.write("theme", back)
+                uiMain.reloadTheme()
+            }
+
+            Accessible.role: Accessible.ComboBox
+            //: Name of the combobox used to select the color theme for accessibility tech like screen readers
+            Accessible.name: qsTr("Color Theme")
+            //: Description of what the theme is for for accessibility tech like screen readers
+            Accessible.description: qsTr("What theme speek uses")
         }
     }
 

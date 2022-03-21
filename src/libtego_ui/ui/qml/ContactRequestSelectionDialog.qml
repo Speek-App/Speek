@@ -51,7 +51,7 @@ ApplicationWindow {
             id: listview
             y: 25
             width: parent.width
-            height: parent.height - 120
+            height: parent.height - 80
             header: Rectangle{
                 color: palette.base
                 width: infoArea.width

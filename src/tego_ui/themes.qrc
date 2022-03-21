@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>themes/dark</file>
         <file>themes/light</file>
+        <file>themes/dark-blue</file>
     </qresource>
 </RCC>

@@ -25,7 +25,7 @@ GridLayout {
         id: contactIdField
         Layout.fillWidth: true
         readOnly: contactFields.readOnly
-        showCopyButton: false
+        showCopyButton: contactFields.readOnly
     }
 
     Label {

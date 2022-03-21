@@ -144,11 +144,14 @@ static void initTheme(QVariantMap* theme_color)
 {
     SettingsObject settings;
     if(settings.read("ui.useCustomTheme").toBool() == false || settings.read("ui.customTheme").toString().isEmpty()){
-        if(settings.read("ui.lightMode").toBool() == false/* || QPalette().color(QPalette::WindowText).value() > QPalette().color(QPalette::Window).value()*/){
-            qApp->setPalette(load_palette_from_file(":/themes/dark", theme_color));
+        if(settings.read("ui.theme").toString().isEmpty()){
+            if(settings.read("ui.lightMode").toBool())
+                qApp->setPalette(load_palette_from_file(":/themes/light", theme_color));
+            else
+                qApp->setPalette(load_palette_from_file(":/themes/dark-blue", theme_color));
         }
         else{
-            qApp->setPalette(load_palette_from_file(":/themes/light", theme_color));
+            qApp->setPalette(load_palette_from_file(":/themes/"+settings.read("ui.theme").toString().toLower(), theme_color));
         }
     }
     else{

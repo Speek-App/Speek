@@ -1,7 +1,7 @@
-QPalette::Window 28,28,28
+QPalette::Window 28,40,51
 QPalette::WindowText 255,255,255
 QPalette::Disabled QPalette::WindowText 127,127,127
-QPalette::Base 18,18,18
+QPalette::Base 23,33,43
 QPalette::AlternateBase 66,66,66
 QPalette::ToolTipBase 40,40,40
 QPalette::ToolTipText 255,255,255
@@ -9,7 +9,7 @@ QPalette::Text 255,255,255
 QPalette::Disabled QPalette::Text 127,127,127
 QPalette::Dark 35,35,35
 QPalette::Shadow 20,20,20
-QPalette::Button 33,33,33
+QPalette::Button 14,22,33
 QPalette::ButtonText 255,255,255
 QPalette::Disabled QPalette::ButtonText 127,127,127
 QPalette::BrightText 255,0,0
@@ -20,17 +20,17 @@ QPalette::HighlightedText 255,255,255
 QPalette::Disabled QPalette::HighlightedText 127,127,127
 QPalette::Midlight 50,50,50
 darkMode true
-borderColor #222222
-chatIconColor #bbbbbb
-borderColor2 #444444
-emojiPickerBackground #1c1c1c
-outgoingMessageColor #222222
-incomingMessageColor #2b5278
+borderColor #101922
+chatIconColor #6c7883
+borderColor2 #17212b
+emojiPickerBackground #141c24
+outgoingMessageColor #2b5278
+incomingMessageColor #182533
 chatIconColorHover #ffffff
 unreadCountBadge #4bbbef
 scrollBar #555555
-searchBoxText #aaa
-messageBoxText #aaa
-chatBoxBorderColor transparent
-chatBoxBorderColorLeft #222222
-notificationBackground #191919
+searchBoxText #6c7883
+messageBoxText #6c7883
+chatBoxBorderColor #101922
+chatBoxBorderColorLeft #101922
+notificationBackground #27313b

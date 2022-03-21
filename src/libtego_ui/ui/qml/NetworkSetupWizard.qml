@@ -95,12 +95,20 @@ ApplicationWindow {
 
         Column {
             spacing: 8
-            Image{
+            Rectangle{
                 visible: !uiMain.appstore_compliant
-                source: "qrc:/icons/speek_light.png"
                 width: 150
                 height: 150
+                radius: 20
+                color: palette.base
                 anchors.horizontalCenter: parent.horizontalCenter
+                Image{
+                    source: "qrc:/icons/speeklogo2.png"
+                    width: 110
+                    height: 110
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                }
             }
 
             TextArea {

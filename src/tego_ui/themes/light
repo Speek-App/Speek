@@ -7,7 +7,7 @@ QPalette::Text 0,0,0
 QPalette::BrightText 0,0,0
 QPalette::ButtonText 0,0,0
 QPalette::Base 255,255,255
-QPalette::Window 240,240,240
+QPalette::Window 245,245,245
 QPalette::Shadow 20,20,20
 QPalette::Highlight 196,231,255
 QPalette::HighlightedText 0,0,0
@@ -22,9 +22,9 @@ QPalette::Disabled QPalette::ButtonText 115,115,115
 QPalette::Disabled QPalette::Highlight 190,190,190
 QPalette::Disabled QPalette::HighlightedText 115,115,115
 darkMode false
-borderColor #dddddd
+borderColor transparent
 chatIconColor #a8a8a8
-borderColor2 #dddddd
+borderColor2 #ececec
 emojiPickerBackground #ffffff
 outgoingMessageColor #eaeced
 incomingMessageColor #c4e7ff
@@ -33,5 +33,6 @@ unreadCountBadge #4bbbef
 scrollBar #bbbbbb
 searchBoxText #aaaaaa
 messageBoxText #aaaaaa
-chatBoxBorderColor transparent
-chatBoxBorderColorLeft #dddddd
+chatBoxBorderColor #f3f1f1
+chatBoxBorderColorLeft #f3f1f1
+notificationBackground #e9e9e9

@@ -10,6 +10,7 @@ ListView {
     spacing: 5
     width: 210
     height: parent.height/2
+    visible: model.length > 0
 
     header: Rectangle{
         width: 5
@@ -20,7 +21,8 @@ ListView {
     delegate: Rectangle{
         width: 200
         height: 60
-        color: "#383838"
+        color: styleHelper.notificationBackground//"#383838"
+        opacity: 0.85
         radius: 5
         ColumnLayout{
             width: parent.width

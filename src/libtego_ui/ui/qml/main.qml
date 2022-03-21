@@ -197,6 +197,7 @@ QtObject {
             property var messageBoxText: uiMain.themeColor.messageBoxText
             property var chatBoxBorderColor: uiMain.themeColor.chatBoxBorderColor
             property var chatBoxBorderColorLeft: uiMain.themeColor.chatBoxBorderColorLeft
+            property var notificationBackground: uiMain.themeColor.notificationBackground
         },
 
         Loader {
