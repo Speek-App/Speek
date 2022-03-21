@@ -109,7 +109,7 @@ ToolBar {
                     horizontalAlignment: Text.AlignHCenter
                     Rectangle{
                         visible: mainWindow.contactRequestDialogsLength > 0 ? true : false
-                        anchors.right: parent.right
+                        x: 13
                         y: -4
                         width: 16
                         height: 16

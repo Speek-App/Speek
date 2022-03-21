@@ -20,10 +20,10 @@ ApplicationWindow {
     property var appNotificationsModel: []
     property alias appNotifications: appNotifications
 
-    width: 950
+    width: 1000
     height: 600
     minimumHeight: 400
-    minimumWidth: uiSettings.data.combinedChatWindow ? 750 : 350
+    minimumWidth: uiSettings.data.combinedChatWindow ? 880 : 480
 
     onMinimumWidthChanged: width = Math.max(width, minimumWidth)
 
@@ -108,52 +108,85 @@ ApplicationWindow {
     RowLayout {
         anchors.fill: parent
         spacing: 0
-
-        ColumnLayout {
-            spacing: 0
+        Rectangle{
+            id: leftColumn
             Layout.preferredWidth: combinedChatView.visible ? 220 : 0
             Layout.fillWidth: !combinedChatView.visible
+            Layout.fillHeight: true
+            ColumnLayout {
+                spacing: 0
+                anchors.fill: parent
+    
+                MainToolBar {
+                    id: toolBar
+                    // Needed to allow bubble to appear over contact list
+                    z: 3
+    
+                    Accessible.role: Accessible.ToolBar
+                    //: Name of the main toolbar for accessibility tech like screen readers
+                    Accessible.name: qsTr("Main Toolbar")
+                    //: Description of the main toolbar for accessibility tech like screen readers
+                    Accessible.description: qsTr("Toolbar with connection status, add contact button, and preferences button")
+                }
+    
+                Item {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+    
+                    ContactList {
+                        id: contactList
+                        anchors.fill: parent
+                        opacity: offlineLoader.item !== null ? (1 - offlineLoader.item.opacity) : 1
+    
+                        function onContactActivated(contact, actions) {
+                            if (contact.status === ContactUser.RequestPending || contact.status === ContactUser.RequestRejected) {
+                                actions.openPreferences()
+                            } else if (!uiSettings.data.combinedChatWindow) {
+                                actions.openWindow()
+                            }
+                        }
+    
+                        Accessible.role: Accessible.Pane
+                        //: Name of the pane holding the user's contacts for accessibility tech like screen readers
+                        Accessible.name: qsTr("Contact pane")
+                    }
+    
+                    Loader {
+                        id: offlineLoader
+                        active: torControl.torStatus !== TorControl.TorReady
+                        anchors.fill: parent
+                        source: Qt.resolvedUrl("OfflineStateItem.qml")
+                    }
+                }
 
-            MainToolBar {
-                id: toolBar
-                // Needed to allow bubble to appear over contact list
-                z: 3
 
-                Accessible.role: Accessible.ToolBar
-                //: Name of the main toolbar for accessibility tech like screen readers
-                Accessible.name: qsTr("Main Toolbar")
-                //: Description of the main toolbar for accessibility tech like screen readers
-                Accessible.description: qsTr("Toolbar with connection status, add contact button, and preferences button")
             }
 
-            Item {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+            MouseArea {
+                  enabled: combinedChatView.visible
+                  id: mouseAreaRight
+                  cursorShape: Qt.SizeHorCursor
 
-                ContactList {
-                    id: contactList
-                    anchors.fill: parent
-                    opacity: offlineLoader.item !== null ? (1 - offlineLoader.item.opacity) : 1
+                  property int oldMouseX
+                  anchors.right: parent.right
+                  anchors.top: parent.top
+                  width: 6
+                  anchors.bottom: parent.bottom
+                  hoverEnabled: true
 
-                    function onContactActivated(contact, actions) {
-                        if (contact.status === ContactUser.RequestPending || contact.status === ContactUser.RequestRejected) {
-                            actions.openPreferences()
-                        } else if (!uiSettings.data.combinedChatWindow) {
-                            actions.openWindow()
-                        }
-                    }
+                  onPressed: {
+                      oldMouseX = mouseX
+                  }
 
-                    Accessible.role: Accessible.Pane
-                    //: Name of the pane holding the user's contacts for accessibility tech like screen readers
-                    Accessible.name: qsTr("Contact pane")
-                }
-
-                Loader {
-                    id: offlineLoader
-                    active: torControl.torStatus !== TorControl.TorReady
-                    anchors.fill: parent
-                    source: Qt.resolvedUrl("OfflineStateItem.qml")
-                }
+                  onPositionChanged: {
+                      if (pressed) {
+                          leftColumn.Layout.preferredWidth = leftColumn.Layout.preferredWidth + (mouseX - oldMouseX)
+                          if(leftColumn.Layout.preferredWidth > 300)
+                              leftColumn.Layout.preferredWidth = 300
+                          else if(leftColumn.Layout.preferredWidth < 220)
+                              leftColumn.Layout.preferredWidth = 220
+                      }
+                  }
             }
         }
 

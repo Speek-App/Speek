@@ -52,7 +52,7 @@ Rectangle {
                 text: model.name
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                Layout.preferredWidth: 150
+                Layout.preferredWidth: delegate.width - 70
                 font.pointSize: styleHelper.pointSize * 0.9
                 font.bold: true
                 color: palette.text

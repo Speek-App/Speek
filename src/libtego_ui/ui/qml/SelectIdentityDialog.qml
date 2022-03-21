@@ -89,6 +89,22 @@ ApplicationWindow {
                     created: "Created"
                 }
             }
+            footer: Rectangle{
+                color: palette.base
+                width: infoArea.width
+                height: 40
+                visible: listview.model.length === 0
+
+                RowLayout{
+                    width: parent.width
+                    height: parent.height
+                    Label{
+                        height: parent.height
+                        text: qsTr("No other identity available")
+                        Layout.alignment: Qt.AlignCenter
+                    }
+                }
+            }
             delegate: Rectangle{
                 color: ma.hovered === false ? palette.base : palette.alternateBase
                 width: infoArea.width

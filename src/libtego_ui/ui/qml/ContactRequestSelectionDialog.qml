@@ -91,6 +91,22 @@ ApplicationWindow {
                     }
                 }
             }
+            footer: Rectangle{
+                color: palette.base
+                width: infoArea.width
+                height: 40
+                visible: listview.model.length === 0
+
+                RowLayout{
+                    width: parent.width
+                    height: parent.height
+                    Label{
+                        height: parent.height
+                        text: qsTr("No contact requests available")
+                        Layout.alignment: Qt.AlignCenter
+                    }
+                }
+            }
             model: mainWindow.contactRequestDialogs
             delegate: Rectangle{
                 color: ma.hovered === false ? palette.base : palette.alternateBase

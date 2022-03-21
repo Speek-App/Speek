@@ -73,7 +73,7 @@ public:
         image2.save(&buffer, "jpeg", 70);
         QString encoded = buffer.data().toBase64();
         int w = image2.width(), h = image2.height();
-        int maxs = 550;
+        int maxs = 450;
         if(w > maxs && w >= h){
             w=maxs;
             h=maxs/image2.width()*image2.height();
