@@ -112,6 +112,7 @@ ColumnLayout {
             Layout.minimumWidth: 200
             model: [
                 "Blue",
+                "Blue-Squares",
                 "Purple",
                 "Purple2",
                 "Purple-Blue",
