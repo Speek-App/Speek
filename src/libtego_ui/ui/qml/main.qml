@@ -45,9 +45,10 @@ QtObject {
             }
 
             object.destroy();
-            if(typeof(mainWindow.contactRequestSelectionDialog) != "undefined")
-                mainWindow.contactRequestSelectionDialog.contactRequestDialogsChanged();
+
             mainWindow.contactRequestDialogsLength = mainWindow.contactRequestDialogs.length;
+            if(typeof(mainWindow.contactRequestSelectionDialog) != "undefined" && mainWindow.contactRequestSelectionDialog != null)
+                mainWindow.contactRequestSelectionDialog.contactRequestDialogsChanged();
         })
         return object
     }
