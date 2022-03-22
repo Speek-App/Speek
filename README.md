@@ -14,7 +14,7 @@ The users are only identified with public keys. Each user can share their public
 * It's cross-platform and easy for non-technical users.
 
 <p align="center">
-<img src="images/Screenshot1.png" width="80%">
+<img src="images/Screenshot2.jpg" width="80%">
 </p>
   
 ### How it works
