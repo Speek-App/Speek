@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>ferry</title>
+    <!--path fill="#3dd0e0" d="M0 50h64v14H0z"/>
+    <g fill="#b4e7ed">
+        <path d="M4.3 54.4c1.7-.3 3.1.8 4.8 0 1.9-.8 3.2.3 5 .6-1.7.3-3.1-.8-4.8 0-1.9.7-3.2-.3-5-.6M49.9 57.8c1.7-.3 3.1.8 4.8 0 1.9-.8 3.2.3 5 .6-1.7.3-3.1-.8-4.8 0-1.9.8-3.2-.3-5-.6M14.6 58.3c1.6-.3 2.9.4 4.5.6 1.8.2 3.2-.3 4.9-.8 3.1-.9 5.4.9 8.3 1.4-1.6.3-2.9-.4-4.5-.6-1.8-.2-3.2.3-4.9.8-3.1 1-5.4-.9-8.3-1.4M38 54.2c2.4-.3 4.5 1.2 6.9.2 2.7-1.1 4.6.5 7.1.8-2.4.3-4.5-1.2-6.9-.2-2.7 1.1-4.6-.5-7.1-.8"/>
+    </g-->
+<g transform="translate(0,7)">
+    <path fill="#428bc1" d="M61.9 52H5.2L0 42h64z"/>
+    <path fill="#b9c1c6" d="M61 32H13.1L7 42h54z"/>
+    <g fill="#3e4347">
+        <path d="M53 34h6v6h-6zM45 34h6v6h-6zM37 34h6v6h-6zM29 34h6v6h-6zM21 34h6v6h-6zM19 40h-7l3-6h4z"/>
+    </g>
+    <g fill="#dce1e5">
+        <path d="M10 26h54v6H10zM12 12h38v4H12z"/>
+    </g>
+    <path fill="#b9c1c6" d="M14 16h34v10H14z"/>
+    <g fill="#778389">
+        <path d="M2 38h1v4H2zM5 38h1v4H5zM8 38h1v4H8zM11 38h1v4h-1zM14 38h1v4h-1zM17 38h1v4h-1z"/>
+    </g>
+    <path fill="#8f989e" d="M0 37h18v1H0z"/>
+    <g fill="#778389">
+        <path d="M61 22h1v4h-1zM58 22h1v4h-1zM55 22h1v4h-1zM52 22h1v4h-1zM49 22h1v4h-1zM46 22h1v4h-1z"/>
+    </g>
+    <path fill="#8f989e" d="M46 21h18v1H46z"/>
+    <g fill="#778389">
+        <path d="M53 38h1v4h-1zM56 38h1v4h-1zM59 38h1v4h-1zM62 38h1v4h-1z"/>
+    </g>
+    <path fill="#8f989e" d="M53 37h11v1H53z"/>
+    <g fill="#3e4347">
+        <path d="M16 18h6v6h-6zM24 18h6v6h-6zM32 18h6v6h-6zM40 18h6v6h-6z"/>
+    </g>
+    <g fill="#8f989e">
+        <path d="M40 4h2v8h-2zM44 6h2v6h-2z"/>
+    </g>
+</g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>Two Speech Bubbles</title>
+  <g transform="matrix(0.66666667,0,0,0.66666667,21.636699,4.6398935)" fill="#83bf4f">
+    <path d="M 48.6,47.8 V 59 L 38.1,47.8 Z"/>
+    <ellipse ry="24" rx="30" cy="28" cx="32"/>
+  </g>
+  <g transform="matrix(0.66666667,0,0,0.66666667,-0.5663023,17.164166)">
+    <path d="M 48.6,47.8 V 59 L 38.1,47.8 Z" transform="matrix(-1,0,0,1,64,0)" fill="#4fd1d9"/>
+    <ellipse ry="24" rx="30" cy="28" cx="32" fill="#4fd1d9"/>
+  </g>
+</svg>

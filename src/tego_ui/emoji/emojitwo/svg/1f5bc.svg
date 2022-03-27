@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>framed picture</title>
+    <path fill="#333" d="M2 4v56l30-28z"/>
+    <path fill="#697277" d="M62 4H2l30 28z"/>
+    <path fill="#333" d="M2 60h60L32 32z"/>
+    <path fill="#697277" d="M32 32l30 28V4z"/>
+    <path fill="#52595e" d="M5 7h54v50H5z"/>
+    <path fill="#697277" d="M9 11v42l23-21z"/>
+    <path fill="#333" d="M55 11H9l23 21z"/>
+    <path fill="#697277" d="M9 53h46L32 32z"/>
+    <path fill="#333" d="M32 32l23 21V11z"/>
+    <path fill="#42ade2" d="M16 18h32v18H16z"/>
+    <path fill="#fed0ac" d="M16 34.7h32V46H16z"/>
+    <circle cx="40.5" cy="24.5" r="3.8" fill="#ffce31"/>
+    <path fill="#89664c" d="M21.3 37.9L32 41V28.4z"/>
+    <path fill="#d3976e" d="M42.7 37.9L32 41V28.4z"/>
+    <path fill="#fff" d="M11 13v38h42V13H11zm36 32H17V19h30v26z"/>
+    <path fill="#bfb3a4" d="M12 14v36h40V14H12zm36.2 32.2H15.8V17.8h32.3v28.4z"/>
+</svg>

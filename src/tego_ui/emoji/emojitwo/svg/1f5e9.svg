@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>Right Speech Bubble</title>
+	<path transform="scale(-1,1) translate(-64,0)" fill="#4fd1d9" d="M 48.6,47.8 V 59 L 38.1,47.8 z"/>
+	<ellipse fill="#4fd1d9" cx="32" cy="28" rx="30" ry="24"/>
+</svg>

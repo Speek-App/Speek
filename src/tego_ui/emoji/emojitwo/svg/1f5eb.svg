@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>Three Speech Bubbles</title>
+  <g transform="matrix(0.5855478,0,0,0.5855478,15.522643,23.293276)" fill="#ffce31">
+    <path d="M 48.6,47.8 V 59 L 38.1,47.8 Z"/>
+    <ellipse ry="24" rx="30" cy="28" cx="32"/>
+  </g>
+  <g transform="matrix(0.5855478,0,0,0.5855478,27.437678,3.8418606)" fill="#83bf4f">
+    <path d="M 48.6,47.8 V 59 L 38.1,47.8 Z"/>
+    <ellipse ry="24" rx="30" cy="28" cx="32"/>
+  </g>
+  <g transform="matrix(0.58333333,0,0,0.58333333,-1.0214371,15.802346)" fill="#4fd1d9">
+    <path d="M 48.6,47.8 V 59 L 38.1,47.8 Z" transform="matrix(-1,0,0,1,64,0)"/>
+    <ellipse ry="24" rx="30" cy="28" cx="32"/>
+  </g>
+</svg>

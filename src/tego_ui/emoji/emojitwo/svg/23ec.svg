@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>fast down button</title>
+    <circle cx="32" cy="32" r="30" fill="#4fd1d9"/>
+    <path fill="#fff" d="M14 18l11.9 12.7H14L32 50l18-19.3H38.1L50 18z"/>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>white exclamation mark</title>
+    <circle fill="#4fd1d9" cx="32" cy="32" r="30"/>
+    <g fill="#fff" transform="scale(0.8) translate(8,8)">
+        <path d="M37 42.4H27L23 2h18z"/>
+        <ellipse cx="32" cy="54.4" rx="7.7" ry="7.6"/>
+    </g>
+</svg>

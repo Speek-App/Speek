@@ -347,7 +347,9 @@ void ConversationModel::messageReceived(const QString &text, const QDateTime &ti
     bool found = false;
     for(int i = 1; i < messages.size(); i++){
         if(messages[i].identifier == id){
-            messages[i].text = messages[i].text.replace("￿"+QString::number(chunk_id)+"￿",text);
+            QString buf = text;
+            buf = buf.replace("￿","");
+            messages[i].text = messages[i].text.replace("￿"+QString::number(chunk_id)+"￿",buf);
             tt = messages[i].text;
             found = true;
             break;

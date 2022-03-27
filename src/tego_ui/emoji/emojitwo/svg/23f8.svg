@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>pause button</title>
+    <circle cx="32" cy="32" r="30" fill="#4fd1d9"/>
+    <g fill="#fff">
+        <path d="M20 14h8v36h-8zM36 14h8v36h-8z"/>
+    </g>
+</svg>

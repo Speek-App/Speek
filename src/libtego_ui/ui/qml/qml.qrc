@@ -48,6 +48,7 @@
         <file>HelpAndContactPreferences.qml</file>
         <file>ContactRequestSelectionDialog.qml</file>
         <file>AppNotifications.qml</file>
+        <file>SendImageDialog.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>

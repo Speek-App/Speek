@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<title>Chi Rho</title>
+	<g>
+		<path fill="#c28fef" id="rho" transform="translate(3.5,-12)" d="M 34 12 H 21 v 62 h 7.4 V 37.5 H 34 c 7.2 0 13-5.7 13-12.7C47 17.7 41.2 12 34 12m0 18.2h-5.6V19.3H34c3.1 0 5.6 2.4 5.6 5.5 0 2.9-2.5 5.4-5.6 5.4"/>
+		<path fill="#785aa0" id="chi" transform="translate(-4,13)" d="M50 21.2L42.8 14 32 24.8 21.2 14 14 21.2 24.8 32 14 42.8l7.2 7.2L32 39.2 42.8 50l7.2-7.2L39.2 32z"/>
+	</g>
+</svg>

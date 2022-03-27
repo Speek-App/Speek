@@ -66,7 +66,15 @@ FocusScope{
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
                 var b = utility.toBase64(fileDialog.fileUrl.toString());
-                textInput.insert(textInput.cursorPosition, '&nbsp;' + b + ' ')
+                //textInput.insert(textInput.cursorPosition, '&nbsp;' + b + ' ')
+
+                var regex = "^!<Image>\\{[A-Za-z0-9-_. %]{0,40},width=(\\d{1,4}),height=(\\d{1,4})\\}data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)$";
+                const found = b.match(regex);
+                if(found){
+                    var object = createDialog("SendImageDialog.qml", { "imageBase64": found[5], "conversationModel": conversationModel, "imageBase64_send": b }, window)
+                    object.visible = true
+                }
+                //conversationModel.sendMessage(b)
             }
         }
 
@@ -379,6 +387,9 @@ FocusScope{
                     frameVisible: true
                     backgroundVisible: false
 
+                    smooth: true
+                    font.hintingPreference: Font.PreferNoHinting
+
                     // This ridiculous incantation enables an automatically sized TextArea
                     Layout.preferredHeight: mapFromItem(flickableItem, 0, 0).y * 2 +
                                             Math.max(styleHelper.textHeight + 2*edit.textMargin, flickableItem.contentHeight)
@@ -435,7 +446,7 @@ FocusScope{
                             case Qt.Key_Return:
                                 if (event.modifiers & Qt.ShiftModifier || event.modifiers & Qt.AltModifier) {
                                     if(richTextActive)
-                                        textInput.insert(textInput.cursorPosition, "<br>")
+                                        textInput.insert(textInput.cursorPosition, "\n")
                                     else
                                         textInput.insert(textInput.cursorPosition, "\n")
                                 } else {
@@ -449,7 +460,7 @@ FocusScope{
                     }
 
                     function send() {
-                        conversationModel.sendMessage(textInput.text)
+                        conversationModel.sendMessage(emojiPicker.replaceImageWithEmojiCharacter(textInput.text))
                         textInput.remove(0, textInput.length)
                     }
 

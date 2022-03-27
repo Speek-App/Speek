@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<title>Cross Pommee</title>
+	<g fill="#c28fef">
+		<polygon points="28,6 36,6 36,28 58,28 58,36 36,36 36,58 28,58 28,36 6,36 6,28 28,28"/>
+		<circle cx="32" cy="8" r="7"/>
+		<circle cx="8" cy="32" r="7"/>
+		<circle cx="32" cy="56" r="7"/>
+		<circle cx="56" cy="32" r="7"/>
+	</g>
+</svg>

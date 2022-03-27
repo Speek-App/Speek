@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
+    <title>snowflake</title>
+	<defs>
+		<g id="arm1" stroke="#75d6ff" stroke-width="3" stroke-linecap="round">
+			<line x1="32" x2="32" y1="3" y2="32"/>
+			<line x1="32" x2="25" y1="14" y2="7"/>
+			<line x1="32" x2="39" y1="14" y2="7"/>
+			<line x1="32" x2="27" y1="23" y2="18"/>
+			<line x1="32" x2="37" y1="23" y2="18"/>
+		</g>
+		<g id="arm2" stroke="#75d6ff" stroke-width="3" stroke-linecap="round">
+			<line x1="32" x2="32" y1="3" y2="32"/>
+			<line x1="32" x2="24" y1="17" y2="9"/>
+			<line x1="32" x2="40" y1="17" y2="9"/>
+		</g>
+	</defs>
+	<use xlink:href="#arm1" transform="rotate(0 32,32)"/>
+	<use xlink:href="#arm2" transform="rotate(60 32,32)"/>
+	<use xlink:href="#arm1" transform="rotate(120 32,32)"/>
+	<use xlink:href="#arm2" transform="rotate(180 32,32)"/>
+	<use xlink:href="#arm1" transform="rotate(240 32,32)"/>
+	<use xlink:href="#arm2" transform="rotate(300 32,32)"/>
+</svg>

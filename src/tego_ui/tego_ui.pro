@@ -91,6 +91,7 @@ DEFINES += QT_NO_CAST_TO_ASCII
 RESOURCES +=\
     $${PWD}/../libtego_ui/ui/qml/qml.qrc \
     backgrounds.qrc \
+    emoji.qrc \
     fonts.qrc \
     icons/icons.qrc \
     sounds/sounds.qrc \

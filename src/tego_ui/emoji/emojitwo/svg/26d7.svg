@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>White Two-Way Left Way Traffic</title>
+  <path fill="#ff5a79" d="M5.9 62c-3.3 0-4.8-2.4-3.3-5.3L29.3 4.2c1.5-2.9 3.9-2.9 5.4 0l26.7 52.5c1.5 2.9 0 5.3-3.3 5.3H5.9z"/>
+  <path transform="scale(0.6) translate(21.5,28)" fill="#fff" d="M5.9 62c-3.3 0-4.8-2.4-3.3-5.3L29.3 4.2c1.5-2.9 3.9-2.9 5.4 0l26.7 52.5c1.5 2.9 0 5.3-3.3 5.3H5.9z"/>
+  <g fill="#231f20" transform="matrix(0.65067509,0,0,0.65067509,10.786505,25.575248)">
+    <path d="m 23.800781,13 -8.201172,8.5 h 4.59961 v 21 h 7.101562 v -21 H 32 Z" transform="translate(1.0225669)"/>
+    <path d="m 37.721786,13 v 21 h -4.699219 l 8.199219,8.5 8.201172,-8.5 h -4.59961 V 13 Z"/>
+  </g>
+</svg>

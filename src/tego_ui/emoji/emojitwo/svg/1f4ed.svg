@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>open mailbox with lowered flag</title>
+    <path fill="#b0bdc6" d="M38 64l-8.8-1.2v-49H38z"/>
+    <path fill="#7d8b91" d="M44.3 13.8H38V64l6.3-6.1z"/>
+    <path fill="#333" d="M46.8 0c-8.2 0-35.6 9.5-35.6 9.5l24.6 40.4 28.3-17V17C64 6.3 57.6 0 46.8 0z"/>
+    <path fill="#697277" d="M17.2 8.5C6.4 8.5 0 16 0 26.8v17l35.7 6.1V29.2c0-10.8-7.6-20.7-18.5-20.7z"/>
+    <path fill="#94989b" d="M35.7 49.9L0 43.8l35.7-16.4z"/>
+    <path fill="#ed4c5c" d="M62.7 14.2l-26 12.4v3.3l19.2-9.6v9.9l6.8-3.8z"/>
+</svg>

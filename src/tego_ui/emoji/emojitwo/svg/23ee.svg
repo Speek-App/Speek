@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>last track button</title>
+    <circle cx="32" cy="32" r="30" fill="#4fd1d9"/>
+    <g fill="#fff">
+        <path d="M52 46L34.6 32 52 18zM34.6 46L17.2 32l17.4-14zM12 18h5.2v28H12z"/>
+    </g>
+</svg>

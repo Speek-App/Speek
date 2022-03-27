@@ -76,13 +76,14 @@ public:
         int maxs = 450;
         if(w > maxs && w >= h){
             w=maxs;
-            h=maxs/image2.width()*image2.height();
+            h=maxs*image2.height()/image2.width();
         }
         else if(h > maxs){
             h=maxs;
-            w=maxs/image2.height()*image2.width();
+            w=maxs*image2.width()/image2.height();
         }
-        encoded = "<a href=\"" + GetRandomString() + "\"><img width=\"" + QString::number(w) + "\" height=\"" + QString::number(h) + "\" src=\"data:image/jpg;base64," + encoded + "\" /></a>";
+        //encoded = "<a href=\"" + GetRandomString() + "\"><img width=\"" + QString::number(w) + "\" height=\"" + QString::number(h) + "\" src=\"data:image/jpg;base64," + encoded + "\" /></a>";
+        encoded = "!<Image>{%Name%,width=" + QString::number(w) + ",height=" + QString::number(h) + "}data:image/jpg;base64," + encoded;
         return encoded;
     }
 

@@ -50,7 +50,7 @@ ColumnLayout {
     }
 
     RowLayout {
-        visible: typeof(uiSettings.data.UseCustomChatAreaBackground) !== "undefined" ? !uiSettings.data.UseCustomChatAreaBackground : true
+        visible: typeof(uiSettings.data.useCustomTheme) !== "undefined" ? !uiSettings.data.useCustomTheme : true
         z: 2
         Label {
             //: Label for combobox where users can specify the color theme
@@ -78,7 +78,7 @@ ColumnLayout {
             //: Name of the combobox used to select the color theme for accessibility tech like screen readers
             Accessible.name: qsTr("Color Theme")
             //: Description of what the theme is for for accessibility tech like screen readers
-            Accessible.description: qsTr("What theme speek uses")
+            Accessible.description: qsTr("Which theme speek uses")
         }
     }
 
@@ -128,7 +128,7 @@ ColumnLayout {
             //: Name of the combobox used to select UI langauge for accessibility tech like screen readers
             Accessible.name: qsTr("Chat Area Background")
             //: Description of what the language combox is for for accessibility tech like screen readers
-            Accessible.description: qsTr("What background the Chat Area uses")
+            Accessible.description: qsTr("Which background the Chat Area uses")
         }
     }
 
@@ -168,6 +168,37 @@ ColumnLayout {
             Accessible.name: text
             //: Description of button which allows the selection of a custom chat area background for accessibility tech like screen readers
             Accessible.description: qsTr("Select a custom chat area background image")
+        }
+    }
+
+    RowLayout {
+        z: 2
+        Label {
+            //: Label for combobox where users can specify the used emoji font
+            text: qsTr("Emoji Font")
+            Accessible.role: Accessible.StaticText
+            Accessible.name: text
+        }
+
+        ComboBox {
+            id: emojiBox
+            currentIndex: typeof(uiSettings.data.emojiFont) !== "undefined" ? model.indexOf(uiSettings.data.emojiFont) : 0
+            Layout.minimumWidth: 200
+            model: ["Noto-Emoji",
+                    "Twemoji",
+                    "Emojitwo"
+            ]
+
+            onActivated: {
+                var semoji = model[index]
+                uiSettings.write("emojiFont", semoji)
+            }
+
+            Accessible.role: Accessible.ComboBox
+            //: Name of the combobox used to select the current emoji font for accessibility tech like screen readers
+            Accessible.name: qsTr("Current Emoji Font")
+            //: Description of what the emoji font combox is for for accessibility tech like screen readers
+            Accessible.description: qsTr("Which emoji font the application uses")
         }
     }
 

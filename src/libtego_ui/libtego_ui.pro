@@ -49,6 +49,7 @@ HEADERS += \
     shims/utility.h \
     ui/Base64CircleImageProvider.h \
     ui/Base64ImageProvider.h \
+    ui/Base64RoundedImageProvider.h \
     ui/Clipboard.h \
     ui/ContactsModel.h \
     ui/LanguagesModel.h \

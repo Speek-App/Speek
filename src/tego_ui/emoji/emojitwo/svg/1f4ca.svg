@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>bar chart</title>
+    <g fill="#333">
+        <path d="M0 0h4v64H0z"/>
+        <path d="M0 60h64v4H0z"/>
+    </g>
+    <path fill="#fb4f00" d="M38.7 60h12V6.7L38.7 20z"/>
+    <path fill="#5c750a" d="M21.3 60h12V20l-12 13.3z"/>
+    <path fill="#106995" d="M4 60h12V33.3L4 46.7z"/>
+    <path fill="#9aca0a" d="M33.3 20h13.3v40H33.3z"/>
+    <path fill="#21adf1" d="M16 33.3h13.3V60H16z"/>
+    <path fill="#fc9100" d="M50.7 6.7H64V60H50.7z"/>
+</svg>

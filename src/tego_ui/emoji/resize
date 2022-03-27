@@ -1,0 +1,2 @@
+mogrify -format png -background none -resize 18x18 -path ../18 *.svg
+mogrify -format png -background none -resize 36x36 -path ../36 *.svg

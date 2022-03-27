@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>motorway</title>
+    <path fill="#666" d="M37 21H27L0 52.2V64h64V52.2z"/>
+    <g fill="#fff">
+        <path d="M64 58v-3.7L36.6 21h-.4zM0 58v-3.7L27.4 21h.4zM33.8 64h-3.6l.4-11.9h2.8zM33.1 45.3h-2.2l.3-10h1.6zM32.7 32.8h-1.4l.1-4.3h1.2zM32.5 27.3h-1l.1-2.5h.8zM32.4 24.1h-.8l.1-1.5h.6zM32.3 22.1h-.6V21h.6z"/>
+    </g>
+</svg>

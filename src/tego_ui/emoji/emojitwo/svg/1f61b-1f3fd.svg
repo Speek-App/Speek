@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <title>face with tongue: medium skin tone</title>
+    <circle cx="32" cy="32" r="30" fill="#d6a57c"/>
+    <path fill="#4b3e2e" d="M47.9 38H16.1c-.7 0-1.1.5-1.1 1 0 7.3 6 15 17 15s17-7.7 17-15c0-.5-.4-1-1.1-1"/>
+    <path fill="#ea5589" d="M41.2 44H32h-9.2c-.7 0-.8.3-.8.8v4C22 57.6 26.5 62 32 62s10-4.4 10-13.2v-4c0-.5-.1-.8-.8-.8"/>
+    <path fill="#805c44" d="M33.5 44L32 57.8 30.5 44z"/>
+    <g fill="#4b3e2e">
+        <circle cx="20.5" cy="24.5" r="5"/>
+        <circle cx="43.5" cy="24.5" r="5"/>
+    </g>
+</svg>
