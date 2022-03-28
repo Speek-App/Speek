@@ -1,6 +1,10 @@
-# Speek.Chat
+# Speek! Secure Messenger
 
 Speek.Chat is currently available for OS X (10.12 or later), Linux and Windows. Visit the [releases page](https://github.com/Speek-App/Speek/releases) for the latest version and changelog. Alternatively, the newest version of Speek.Chat is also available on the [MacOS Appstore](https://apps.apple.com/us/app/speek/id1609665326) and the [Microsoft Store](https://www.microsoft.com/en-us/p/speek/9plhbg7k1wzn?activetab=pivot:overviewtab).
+
+<p align="center">
+<img src="images/Screenshot2.jpg" width="80%">
+</p>
 
 Speek is the first messaging app that is anonymous and censorship-resistant by design. In addition, it makes no compromise on ease-of-use and is as easy to use as popular messaging applications.
 
@@ -10,12 +14,10 @@ The users are only identified with public keys. Each user can share their public
 
 * You can chat without exposing your identity (or IP address) to *anyone*
 * Nobody can discover who your contacts are or when you talk (*metadata-free!*)
+* Your messages and data are never stored on any servers and you can converse without middlemen. 
 * There are no servers or operators that could be compromised, exposing your information.
 * It's cross-platform and easy for non-technical users.
-
-<p align="center">
-<img src="images/Screenshot2.jpg" width="80%">
-</p>
+* All your messages are private. Nothing is stored and there is no meta-data. Once you close Speek! all your messages are deleted.
   
 ### How it works
 Speek.Chat is a peer-to-peer instant messaging system built on the Tor Network [hidden services](https://www.torproject.org/docs/hidden-services.html.en). Your login is your hidden service address, and contacts connect to you (not an intermediate server) through Tor. The rendezvous system makes it extremely hard for anyone to learn your identity from your address.
