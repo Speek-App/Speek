@@ -47,7 +47,8 @@ class ChatChannel : public Channel
 
 public:
     typedef quint32 MessageId;
-    static const int MessageMaxCharacters = 63700;
+    static const int MessageMaxCharacters = 63000;
+    static const int MessageChunksMax = 5;
 
     explicit ChatChannel(Direction direction, Connection *connection);
 

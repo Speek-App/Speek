@@ -9,7 +9,7 @@ import "ContactWindow.js" as ContactWindow
 
 ApplicationWindow {
     id: window
-    title: !uiMain.isGroupHostMode ? "Speek.Chat" : "Speek Group Host"
+    title: !styleHelper.isGroupHostMode ? "Speek.Chat" : "Speek Group Host"
     visibility: Window.AutomaticVisibility
 
     property alias searchUserText: toolBar.searchUserText
@@ -20,10 +20,10 @@ ApplicationWindow {
     property var appNotificationsModel: []
     property alias appNotifications: appNotifications
 
-    width: !uiMain.isGroupHostMode ? 1000 : 500
+    width: !styleHelper.isGroupHostMode ? 1000 : 500
     height: 600
     minimumHeight: 400
-    minimumWidth: uiSettings.data.combinedChatWindow && !uiMain.isGroupHostMode ? 880 : 480
+    minimumWidth: uiSettings.data.combinedChatWindow && !styleHelper.isGroupHostMode ? 880 : 480
 
     onMinimumWidthChanged: width = Math.max(width, minimumWidth)
 
@@ -194,7 +194,7 @@ ApplicationWindow {
 
         PageView {
             id: combinedChatView
-            visible: uiSettings.data.combinedChatWindow && !uiMain.isGroupHostMode
+            visible: uiSettings.data.combinedChatWindow && !styleHelper.isGroupHostMode
             Layout.fillWidth: true
             Layout.fillHeight: true
 

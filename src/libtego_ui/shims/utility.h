@@ -82,8 +82,7 @@ public:
             h=maxs;
             w=maxs*image2.width()/image2.height();
         }
-        //encoded = "<a href=\"" + GetRandomString() + "\"><img width=\"" + QString::number(w) + "\" height=\"" + QString::number(h) + "\" src=\"data:image/jpg;base64," + encoded + "\" /></a>";
-        encoded = "!<Image>{%Name%,width=" + QString::number(w) + ",height=" + QString::number(h) + "}data:image/jpg;base64," + encoded;
+        encoded = "<img name=%Name% width=" + QString::number(w) + " height=" + QString::number(h) + " src=data:image/jpg;base64," + encoded + ">";
         return encoded;
     }
 
@@ -499,6 +498,10 @@ public:
         file2.close();
 
         return true;
+    }
+
+    Q_INVOKABLE static QString toHash(QString str){
+        return QString(QCryptographicHash::hash((str.toUtf8()),QCryptographicHash::Md5).toHex());
     }
 };
 

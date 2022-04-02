@@ -13,6 +13,10 @@ namespace shims
         Q_PROPERTY(shims::ContactUser* contact READ contact WRITE setContact NOTIFY contactChanged)
         Q_PROPERTY(int unreadCount READ getUnreadCount RESET resetUnreadCount NOTIFY unreadCountChanged)
         Q_PROPERTY(int conversationEventCount READ getConversationEventCount NOTIFY conversationEventCountChanged)
+        Q_PROPERTY(unsigned member_in_group READ get_member_in_group NOTIFY group_member_changed)
+        Q_PROPERTY(unsigned member_of_group_online READ get_member_of_group_online NOTIFY group_member_changed)
+        Q_PROPERTY(QString pinned_message READ get_pinned_message NOTIFY group_member_changed)
+
     public:
         ConversationModel(QObject *parent = 0, bool group = false);
 
@@ -25,6 +29,7 @@ namespace shims
             TypeRole,
             TransferRole,
             GroupUserRole,
+            GroupUserIdRole,
         };
 
         enum MessageStatus {
@@ -88,6 +93,15 @@ namespace shims
         shims::ContactUser *contact() const;
         void setContact(shims::ContactUser *contact);
         int getUnreadCount() const;
+        unsigned get_member_of_group_online() const {
+            return member_of_group_online;
+        }
+        unsigned get_member_in_group() const {
+            return member_in_group;
+        }
+        QString get_pinned_message() const{
+            return pinned_message;
+        }
         Q_INVOKABLE void resetUnreadCount();
 
         void sendFile(QString path = "");
@@ -119,6 +133,7 @@ namespace shims
 
     signals:
         void contactChanged();
+        void group_member_changed();
         void unreadCountChanged(int prevCount, int currentCount);
         void conversationEventCountChanged();
     protected:
@@ -134,6 +149,7 @@ namespace shims
             QString text = {};
             QString prep_text = {};
             QString group_user_nickname = {};
+            QString group_user_id_hash = {};
             QDateTime time = {};
             static_assert(std::is_same_v<quint32, tego_file_transfer_id_t>);
             static_assert(std::is_same_v<quint32, tego_message_id_t>);
@@ -175,6 +191,8 @@ namespace shims
         QList<MessageData> messages;
         QList<EventData> events;
 
+        bool handleMessage(MessageData &md, const QString& text);
+
         void addEventFromMessage(int row);
 
         void deserializeTextMessageEventToFile(const EventData &event, std::ofstream &ofile) const;
@@ -189,7 +207,11 @@ namespace shims
         int indexOfMessage(quint32 identifier) const;
         int indexOfOutgoingMessage(quint32 identifier) const;
         int indexOfIncomingMessage(quint32 identifier) const;
+
         bool isGroupHostMode;
+        unsigned member_in_group = 0;
+        unsigned member_of_group_online = 0;
+        QString pinned_message = {};
 
         static const char* getMessageStatusString(const MessageStatus status);
         static const char* getTransferStatusString(const TransferStatus status);

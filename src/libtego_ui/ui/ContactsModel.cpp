@@ -39,8 +39,8 @@
 
 inline bool contactSort(const shims::ContactUser *c1, const shims::ContactUser *c2)
 {
-    if (c1->getStatus() != c2->getStatus())
-        return c1->getStatus() < c2->getStatus();
+    if (c1->getSectionNum() != c2->getSectionNum())
+        return c1->getSectionNum() < c2->getSectionNum();
     return c1->getNickname().localeAwareCompare(c2->getNickname()) < 0;
 }
 

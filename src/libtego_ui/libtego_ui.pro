@@ -52,6 +52,7 @@ HEADERS += \
     ui/Base64RoundedImageProvider.h \
     ui/Clipboard.h \
     ui/ContactsModel.h \
+    ui/JazzIdenticonImageProvider.h \
     ui/LanguagesModel.h \
     ui/MainWindow.h \
     utils/Settings.h \

@@ -41,6 +41,7 @@ QMutex ConversationModel::mutex;
         roles[TypeRole] = "type";
         roles[TransferRole] = "transfer";
         roles[GroupUserRole] = "group_user_nickname";
+        roles[GroupUserIdRole] = "group_user_id_hash";
         return roles;
     }
 
@@ -82,6 +83,7 @@ QMutex ConversationModel::mutex;
             case IsOutgoingRole: return message.status != Received;
             case StatusRole: return message.status;
             case GroupUserRole: return message.group_user_nickname;
+            case GroupUserIdRole: return message.group_user_id_hash;
 
             case SectionRole: {
                 if (contact()->getStatus() == ContactUser::Online)
@@ -126,7 +128,12 @@ QMutex ConversationModel::mutex;
                     {
                         switch(message.transferStatus)
                         {
-                            case Pending: return tr("Pending");
+                            case Pending: {
+                                if(message.transferDirection == TransferDirection::Uploading)
+                                    return tr("Contact has to accept transfer");
+                                else
+                                    return tr("Pending");
+                            }
                             case Accepted: return tr("Accepted");
                             case Rejected: return tr("Rejected");
                             case InProgress:
@@ -216,13 +223,16 @@ QMutex ConversationModel::mutex;
             &messageId,
             tego::throw_on_error());
 
+        if(isGroupHostMode)
+            return;
+
         // store data locally for UI
         MessageData md;
         md.type = TextMessage;
         if(this->contact()->is_a_group){
             if(text.length() > 6 && nlohmann::json::accept(text.toStdString())){
                 nlohmann::json j = nlohmann::json::parse(text.toStdString());
-                if(j.contains("message") && j["message"].is_string() && j["message"].size() < 200000){
+                if(j.contains("message") && j["message"].is_string() && j["message"].size() < 252000){
                     md.text = QString::fromStdString(j["message"]);
                 }
                 else{
@@ -233,6 +243,12 @@ QMutex ConversationModel::mutex;
                 }
                 else{
                     md.group_user_nickname = "Anonymous";
+                }
+                if(j.contains("id") && j["id"].is_string()){
+                    md.group_user_id_hash = QString::fromStdString(j["id"]);
+                }
+                else{
+                    return;
                 }
             }
         }
@@ -663,6 +679,9 @@ QMutex ConversationModel::mutex;
     void ConversationModel::fileTransferRequestCompleted(
         tego_file_transfer_id_t id,  tego_file_transfer_result_t result)
     {
+        if(isGroupHostMode)
+            return;
+
         auto row = this->indexOfMessage(id);
         if (row >= 0)
         {
@@ -736,8 +755,57 @@ QMutex ConversationModel::mutex;
         }
     }
 
+
+    bool ConversationModel::handleMessage(MessageData &md, const QString& text){
+        if(isGroupHostMode)
+            return false;
+        else if(this->contact()->is_a_group){
+            if(text.length() > 6 && nlohmann::json::accept(text.toStdString())){
+                nlohmann::json j = nlohmann::json::parse(text.toStdString());
+                if(j.contains("message") && j["message"].is_string() && j["message"].size() < 200000){
+                    md.text = QString::fromStdString(j["message"]);
+                }
+                else{
+                    md.text = "";
+                    if(j.contains("users_online") && j.contains("total_group_member") && j.contains("pinned_message") && j["users_online"].is_number_unsigned()
+                    && j["total_group_member"].is_number_unsigned() && j["pinned_message"].is_string()){
+                        member_in_group = j["total_group_member"];
+                        member_of_group_online = j["users_online"];
+                        pinned_message = QString::fromStdString(j["pinned_message"]);
+                        emit group_member_changed();
+                    }
+                    return false;
+                }
+                if(j.contains("name") && j["name"].is_string() && j["name"].size() < 50){
+                    md.group_user_nickname = QString::fromStdString(j["name"]);
+                }
+                else{
+                    md.group_user_nickname = "Anonymous";
+                    return false;
+                }
+                if(j.contains("id") && j["id"].is_string() && j["id"].size() < 50){
+                    md.group_user_id_hash = QString::fromStdString(j["id"]);
+                }
+                else{
+                    md.group_user_id_hash = "0";
+                    return false;
+                }
+            }
+        }
+        else{
+            md.text = text;
+        }
+        return true;
+    }
+
     void ConversationModel::messagePartReceived(tego_message_id_t messageId, QDateTime timestamp, const QString& text, int chunks_max, int chunks_rec)
     {
+        if(isGroupHostMode){
+            if(chunks_max == chunks_rec)
+                shims::UserIdentity::userIdentity->contacts.send_to_all(text, contactUser);
+            return;
+        }
+
         QMutexLocker locker(&mutex);
         QList<MessageData>::iterator i = nullptr;
         for (i = messages.begin(); i != messages.end(); i++)
@@ -749,15 +817,11 @@ QMutex ConversationModel::mutex;
                     data.prep_text = QString::number(chunks_rec*100/chunks_max) + "% (" + QString::number(float(chunks_max)*63000/1000/1000*chunks_rec/chunks_max) + "/" + QString::number(float(chunks_max)*63000/1000/1000)+"MB)";
 
                     if(chunks_max == chunks_rec){
-                        data.text = text;
-                        if(isGroupHostMode){
-                            shims::UserIdentity::userIdentity->contacts.send_to_all(text, contactUser);
-                        }
-                        else{
+                        if(!handleMessage(data, text)){
+
                         }
                     }
                     emitDataChanged(row);
-                    //this->addEventFromMessage(indexOfIncomingMessage(messageId));
                     return;
                 }
             }
@@ -765,30 +829,11 @@ QMutex ConversationModel::mutex;
         MessageData md;
         md.type = TextMessage;
         if(chunks_max == chunks_rec){
-            if(isGroupHostMode){
-                shims::UserIdentity::userIdentity->contacts.send_to_all(text, contactUser);
+            if(!handleMessage(md, text)){
                 return;
             }
-            else if(this->contact()->is_a_group){
-                if(text.length() > 6 && nlohmann::json::accept(text.toStdString())){
-                    nlohmann::json j = nlohmann::json::parse(text.toStdString());
-                    if(j.contains("message") && j["message"].is_string() && j["message"].size() < 200000){
-                        md.text = QString::fromStdString(j["message"]);
-                    }
-                    else{
-                        md.text = "";
-                    }
-                    if(j.contains("name") && j["name"].is_string()){
-                        md.group_user_nickname = QString::fromStdString(j["name"]);
-                    }
-                    else{
-                        md.group_user_nickname = "Anonymous";
-                    }
-                }
-            }
-            else{
-                md.text = text;
-            }
+            if(isGroupHostMode)
+                return;
         }
         md.prep_text = QString::number(chunks_rec/chunks_max*100);
         md.time = timestamp;
@@ -806,7 +851,8 @@ QMutex ConversationModel::mutex;
     void ConversationModel::messageAcknowledged(tego_message_id_t messageId, bool accepted)
     {
         auto row = this->indexOfOutgoingMessage(messageId);
-        Q_ASSERT(row >= 0);
+        if(row < 0)
+            return;
 
         MessageData &data = messages[row];
         data.status = accepted ? Delivered : Error;

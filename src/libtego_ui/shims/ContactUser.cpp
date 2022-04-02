@@ -56,6 +56,16 @@ namespace shims
         }
     }
 
+    int ContactUser::getSectionNum() const {
+        switch (getStatus()) {
+            case Status::Online: return is_a_group ? 1 : 0;
+            case Status::Offline: return is_a_group ? 3 : 2;
+            case Status::RequestPending: return is_a_group ? 5 : 4;
+            case Status::RequestRejected: return 6;
+            case Status::Outdated: return 7;
+        }
+    }
+
     void ContactUser::setStatus(ContactUser::Status status)
     {
         if (this->status != status)

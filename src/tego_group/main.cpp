@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) try
     }
 
     /* Identities */
-    shims::UserIdentity::userIdentity = new shims::UserIdentity(tegoContext);
+    shims::UserIdentity::userIdentity = new shims::UserIdentity(tegoContext, true);
     auto contactsManager = shims::UserIdentity::userIdentity->getContacts();
 
     MainWindow::loadSettings(tegoContext, contactsManager);

@@ -104,19 +104,13 @@ bool ChatChannel::sendChatMessageWithId(QString text, QDateTime time, MessageId 
         return false;
     }
 
-    for (int i = 0; i < text.length(); i += 63000) {
-        QString tt = text.mid(i,63000);
+    for (int i = 0; i < text.length(); i += MessageMaxCharacters) {
+        if((text.length()+MessageMaxCharacters-1)/MessageMaxCharacters > MessageChunksMax)
+            return false;
+
+        QString tt = text.mid(i,MessageMaxCharacters);
         QScopedPointer<Data::Chat::ChatMessage> message(new Data::Chat::ChatMessage);
         message->set_message_id(id);
-
-        /*
-        if (text.isEmpty()) {
-            TEGO_BUG() << "Chat message is empty, and it should've been discarded";
-            return false;
-        } else if (text.size() > MessageMaxCharacters) {
-            TEGO_BUG() << "Chat message is too long (" << text.size() << "characters), and it should've been limited already. Truncated.";
-            text.truncate(MessageMaxCharacters);
-        }*/
 
         // Also converts to UTF-8
         message->set_message_text(tt.toStdString());
@@ -126,8 +120,8 @@ bool ChatChannel::sendChatMessageWithId(QString text, QDateTime time, MessageId 
 
         Data::Chat::Packet packet;
         packet.set_allocated_chat_message(message.take());
-        packet.set_chunk_id(i/63000);
-        packet.set_chunk_parts((text.length()+63000-1)/63000);
+        packet.set_chunk_id(i/MessageMaxCharacters);
+        packet.set_chunk_parts((text.length()+MessageMaxCharacters-1)/MessageMaxCharacters);
         if (!Channel::sendMessage(packet))
             return false;
     }
@@ -153,7 +147,7 @@ void ChatChannel::handleChatMessage(const Data::Chat::ChatMessage &message, int 
     } else if (text.size() > MessageMaxCharacters) {
         qWarning() << "Rejected oversize chat message of" << text.size() << "characters";
         response->set_accepted(false);
-    } else if (chunk_max > 5) {
+    } else if (chunk_max > MessageChunksMax) {
         qWarning() << "Rejected oversize chat message of" << chunk_max << "chunks";
         response->set_accepted(false);
     } else if (chunk_id >= chunk_max) {

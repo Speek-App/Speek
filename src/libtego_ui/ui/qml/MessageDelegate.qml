@@ -54,6 +54,26 @@ Column {
             }
         }
     }
+    Item{
+        width: parent.width
+        height: background.height
+
+    Image {
+        id: groupUserIcon
+        visible: !model.isOutgoing && model.group_user_id_hash !== ""
+        width: 25
+        height: 25
+        sourceSize.height: height
+        sourceSize.width: width
+        x: 5
+        clip: true
+        fillMode: Image.PreserveAspectFit
+        source: "image://jazzicon/" + model.group_user_id_hash.replace(/[^a-fA-F0-9]/g,'')
+
+        MouseArea {
+            anchors.fill: parent
+        }
+    }
 
     Rectangle {
         //Drop Shadow
@@ -89,7 +109,7 @@ Column {
         id: background
         width: Math.max(30, message.width + 12)
         height: message.height + 12
-        x: model.isOutgoing ? parent.width - width - 11 : 10
+        x: model.isOutgoing ? parent.width - width - 11 : model.group_user_id_hash !== "" ? 35 : 10
         radius: 5
         border.color: "transparent"
 
@@ -116,15 +136,17 @@ Column {
         }
         Label{
             text: "E"
-            //height: 14
+            height: 14
             width: 16
             font.pixelSize: 13
             font.family: iconFont.name
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            opacity: (model.status === ConversationModel.Sending || model.status === ConversationModel.Queued || model.status === ConversationModel.Error) || (!model.isOutgoing) ? 0 : 1
+            opacity: {
+                return (model.status === ConversationModel.Sending || model.status === ConversationModel.Queued || model.status === ConversationModel.Error) || (!model.isOutgoing) ? 0 : 1
+            }
             visible: opacity > 0
-            color: styleHelper.darkMode ? palette.highlight : Qt.darker(palette.highlight, 1.5)
+            color: styleHelper.darkMode ? Qt.darker(palette.highlight, 1.5) : Qt.darker(palette.highlight, 1.5)
 
             Behavior on opacity { NumberAnimation { } }
         }
@@ -138,19 +160,10 @@ Column {
                 if (model.type == "text")
                 {
                     if(model.text !== "" && model.text.indexOf("\n") === -1 && model.text.indexOf("\r") === -1){
-                        //var regex = "^!<Image>\\{([A-Za-z0-9-_. ]{0,40}),width=(\\d{1,4}),height=(\\d{1,4})\\}data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)$";
-                        const found = model.text.match("^!<Image>\\{([A-Za-z0-9-_. ]{0,40}),width=(\\d{1,4}),height=(\\d{1,4})\\}data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)$");
+                        const found = model.text.match("^<img name=([A-Za-z0-9-_. ]{0,40}) width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$");
                         if(found){
-                            //console.log("found")
                             imageField.source =  "image://base64r/" + found[6]
-                            //console.log(found[3])
-                            //console.log(found[2])
                             imageCaption.text = found[1]
-                            //imageField.sourceSize.height = found[2]
-                            //imageField.sourceSize.width = found[1]
-                            //imageField.width = Math.min(Math.min(implicitWidth, background.__maxWidth), 450)
-                            //imageField.sourceSize.width = found[1]
-                            //imageField.sourceSize.height = found[2]
                             return imageField;
                         }
                     }
@@ -169,12 +182,6 @@ Column {
 
             color: "transparent"
 
-            // text message
-            //Text{
-            //    color: "blue"
-            //    text: model.group_user_nickname.replace(/[^a-zA-Z0-9\-_, ]/g,'')
-            //    font.pixelSize: 13
-            //}
             TextEdit {
                 id: textField
                 visible: parent.childItem === this
@@ -189,7 +196,6 @@ Column {
                 }
                 selectionColor: !model.isOutgoing ? styleHelper.outgoingMessageColor : styleHelper.incomingMessageColor
                 selectedTextColor: palette.highlightedText
-                //font.pointSize: styleHelper.pointSize * 0.9
                 font.pixelSize: 13
                 font.family: styleHelper.fontFamily
 
@@ -199,7 +205,7 @@ Column {
                 text: {
                     if(model.text != ""){
                         if(typeof(model.group_user_nickname) != "undefined" && model.group_user_nickname.length > 0){
-                            return "<p style=\"color:#308cc6;font-weight:700;margin-bottom:5px;\">" + model.group_user_nickname.replace(/[^a-zA-Z0-9\-_, ]/g,'') + "</p>" + model.text.replace(emojiRegex, emojiPicker.replaceEmojiWithImage)
+                            return "<p style=\"color:#308cc6;font-weight:700;margin-bottom:5px;\">" + model.group_user_nickname.replace(/[^a-zA-Z0-9\-_, ]/g,'') + " (" + hexToBase64(model.group_user_id_hash.replace(/[^a-fA-F0-9]/g,'')) + ")" + "</p>" + model.text.replace(emojiRegex, emojiPicker.replaceEmojiWithImage)
                         }
                         else
                             return model.text.replace(emojiRegex, emojiPicker.replaceEmojiWithImage)
@@ -419,6 +425,7 @@ Column {
             }
         }
     }
+    }
 
     function showContextMenu() {
         copy_selected_image = selected_image
@@ -474,7 +481,7 @@ Column {
                         utility.saveBase64(found[2],"1",found[1])
                     }
                     else if(messageChildItem == imageField){
-                        const found = model.text.match("^!<Image>\\{([A-Za-z0-9-_. ]{0,40}),width=(\\d{1,4}),height=(\\d{1,4})\\}data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)$");
+                        const found = model.text.match("^<img name=([A-Za-z0-9-_. ]{0,40}) width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$");
                         if(found){
                             var cap = found[1].replace("./g","")
                             if(cap == "")
@@ -496,7 +503,7 @@ Column {
                         object.visible = true
                     }
                     else if(messageChildItem == imageField){
-                        const found = model.text.match("^!<Image>\\{([A-Za-z0-9-_. ]{0,40}),width=(\\d{1,4}),height=(\\d{1,4})\\}data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)$");
+                        const found = model.text.match("^<img name=([A-Za-z0-9-_. ]{0,40}) width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$");
                         if(found){
                             var object = createDialog("ImageViewerDialog.qml", { "imageData": found[6] }, window)
                             object.visible = true

@@ -16,6 +16,7 @@ FocusScope{
     property int margin_chat: 0
     property bool richTextActive: !uiSettings.data.disableDefaultRichText
     property var groupIdentifier: String(getRandomInt(1000))
+    property var pinnedMessageVisible: false
 
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);
@@ -71,15 +72,13 @@ FocusScope{
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
                 var b = utility.toBase64(fileDialog.fileUrl.toString());
-                //textInput.insert(textInput.cursorPosition, '&nbsp;' + b + ' ')
 
-                var regex = "^!<Image>\\{[A-Za-z0-9-_. %]{0,40},width=(\\d{1,4}),height=(\\d{1,4})\\}data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)$";
+                var regex = "^<img name=[A-Za-z0-9-_. %]{0,40} width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$";
                 const found = b.match(regex);
                 if(found){
-                    var object = createDialog("SendImageDialog.qml", { "imageBase64": found[5], "conversationModel": conversationModel, "imageBase64_send": b }, window)
+                    var object = createDialog("SendImageDialog.qml", { "imageBase64": found[5], "conversationModel": conversationModel, "imageBase64_send": b, "groupIdentifier": chatFocusScope.groupIdentifier }, window)
                     object.visible = true
                 }
-                //conversationModel.sendMessage(b)
             }
         }
 
@@ -209,6 +208,50 @@ FocusScope{
                 height: 1
             }
             ToolButton {
+                implicitHeight: 32
+                implicitWidth: 32
+
+                text: "N"
+
+                visible: conversationModel.contact.is_a_group && conversationModel.pinned_message != "" && typeof(conversationModel.pinned_message) != "undefined"
+
+                style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 28
+                        implicitHeight: 28
+                        radius: 5
+                        color: "transparent"
+
+                    }
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        font.family: iconFont.name
+                        font.pointSize: styleHelper.pointSize * 1.2
+                        text: control.text
+                        color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                     }
+                }
+
+                MouseArea{
+                    cursorShape: Qt.PointingHandCursor
+                    anchors.fill: parent
+                    onClicked: {
+                        if (mouse.button === Qt.RightButton) { // 'mouse' is a MouseEvent argument passed into the onClicked signal handler
+                        } else if (mouse.button === Qt.LeftButton) {
+                            pinnedMessageVisible = !pinnedMessageVisible
+                        }
+                    }
+                }
+
+                Accessible.role: Accessible.Button
+                //: Name of the button for opening the group pinned message
+                Accessible.name: qsTr("Open group pinned message")
+                //: Description of the 'Open group pinned message' button for accessibility tech like screen readers
+                Accessible.description: qsTr("Shows the pinned message of the group")
+            }
+            ToolButton {
                 id: contactSettings
                 implicitHeight: 32
                 implicitWidth: 32
@@ -238,7 +281,24 @@ FocusScope{
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
                     onClicked: {
-                        _openPreferences()
+                        if (mouse.button === Qt.RightButton) { // 'mouse' is a MouseEvent argument passed into the onClicked signal handler
+                            chatPageContactContextMenu.popup()
+                        } else if (mouse.button === Qt.LeftButton) {
+                            _openPreferences()
+                        }
+                    }
+                }
+
+                Menu {
+                    id: chatPageContactContextMenu
+
+                    /* QT automatically sets Accessible.text to MenuItem.text */
+                    MenuItem {
+                        //: Chat page context menu command to clear all messages
+                        text: qsTr("Clear all messages")
+                        onTriggered: {
+                            conversationModel.clear()
+                        }
                     }
                 }
 
@@ -248,9 +308,44 @@ FocusScope{
                 //: Description of the 'Open Contact Settings' button for accessibility tech like screen readers
                 Accessible.description: qsTr("Shows the contact settings")
             }
+
             Item {
                 width:0
                 height: 1
+            }
+        }
+
+        Rectangle{
+            anchors {
+                top: infoBar.bottom
+                left: parent.left
+                leftMargin: 6
+                right: parent.right
+                rightMargin: 8
+                topMargin: 8
+            }
+            visible: pinnedMessageVisible && conversationModel.contact.is_a_group && conversationModel.pinned_message != "" && typeof(conversationModel.pinned_message) != "undefined"
+            height: 100
+            color: palette.base
+            z: 90
+            radius: 6
+
+            TextArea {
+                x: 3
+                y: 3
+                textMargin: 5
+                id: pinnedTextMessageField
+                height: parent.height - 6
+                width: parent.width - 6
+
+                textFormat: conversationModel.pinned_message.includes("<html><head><meta name=\"qrichtext\"") ? TextEdit.RichText : TextEdit.PlainText
+                font.pixelSize: 13
+                font.family: styleHelper.fontFamily
+
+                wrapMode: TextEdit.Wrap
+                readOnly: true
+                selectByMouse: true
+                text: conversationModel.pinned_message
             }
         }
 
@@ -448,7 +543,7 @@ FocusScope{
                             case Qt.Key_Return:
                                 if (event.modifiers & Qt.ShiftModifier || event.modifiers & Qt.AltModifier) {
                                     if(richTextActive)
-                                        textInput.insert(textInput.cursorPosition, "\n")
+                                        textInput.insert(textInput.cursorPosition, "<br>")
                                     else
                                         textInput.insert(textInput.cursorPosition, "\n")
                                 } else {
@@ -467,6 +562,7 @@ FocusScope{
                             var obj = {};
                             obj["message"] = msg
                             obj["name"] = typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Anonymous" + chatFocusScope.groupIdentifier
+                            obj["id"] = utility.toHash(userIdentity.contactID)
                             msg = JSON.stringify(obj)
                         }
                         conversationModel.sendMessage(msg)
@@ -474,8 +570,8 @@ FocusScope{
                     }
 
                     onLengthChanged: {
-                        if (textInput.length > 6300000)
-                            textInput.remove(6300000, textInput.length)
+                        if (textInput.length > 251900)
+                            textInput.remove(251900, textInput.length)
                     }
 
                     Accessible.role: Accessible.EditableText
@@ -486,6 +582,8 @@ FocusScope{
                 }
 
                 Button {
+                    visible: !conversationModel.contact.is_a_group
+
                     style: ButtonStyle {
                         background: Rectangle {
                             implicitWidth: 20

@@ -41,6 +41,7 @@ namespace shims
         }
         void setStatus(Status status);
         QString getSection() const;
+        int getSectionNum() const;
         shims::OutgoingContactRequest *contactRequest();
         shims::ConversationModel *conversation();
 

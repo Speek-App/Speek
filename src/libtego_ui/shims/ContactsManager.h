@@ -23,6 +23,20 @@ namespace shims
         void setUnreadCount(shims::ContactUser* user, int unreadCount);
         void setContactStatus(shims::ContactUser* user, int status);
         void send_to_all(const QString& text, shims::ContactUser* exclude);
+        int count_contacts_online(){
+            int c = 0;
+            for(auto cu : contactsList)
+                if(cu->getStatus() == ContactUser::Online)
+                    c++;
+            return c;
+        }
+        int count_contacts(){
+            int c = 0;
+            for(auto cu : contactsList)
+                if(cu->getStatus() == ContactUser::Online || cu->getStatus() == ContactUser::Offline)
+                    c++;
+            return c;
+        }
 
     signals:
         void contactAdded(shims::ContactUser *user);

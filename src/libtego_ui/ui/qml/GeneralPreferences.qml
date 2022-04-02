@@ -22,7 +22,7 @@ ColumnLayout {
             spacing: 0
             Label {
                 //: Label for text input where users can specify their username
-                text: qsTr("Username")
+                text: !styleHelper.isGroupHostMode ? qsTr("Username") : qsTr("Group Name")
                 Accessible.role: Accessible.StaticText
                 Accessible.name: text
             }
@@ -71,7 +71,41 @@ ColumnLayout {
         }
     }
 
+    ColumnLayout {
+        z: 2
+        visible: styleHelper.isGroupHostMode
+        RowLayout {
+            spacing: 0
+            Label {
+                //: Label for text area where users can specify the pinned message for a group
+                text: qsTr("Group Pinned Message")
+                Accessible.role: Accessible.StaticText
+                Accessible.name: text
+            }
+        }
+
+        TextArea {
+            id: groupPinnedMessage
+
+            text: typeof(uiSettings.data.groupPinnedMessage) !== "undefined" ? uiSettings.data.groupPinnedMessage : ""
+            Layout.fillWidth: true
+            Layout.maximumHeight: 80
+
+            onTextChanged: {
+                if (length > 800) remove(800, length);
+                uiSettings.write("groupPinnedMessage", groupPinnedMessage.text)
+            }
+
+            Accessible.role: Accessible.EditableText
+            //: Name of the text input used to change the pinned message of a group
+            Accessible.name: qsTr("Group Pinned Message input field")
+            //: Description of what the group pinned message input field is for accessibility tech like screen readers
+            Accessible.description: qsTr("What the pinned message of the group should be")
+        }
+    }
+
     CheckBox {
+        visible: !styleHelper.isGroupHostMode
         //: Text description of an option to activate rich text editing by default which allows the input of emojis and images
         text: qsTr("Disable default Rich Text editing")
         checked: uiSettings.data.disableDefaultRichText || false
@@ -87,6 +121,7 @@ ColumnLayout {
     }
 
     CheckBox {
+        visible: !styleHelper.isGroupHostMode
         //: Text description of an option to minimize to the systemtray
         text: qsTr("Minimize to Systemtray")
         checked: uiSettings.data.minimizeToSystemtray || false
@@ -118,6 +153,7 @@ ColumnLayout {
     }
 
     CheckBox {
+        visible: !styleHelper.isGroupHostMode
         //: Text description of an option to play audio notifications when contacts log in, log out, and send messages
         text: qsTr("Play audio notifications")
         checked: uiSettings.data.playAudioNotification || false
@@ -132,6 +168,7 @@ ColumnLayout {
         }
     }
     RowLayout {
+        visible: !styleHelper.isGroupHostMode
         Item { width: 16 }
 
         Label {

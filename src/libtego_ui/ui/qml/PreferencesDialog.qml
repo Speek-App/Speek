@@ -65,7 +65,7 @@ ApplicationWindow {
         /* QT will automatically set Accessible.text, also tabs fail to load if
          * you set any accessibility properties */
         Tab {
-            parent: !uiMain.isGroupHostMode ? parent : null
+            //parent: !uiMain.isGroupHostMode ? parent : null
             //: Title of the general settings tab
             title: qsTr("General")
             source: Qt.resolvedUrl("GeneralPreferences.qml")

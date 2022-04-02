@@ -70,6 +70,31 @@ QtObject {
         preferencesDialog.requestActivate()
     }
 
+    function hexToBase64(hexstring) {
+        return bytesArrToBase64(hexToBytes(hexstring))
+    }
+
+    function bytesArrToBase64(arr) {
+        const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        const bin = n => n.toString(2).padStart(8,0);
+        const l = arr.length
+        let result = '';
+
+        for(let i=0; i<=(l-1)/3; i++) {
+            let c1 = i*3+1>=l;
+            let c2 = i*3+2>=l;
+            let chunk = bin(arr[3*i]) + bin(c1? 0:arr[3*i+1]) + bin(c2? 0:arr[3*i+2]);
+            let r = chunk.match(/.{1,6}/g).map((x,j)=> j==3&&c2 ? '=' :(j==2&&c1 ? '=':abc[+('0b'+x)]));
+            result += r.join('');
+        }
+
+        return result;
+    }
+
+    function hexToBytes(hexString) {
+        return hexString.match(/.{1,2}/g).map(x=> +('0x'+x));
+    }
+
     property QtObject audioNotifications: audioNotificationLoader.item
 
     Component.onCompleted: {
@@ -170,22 +195,23 @@ QtObject {
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
             property string fontFamily: "Noto Sans"
-            property bool darkMode: uiMain.themeColor.darkMode == "true" ? true : false
-            property var borderColor: uiMain.themeColor.borderColor
-            property var chatIconColor: uiMain.themeColor.chatIconColor
-            property var borderColor2: uiMain.themeColor.borderColor2
-            property var emojiPickerBackground: uiMain.themeColor.emojiPickerBackground
-            property var outgoingMessageColor: uiMain.themeColor.outgoingMessageColor
-            property var incomingMessageColor: uiMain.themeColor.incomingMessageColor
-            property var chatIconColorHover: uiMain.themeColor.chatIconColorHover
-            property var unreadCountBadge: uiMain.themeColor.unreadCountBadge
-            property var scrollBar: uiMain.themeColor.scrollBar
-            property var searchBoxText: uiMain.themeColor.searchBoxText
-            property var messageBoxText: uiMain.themeColor.messageBoxText
-            property var chatBoxBorderColor: uiMain.themeColor.chatBoxBorderColor
-            property var chatBoxBorderColorLeft: uiMain.themeColor.chatBoxBorderColorLeft
-            property var notificationBackground: uiMain.themeColor.notificationBackground
-            property var contactListHover: uiMain.themeColor.contactListHover
+            property bool darkMode: uiMain ? uiMain.themeColor.darkMode == "true" ? true : false : false
+            property bool isGroupHostMode : uiMain ? uiMain.isGroupHostMode : false
+            property var borderColor: uiMain ? uiMain.themeColor.borderColor : "#ffffff"
+            property var chatIconColor: uiMain ? uiMain.themeColor.chatIconColor : "#ffffff"
+            property var borderColor2: uiMain ? uiMain.themeColor.borderColor2 : "#ffffff"
+            property var emojiPickerBackground: uiMain ? uiMain.themeColor.emojiPickerBackground : "#ffffff"
+            property var outgoingMessageColor: uiMain ? uiMain.themeColor.outgoingMessageColor : "#ffffff"
+            property var incomingMessageColor: uiMain ? uiMain.themeColor.incomingMessageColor : "#ffffff"
+            property var chatIconColorHover: uiMain ? uiMain.themeColor.chatIconColorHover : "#ffffff"
+            property var unreadCountBadge: uiMain ? uiMain.themeColor.unreadCountBadge : "#ffffff"
+            property var scrollBar: uiMain ? uiMain.themeColor.scrollBar : "#ffffff"
+            property var searchBoxText: uiMain ? uiMain.themeColor.searchBoxText : "#ffffff"
+            property var messageBoxText: uiMain ? uiMain.themeColor.messageBoxText : "#ffffff"
+            property var chatBoxBorderColor: uiMain ? uiMain.themeColor.chatBoxBorderColor : "#ffffff"
+            property var chatBoxBorderColorLeft: uiMain ? uiMain.themeColor.chatBoxBorderColorLeft : "#ffffff"
+            property var notificationBackground: uiMain ? uiMain.themeColor.notificationBackground : "#ffffff"
+            property var contactListHover: uiMain ? uiMain.themeColor.contactListHover : "#ffffff"
         },
 
         Loader {

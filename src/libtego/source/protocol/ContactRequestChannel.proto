@@ -4,7 +4,7 @@ package Protocol.Data.ContactRequest;
 import "ControlChannel.proto";
 
 enum Limits {
-    MessageMaxCharacters = 63700;
+    MessageMaxCharacters = 1000;
     NicknameMaxCharacters = 30;
 }
 

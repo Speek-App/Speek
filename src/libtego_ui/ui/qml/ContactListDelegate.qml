@@ -3,10 +3,10 @@ import QtQuick.Controls 1.0
 import im.ricochet 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.2
+import im.utility 1.0
 
 Rectangle {
     id: delegate
-    //color: highlighted ? "#c4e7ff" : palette.base
     color: ma.containsMouse ? highlighted ? Qt.lighter(palette.highlight, 0.9): styleHelper.contactListHover : highlighted ? palette.highlight : palette.base
     width: parent != null ? parent.width : 0
     height: search_visible() ? 55 : 0
@@ -28,6 +28,11 @@ Rectangle {
         if (renameMode)
             renameMode = false
     }
+
+    Utility {
+       id: utility
+    }
+
     RowLayout{
         id: rowContact
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -39,6 +44,7 @@ Rectangle {
         ColorLetterCircle{
             name: model.name !== "" ? model.name : "-"
             icon: typeof(model.contact.icon) !== "undefined" ? model.contact.icon : ""
+            hash: styleHelper.isGroupHostMode ? utility.toHash(model.contact.contactID) : ""
         }
         ColumnLayout{
             spacing:0
@@ -49,7 +55,14 @@ Rectangle {
                     rightMargin: 8
                     topMargin: 15
                 }
-                text: model.name
+                text: {
+                    if (styleHelper.isGroupHostMode)
+                        return model.name + " (" + hexToBase64(utility.toHash(model.contact.contactID).replace(/[^a-fA-F0-9]/g,'')) + ")"
+                    else if(model.contact.is_a_group && model.status === ContactUser.Online)
+                        return model.name + " (" + model.contact.conversation.member_of_group_online + "/" + model.contact.conversation.member_in_group + ")"
+                    else
+                        return model.name
+                }
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
                 Layout.preferredWidth: delegate.width - 70

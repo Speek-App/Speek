@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.2
+import im.utility 1.0
 
 ApplicationWindow {
     id: sendImageDialog
@@ -25,6 +26,10 @@ ApplicationWindow {
 
     function close() {
         visible = false
+    }
+
+    Utility {
+       id: utility
     }
 
     color: "transparent"
@@ -121,7 +126,16 @@ ApplicationWindow {
                     //: button label to send a image
                     text: qsTr("Send")
                     onClicked: {
-                        conversationModel.sendMessage(imageBase64_send.replace("%Name%", caption.text))
+                        var msg = imageBase64_send.replace("%Name%", caption.text)
+                        if(conversationModel.contact.is_a_group){
+                            var obj = {};
+                            obj["message"] = msg
+                            obj["name"] = typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Anonymous" + chatFocusScope.groupIdentifier
+                            obj["id"] = utility.toHash(userIdentity.contactID)
+                            msg = JSON.stringify(obj)
+                        }
+                        conversationModel.sendMessage(msg)
+
                         sendImageDialog.close()
                     }
 

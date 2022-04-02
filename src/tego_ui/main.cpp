@@ -67,7 +67,6 @@ int main(int argc, char *argv[]) try
 
     qApp->setStyle(QStyleFactory::create("Fusion"));
     MainWindow::initFontSettings();
-    MainWindow::initTranslation();
     QVariantMap theme_color;
     MainWindow::initTheme(&theme_color);
 
@@ -97,6 +96,8 @@ int main(int argc, char *argv[]) try
         return 1;
     }
     QScopedPointer<QLockFile> lockFile(lock);
+
+    MainWindow::initTranslation();
 
     // init our tor shims
     shims::TorControl::torControl = new shims::TorControl(tegoContext);

@@ -2,6 +2,7 @@
 #include "ContactUser.h"
 #include "ConversationModel.h"
 #include "utils/json.h"
+#include "utility.h"
 
 namespace shims
 {
@@ -80,9 +81,26 @@ namespace shims
     }
 
     void ContactsManager::send_to_all(const QString& text, shims::ContactUser* exclude){
+        if(text.length() < 251900 && text.length() > 6 && nlohmann::json::accept(text.toStdString())){
+            nlohmann::json j = nlohmann::json::parse(text.toStdString());
+            if(!(j.contains("message") && j["message"].is_string() && j["message"].size() < 251900))
+                return;
+            if(!(j.contains("name") && j["name"].is_string()))
+                return;
+            if(!(j.contains("id") && j["id"].is_string() && j["id"] == Utility::toHash(exclude->getContactID()).toStdString()))
+                return;
+            if(j.contains("users_online"))
+                return;
+            if(j.contains("total_group_member"))
+                return;
+        }
+        else{
+            return;
+        }
+
         for(auto cu : contactsList)
         {
-            if(cu != exclude && cu != NULL)
+            if(cu != exclude && cu != NULL && cu->getStatus() == ContactUser::Status::Online)
                 cu->conversation()->sendMessage(text);
         }
     }
@@ -114,6 +132,24 @@ namespace shims
 
     void ContactsManager::setContactStatus(shims::ContactUser* user, int status)
     {
+        if(isGroupHostMode){
+            if(status == shims::ContactUser::Online || status == shims::ContactUser::Offline){
+                nlohmann::json j;
+                j["users_online"] = count_contacts_online();
+                j["total_group_member"] = count_contacts();
+
+                SettingsObject settings;
+                j["pinned_message"] = settings.read("ui.groupPinnedMessage").toString().toStdString();
+
+                QString msg_send = QString::fromStdString(j.dump());
+
+                for(auto cu : contactsList)
+                {
+                    if(cu != NULL && cu->getStatus() == ContactUser::Status::Online)
+                        cu->conversation()->sendMessage(msg_send);
+                }
+            }
+        }
         emit this->contactStatusChanged(user, status);
     }
 }

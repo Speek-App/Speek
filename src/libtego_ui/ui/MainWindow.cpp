@@ -40,6 +40,7 @@
 #include "ui/Base64CircleImageProvider.h"
 #include "ui/Base64ImageProvider.h"
 #include "ui/Base64RoundedImageProvider.h"
+#include "ui/JazzIdenticonImageProvider.h"
 
 #include "utils/Settings.h"
 #include "utils/Useful.h"
@@ -106,6 +107,7 @@ MainWindow::MainWindow(QObject *parent)
     qml->addImageProvider(QLatin1String("base64"), new Base64CircleImageProvider);
     qml->addImageProvider(QLatin1String("base64n"), new Base64ImageProvider);
     qml->addImageProvider(QLatin1String("base64r"), new Base64RoundedImageProvider);
+    qml->addImageProvider(QLatin1String("jazzicon"), new JazzIdenticonImageProvider);
     qml->setNetworkAccessManagerFactory(new NetworkAccessBlockingFactory);
 
     qmlRegisterUncreatableType<shims::ContactUser>("im.ricochet", 1, 0, "ContactUser", QString());
@@ -346,6 +348,7 @@ void MainWindow::initTheme(QVariantMap* theme_color)
 void MainWindow::loadDefaultSettings(SettingsFile *settings)
 {
     settings->root()->write("ui.combinedChatWindow", true);
+    settings->root()->write("ui.minimizeToSystemtray", false);
 }
 
 bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QString &errorMessage, QString pathChange)

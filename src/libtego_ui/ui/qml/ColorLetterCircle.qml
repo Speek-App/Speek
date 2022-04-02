@@ -9,6 +9,7 @@ Rectangle {
     }
 
     property var name
+    property var hash: ""
     property var icon
 
     id: colorLetterCircle
@@ -24,18 +25,23 @@ Rectangle {
         sourceSize.width: parent.width
         anchors.fill: parent
         source: {
-            if(icon == "" || typeof(icon) === "undefined"){
-                if(typeof(name) === "undefined"){
-                    return "";
+            if(hash === ""){
+                if(icon == "" || typeof(icon) === "undefined"){
+                    if(typeof(name) === "undefined"){
+                        return "";
+                    }
+                    var file_path = ":/icons/icons_letter/ASCII-" + name.charCodeAt(0) + ".png";
+                    if(utility.checkFileExists(file_path))
+                        return "qrc" + file_path
+                    else
+                        return "qrc:/icons/icons_letter/ASCII-63.png";
                 }
-                var file_path = ":/icons/icons_letter/ASCII-" + name.charCodeAt(0) + ".png";
-                if(utility.checkFileExists(file_path))
-                    return "qrc" + file_path
-                else
-                    return "qrc:/icons/icons_letter/ASCII-63.png";
+                else{
+                    return "image://base64/" + icon;
+                }
             }
             else{
-                return "image://base64/" + icon;
+                return "image://jazzicon/" + hash
             }
         }
         smooth: true
