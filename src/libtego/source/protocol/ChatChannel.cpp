@@ -153,6 +153,12 @@ void ChatChannel::handleChatMessage(const Data::Chat::ChatMessage &message, int 
     } else if (text.size() > MessageMaxCharacters) {
         qWarning() << "Rejected oversize chat message of" << text.size() << "characters";
         response->set_accepted(false);
+    } else if (chunk_max > 5) {
+        qWarning() << "Rejected oversize chat message of" << chunk_max << "chunks";
+        response->set_accepted(false);
+    } else if (chunk_id >= chunk_max) {
+        qWarning() << "Chunk ID higher than Chunk Size" << chunk_max << "chunks" << chunk_id << "id";
+        response->set_accepted(false);
     } else {
         QDateTime time = QDateTime::currentDateTime();
         if (message.has_time_delta() && message.time_delta() <= 0)

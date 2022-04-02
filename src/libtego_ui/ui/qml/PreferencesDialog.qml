@@ -65,12 +65,14 @@ ApplicationWindow {
         /* QT will automatically set Accessible.text, also tabs fail to load if
          * you set any accessibility properties */
         Tab {
+            parent: !uiMain.isGroupHostMode ? parent : null
             //: Title of the general settings tab
             title: qsTr("General")
             source: Qt.resolvedUrl("GeneralPreferences.qml")
         }
 
         Tab {
+            parent: !uiMain.isGroupHostMode ? parent : null
             //: Title of the general settings tab
             title: qsTr("Style")
             source: Qt.resolvedUrl("StylePreferences.qml")
@@ -95,6 +97,7 @@ ApplicationWindow {
         }
 
         Tab {
+            parent: !uiMain.isGroupHostMode ? parent : null
             //: Title of the about tab, contains license information and speek version
             title: qsTr("About")
             source: Qt.resolvedUrl("AboutPreferences.qml")

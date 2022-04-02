@@ -15,6 +15,11 @@ FocusScope{
     property bool emojiVisible: false
     property int margin_chat: 0
     property bool richTextActive: !uiSettings.data.disableDefaultRichText
+    property var groupIdentifier: String(getRandomInt(1000))
+
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    }
 
     function forceActiveFocus() {
         textField.forceActiveFocus()
@@ -82,14 +87,12 @@ FocusScope{
             id: multiFileDialog
             selectMultiple: true
             onAccepted: {
-                console.log(multiFileDialog.fileUrls)
                 var files_list = [];
                 for(var i = 0; i < multiFileDialog.fileUrls.length; i++){
                     files_list.push(String(multiFileDialog.fileUrls[i]))
                 }
 
                 var b = utility.makeTempZipFromMultipleFiles(files_list);
-                console.log(b);
                 if(b.error === ""){
                     sendZipDialog.fileToSend = b.filePath
                     sendZipDialog.text = qsTr("Are you sure you want to send the archive %1 to %2? (size: %3)").arg(b.fileName).arg(contact.nickname).arg(b.size)
@@ -134,7 +137,6 @@ FocusScope{
             onButtonClicked: {
                 if (clickedButton === StandardButton.Yes) {
                     visible = false;
-                    console.log(fileToSend)
                     sendFileWithPath(fileToSend);
                 }
                 else if (clickedButton === StandardButton.Open) {
@@ -460,7 +462,14 @@ FocusScope{
                     }
 
                     function send() {
-                        conversationModel.sendMessage(emojiPicker.replaceImageWithEmojiCharacter(textInput.text))
+                        var msg = emojiPicker.replaceImageWithEmojiCharacter(textInput.text)
+                        if(conversationModel.contact.is_a_group){
+                            var obj = {};
+                            obj["message"] = msg
+                            obj["name"] = typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Anonymous" + chatFocusScope.groupIdentifier
+                            msg = JSON.stringify(obj)
+                        }
+                        conversationModel.sendMessage(msg)
                         textInput.remove(0, textInput.length)
                     }
 

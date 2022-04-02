@@ -14,7 +14,7 @@ namespace shims
         Q_PROPERTY(int unreadCount READ getUnreadCount RESET resetUnreadCount NOTIFY unreadCountChanged)
         Q_PROPERTY(int conversationEventCount READ getConversationEventCount NOTIFY conversationEventCountChanged)
     public:
-        ConversationModel(QObject *parent = 0);
+        ConversationModel(QObject *parent = 0, bool group = false);
 
         enum {
             TimestampRole = Qt::UserRole,
@@ -24,6 +24,7 @@ namespace shims
             TimespanRole,
             TypeRole,
             TransferRole,
+            GroupUserRole,
         };
 
         enum MessageStatus {
@@ -120,7 +121,7 @@ namespace shims
         void contactChanged();
         void unreadCountChanged(int prevCount, int currentCount);
         void conversationEventCountChanged();
-    private:
+    protected:
         static QMutex mutex;
 
         void setUnreadCount(int count);
@@ -132,6 +133,7 @@ namespace shims
             MessageDataType type = InvalidMessage;
             QString text = {};
             QString prep_text = {};
+            QString group_user_nickname = {};
             QDateTime time = {};
             static_assert(std::is_same_v<quint32, tego_file_transfer_id_t>);
             static_assert(std::is_same_v<quint32, tego_message_id_t>);
@@ -187,6 +189,7 @@ namespace shims
         int indexOfMessage(quint32 identifier) const;
         int indexOfOutgoingMessage(quint32 identifier) const;
         int indexOfIncomingMessage(quint32 identifier) const;
+        bool isGroupHostMode;
 
         static const char* getMessageStatusString(const MessageStatus status);
         static const char* getTransferStatusString(const TransferStatus status);

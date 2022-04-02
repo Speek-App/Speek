@@ -9,8 +9,8 @@
 
 namespace shims
 {
-    ContactUser::ContactUser(const QString& serviceId, const QString& nickname, const QString& icon)
-    : conversationModel(new shims::ConversationModel(this))
+    ContactUser::ContactUser(const QString& serviceId, const QString& nickname, const QString& icon, bool is_a_group, bool group)
+    : conversationModel(new shims::ConversationModel(this, group))
     , outgoingContactRequest(new shims::OutgoingContactRequest())
     , status(ContactUser::Offline)
     , serviceId(serviceId)
@@ -23,6 +23,7 @@ namespace shims
 
         this->setNickname(nickname);
         this->setIcon(icon);
+        this->setIsAGroup(is_a_group);
     }
 
     QString ContactUser::getNickname() const
@@ -43,6 +44,16 @@ namespace shims
     ContactUser::Status ContactUser::getStatus() const
     {
         return status;
+    }
+
+    QString ContactUser::getSection() const {
+        switch (getStatus()) {
+            case Status::Online: return is_a_group ? "group-online" : "online";
+            case Status::Offline: return is_a_group ? "group-offline" : "offline";
+            case Status::RequestPending: return is_a_group ? "group-request" : "request";
+            case Status::RequestRejected: return "rejected";
+            case Status::Outdated: return "outdated";
+        }
     }
 
     void ContactUser::setStatus(ContactUser::Status status)
@@ -97,6 +108,12 @@ namespace shims
             settings.write("icon", icon);
             emit this->iconChanged();
         }
+    }
+
+    void ContactUser::setIsAGroup(bool is_a_group)
+    {
+        this->is_a_group = is_a_group;
+        settings.write("isGroup", is_a_group);
     }
 
     void ContactUser::deleteContact()

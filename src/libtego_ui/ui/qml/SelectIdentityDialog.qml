@@ -144,7 +144,7 @@ ApplicationWindow {
                         Layout.minimumWidth: parent.width / 4 * 2
                         height: parent.height
                         verticalAlignment: Qt.AlignVCenter
-                        text: model.created
+                        text: typeof(model.created) == "undefined" ? "" : model.created
                     }
                 }
             }

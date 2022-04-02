@@ -52,7 +52,8 @@ public:
     {
         PointerRole = Qt::UserRole,
         StatusRole,
-        AlertRole /* bool */
+        AlertRole /* bool */,
+        SectionRole
     };
 
     explicit ContactsModel(QObject *parent = 0);

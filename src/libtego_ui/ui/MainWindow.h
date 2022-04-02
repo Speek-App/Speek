@@ -39,6 +39,7 @@
 namespace shims
 {
     class ContactUser;
+    class ContactsManager;
 }
 class IncomingContactRequest;
 class OutgoingContactRequest;
@@ -58,12 +59,13 @@ class MainWindow : public QObject
     Q_PROPERTY(QString eulaText READ eulaText CONSTANT)
     Q_PROPERTY(QVariantMap screens READ screens CONSTANT)
     Q_PROPERTY(QVariantMap themeColor READ themeColor NOTIFY themeColorChanged)
+    Q_PROPERTY(bool isGroupHostMode READ getIsGroupHostMode CONSTANT)
 
 public:
     explicit MainWindow(QObject *parent = 0);
     ~MainWindow();
 
-    bool showUI(QVariantMap _theme_color);
+    bool showUI(QVariantMap _theme_color, bool isGroupHostMode = false);
 
     QString aboutText() const;
     QString eulaText() const;
@@ -74,6 +76,17 @@ public:
     QVariantMap themeColor() const{
         return theme_color;
     };
+    bool getIsGroupHostMode() const{
+        return isGroupHostMode;
+    };
+
+    static void initTranslation();
+    static QPalette load_palette_from_file(QString file, QVariantMap* theme_color);
+    static void initTheme(QVariantMap* theme_color);
+    static void loadDefaultSettings(SettingsFile *settings);
+    static bool initSettings(SettingsFile *settings, QLockFile **lockFile, QString &errorMessage, QString pathChange = "/");
+    static void initFontSettings();
+    static void loadSettings(tego_context_t* tegoContext, shims::ContactsManager* contactsManager);
 
     Q_INVOKABLE void reloadTheme();
 
@@ -85,78 +98,12 @@ public:
 private:
     QQmlApplicationEngine *qml;
     QVariantMap theme_color;
+    bool isGroupHostMode;
 
 signals:
     void themeColorChanged();
 };
 
 extern MainWindow *uiMain;
-
-static QPalette load_palette_from_file(QString file, QVariantMap* theme_color){
-    QStringList color_group { "QPalette::Active", "QPalette::Disabled", "QPalette::Inactive" };
-    QStringList color_role { "QPalette::WindowText", "QPalette::Button", "QPalette::Light", "QPalette::Midlight", "QPalette::Dark", "QPalette::Mid", "QPalette::Text", "QPalette::BrightText", "QPalette::ButtonText", "QPalette::Base", "QPalette::Window", "QPalette::Shadow", "QPalette::Highlight", "QPalette::HighlightedText", "QPalette::Link", "QPalette::LinkVisited", "QPalette::AlternateBase", "QPalette::NoRole", "QPalette::ToolTipBase", "QPalette::ToolTipText", "QPalette::PlaceholderText" };
-    QPalette palette;
-
-    QString data;
-    QString fileName(file);
-
-    QFile theme_file(fileName);
-    if(!theme_file.open(QIODevice::ReadOnly)) {
-        qDebug() << "theme file not opened" << Qt::endl;
-    }
-    else
-    {
-        QTextStream in(&theme_file);
-        while (!in.atEnd())
-        {
-            QString line = in.readLine();
-            QStringList p = line.split(" ");
-
-            if(p.length() == 2){
-                if(color_role.indexOf(p[0]) != -1){
-                    QStringList col = p[1].split(",");
-                    palette.setColor(static_cast<QPalette::ColorRole>(color_role.indexOf(p[0])),QColor(col[0].toInt(),col[1].toInt(),col[2].toInt()));
-                }
-                else{
-                    theme_color->insert(p[0], p[1]);
-                }
-            }
-            else if(p.length() == 3){
-                if(color_role.indexOf(p[1]) != -1 && color_group.indexOf(p[0]) != -1){
-                    QStringList col = p[2].split(",");
-                    palette.setColor(static_cast<QPalette::ColorGroup>(color_group.indexOf(p[0])) ,static_cast<QPalette::ColorRole>(color_role.indexOf(p[1])),QColor(col[0].toInt(),col[1].toInt(),col[2].toInt()));
-                }
-                else{
-                    qDebug() << "theme file parsing error - key not found" << Qt::endl;
-                }
-            }
-            else{
-                qDebug() << "theme file parsing error" << Qt::endl;
-            }
-        }
-    }
-
-    theme_file.close();
-
-    return palette;
-}
-static void initTheme(QVariantMap* theme_color)
-{
-    SettingsObject settings;
-    if(settings.read("ui.useCustomTheme").toBool() == false || settings.read("ui.customTheme").toString().isEmpty()){
-        if(settings.read("ui.theme").toString().isEmpty()){
-            if(settings.read("ui.lightMode").toBool())
-                qApp->setPalette(load_palette_from_file(":/themes/light", theme_color));
-            else
-                qApp->setPalette(load_palette_from_file(":/themes/dark-blue", theme_color));
-        }
-        else{
-            qApp->setPalette(load_palette_from_file(":/themes/"+settings.read("ui.theme").toString().toLower(), theme_color));
-        }
-    }
-    else{
-        qApp->setPalette(load_palette_from_file(settings.read("ui.customTheme").toString(), theme_color));
-    }
-}
 
 #endif // MAINWINDOW_H

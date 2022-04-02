@@ -162,6 +162,7 @@ QHash<int,QByteArray> ContactsModel::roleNames() const
     roles[Qt::DisplayRole] = "name";
     roles[PointerRole] = "contact";
     roles[StatusRole] = "status";
+    roles[SectionRole] = "section";
     return roles;
 }
 
@@ -188,6 +189,8 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(user);
     case StatusRole:
         return user->getStatus();
+    case SectionRole:
+        return user->getSection();
     }
 
     return QVariant();

@@ -123,7 +123,7 @@ public:
         QVariantList a;
         for (QString const& name: QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).entryList(QDir::AllDirs | QDir::NoDotAndDotDot))
         {
-            if(name != "tor" && name != "cache"){
+            if(name != "tor" && name != "cache" && name != "groups"){
                 QVariantMap p;
                 p.insert("name", name);
 

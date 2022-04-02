@@ -63,7 +63,7 @@ ApplicationWindow {
             horizontalAlignment: Qt.AlignHCenter
             wrapMode: Text.Wrap
             //: tells the user to get the Speek ID of their friends to add them as contacts
-            text: qsTr("Get the Speek ID of your Friends to add them as contacts. Please, be aware that a request generally takes ~10-20 seconds to arrive.")
+            text: uiMain.isGroupHostMode ? qsTr("Get the Speek ID of your friends to add them to this group.") : qsTr("Get the Speek ID of your Friends to add them as contacts. Please, be aware that a request generally takes ~10-20 seconds to arrive.")
             Accessible.role: Accessible.StaticText
             Accessible.name: text
         }
@@ -83,7 +83,7 @@ ApplicationWindow {
 
         Label {
             //: Label for the recommended username (own username) text box in the 'add new contact' window
-            text: qsTr("Your Username:")
+            text: uiMain.isGroupHostMode ? qsTr("Your Group Name:") : qsTr("Your Username:")
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
             Accessible.role: Accessible.StaticText
             Accessible.name: text

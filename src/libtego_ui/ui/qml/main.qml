@@ -107,11 +107,7 @@ QtObject {
         Connections {
             target: userIdentity
             function onRequestAdded(request) {
-                /*
-                console.log(request.message)
-                if(request.message !== "123")
-                    request.reject();*/
-                if(mainWindow.contactRequestDialogs.length > 1000){
+                if(mainWindow.contactRequestDialogs.length > 300){
                     return;
                 }
                 var object = createDialogRequest("ContactRequestDialog.qml", { 'request': request })
@@ -162,11 +158,6 @@ QtObject {
         FontLoader {
             id: notoBoldFont
             source: "qrc:/fonts/NotoSans-Bold.ttf"
-        },
-
-        FontLoader {
-            id: emojiFont
-            source: "qrc:/fonts/NotoColorEmoji.ttf"
         },
 
         Item {

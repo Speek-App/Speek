@@ -6,8 +6,8 @@ shims::UserIdentity* shims::UserIdentity::userIdentity = nullptr;
 
 namespace shims
 {
-    UserIdentity::UserIdentity(tego_context_t* context)
-    : contacts(context)
+    UserIdentity::UserIdentity(tego_context_t* context, bool group)
+    : contacts(context, group)
     , context(context)
     , online(false)
 

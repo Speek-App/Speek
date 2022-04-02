@@ -1,5 +1,6 @@
 #include "IncomingContactRequest.h"
 #include "UserIdentity.h"
+#include "utils/json.h"
 
 namespace shims
 {
@@ -7,6 +8,7 @@ namespace shims
     : serviceIdString(hostname.chopped(tego::static_strlen(".onion")))
     , nickname()
     , message(message)
+    , isGroup(false)
     , userId()
     {
         auto serviceIdRaw = serviceIdString.toUtf8();
@@ -18,6 +20,16 @@ namespace shims
         // save our request to disk
         SettingsObject settings(QString("users.%1").arg(serviceIdString));
         settings.write<QString>("type", "requesting");
+        if(message.length() > 6 && nlohmann::json::accept(message.toStdString())){
+            nlohmann::json j = nlohmann::json::parse(message.toStdString());
+            if(j.contains("isGroup") && j["isGroup"].is_string() && j["isGroup"] == "true"){
+                this->isGroup = true;
+                settings.write<bool>("isGroup", true);
+            }
+            if(j.contains("message") && j["message"].is_string()){
+                this->message = QString::fromStdString(j["message"]);
+            }
+        }
     }
 
     QString IncomingContactRequest::getHostname() const
@@ -47,7 +59,7 @@ namespace shims
 
         userIdentity->removeIncomingContactRequest(this);
 
-        contactManager->addContact(serviceIdString, nickname);
+        contactManager->addContact(serviceIdString, nickname, "", isGroup);
 
         SettingsObject settings(QString("users.%1").arg(serviceIdString));
         settings.write<QString>("type", "allowed");

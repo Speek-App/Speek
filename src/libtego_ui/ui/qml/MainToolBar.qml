@@ -182,17 +182,17 @@ ToolBar {
             /* QT automatically sets Accessible.text to MenuItem.text */
             MenuItem {
                 //: Context menu entry to open the chat screen in a separate window
-                text: qsTr("Add Contact")
+                text: !uiMain.isGroupHostMode ? qsTr("Add Contact") : qsTr("Add Group Member")
                 onTriggered: addContactAction.trigger()
             }
             MenuItem {
                 //: Context menu entry to open a window showing the selected contact's details
-                text: qsTr("View Speek ID")
+                text: !uiMain.isGroupHostMode ? qsTr("View Speek ID") : qsTr("View Speek Group ID")
                 onTriggered: viewIdAction.trigger()
             }
 
             MenuItem {
-                visible: !(Qt.platform.os == 'osx')
+                visible: !(Qt.platform.os == 'osx') && !uiMain.isGroupHostMode
                 //: Context menu entry to remove a contact from the contact list
                 text: qsTr("Open other Identity")
                 onTriggered: {
@@ -201,6 +201,7 @@ ToolBar {
                 }
             }
             MenuItem {
+                visible: !uiMain.isGroupHostMode
                 //: Context menu entry to open the dialog to view all received contact requests
                 text: qsTr("View Contact Requests") + (mainWindow.contactRequestDialogsLength > 0 ? " (" + mainWindow.contactRequestDialogsLength + ")" : "")
                 onTriggered: {

@@ -64,7 +64,7 @@ ApplicationWindow {
             horizontalAlignment: Qt.AlignHCenter
             wrapMode: Text.Wrap
             //: Descriptive text that is displayed in a popup window when a user tries to add you as a contact
-            text: qsTr("Someone new is asking to connect to you")
+            text: request.isGroup ? fields.name.text.length > 2 ? qsTr("%1: Group Invite").arg(fields.name.text) : qsTr("Group Invite") : qsTr("Someone new is asking to connect to you")
             Accessible.role: Accessible.PopupMenu
             Accessible.name: text
         }

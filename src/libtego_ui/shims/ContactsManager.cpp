@@ -1,11 +1,14 @@
 #include "ContactsManager.h"
 #include "ContactUser.h"
+#include "ConversationModel.h"
+#include "utils/json.h"
 
 namespace shims
 {
-    ContactsManager::ContactsManager(tego_context_t* context)
+    ContactsManager::ContactsManager(tego_context_t* context, bool group)
     : context(context)
     , contactsList({})
+    , isGroupHostMode(group)
     { }
 
     shims::ContactUser* ContactsManager::createContactRequest(
@@ -30,8 +33,16 @@ namespace shims
         auto userId = shimContact->toTegoUserId();
 
         QString msg_send = message;
+
         msg_send.replace("+", "");
         msg_send += "+" + myNickname;
+
+        if(this->isGroupHostMode){
+            nlohmann::json j;
+            j["isGroup"] = "true";
+            j["message"] = msg_send.toStdString();
+            msg_send = QString::fromStdString(j.dump());
+        }
 
         auto rawMessage = msg_send.toUtf8();
 
@@ -42,10 +53,10 @@ namespace shims
         return shimContact;
     }
 
-    shims::ContactUser* ContactsManager::addContact(const QString& serviceId, const QString& nickname, const QString& icon)
+    shims::ContactUser* ContactsManager::addContact(const QString& serviceId, const QString& nickname, const QString& icon, bool is_a_group)
     {
         // creates a new contact from service id and nickname
-        auto shimContact = new shims::ContactUser(serviceId, nickname, icon);
+        auto shimContact = new shims::ContactUser(serviceId, nickname, icon, is_a_group, isGroupHostMode);
         contactsList.push_back(shimContact);
 
         // remove our reference and ready for deleting when contactDeleted signal is fireds
@@ -66,6 +77,14 @@ namespace shims
 
         emit this->contactAdded(shimContact);
         return shimContact;
+    }
+
+    void ContactsManager::send_to_all(const QString& text, shims::ContactUser* exclude){
+        for(auto cu : contactsList)
+        {
+            if(cu != exclude && cu != NULL)
+                cu->conversation()->sendMessage(text);
+        }
     }
 
     shims::ContactUser* ContactsManager::getShimContactByContactId(const QString& contactId) const

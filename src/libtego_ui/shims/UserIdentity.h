@@ -18,7 +18,7 @@ namespace shims
         // needed in MainWindow.qml
         Q_PROPERTY(shims::ContactsManager *contacts READ getContacts CONSTANT)
     public:
-        UserIdentity(tego_context_t* context);
+        UserIdentity(tego_context_t* context, bool group = false);
 
         void createIncomingContactRequest(const QString& hostname, const QString& message);
         void removeIncomingContactRequest(shims::IncomingContactRequest* incomingContactRequest);

@@ -9,7 +9,7 @@ import "ContactWindow.js" as ContactWindow
 
 ApplicationWindow {
     id: window
-    title: "Speek.Chat"
+    title: !uiMain.isGroupHostMode ? "Speek.Chat" : "Speek Group Host"
     visibility: Window.AutomaticVisibility
 
     property alias searchUserText: toolBar.searchUserText
@@ -20,10 +20,10 @@ ApplicationWindow {
     property var appNotificationsModel: []
     property alias appNotifications: appNotifications
 
-    width: 1000
+    width: !uiMain.isGroupHostMode ? 1000 : 500
     height: 600
     minimumHeight: 400
-    minimumWidth: uiSettings.data.combinedChatWindow ? 880 : 480
+    minimumWidth: uiSettings.data.combinedChatWindow && !uiMain.isGroupHostMode ? 880 : 480
 
     onMinimumWidthChanged: width = Math.max(width, minimumWidth)
 
@@ -31,11 +31,6 @@ ApplicationWindow {
         if(visibility == 3 && uiSettings.data.minimizeToSystemtray){
             this.visible = false;
         }
-        /*if(visible){
-            for(var i = 0; i<contactRequestDialogs.length; i++){
-                contactRequestDialogs[i].visible = true;
-            }
-        }*/
     }
 
     onClosing: {
@@ -199,7 +194,7 @@ ApplicationWindow {
 
         PageView {
             id: combinedChatView
-            visible: uiSettings.data.combinedChatWindow || false
+            visible: uiSettings.data.combinedChatWindow && !uiMain.isGroupHostMode
             Layout.fillWidth: true
             Layout.fillHeight: true
 

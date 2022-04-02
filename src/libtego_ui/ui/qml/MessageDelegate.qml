@@ -170,7 +170,11 @@ Column {
             color: "transparent"
 
             // text message
-
+            //Text{
+            //    color: "blue"
+            //    text: model.group_user_nickname.replace(/[^a-zA-Z0-9\-_, ]/g,'')
+            //    font.pixelSize: 13
+            //}
             TextEdit {
                 id: textField
                 visible: parent.childItem === this
@@ -192,7 +196,17 @@ Column {
                 wrapMode: TextEdit.Wrap
                 readOnly: true
                 selectByMouse: true
-                text: model.text != "" ? model.text.replace(emojiRegex, emojiPicker.replaceEmojiWithImage) : model.prep_text
+                text: {
+                    if(model.text != ""){
+                        if(typeof(model.group_user_nickname) != "undefined" && model.group_user_nickname.length > 0){
+                            return "<p style=\"color:#308cc6;font-weight:700;margin-bottom:5px;\">" + model.group_user_nickname.replace(/[^a-zA-Z0-9\-_, ]/g,'') + "</p>" + model.text.replace(emojiRegex, emojiPicker.replaceEmojiWithImage)
+                        }
+                        else
+                            return model.text.replace(emojiRegex, emojiPicker.replaceEmojiWithImage)
+                    }
+                    else
+                        return model.prep_text
+                }
 
                 MouseArea {
                     anchors.fill: parent

@@ -65,7 +65,8 @@ HEADERS += \
     shims/ConversationModel.h\
     shims/IncomingContactRequest.h\
     shims/OutgoingContactRequest.h\
-    shims/ContactIDValidator.h
+    shims/ContactIDValidator.h \
+    utils/json.h
 
 include($${QMAKE_INCLUDES}/protobuf.pri)
 include($${QMAKE_INCLUDES}/openssl.pri)

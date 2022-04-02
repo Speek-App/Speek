@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) try
 
     QString error;
     QLockFile *lock = 0;
-    if (!MainWindow::initSettings(settings.data(), &lock, error)) {
+    if (!MainWindow::initSettings(settings.data(), &lock, error, "/groups/")) {
         if (error.isEmpty())
             return 0;
         QMessageBox::critical(0, qApp->translate("Main", "Speek Error"), error);
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) try
 
     /* Window */
     QScopedPointer<MainWindow> w(new MainWindow);
-    if (!w->showUI(theme_color))
+    if (!w->showUI(theme_color, true))
         return 1;
 
     return a.exec();

@@ -65,6 +65,7 @@ Item {
 
         /* QT automatically sets Accessible.text to MenuItem.text */
         MenuItem {
+            visible: !uiMain.isGroupHostMode
             //: Context menu command to open the chat screen in a separate window
             text: qsTr("Open Window")
             onTriggered: openWindow()
@@ -80,6 +81,7 @@ Item {
             onTriggered: renameTriggered()
         }
         MenuItem {
+            visible: !uiMain.isGroupHostMode
             //: Context menu command to initiate a chat log export, opens a system file dialog to export to
             enabled: canExportConversation()   // only enable if we have anything to export
             text: qsTr("Export Conversation...")

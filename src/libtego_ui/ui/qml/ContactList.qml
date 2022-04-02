@@ -78,7 +78,7 @@ Rectangle {
             }
         ]
 
-        section.property: "status"
+        section.property: "section"
         section.delegate: Row {
             width: parent.width - x
             height: label.height + 8
@@ -97,15 +97,22 @@ Rectangle {
                 text: {
                     // Translation strings are uppercase for legacy reasons, and because they
                     // should correctly be capitalized. We go lowercase only because it looks nicer
-                    switch (parseInt(section)) {
+                    switch (section) {
                         //: Section header in the contact list for users which are online
-                        case ContactUser.Online: return qsTr("Online").toLowerCase()
+                        case "online": return qsTr("Online").toLowerCase()
                         //: Section header in the contact list for users which are offline
-                        case ContactUser.Offline: return qsTr("Offline").toLowerCase()
+                        case "offline": return qsTr("Offline").toLowerCase()
                         //: Section header in the contact list for users requesting to be added to the user's contact list
-                        case ContactUser.RequestPending: return qsTr("Requests").toLowerCase()
+                        case "request": return qsTr("Requests").toLowerCase()
                         //: Section header in the contact list for users that have rejected the user's request to be added to their contact list
-                        case ContactUser.RequestRejected: return qsTr("Rejected").toLowerCase()
+                        case "rejected": return qsTr("Rejected").toLowerCase()
+
+                        //: Section header in the contact list for groups which are online
+                        case "group-online": return qsTr("Group (Online)").toLowerCase()
+                        //: Section header in the contact list for groups which are offline
+                        case "group-offline": return qsTr("Group (Offline)").toLowerCase()
+                        //: Section header in the contact list for groups requesting to be added to the user's contact list
+                        case "group-request": return qsTr("Group (Request)").toLowerCase()
                     }
                 }
 

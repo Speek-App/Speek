@@ -1,15 +1,18 @@
 #include "ContactUser.h"
 #include "ConversationModel.h"
 #include "UserIdentity.h"
+#include "ContactsManager.h"
+#include "utils/json.h"
 
 namespace shims
 {
 QMutex ConversationModel::mutex;
-    ConversationModel::ConversationModel(QObject *parent)
+    ConversationModel::ConversationModel(QObject *parent, bool group)
     : QAbstractListModel(parent)
     , contactUser(nullptr)
     , messages({})
     , unreadCount(0)
+    , isGroupHostMode(group)
     {
         connect(this, &ConversationModel::unreadCountChanged, [self=this](int prevCount, int currentCount) -> void
         {
@@ -37,6 +40,7 @@ QMutex ConversationModel::mutex;
         roles[TimespanRole] = "timespan";
         roles[TypeRole] = "type";
         roles[TransferRole] = "transfer";
+        roles[GroupUserRole] = "group_user_nickname";
         return roles;
     }
 
@@ -77,6 +81,7 @@ QMutex ConversationModel::mutex;
             case TimestampRole: return message.time;
             case IsOutgoingRole: return message.status != Received;
             case StatusRole: return message.status;
+            case GroupUserRole: return message.group_user_nickname;
 
             case SectionRole: {
                 if (contact()->getStatus() == ContactUser::Online)
@@ -214,7 +219,26 @@ QMutex ConversationModel::mutex;
         // store data locally for UI
         MessageData md;
         md.type = TextMessage;
-        md.text = text;
+        if(this->contact()->is_a_group){
+            if(text.length() > 6 && nlohmann::json::accept(text.toStdString())){
+                nlohmann::json j = nlohmann::json::parse(text.toStdString());
+                if(j.contains("message") && j["message"].is_string() && j["message"].size() < 200000){
+                    md.text = QString::fromStdString(j["message"]);
+                }
+                else{
+                    md.text = "";
+                }
+                if(j.contains("name") && j["name"].is_string()){
+                    md.group_user_nickname = QString::fromStdString(j["name"]);
+                }
+                else{
+                    md.group_user_nickname = "Anonymous";
+                }
+            }
+        }
+        else{
+            md.text = text;
+        }
         md.time = QDateTime::currentDateTime();
         md.identifier = messageId;
         md.status = Queued;
@@ -559,6 +583,9 @@ QMutex ConversationModel::mutex;
 
     void ConversationModel::fileTransferRequestReceived(tego_file_transfer_id_t id, QString fileName, QString fileHash, quint64 fileSize)
     {
+        if(isGroupHostMode)
+            return;
+
         MessageData md;
         md.type = TransferMessage;
         md.identifier = id;
@@ -581,6 +608,9 @@ QMutex ConversationModel::mutex;
 
     void ConversationModel::fileTransferRequestAcknowledged(tego_file_transfer_id_t id, bool accepted)
     {
+        if(isGroupHostMode)
+            return;
+
         auto row = this->indexOfOutgoingMessage(id);
         Q_ASSERT(row >= 0);
 
@@ -591,6 +621,9 @@ QMutex ConversationModel::mutex;
 
     void ConversationModel::fileTransferRequestResponded(tego_file_transfer_id_t id, tego_file_transfer_response_t response)
     {
+        if(isGroupHostMode)
+            return;
+
         auto row = this->indexOfOutgoingMessage(id);
         Q_ASSERT(row >= 0);
 
@@ -613,6 +646,9 @@ QMutex ConversationModel::mutex;
 
     void ConversationModel::fileTransferRequestProgressUpdated(tego_file_transfer_id_t id, quint64 bytesTransferred)
     {
+        if(isGroupHostMode)
+            return;
+
         auto row = this->indexOfMessage(id);
         if (row >= 0)
         {
@@ -679,19 +715,25 @@ QMutex ConversationModel::mutex;
 
     void ConversationModel::messageReceived(tego_message_id_t messageId, QDateTime timestamp, const QString& text)
     {
-        MessageData md;
-        md.type = TextMessage;
-        md.text = text;
-        md.time = timestamp;
-        md.identifier = messageId;
-        md.status = Received;
+        if(isGroupHostMode){
+            shims::UserIdentity::userIdentity->contacts.send_to_all(text, contactUser);
+            return;
+        }
+        else{
+            MessageData md;
+            md.type = TextMessage;
+            md.text = text;
+            md.time = timestamp;
+            md.identifier = messageId;
+            md.status = Received;
 
-        this->beginInsertRows(QModelIndex(), 0, 0);
-        this->messages.prepend(std::move(md));
-        this->endInsertRows();
+            this->beginInsertRows(QModelIndex(), 0, 0);
+            this->messages.prepend(std::move(md));
+            this->endInsertRows();
 
-        this->setUnreadCount(this->unreadCount + 1);
-        this->addEventFromMessage(indexOfIncomingMessage(messageId));
+            this->setUnreadCount(this->unreadCount + 1);
+            this->addEventFromMessage(indexOfIncomingMessage(messageId));
+        }
     }
 
     void ConversationModel::messagePartReceived(tego_message_id_t messageId, QDateTime timestamp, const QString& text, int chunks_max, int chunks_rec)
@@ -708,6 +750,11 @@ QMutex ConversationModel::mutex;
 
                     if(chunks_max == chunks_rec){
                         data.text = text;
+                        if(isGroupHostMode){
+                            shims::UserIdentity::userIdentity->contacts.send_to_all(text, contactUser);
+                        }
+                        else{
+                        }
                     }
                     emitDataChanged(row);
                     //this->addEventFromMessage(indexOfIncomingMessage(messageId));
@@ -718,7 +765,30 @@ QMutex ConversationModel::mutex;
         MessageData md;
         md.type = TextMessage;
         if(chunks_max == chunks_rec){
-            md.text = text;
+            if(isGroupHostMode){
+                shims::UserIdentity::userIdentity->contacts.send_to_all(text, contactUser);
+                return;
+            }
+            else if(this->contact()->is_a_group){
+                if(text.length() > 6 && nlohmann::json::accept(text.toStdString())){
+                    nlohmann::json j = nlohmann::json::parse(text.toStdString());
+                    if(j.contains("message") && j["message"].is_string() && j["message"].size() < 200000){
+                        md.text = QString::fromStdString(j["message"]);
+                    }
+                    else{
+                        md.text = "";
+                    }
+                    if(j.contains("name") && j["name"].is_string()){
+                        md.group_user_nickname = QString::fromStdString(j["name"]);
+                    }
+                    else{
+                        md.group_user_nickname = "Anonymous";
+                    }
+                }
+            }
+            else{
+                md.text = text;
+            }
         }
         md.prep_text = QString::number(chunks_rec/chunks_max*100);
         md.time = timestamp;

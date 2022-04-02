@@ -19,6 +19,7 @@ namespace shims
         Q_PROPERTY(Status status READ getStatus NOTIFY statusChanged)
         Q_PROPERTY(shims::OutgoingContactRequest* contactRequest READ contactRequest NOTIFY statusChanged)
         Q_PROPERTY(shims::ConversationModel* conversation READ conversation CONSTANT)
+        Q_PROPERTY(bool is_a_group READ getIsAGroup CONSTANT)
     public:
         enum Status
         {
@@ -29,13 +30,17 @@ namespace shims
             Outdated
         };
 
-        ContactUser(const QString& serviceId, const QString& nickname, const QString& icon = "");
+        ContactUser(const QString& serviceId, const QString& nickname, const QString& icon = "", bool is_a_group = false, bool group = false);
 
         QString getNickname() const;
         QString getIcon() const;
         QString getContactID() const;
         Status getStatus() const;
+        bool getIsAGroup() const {
+            return is_a_group;
+        }
         void setStatus(Status status);
+        QString getSection() const;
         shims::OutgoingContactRequest *contactRequest();
         shims::ConversationModel *conversation();
 
@@ -55,7 +60,7 @@ namespace shims
         void statusChanged();
         void contactDeleted(shims::ContactUser *user);
 
-    private:
+    protected:
         shims::ConversationModel* conversationModel;
         shims::OutgoingContactRequest* outgoingContactRequest;
 
@@ -63,6 +68,8 @@ namespace shims
         QString serviceId;
         QString nickname;
         QString icon;
+        bool is_a_group;
+        void setIsAGroup(bool is_a_group);
 
         SettingsObject settings;
 
