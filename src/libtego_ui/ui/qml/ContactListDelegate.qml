@@ -13,14 +13,28 @@ Rectangle {
     visible: search_visible()
 
     function search_visible(){
-        if(typeof(searchUserText) === "undefined")
-            return true
-        else if(searchUserText === "")
-            return true
-        else if(model.contact.nickname.toLowerCase().indexOf(searchUserText.toLowerCase()) !== -1)
-            return true
-        else
-            return false
+        if(showHide === "none"){
+            if(typeof(searchUserText) === "undefined")
+                return true
+            else if(searchUserText === "")
+                return true
+            else if(model.contact.nickname.toLowerCase().indexOf(searchUserText.toLowerCase()) !== -1)
+                return true
+            else
+                return false
+        }
+        else if(showHide === "show"){
+            if(showHideElements.includes(model.contact.contactID+";"+model.contact.nickname))
+                return true
+            else
+                return false
+        }
+        else if(showHide === "hide"){
+            if(showHideElements.includes(model.contact.contactID+";"+model.contact.nickname))
+                return false
+            else
+                return true
+        }
     }
 
     property bool highlighted: ListView.isCurrentItem

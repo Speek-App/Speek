@@ -211,6 +211,15 @@ ToolBar {
                 }
             }
             MenuItem {
+                visible: !styleHelper.isGroupHostMode
+                //: Context menu entry to open the dialog to view all created groups or add a new one
+                text: qsTr("Groups")
+                onTriggered: {
+                    var object = createDialog("SelectGroupDialog.qml", { }, window)
+                    object.visible = true
+                }
+            }
+            MenuItem {
                 //: Context menu command to open the settings dialog
                 text: qsTr("Settings")
                 onTriggered: preferencesAction.trigger()

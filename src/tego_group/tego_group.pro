@@ -40,7 +40,7 @@ include($${QMAKE_INCLUDES}/artifacts.pri)
 include($${QMAKE_INCLUDES}/compiler_flags.pri)
 include($${QMAKE_INCLUDES}/linker_flags.pri)
 
-TARGET = speek
+TARGET = speek-group
 TEMPLATE = app
 
 QT += core gui network quick widgets

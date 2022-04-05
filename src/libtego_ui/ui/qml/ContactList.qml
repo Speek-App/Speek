@@ -7,6 +7,10 @@ Rectangle {
     id: scroll
     color: palette.base
     property var startIndex: -1
+    property alias contactListView: contactListView
+    property alias contactsModel: contactsModel
+    property var showHideElements: []
+    property var showHide: "none"
 
     data: [
         ContactsModel {

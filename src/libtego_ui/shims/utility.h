@@ -118,15 +118,53 @@ public:
         QProcess::startDetached(qApp->arguments()[0], a);
     }
 
-    Q_INVOKABLE QVariantList getIdentities() {
+    Q_INVOKABLE void startGroup(QString id, QString groupName = "", QString contactRequestMessage = "", QStringList initialUsers = QStringList()) {
+        #ifdef Q_OS_WIN
+            QString filename(QStringLiteral("/speek-group.exe"));
+        #else
+            QString filename(QStringLiteral("/speek-group"));
+        #endif
+
+        QString path = qApp->applicationDirPath();
+        if (QFile::exists(path + filename))
+            path = path + filename;
+
+        QStringList a;
+        a << id;
+
+        if(groupName != ""){
+            a << groupName;
+            if(contactRequestMessage != ""){
+                a << contactRequestMessage;
+                if(!initialUsers.empty()){
+                    for(int i = 0; i<initialUsers.length(); i++){
+                        a << initialUsers[i];
+                    }
+                }
+            }
+        }
+
+        QProcess::startDetached(path, a);
+    }
+
+    Q_INVOKABLE QVariantList getIdentities(QString l = "") {
         QVariantList a;
-        for (QString const& name: QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)).entryList(QDir::AllDirs | QDir::NoDotAndDotDot))
+        QString search_path;
+        if(l == "")
+            search_path = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+        else{
+            QString appname("speek");
+            search_path = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+            search_path.replace(search_path.lastIndexOf(appname), appname.size(), l);
+        }
+
+        for (QString const& name: QDir(search_path).entryList(QDir::AllDirs | QDir::NoDotAndDotDot))
         {
-            if(name != "tor" && name != "cache" && name != "groups"){
+            if(name != "tor" && name != "cache"){
                 QVariantMap p;
                 p.insert("name", name);
 
-                QFile f(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/" + name + "/speek.json");
+                QFile f(search_path + "/" + name + "/speek.json");
                 if (!f.open(QFile::ReadOnly | QFile::Text)){
                     p.insert("contacts", "unknown");
                 }
@@ -134,7 +172,7 @@ public:
                     QTextStream in(&f);
                     QString c = QString::number(in.readAll().count("\"type\": \"allowed\""));
                     p.insert("contacts", c);
-                    QFileInfo ff(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/" + name + "/speek.json");
+                    QFileInfo ff(search_path + "/" + name + "/speek.json");
                     p.insert("created", ff.birthTime().toString());
                 }
 

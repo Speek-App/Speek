@@ -442,6 +442,7 @@ FocusScope{
                         cursorShape: Qt.PointingHandCursor
                         anchors.fill: parent
                         onClicked: {
+                            emojiVisible = false
                             richTextActive = !richTextActive
                             textInput.text = ""
                         }

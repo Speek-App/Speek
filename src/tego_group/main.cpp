@@ -38,11 +38,14 @@
 #include <libtego_callbacks.hpp>
 #include <QStyleFactory>
 #include <QtCore/QMetaProperty>
+#include <QValidator>
+#include <QTimer>
 
 // shim replacements
 #include "shims/TorControl.h"
 #include "shims/TorManager.h"
 #include "shims/UserIdentity.h"
+#include "shims/ContactIDValidator.h"
 
 int main(int argc, char *argv[]) try
 {
@@ -90,7 +93,7 @@ int main(int argc, char *argv[]) try
 
     QString error;
     QLockFile *lock = 0;
-    if (!MainWindow::initSettings(settings.data(), &lock, error, "/groups/")) {
+    if (!MainWindow::initSettings(settings.data(), &lock, error, "/")) {
         if (error.isEmpty())
             return 0;
         QMessageBox::critical(0, qApp->translate("Main", "Speek Error"), error);
@@ -123,10 +126,48 @@ int main(int argc, char *argv[]) try
 
     MainWindow::loadSettings(tegoContext, contactsManager);
 
+    QStringList args = qApp->arguments();
+    if(args.size() > 2){
+        settings->root()->write("ui.username", args[2]);
+    }
+    if(args.size() > 3){
+        settings->root()->write("ui.contactRequestMessage", args[3]);
+    }
+
     /* Window */
     QScopedPointer<MainWindow> w(new MainWindow);
     if (!w->showUI(theme_color, true))
         return 1;
+
+    //QTimer *timer = new QTimer(shims::UserIdentity::userIdentity);
+    //QObject::connect(timer, SIGNAL(timeout()), shims::UserIdentity::userIdentity, SLOT(update()));
+    //timer->start(1000);
+
+    if(args.size() > 4){
+        QMetaObject::Connection * const connection = new QMetaObject::Connection;
+        *connection = QObject::connect(shims::UserIdentity::userIdentity, &shims::UserIdentity::statusChanged, contactsManager,[contactsManager, connection]() {
+            QStringList args = qApp->arguments();
+            QString requestMessage;
+            QString groupName;
+            if(args.size() >= 2){
+                groupName = args[2];
+            }
+            if(args.size() >= 3){
+                requestMessage = args[3];
+            }
+
+            shims::ContactIDValidator v;
+            for(int i = 4; i<args.size(); i+=1){
+                QString speekID = args[i].section(';', 0, 0);
+                QString username = args[i].section(';', 1, 1);
+                int pos = 0;
+                if(!speekID.isEmpty() && !username.isEmpty() && v.validate(speekID, pos) != QValidator::Invalid)
+                    contactsManager->createContactRequest(speekID,username,groupName,requestMessage);
+            }
+            QObject::disconnect(*connection);
+            delete connection;
+        });
+    }
 
     return a.exec();
 }

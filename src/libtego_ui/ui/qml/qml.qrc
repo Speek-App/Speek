@@ -49,9 +49,15 @@
         <file>ContactRequestSelectionDialog.qml</file>
         <file>AppNotifications.qml</file>
         <file>SendImageDialog.qml</file>
+        <file>SelectGroupDialog.qml</file>
+        <file>CreateNewGroupDialog.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>
         <file>../../../EULA</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>SelectGroupDialog.qml</file>
+        <file>CreateNewGroupDialog.qml</file>
     </qresource>
 </RCC>
