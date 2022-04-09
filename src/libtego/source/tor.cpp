@@ -195,36 +195,36 @@ extern "C"
         }, error);
      }
 
-    void tego_tor_daemon_config_set_bridges(
-        tego_tor_daemon_config_t* config,
-        const char** bridges,
-        size_t* bridgeLengths,
-        size_t bridgeCount,
-        tego_error_t** error)
-    {
-        return tego::translateExceptions([=]() -> void
-        {
-            TEGO_THROW_IF_NULL(config);
-            // ensure we have valid pointers or we are setting 0 bridges
-            TEGO_THROW_IF_FALSE((bridges != nullptr && bridgeLengths != nullptr) || bridgeCount == 0);
+     void tego_tor_daemon_config_set_bridges(
+         tego_tor_daemon_config_t* config,
+         const char** bridges,
+         size_t* bridgeLengths,
+         size_t bridgeCount,
+         tego_error_t** error)
+     {
+         return tego::translateExceptions([=]() -> void
+         {
+             TEGO_THROW_IF_NULL(config);
+             // ensure we have valid pointers or we are setting 0 bridges
+             TEGO_THROW_IF_FALSE((bridges != nullptr && bridgeLengths != nullptr) || bridgeCount == 0);
 
-            // ensure each bridge string is valid
-            for(size_t i = 0; i < bridgeCount; ++i)
-            {
-                TEGO_THROW_IF_NULL(bridges[i]);
-                TEGO_THROW_IF_FALSE(bridgeLengths[i] > 0);
-            }
+             // ensure each bridge string is valid
+             for(size_t i = 0; i < bridgeCount; ++i)
+             {
+                 TEGO_THROW_IF_NULL(bridges[i]);
+                 TEGO_THROW_IF_FALSE(bridgeLengths[i] > 0);
+             }
 
-            // clear out existing bridge strings and append our new ones
-            auto& bridges = config->bridges;
-            bridges.clear();
+             // clear out existing bridge strings and append our new ones
+             auto& confBridges = config->bridges;
+             confBridges.clear();
 
-            // copy bridge strings over
-            bridges.reserve(bridgeCount);
-            for(size_t i = 0; i < bridgeCount; ++i)
-            {
-                bridges.emplace_back(bridges[i], bridgeLengths[i]);
-            }
-        }, error);
-    }
+             // copy bridge strings over
+             confBridges.reserve(bridgeCount);
+             for(size_t i = 0; i < bridgeCount; ++i)
+             {
+                 confBridges.emplace_back(bridges[i], bridgeLengths[i]);
+             }
+         }, error);
+     }
 }

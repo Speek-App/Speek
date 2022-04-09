@@ -13,6 +13,11 @@ Rectangle {
     visible: search_visible()
 
     function search_visible(){
+        if(showGroups === false){
+            if(section === "group-online" || section === "group-offline" || section === "group-request"){
+                return false
+            }
+        }
         if(showHide === "none"){
             if(typeof(searchUserText) === "undefined")
                 return true

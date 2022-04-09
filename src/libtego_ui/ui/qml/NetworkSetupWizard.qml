@@ -7,7 +7,7 @@ ApplicationWindow {
     id: window
     width: minimumWidth
     height: minimumHeight
-    minimumWidth: 500
+    minimumWidth: 600
     maximumWidth: minimumWidth
     minimumHeight: visibleItem.height + 16
     maximumHeight: minimumHeight
