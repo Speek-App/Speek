@@ -71,10 +71,10 @@ ColumnLayout {
 
             validator: RegExpValidator{regExp: /^[a-zA-Z0-9\-_, ]+$/}
 
-            onTextChanged: {
+            /*onTextChanged: {
                 if(Qt.platform.os !== "android")
                     usernameLayout.save_username()
-            }
+            }*/
 
             Accessible.role: Accessible.EditableText
             //: Name of the text input used to select the own username
@@ -220,7 +220,12 @@ ColumnLayout {
             currentIndex: languageModel.rowForLocaleID(uiSettings.data.language)
             Layout.minimumWidth: 160
             Material.background: Material.Indigo
-            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+            Component.onCompleted: {
+                if(Qt.platform.os !== "android"){
+                    contentItem.color = palette.text
+                    indicator.color = palette.text
+                }
+            }
 
             LanguagesModel {
                 id: languageModel

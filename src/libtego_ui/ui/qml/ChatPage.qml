@@ -321,6 +321,7 @@ FocusScope{
                 MouseArea{
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
                     onClicked: {
                         if (mouse.button === Qt.RightButton) { // 'mouse' is a MouseEvent argument passed into the onClicked signal handler
                             chatPageContactContextMenu.popup()
@@ -491,6 +492,7 @@ FocusScope{
                     }
                 }
                 Button {
+                    id: emojiActivateButton
                     visible: richTextActive
                     tooltip: "Show emoji menu"
 
@@ -562,10 +564,9 @@ FocusScope{
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
                         font.pixelSize: 13
-                        //font.pointSize: styleHelper.pointSize * 0.9
                         text: textInput.placeholderText
                         color: styleHelper.messageBoxText
-                        visible: !textInput.getText(0, textInput.length) && !textInput.activeFocus
+                        visible: Qt.platform.os === "android" ? (!textInput.getText(0, textInput.length) && !textInput.activeFocus) : !textInput.getText(0, textInput.length)
                     }
 
                     Component.onCompleted: {

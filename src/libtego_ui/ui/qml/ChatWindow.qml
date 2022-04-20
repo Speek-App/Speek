@@ -52,27 +52,7 @@ ApplicationWindow {
             timer_delay.start();
         }
     }
-/*
-    Connections {
-        target: Qt.application
-        onStateChanged:
-            if(Qt.platform.os === "android"){
-                if(Qt.application.state === Qt.ApplicationActive) {
-                    console.log("ACTIVE")
-                    console.log(visible)
-                    chatWindow.raise()
-                    chatWindow.requestActivate()
-                    timer_delay.setTimeout(function(){
-                        chatWindow.raise()
-                        chatWindow.requestActivate()
-                    },5000)
-                }
-                else if(Qt.application.state === Qt.ApplicationSuspended) {
-                     console.log("ISUSPENDED")
-                }
-            }
-    }
-*/
+
     ChatPage {
         id: chatPage
         anchors.fill: parent

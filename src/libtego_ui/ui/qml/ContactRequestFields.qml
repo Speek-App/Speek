@@ -70,15 +70,21 @@ GridLayout {
         Accessible.name: text
     }
 
-    TextArea {
-        id: messageField
-        Layout.fillWidth: true
+    ScrollView {
         Layout.fillHeight: true
-        textFormat: TextEdit.PlainText
-        readOnly: contactFields.readOnly
-        Accessible.role: Accessible.Dialog
-        Accessible.name: text
-        //: Description of textbox for setting a new contact's initial greeting message for accessibility tech like screen readers
-        Accessible.description: qsTr("Field for the contact's greeting message")
+        Layout.fillWidth: true
+
+        background: Rectangle { color: palette.base;radius:4;visible:Qt.platform.os !== "android" }
+        TextArea {
+            id: messageField
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            textFormat: TextEdit.PlainText
+            readOnly: contactFields.readOnly
+            Accessible.role: Accessible.Dialog
+            Accessible.name: text
+            //: Description of textbox for setting a new contact's initial greeting message for accessibility tech like screen readers
+            Accessible.description: qsTr("Field for the contact's greeting message")
+        }
     }
 }

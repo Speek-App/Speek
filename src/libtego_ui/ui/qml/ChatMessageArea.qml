@@ -49,7 +49,6 @@ Rectangle {
 
         MouseArea {
             anchors.fill: parent
-            //acceptedButtons: Qt.NoButton
             preventStealing: true
             onWheel: {
                 wheel.accepted = true
@@ -67,13 +66,13 @@ Rectangle {
             property int xPrev: 0
             property bool tracing: false
             onPressed: {
+                //remove focus from textarea
+                emojiActivateButton.forceActiveFocus()
                 if(!tracing){
                     xStart = mouse.x
                     xPrev = mouse.x
                     velocity = 0
                     tracing = true
-                    //remove focus from textarea
-                    sendMessageButton.forceActiveFocus()
                 }
 
                 mouse.accepted = false;
@@ -89,7 +88,6 @@ Rectangle {
                 mouse.accepted = false;
             }
             onReleased: {
-
                 tracing = false
                 if ( velocity > 15 && mouse.x > parent.width*0.5 ) {
                     if(Qt.platform.os === "android"){
@@ -97,7 +95,7 @@ Rectangle {
                             if(stack.depth > 1){
                                 stack.pop()
                                 //remove focus from textarea
-                                sendMessageButton.forceActiveFocus()
+                                emojiActivateButton.forceActiveFocus()
                             }
                         else
                             chatWindow.close()

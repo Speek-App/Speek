@@ -27,6 +27,17 @@ ToolBar {
         }
     }
 
+    MouseArea {
+        visible: Qt.platform.os !== "android"
+        anchors.fill: parent
+        preventStealing: true
+        propagateComposedEvents: true
+        onClicked: {
+            forceActiveFocus()
+            mouse.accepted = false
+        }
+    }
+
     Utility {
        id: utility
     }

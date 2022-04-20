@@ -161,7 +161,7 @@ Item {
                     Layout.alignment: Qt.AlignCenter
                     font.pointSize: styleHelper.pointSize + 1
 
-                    MouseArea { anchors.fill: parent; onDoubleClicked: nicknameLayout.renameMode = true }
+                    //MouseArea { anchors.fill: parent; onDoubleClicked: nicknameLayout.renameMode = true }
 
                     Component {
                         id: renameComponent
@@ -182,7 +182,7 @@ Item {
                             font.pointSize: nickname.font.pointSize
                             onEditingFinished: {
                                 contactInfo.contact.nickname = text
-                                nicknameLayout.renameMode = false
+                                //nicknameLayout.renameMode = false
                             }
                         }
                     }

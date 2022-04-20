@@ -61,7 +61,12 @@ ColumnLayout {
             Material.background: Material.Indigo
             currentIndex: typeof(uiSettings.data.theme) !== "undefined" ? model.indexOf(uiSettings.data.theme) : 0
             Layout.minimumWidth: 140
-            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+            Component.onCompleted: {
+                if(Qt.platform.os !== "android"){
+                    contentItem.color = palette.text
+                    indicator.color = palette.text
+                }
+            }
             model: [
                 "Dark-Blue",
                 "Dark",
@@ -108,7 +113,12 @@ ColumnLayout {
             Material.background: Material.Indigo
             currentIndex: typeof(uiSettings.data.chatBackground) !== "undefined" ? model.indexOf(uiSettings.data.chatBackground) : 0
             Layout.minimumWidth: 140
-            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+            Component.onCompleted: {
+                if(Qt.platform.os !== "android"){
+                    contentItem.color = palette.text
+                    indicator.color = palette.text
+                }
+            }
             model: [
                 "Blue",
                 "Blue-Squares",
@@ -191,7 +201,12 @@ ColumnLayout {
             Material.background: Material.Indigo
             currentIndex: typeof(uiSettings.data.emojiFont) !== "undefined" ? model.indexOf(uiSettings.data.emojiFont) : 0
             Layout.minimumWidth: 140
-            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+            Component.onCompleted: {
+                if(Qt.platform.os !== "android"){
+                    contentItem.color = palette.text
+                    indicator.color = palette.text
+                }
+            }
             model: ["Noto-Emoji",
                     "Twemoji",
                     "Emojitwo"
@@ -243,16 +258,12 @@ ColumnLayout {
             Accessible.name: text
         }
         RowLayout{
-            TextArea {
+            TextField {
                 id: customTheme
 
                 text: typeof(uiSettings.data.customTheme) !== "undefined" ? uiSettings.data.customTheme : ""
-                Layout.minimumWidth: 80
+                Layout.minimumWidth: 200
                 Layout.maximumHeight: Qt.platform.os === "android" ? 50 : 33
-
-                /*background: Qt.platform.os === "android" ? customTheme.background : Rectangle{
-                    color: "red"
-                }*/
 
                 onTextChanged: {
                     uiSettings.write("customTheme", customTheme.text)

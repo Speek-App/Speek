@@ -6,7 +6,7 @@ import com.scythestudio.scodes 1.0
 ApplicationWindow {
     id: viewIdDialog_
     width: Qt.platform.os == "android" ? undefined : 740
-    height: Qt.platform.os == "android" ? undefined : 340
+    height: Qt.platform.os == "android" ? undefined : 500
     minimumWidth: Qt.platform.os == "android" ? undefined : width
     maximumWidth: Qt.platform.os == "android" ? undefined : width
     minimumHeight: Qt.platform.os == "android" ? undefined : height
@@ -29,7 +29,6 @@ ApplicationWindow {
         var str = userIdentity.contactID
         if(addUsernameToQR)
             str += ";"+nameField.text
-        console.log(str)
         barcodeGenerator.generate(str)
     }
 

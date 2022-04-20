@@ -11,7 +11,7 @@ ApplicationWindow {
     height: 420
     minimumHeight: 420
     title: qsTr("Speek Preferences")
-    modality: Qt.platform.os == "android" ? Qt.WindowModal : undefined
+    modality: Qt.WindowModal
 
     signal closed
     onVisibleChanged: if (!visible) closed()

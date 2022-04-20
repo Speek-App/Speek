@@ -64,7 +64,7 @@ ApplicationWindow {
                 background: Rectangle{
                     color: down ? styleHelper.contactListHover : "transparent"
                 }
-                contentItem: none
+                contentItem: null
                 width: parent.width
                 height: 60
 
@@ -194,7 +194,7 @@ ApplicationWindow {
 
     AppNotifications{
         id: appNotifications
-        visible: Qt.platform.os !== "android"
+        visible: Qt.platform.os !== "android" && mainWindow.appNotificationsModel.length > 0
         anchors.right: parent.right
         anchors.top: parent.top
         z: 99
@@ -205,7 +205,7 @@ ApplicationWindow {
 
     StackView {
         id: stack
-        initialItem: leftColumn
+        initialItem: Qt.platform.os === "android" ? leftColumn : undefined
         anchors.fill: parent
         visible: Qt.platform.os === "android"
 
