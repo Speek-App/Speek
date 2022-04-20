@@ -1,21 +1,25 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.0
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
+import QtQuick.Controls.Material 2.15
 
 ApplicationWindow {
     id: addContactWindow
-    width: 840
-    height: 460
-    minimumWidth: width
-    maximumWidth: width
-    minimumHeight: height
-    maximumHeight: height
-    flags: styleHelper.dialogWindowFlags
-    modality: Qt.WindowModal
+    width: Qt.platform.os == "android" ? undefined : 840
+    height: Qt.platform.os == "android" ? undefined : 460
+    minimumWidth: 300
+    maximumWidth: 1440
+    minimumHeight: 300
+    maximumHeight: 2000
+    flags: Qt.platform.os == "android" ? undefined : styleHelper.dialogWindowFlags
+    modality: Qt.platform.os == "android" ? Qt.NonModal : Qt.WindowModal
     title: mainWindow.title
+
+    color: palette.window
 
     signal closed
     onVisibleChanged: if (!visible) closed()
+    onOpacityChanged: closed()
 
     property string staticContactId: fields.contactId.text
 
@@ -29,6 +33,41 @@ ApplicationWindow {
 
         userIdentity.contacts.createContactRequest(fields.contactId.text, fields.name.text, yourNameField.text.length > 0 ? yourNameField.text : "Speek User", fields.message.text)
         close()
+    }
+
+    Item{
+        width: 40
+        height: 40
+        visible: Qt.platform.os === "android"
+        Button {
+            id: qrScanButton
+            anchors.centerIn: parent
+            hoverEnabled: true
+
+            ToolTip.visible: Qt.platform.os === "android" ? pressed : hovered
+            ToolTip.text: qsTr("Add a contact by scanning a QR-Code")
+
+            onClicked: {
+                var object = createDialog("qrcode/ScannerPage.qml", { "textInput": fields.contactId.textField, "nameInput": fields.name })
+                object.visible = true
+            }
+
+            background: Rectangle {
+                implicitWidth: 30
+                implicitHeight: 30
+                color: "transparent"
+            }
+            contentItem: Text {
+                text: "N"
+                font.family: iconFont.name
+                font.pixelSize: 30
+                horizontalAlignment: Qt.AlignLeft
+                renderType: Text.QtRendering
+                color: {
+                    return qrScanButton.hovered ? palette.text : styleHelper.chatIconColor
+                }
+            }
+        }
     }
 
     ColumnLayout {
@@ -76,15 +115,15 @@ ApplicationWindow {
             right: parent.right
             top: infoArea.bottom
             bottom: buttonRow.top
-            margins: 8
-            leftMargin: 16
-            rightMargin: 16
+            margins: Qt.platform.os === "android" ? 4 : 8
+            leftMargin: Qt.platform.os === "android" ? 4 : 16
+            rightMargin: Qt.platform.os === "android" ? 4 : 16
         }
 
         Label {
             //: Label for the recommended username (own username) text box in the 'add new contact' window
-            text: uiMain.isGroupHostMode ? qsTr("Your Group Name:") : qsTr("Your Username:")
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+            text: uiMain.isGroupHostMode ? qsTr("Your Group Name:") : qsTr("Your Name:")
+            Layout.alignment: Qt.platform.os === "android" ? Qt.AlignVCenter | Qt.AlignLeft : Qt.AlignVCenter | Qt.AlignRight
             Accessible.role: Accessible.StaticText
             Accessible.name: text
         }
@@ -93,6 +132,7 @@ ApplicationWindow {
             text: typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek User"
             id: yourNameField
             Layout.fillWidth: true
+            //implicitHeight: 24
 
             validator: RegExpValidator{regExp: /^[a-zA-Z0-9\-_, ]+$/}
 
@@ -108,7 +148,8 @@ ApplicationWindow {
                 fields.contactId.readOnly = true
                 fields.name.focus = true
             } else {
-                fields.contactId.focus = true
+                if(Qt.platform.os != "android")
+                    fields.contactId.focus = true
             }
         }
     }
@@ -120,12 +161,18 @@ ApplicationWindow {
             bottom: parent.bottom
             rightMargin: 16
             bottomMargin: 8
+            leftMargin: Qt.platform.os === "android" ? 16 : undefined
+            left: Qt.platform.os === "android" ? parent.left : undefined
         }
 
         Button {
             //: label for button which dismisses a dialog
             text: qsTr("Cancel")
+            width: Qt.platform.os === "android" ? undefined : 100
+            height: 50
             onClicked: addContactWindow.close()
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+            Layout.fillWidth: Qt.platform.os === "android" ? true : false
             Accessible.role: Accessible.Button
             Accessible.name: text
             //: description for 'Cancel' button accessibility tech like screen readers
@@ -136,9 +183,11 @@ ApplicationWindow {
         Button {
             //: button label to finish adding a contact/friend
             text: qsTr("Add")
-            isDefault: true
+            //isDefault: true
             enabled: fields.hasValidRequest
             onClicked: addContactWindow.accept()
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+            Layout.fillWidth: Qt.platform.os === "android" ? true : false
 
             Accessible.role: Accessible.Button
             Accessible.name: text

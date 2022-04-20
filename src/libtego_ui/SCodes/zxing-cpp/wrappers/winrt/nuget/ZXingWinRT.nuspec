@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>huycn.zxingcpp.winrt</id>
+    <version>1.0.0</version>
+    <title>ZXingWinRT</title>
+    <authors>Nu-book Inc.</authors>
+    <owners>Nu-book Inc.</owners>
+    <licenseUrl>https://github.com/nu-book/zxing-cpp/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/nu-book/zxing-cpp</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>C++ port of ZXing barcode scanner library</description>
+    <releaseNotes>Bug fixes and improvements for many readers and decoders</releaseNotes>
+    <copyright>Copyright 2019 Nu-book Inc.</copyright>
+    <tags>zxing barcode scanner qrcode</tags>
+  </metadata>
+  <files>
+    <file src="..\UAP\v0.8.0.0\ExtensionSDKs\ZXingWinRT\1.0.0.0\References\CommonConfiguration\Neutral\ZXing.winmd" target="lib\uap10.0"/>
+    <file src="..\UAP\v0.8.0.0\ExtensionSDKs\ZXingWinRT\1.0.0.0\References\CommonConfiguration\Neutral\ZXing.pri" target="runtimes\win10-arm\native"/>
+    <file src="..\UAP\v0.8.0.0\ExtensionSDKs\ZXingWinRT\1.0.0.0\Redist\Retail\ARM\ZXing.dll" target="runtimes\win10-arm\native"/>
+    <file src="..\UAP\v0.8.0.0\ExtensionSDKs\ZXingWinRT\1.0.0.0\References\CommonConfiguration\Neutral\ZXing.pri" target="runtimes\win10-arm64\native"/>
+    <file src="..\UAP\v0.8.0.0\ExtensionSDKs\ZXingWinRT\1.0.0.0\Redist\Retail\ARM64\ZXing.dll" target="runtimes\win10-arm64\native"/>
+    <file src="..\UAP\v0.8.0.0\ExtensionSDKs\ZXingWinRT\1.0.0.0\References\CommonConfiguration\Neutral\ZXing.pri" target="runtimes\win10-x64\native"/>
+    <file src="..\UAP\v0.8.0.0\ExtensionSDKs\ZXingWinRT\1.0.0.0\Redist\Retail\x64\ZXing.dll" target="runtimes\win10-x64\native"/>
+    <file src="..\UAP\v0.8.0.0\ExtensionSDKs\ZXingWinRT\1.0.0.0\References\CommonConfiguration\Neutral\ZXing.pri" target="runtimes\win10-x86\native"/>
+    <file src="..\UAP\v0.8.0.0\ExtensionSDKs\ZXingWinRT\1.0.0.0\Redist\Retail\x86\ZXing.dll" target="runtimes\win10-x86\native"/>
+    <file src="ZXingWinRT.targets" target="build\native"/>  
+  </files>
+</package>

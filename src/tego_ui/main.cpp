@@ -44,6 +44,8 @@
 #include "shims/TorManager.h"
 #include "shims/UserIdentity.h"
 
+#include <QQuickStyle>
+
 int main(int argc, char *argv[]) try
 {
    /* Disable rwx memory.
@@ -51,8 +53,10 @@ int main(int argc, char *argv[]) try
     qputenv("QV4_FORCE_INTERPRETER",  "1");
     qputenv("QT_ENABLE_REGEXP_JIT",   "0");
     /* Use QtQuick 2D renderer by default; ignored if not available */
+#ifndef ANDROID
     if (qEnvironmentVariableIsEmpty("QMLSCENE_DEVICE"))
         qputenv("QMLSCENE_DEVICE", "software");
+#endif
 
     /* https://doc.qt.io/qt-5/highdpi.html#high-dpi-support-in-qt */
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -65,10 +69,13 @@ int main(int argc, char *argv[]) try
 
     QApplication a(argc, argv);
 
+
+    //QQuickStyle::setStyle(QLatin1String("Material"));
+#ifndef ANDROID
     qApp->setStyle(QStyleFactory::create("Fusion"));
+#endif
     MainWindow::initFontSettings();
-    QVariantMap theme_color;
-    MainWindow::initTheme(&theme_color);
+
 
     tego_context_t* tegoContext = nullptr;
     tego_initialize(&tegoContext, tego::throw_on_error());
@@ -97,6 +104,8 @@ int main(int argc, char *argv[]) try
     }
     QScopedPointer<QLockFile> lockFile(lock);
 
+    QVariantMap theme_color;
+    MainWindow::initTheme(&theme_color);
     MainWindow::initTranslation();
 
     // init our tor shims

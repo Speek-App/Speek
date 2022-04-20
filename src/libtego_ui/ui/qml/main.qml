@@ -1,14 +1,17 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.0
 import Qt.labs.platform 1.1
+import QtQuick.Controls.Material 2.15
 import im.ricochet 1.0
 import "ContactWindow.js" as ContactWindow
 
 // Root non-graphical object providing window management and other logic.
 QtObject {
     id: root
+    property bool showMainWindow: false
+    Material.theme: styleHelper.darkMode ? Material.Dark : Material.Light
 
     property MainWindow mainWindow: MainWindow {
         //onVisibleChanged: if (!visible) Qt.quit()
@@ -99,7 +102,7 @@ QtObject {
 
     Component.onCompleted: {
         ContactWindow.createWindow = function(user) {
-            var re = createDialog("ChatWindow.qml", { 'contact': user })
+            var re = createDialog("ChatWindow.qml", { 'contact': user }, root.mainWindow)
             re.x = mainWindow.x + mainWindow.width + 10
             re.y = mainWindow.y + (mainWindow.height / 2) - (re.height / 2)
 
@@ -118,11 +121,12 @@ QtObject {
 
         if (torInstance.configurationNeeded) {
             var object = createDialog("NetworkSetupWizard.qml")
+            object.show()
             object.networkReady.connect(function() {
                 mainWindow.visible = true
                 object.visible = false
             })
-            object.visible = true
+
         } else {
             mainWindow.visible = true
         }
@@ -191,7 +195,7 @@ QtObject {
             Label { id: fakeLabel }
             Label { id: fakeLabelSized; font.pointSize: styleHelper.pointSize > 0 ? styleHelper.pointSize : 1 }
 
-            property int pointSize: (Qt.platform.os === "windows") ? 10 : (Qt.platform.os === "osx") ? 14 : 12
+            property int pointSize: (Qt.platform.os === "windows") ? 10 : (Qt.platform.os === "osx")  || (Qt.platform.os === "android") ? 14 : 12
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
             property string fontFamily: "Noto Sans"
@@ -212,6 +216,7 @@ QtObject {
             property var chatBoxBorderColorLeft: uiMain ? uiMain.themeColor.chatBoxBorderColorLeft : "#ffffff"
             property var notificationBackground: uiMain ? uiMain.themeColor.notificationBackground : "#ffffff"
             property var contactListHover: uiMain ? uiMain.themeColor.contactListHover : "#ffffff"
+            property var textColor: uiMain ? palette.text : "#ffffff"
         },
 
         Loader {

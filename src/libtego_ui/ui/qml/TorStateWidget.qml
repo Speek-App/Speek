@@ -4,7 +4,10 @@ import QtQuick.Layouts 1.0
 import im.ricochet 1.0
 
 Label {
+    property bool show: false;
     text: {
+        if(!show)
+            return "";
         if (torControl.status === TorControl.Error)
             return qsTr("Connection failed")
         if (torControl.status < TorControl.Connected) {
@@ -12,8 +15,7 @@ Label {
             return qsTr("Connecting\u2026")
         }
 
-        if (torControl.torStatus === TorControl.TorUnknown ||
-            torControl.torStatus === TorControl.TorOffline)
+        if (torControl.torStatus === TorControl.TorOffline)
         {
             var bootstrap = torControl.bootstrapStatus
             if (bootstrap['recommendation'] === 'warn')
@@ -33,6 +35,7 @@ Label {
             else
                 return qsTr("Connected")
         }
+        return "";
     }
 
     Accessible.name: qsTr("Tor status")

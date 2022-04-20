@@ -11,6 +11,11 @@ QT += core gui network quick widgets
 macx {
     QT += macextras
 }
+android{
+    QT += androidextras svg
+}
+QT += quickcontrols2
+QT += quick
 
 # setup precompiled headers
 CONFIG += precompile_header

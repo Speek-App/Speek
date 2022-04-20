@@ -49,7 +49,8 @@ Rectangle {
 
         MouseArea {
             anchors.fill: parent
-            acceptedButtons: Qt.NoButton
+            //acceptedButtons: Qt.NoButton
+            preventStealing: true
             onWheel: {
                 wheel.accepted = true
                 if (wheel.pixelDelta.y !== 0) {
@@ -57,6 +58,52 @@ Rectangle {
                 } else if (wheel.angleDelta.y !== 0) {
                     messageView.flick(0, wheel.angleDelta.y * 5)
                 }
+            }
+
+            propagateComposedEvents: true
+
+            property real velocity: 0.0
+            property int xStart: 0
+            property int xPrev: 0
+            property bool tracing: false
+            onPressed: {
+                if(!tracing){
+                    xStart = mouse.x
+                    xPrev = mouse.x
+                    velocity = 0
+                    tracing = true
+                    //remove focus from textarea
+                    sendMessageButton.forceActiveFocus()
+                }
+
+                mouse.accepted = false;
+            }
+            onPositionChanged: {
+                if ( !tracing ) return
+                var currVel = (mouse.x-xPrev)
+                velocity = (velocity + currVel)/2.0
+                xPrev = mouse.x
+                if ( velocity > 15 && mouse.x > parent.width*0.5 ) {
+                    tracing = false
+                }
+                mouse.accepted = false;
+            }
+            onReleased: {
+
+                tracing = false
+                if ( velocity > 15 && mouse.x > parent.width*0.5 ) {
+                    if(Qt.platform.os === "android"){
+                        if(uiSettings.data.combinedChatWindow)
+                            if(stack.depth > 1){
+                                stack.pop()
+                                //remove focus from textarea
+                                sendMessageButton.forceActiveFocus()
+                            }
+                        else
+                            chatWindow.close()
+                    }
+                }
+                mouse.accepted = false;
             }
         }
 

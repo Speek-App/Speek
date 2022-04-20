@@ -69,6 +69,11 @@ macx {
     icons.path = Contents/Resources/
     QMAKE_BUNDLE_DATA += icons
 }
+android{
+    QT += androidextras multimedia svg
+}
+QT += quickcontrols2
+QT += quick
 
 # Create a pdb for release builds as well, to enable debugging
 win32-msvc2008|win32-msvc2010 {

@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import im.ricochet 1.0
 import "utils.js" as Utils
@@ -102,7 +102,7 @@ Item {
 
         ProgressBar {
             width: parent.width
-            maximumValue: 100
+            to: 100
             indeterminate: bootstrap.progress === undefined
             value: bootstrap.progress === undefined ? 0 : bootstrap.progress
             visible: bootstrap.tag !== 'done'
@@ -127,6 +127,7 @@ Item {
 
         Button {
             text: qsTr("Configure")
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
             visible: torControl.hasOwnership ? !uiMain.appstore_compliant : false
             onClicked: {
                 var object = createDialog("NetworkSetupWizard.qml")

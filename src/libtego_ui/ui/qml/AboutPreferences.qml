@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 
 ColumnLayout {
@@ -20,6 +20,27 @@ ColumnLayout {
         Accessible.name: qsTr("Speek version %1").arg(uiMain.accessibleVersion)
     }
 
+    Rectangle{
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        color: palette.base
+        Flickable {
+            id: scroller
+            clip: true
+            anchors.fill: parent
+
+            TextArea.flickable: TextArea {
+                readOnly: true
+                text: uiMain.aboutText
+                textFormat: TextEdit.PlainText
+                wrapMode: TextEdit.Wrap
+
+                Accessible.description: qsTr("The license of Speek and its dependencies")
+                Accessible.name: qsTr("License")
+            }
+        }
+    }
+    /*
     TextArea {
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -31,7 +52,7 @@ ColumnLayout {
 
         Accessible.description: qsTr("The license of Speek and its dependencies")
         Accessible.name: qsTr("License")
-    }
+    }*/
 
     Accessible.role: Accessible.Window
     Accessible.name: qsTr("About")

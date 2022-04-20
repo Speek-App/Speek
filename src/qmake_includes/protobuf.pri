@@ -46,7 +46,7 @@ isEmpty(PROTOBUFDIR) {
     win32 {
         error(You must pass PROTOBUFDIR=path/to/protobuf to qmake on this platform)
     }
-    unix:!macx {
+    unix:!macx:!android {
         PKG_CONFIG = $$pkgConfigExecutable()
 
         # All our dependency resolution depends on pkg-config. If it isn't
@@ -72,14 +72,45 @@ isEmpty(PROTOBUFDIR) {
             QMAKE_CXXFLAGS += $$PROTOBUF_CFLAGS
         }
     }
+    android {
+        error(You must pass PROTOBUFDIR=path/to/protobuf to qmake on this platform)
+    }
     macx {
         error(You must pass PROTOBUFDIR=path/to/protobuf to qmake on this platform)
     }
 }
 else {
-    INCLUDEPATH += $${PROTOBUFDIR}/include
-    LIBS += -L$${PROTOBUFDIR}/lib -lprotobuf
-    contains(QMAKE_HOST.os,Windows):PROTOC = $${PROTOBUFDIR}/bin/protoc.exe
+    android {
+        ANDROID_EXTRA_LIBS += $${PROTOBUFDIR}/x86/lib/libprotobuf.so
+        ANDROID_EXTRA_LIBS += $${PROTOBUFDIR}/x86_64/lib/libprotobuf.so
+        ANDROID_EXTRA_LIBS += $${PROTOBUFDIR}/arm/lib/libprotobuf.so
+        ANDROID_EXTRA_LIBS += $${PROTOBUFDIR}/arm64/lib/libprotobuf.so
+
+        equals(ANDROID_TARGET_ARCH, armeabi-v7a) {
+            LIBS += -L$${PROTOBUFDIR}/arm/lib -lprotobuf
+            INCLUDEPATH += $${PROTOBUFDIR}/arm/include
+        }
+
+        equals(ANDROID_TARGET_ARCH, arm64-v8a) {
+            LIBS += -L$${PROTOBUFDIR}/arm64/lib -lprotobuf
+            INCLUDEPATH += $${PROTOBUFDIR}/arm64/include
+        }
+
+        equals(ANDROID_TARGET_ARCH, x86) {
+            LIBS += -L$${PROTOBUFDIR}/x86/lib -lprotobuf
+            INCLUDEPATH += $${PROTOBUFDIR}/x86/include
+        }
+
+        equals(ANDROID_TARGET_ARCH, x86_64) {
+            LIBS += -L$${PROTOBUFDIR}/x86_64/lib -lprotobuf
+            INCLUDEPATH += $${PROTOBUFDIR}/x86_64/include
+        }
+    }
+    else{
+        INCLUDEPATH += $${PROTOBUFDIR}/include
+        LIBS += -L$${PROTOBUFDIR}/lib -lprotobuf
+        contains(QMAKE_HOST.os,Windows):PROTOC = $${PROTOBUFDIR}/bin/protoc.exe
+    }
 }
 
 protobuf_decl.name = protobuf headers

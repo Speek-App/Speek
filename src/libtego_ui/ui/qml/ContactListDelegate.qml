@@ -120,6 +120,35 @@ Rectangle {
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         hoverEnabled: true
 
+        signal pressAndHold()
+
+        onPressAndHold: {
+            if (Qt.platform.os === "android") {
+                contextMenu.openContextMenu()
+            }
+        }
+
+        Timer {
+            id: longPressTimer
+
+            interval: 2000 //your press-and-hold interval here
+            repeat: false
+            running: false
+
+            onTriggered: {
+                ma.pressAndHold()
+            }
+        }
+
+
+        onPressedChanged: {
+            if ( pressed ) {
+                longPressTimer.running = true;
+            } else {
+                longPressTimer.running = false;
+            }
+        }
+
         onPressed: {
             if (!delegate.ListView.isCurrentItem)
                 //if(model.status !== ContactUser.RequestPending)
@@ -127,13 +156,22 @@ Rectangle {
         }
 
         onClicked: {
+            if(Qt.platform.os === "android"){
+                console.log(stack.depth)
+                if(stack.depth < 2){
+                    stack.push(combinedChatView)
+                }
+            }
             if (mouse.button === Qt.RightButton) {
                 contextMenu.openContextMenu()
+            }
+            else if (Qt.platform.os === "android" && mouse.button === Qt.LeftButton) {
+                contactListView.contactActivated(model.contact, contextMenu)
             }
         }
 
         onDoubleClicked: {
-            if (mouse.button === Qt.LeftButton) {
+            if (Qt.platform.os !== "android" && mouse.button === Qt.LeftButton) {
                 contactListView.contactActivated(model.contact, contextMenu)
             }
         }

@@ -16,6 +16,10 @@ ToolBar {
     property Action preferences: preferencesAction
     property alias searchUserText: searchUser.text
     property var contactRequestSelectionDialog
+    property alias addContactAction: addContactAction
+    property alias preferencesAction: preferencesAction
+    property alias viewIdAction: viewIdAction
+    property alias torstatewidget: torstatewidget
 
     style: ToolBarStyle {
         panel: Rectangle {
@@ -52,7 +56,9 @@ ToolBar {
             id: preferencesAction
             //: Tooltip text for the button that launches program preferences window
             text: qsTr("Preferences")
-            onTriggered: root.openPreferences()
+            onTriggered: {
+                root.openPreferences()
+            }
         }
     ]
 
@@ -82,6 +88,7 @@ ToolBar {
             id:torstatewidget
             Layout.alignment: Qt.AlignVCenter
             visible: text === "Online" ? false : true
+            show: window.visible
         }
 
         ToolButton {
@@ -101,7 +108,7 @@ ToolBar {
                 label: Text {
                     renderType: Text.NativeRendering
                     font.family: iconFont.name
-                    font.pointSize: styleHelper.pointSize * 1.1
+                    font.pointSize: Qt.platform.os === "android" ? styleHelper.pointSize * 1.6 :styleHelper.pointSize * 1.1
                     font.bold: true
                     text: control.text
                     color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
@@ -146,7 +153,10 @@ ToolBar {
                 cursorShape: Qt.PointingHandCursor
                 anchors.fill: parent
                 onClicked: {
-                    action: mainContextMenu.popup()
+                    if(Qt.platform.os === "android")
+                        mainWindow.drawer.open()
+                    else
+                        action: mainContextMenu.popup()
                 }
             }
 
@@ -192,7 +202,7 @@ ToolBar {
             }
 
             MenuItem {
-                visible: !(Qt.platform.os == 'osx') && !styleHelper.isGroupHostMode
+                visible: !(Qt.platform.os == 'osx') && !styleHelper.isGroupHostMode && Qt.platform.os !== "android"
                 //: Context menu entry to remove a contact from the contact list
                 text: qsTr("Open other Identity")
                 onTriggered: {
@@ -211,7 +221,7 @@ ToolBar {
                 }
             }
             MenuItem {
-                visible: !styleHelper.isGroupHostMode
+                visible: !styleHelper.isGroupHostMode && Qt.platform.os !== "android"
                 //: Context menu entry to open the dialog to view all created groups or add a new one
                 text: qsTr("Groups")
                 onTriggered: {

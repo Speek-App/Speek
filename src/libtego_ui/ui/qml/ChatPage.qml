@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.2
@@ -17,13 +17,15 @@ FocusScope{
     property bool richTextActive: !uiSettings.data.disableDefaultRichText
     property var groupIdentifier: String(getRandomInt(1000))
     property var pinnedMessageVisible: false
+    property var sendMessageButton: sendMessageButton
 
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);
     }
 
     function forceActiveFocus() {
-        textField.forceActiveFocus()
+        if(Qt.platform.os !== "android")
+            textField.forceActiveFocus()
     }
 
     function sendFile() {
@@ -35,7 +37,13 @@ FocusScope{
     }
 
     function _openPreferences() {
-        root.openPreferences("ContactPreferences.qml", { 'selectedContact': contact })
+        if(Qt.platform.os === "android"){
+            var object = createDialog("ContactSettingWindow.qml", { 'selectedContact': contact })
+            object.visible = true
+            object.forceActiveFocus()
+        }
+        else
+            root.openPreferences("ContactPreferences.qml", { 'selectedContact': contact })
     }
 
     Timer {
@@ -47,6 +55,20 @@ FocusScope{
         timer.repeat = false;
         timer.triggered.connect(cb);
         timer.start();
+    }
+
+    Timer {
+        id: timer_delay
+        function setTimeout(cb, delayTime) {
+            timer_delay.interval = delayTime;
+            timer_delay.repeat = false;
+            timer_delay.triggered.connect(cb);
+            timer_delay.triggered.connect(function release () {
+                timer_delay.triggered.disconnect(cb); // This is important
+                timer_delay.triggered.disconnect(release); // This is important as well
+            });
+            timer_delay.start();
+        }
     }
 
     Utility {
@@ -61,6 +83,16 @@ FocusScope{
             conversationModel.resetUnreadCount()
     }
 
+    function parse_image(p){
+        var b = utility.toBase64(p);
+        var regex = "^<img name=[A-Za-z0-9-_. %]{0,40} width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$";
+        const found = b.match(regex);
+        if(found){
+            var object = createDialog("SendImageDialog.qml", { "imageBase64": found[5], "conversationModel": conversationModel, "imageBase64_send": b, "groupIdentifier": chatFocusScope.groupIdentifier }, Qt.platform.os === "android" ? null : window)
+            object.visible = true
+        }
+    }
+
     FocusScope {
         visible: contact.status == 0 || contact.status == 1 ? true : false
 
@@ -71,14 +103,10 @@ FocusScope{
             id: fileDialog
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
-                var b = utility.toBase64(fileDialog.fileUrl.toString());
-
-                var regex = "^<img name=[A-Za-z0-9-_. %]{0,40} width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$";
-                const found = b.match(regex);
-                if(found){
-                    var object = createDialog("SendImageDialog.qml", { "imageBase64": found[5], "conversationModel": conversationModel, "imageBase64_send": b, "groupIdentifier": chatFocusScope.groupIdentifier }, window)
-                    object.visible = true
-                }
+                if(Qt.platform.os === "android")
+                    timer_delay.setTimeout(function(){chatFocusScope.parse_image(fileDialog.fileUrl.toString())}, 1000)
+                else
+                    parse_image(fileDialog.fileUrl.toString())
             }
         }
 
@@ -90,8 +118,11 @@ FocusScope{
                 for(var i = 0; i < multiFileDialog.fileUrls.length; i++){
                     files_list.push(String(multiFileDialog.fileUrls[i]))
                 }
+                console.log(multiFileDialog.fileUrls)
+
 
                 var b = utility.makeTempZipFromMultipleFiles(files_list);
+                console.log(b)
                 if(b.error === ""){
                     sendZipDialog.fileToSend = b.filePath
                     sendZipDialog.text = qsTr("Are you sure you want to send the archive %1 to %2? (size: %3)").arg(b.fileName).arg(contact.nickname).arg(b.size)
@@ -108,7 +139,9 @@ FocusScope{
             id: folderDialog
             selectFolder: true
             onAccepted: {
+                console.log(folderDialog.folder)
                 var b = utility.makeTempZipFromFolder(folderDialog.folder);
+                console.log(b)
                 if(b.error === ""){
                     sendZipDialog.fileToSend = b.filePath
                     sendZipDialog.text = qsTr("Are you sure you want to send the archive %1 to %2? (size: %3)").arg(b.fileName).arg(contact.nickname).arg(b.size)
@@ -182,6 +215,14 @@ FocusScope{
             ColorLetterCircle{
                 name: contact != null ? contact.nickname : ""
                 icon: typeof(contact.icon) != "undefined" ? contact.icon : ""
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        if (mouse.button === Qt.LeftButton) {
+                            _openPreferences()
+                        }
+                    }
+                }
             }
             ColumnLayout{
                 spacing:0
@@ -195,7 +236,7 @@ FocusScope{
                 }
                 Label {
                     anchors.bottomMargin: 15
-                    text: contact != null ? contact.status == 0 ? "online": "offline" : ""
+                    text: contact != null ? contact.status == 0 ? "online (P2P connected)": "offline" : ""
                     textFormat: Text.PlainText
                     font.pointSize: styleHelper.pointSize *0.8
                     opacity: 0.6
@@ -238,7 +279,7 @@ FocusScope{
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
                     onClicked: {
-                        if (mouse.button === Qt.RightButton) { // 'mouse' is a MouseEvent argument passed into the onClicked signal handler
+                        if (mouse.button === Qt.RightButton) {
                         } else if (mouse.button === Qt.LeftButton) {
                             pinnedMessageVisible = !pinnedMessageVisible
                         }
@@ -419,6 +460,7 @@ FocusScope{
                 Rectangle {width: 3; height: parent.height; color: "transparent"; }
 
                 Button {
+                    visible: Qt.platform.os !== "android"
                     tooltip: "Disable rich text editing"
 
                     style: ButtonStyle {
@@ -523,7 +565,7 @@ FocusScope{
                         //font.pointSize: styleHelper.pointSize * 0.9
                         text: textInput.placeholderText
                         color: styleHelper.messageBoxText
-                        visible: !textInput.getText(0, textInput.length)
+                        visible: !textInput.getText(0, textInput.length) && !textInput.activeFocus
                     }
 
                     Component.onCompleted: {
@@ -558,16 +600,18 @@ FocusScope{
                     }
 
                     function send() {
-                        var msg = emojiPicker.replaceImageWithEmojiCharacter(textInput.text)
-                        if(conversationModel.contact.is_a_group){
-                            var obj = {};
-                            obj["message"] = msg
-                            obj["name"] = typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Anonymous" + chatFocusScope.groupIdentifier
-                            obj["id"] = utility.toHash(userIdentity.contactID)
-                            msg = JSON.stringify(obj)
+                        if(textInput.length > 0){
+                            var msg = emojiPicker.replaceImageWithEmojiCharacter(textInput.text)
+                            if(conversationModel.contact.is_a_group){
+                                var obj = {};
+                                obj["message"] = msg
+                                obj["name"] = typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Anonymous" + chatFocusScope.groupIdentifier
+                                obj["id"] = utility.toHash(userIdentity.contactID)
+                                msg = JSON.stringify(obj)
+                            }
+                            conversationModel.sendMessage(msg)
+                            textInput.remove(0, textInput.length)
                         }
-                        conversationModel.sendMessage(msg)
-                        textInput.remove(0, textInput.length)
                     }
 
                     onLengthChanged: {
@@ -583,7 +627,42 @@ FocusScope{
                 }
 
                 Button {
-                    visible: !conversationModel.contact.is_a_group
+                    id: sendMessageButton
+                    visible: Qt.platform.os === "android" ? textInput.getText(0, textInput.length) || textInput.activeFocus : false
+                    tooltip: "Send Message"
+
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            implicitWidth: 20
+                            implicitHeight: 20
+                            radius: 5
+                            color: "transparent"
+                        }
+                        label: Text {
+                            text: "q"
+                            font.family: iconFont.name
+                            font.pixelSize: 20
+                            horizontalAlignment: Qt.AlignHCenter
+                            renderType: Text.QtRendering
+                            color: palette.highlight
+                        }
+                    }
+
+                    MouseArea{
+                        cursorShape: Qt.PointingHandCursor
+                        anchors.fill: parent
+                        onClicked: {
+                            Qt.inputMethod.reset();
+
+                            textInput.send();
+                        }
+                    }
+                }
+
+
+
+                Button {
+                    visible: !conversationModel.contact.is_a_group && Qt.inputMethod.keyboardRectangle.height<10
 
                     style: ButtonStyle {
                         background: Rectangle {
@@ -605,9 +684,11 @@ FocusScope{
                     tooltip: "Send a file"
 
                     MouseArea {
+                        id: ma
                         cursorShape: Qt.PointingHandCursor
                         anchors.fill: parent
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
+
                         onClicked: {
                             if (mouse.button === Qt.RightButton) { // 'mouse' is a MouseEvent argument passed into the onClicked signal handler
                                 sendFileContextMenu.popup()
@@ -640,7 +721,13 @@ FocusScope{
 
                 Button {
                     id: img1
-                    visible: richTextActive
+                    visible: {
+                        if(!richTextActive)
+                            return false
+                        if(Qt.inputMethod.keyboardRectangle.height>10)
+                            return false
+                        return true
+                    }
                     tooltip: "Attach a image"
 
                     style: ButtonStyle {

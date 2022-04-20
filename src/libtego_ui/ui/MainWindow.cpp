@@ -57,6 +57,13 @@
 #include "shims/ContactIDValidator.h"
 #include "shims/IncomingContactRequest.h"
 #include "shims/utility.h"
+#include "SBarcodeGenerator.h"
+
+#ifdef ANDROID
+#include "SBarcodeFilter.h"
+#endif
+
+#include <QQuickStyle>
 
 MainWindow *uiMain = 0;
 
@@ -109,6 +116,12 @@ MainWindow::MainWindow(QObject *parent)
     qml->addImageProvider(QLatin1String("base64r"), new Base64RoundedImageProvider);
     qml->addImageProvider(QLatin1String("jazzicon"), new JazzIdenticonImageProvider);
     qml->setNetworkAccessManagerFactory(new NetworkAccessBlockingFactory);
+
+    qmlRegisterType<SBarcodeGenerator>("com.scythestudio.scodes", 1, 0, "SBarcodeGenerator");
+
+    #ifdef ANDROID
+        qmlRegisterType<SBarcodeFilter>("com.scythestudio.scodes", 1, 0, "SBarcodeFilter");
+    #endif
 
     qmlRegisterUncreatableType<shims::ContactUser>("im.ricochet", 1, 0, "ContactUser", QString());
     qmlRegisterUncreatableType<shims::UserIdentity>("im.ricochet", 1, 0, "UserIdentity", QString());
@@ -279,8 +292,6 @@ QPalette MainWindow::load_palette_from_file(QString file, QVariantMap* theme_col
     QStringList color_group { "QPalette::Active", "QPalette::Disabled", "QPalette::Inactive" };
     QStringList color_role { "QPalette::WindowText", "QPalette::Button", "QPalette::Light", "QPalette::Midlight", "QPalette::Dark", "QPalette::Mid", "QPalette::Text", "QPalette::BrightText", "QPalette::ButtonText", "QPalette::Base", "QPalette::Window", "QPalette::Shadow", "QPalette::Highlight", "QPalette::HighlightedText", "QPalette::Link", "QPalette::LinkVisited", "QPalette::AlternateBase", "QPalette::NoRole", "QPalette::ToolTipBase", "QPalette::ToolTipText", "QPalette::PlaceholderText" };
     QPalette palette;
-
-    QString data;
     QString fileName(file);
 
     QFile theme_file(fileName);
@@ -320,6 +331,27 @@ QPalette MainWindow::load_palette_from_file(QString file, QVariantMap* theme_col
     }
 
     theme_file.close();
+
+    #ifdef ANDROID
+        if(theme_color->value("darkMode") == "true"){
+            qDebug()<<"Darkmode activated";
+            QQuickStyle::setStyle("Material");
+            //qputenv("QT_QUICK_CONTROLS_STYLE", QByteArray("material"));
+            qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", QByteArray("Dark"));
+            qputenv("QT_QUICK_CONTROLS_MATERIAL_ACCENT", QByteArray("Indigo"));
+            qputenv("QT_QUICK_CONTROLS_MATERIAL_BACKGROUND", QByteArray("Indigo"));
+
+        }
+        else{
+            qDebug()<<"Lightmode activated";
+            QQuickStyle::setStyle("Material");
+            qputenv("QT_QUICK_CONTROLS_STYLE", QByteArray("material"));
+            qputenv("QT_QUICK_CONTROLS_MATERIAL_THEME", QByteArray("Light"));
+            qputenv("QT_QUICK_CONTROLS_MATERIAL_ACCENT", QByteArray("Indigo"));
+        }
+    #else
+        qputenv("QT_QUICK_CONTROLS_STYLE", "Fusion");
+    #endif
 
     return palette;
 }
@@ -415,6 +447,10 @@ bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QStr
         loadDefaultSettings(settings);
     }
 
+    #ifdef ANDROID
+        settings->root()->write("ui.combinedChatWindow", true);
+    #endif
+
     return true;
 }
 
@@ -423,6 +459,8 @@ void MainWindow::initFontSettings(){
     QFont defaultFont = QApplication::font();
     defaultFont.setFamily("Noto Sans");
     #ifdef Q_OS_OSX
+        defaultFont.setPointSize(12);
+    #elif ANDROID
         defaultFont.setPointSize(12);
     #else
         defaultFont.setPointSize(9);

@@ -37,8 +37,10 @@ Rectangle {
     signal contactActivated(ContactUser contact, Item actions)
 
     onSelectedContactChanged: {
+        console.log(12334)
         if (selectedContact !== contactsModel.contact(contactListView.currentIndex)) {
             contactListView.currentIndex = contactsModel.rowOfContact(selectedContact)
+
         }
     }
 

@@ -22,7 +22,7 @@ TextArea {
         font.pointSize: styleHelper.pointSize * 0.9
         text: searchBox.placeholderText
         color: styleHelper.searchBoxText
-        visible: !searchBox.text
+        visible: !searchBox.text && !searchBox.activeFocus
     }
 
     font.family: "Noto"

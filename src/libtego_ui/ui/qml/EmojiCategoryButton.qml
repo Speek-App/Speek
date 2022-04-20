@@ -72,7 +72,7 @@ Rectangle {
             name: "SELECTED"
             PropertyChanges {
                 target: selectedIndicator
-                color: "#2b5278"
+                //color: "#2b5278"
             }
         }
     ]

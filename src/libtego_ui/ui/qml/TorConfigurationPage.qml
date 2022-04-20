@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 
 Column {
@@ -258,7 +258,6 @@ Column {
                 id: bridgesField
                 Layout.fillWidth: true
                 Layout.preferredHeight: allowedPortsField.height * 2
-                tabChangesFocus: true
 
                 Accessible.name: qsTr("Enter one or more bridge relays (one per line):")
                 Accessible.role: Accessible.EditableText
@@ -283,7 +282,6 @@ Column {
         Button {
             //: Button label for connecting to tor
             text: qsTr("Connect")
-            isDefault: true
             enabled: setup.proxyType ? (proxyAddressField.text && proxyPortField.text) : true
             onClicked: {
                 setup.save()

@@ -1,8 +1,9 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
 import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls.Material 2.15
 import im.utility 1.0
 import im.ricochet 1.0
 
@@ -18,6 +19,8 @@ ColumnLayout {
 
     RowLayout {
         z: 2
+        Layout.maximumWidth: 400
+        id: usernameLayout
         RowLayout {
             spacing: 0
             Label {
@@ -28,39 +31,49 @@ ColumnLayout {
             }
 
             Button {
+                id: infoButton
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignTop
-                tooltip: "Username that gets automatically filled into the \"your username\" field of a contact request. This recommends the contact a username to use for you."
+                hoverEnabled: true
 
-                style: ButtonStyle {
-                    background: Rectangle {
-                        implicitWidth: 10
-                        implicitHeight: 10
-                        color: "transparent"
-                    }
-                    label: Text {
-                        text: "N"
-                        font.family: iconFont.name
-                        font.pixelSize: 10
-                        horizontalAlignment: Qt.AlignLeft
-                        renderType: Text.QtRendering
-                        color: control.hovered ? palette.text : styleHelper.chatIconColor
+                ToolTip.visible: Qt.platform.os === "android" ? pressed : hovered
+                ToolTip.text: qsTr("Username that gets automatically filled into the \"your username\" field of a contact request. This recommends the contact a username to use for you.")
+
+                background: Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                    color: "transparent"
+                }
+                contentItem: Text {
+                    text: "N"
+                    font.family: iconFont.name
+                    font.pixelSize: 10
+                    horizontalAlignment: Qt.AlignLeft
+                    renderType: Text.QtRendering
+                    color: {
+                        return infoButton.hovered ? palette.text : styleHelper.chatIconColor
                     }
                 }
             }
+        }
+
+        function save_username(){
+            if (usernameText.length > 40) usernameText.remove(40, usernameText.length);
+            uiSettings.write("username", usernameText.text)
         }
 
         TextField {
             id: usernameText
 
             text: typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek User"
-            Layout.minimumWidth: 200
-            Layout.maximumHeight: 33
+            Layout.minimumWidth: 140
+            Layout.maximumHeight: Qt.platform.os === "android" ? 50 : 33
 
             validator: RegExpValidator{regExp: /^[a-zA-Z0-9\-_, ]+$/}
 
             onTextChanged: {
-                if (length > 40) remove(40, length);
-                uiSettings.write("username", usernameText.text)
+                if(Qt.platform.os !== "android")
+                    usernameLayout.save_username()
             }
 
             Accessible.role: Accessible.EditableText
@@ -69,6 +82,20 @@ ColumnLayout {
             //: Description of what the username text input is for accessibility tech like screen readers
             Accessible.description: qsTr("What the own username should be")
         }
+
+        Button {
+            //: Label for button which allows the user to save to changed username
+            text: qsTr("Save")
+            onClicked: {
+                usernameLayout.save_username()
+            }
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: Description of button which allows the user to save the changed username for accessibility tech like screen readers
+            Accessible.description: qsTr("Save the username")
+        }
+        Item{width:20;height:1}
     }
 
     ColumnLayout {
@@ -104,69 +131,46 @@ ColumnLayout {
         }
     }
 
-    CheckBox {
+    SettingsSwitch{
         visible: !styleHelper.isGroupHostMode
         //: Text description of an option to activate rich text editing by default which allows the input of emojis and images
         text: qsTr("Disable default Rich Text editing")
-        checked: uiSettings.data.disableDefaultRichText || false
-        onCheckedChanged: {
-            uiSettings.write("disableDefaultRichText", checked)
-        }
-
-        Accessible.role: Accessible.CheckBox
-        Accessible.name: text
-        Accessible.onPressAction: {
+        position: uiSettings.data.disableDefaultRichText || false
+        triggered: function(checked){
             uiSettings.write("disableDefaultRichText", checked)
         }
     }
 
-    CheckBox {
-        visible: !styleHelper.isGroupHostMode
+    SettingsSwitch{
+        visible: !styleHelper.isGroupHostMode && Qt.platform.os !== "android"
         //: Text description of an option to minimize to the systemtray
         text: qsTr("Minimize to Systemtray")
-        checked: uiSettings.data.minimizeToSystemtray || false
-        onCheckedChanged: {
-            uiSettings.write("minimizeToSystemtray", checked)
-        }
-
-        Accessible.role: Accessible.CheckBox
-        Accessible.name: text
-        Accessible.onPressAction: {
+        position: uiSettings.data.minimizeToSystemtray || false
+        triggered: function(checked){
             uiSettings.write("minimizeToSystemtray", checked)
         }
     }
 
-    CheckBox {
+    SettingsSwitch{
         visible: typeof(uiSettings.data.minimizeToSystemtray) !== "undefined" ? uiSettings.data.minimizeToSystemtray : false
         //: Text description of an option to show a notification in the Systemtray when a new message arrives
         text: qsTr("Show notification in Systemtray when a new message arrives and window is minimized")
-        checked: uiSettings.data.showNotificationSystemtray || false
-        onCheckedChanged: {
-            uiSettings.write("showNotificationSystemtray", checked)
-        }
-
-        Accessible.role: Accessible.CheckBox
-        Accessible.name: text
-        Accessible.onPressAction: {
+        position: uiSettings.data.showNotificationSystemtray || false
+        triggered: function(checked){
             uiSettings.write("showNotificationSystemtray", checked)
         }
     }
 
-    CheckBox {
+    SettingsSwitch{
         visible: !styleHelper.isGroupHostMode
         //: Text description of an option to play audio notifications when contacts log in, log out, and send messages
         text: qsTr("Play audio notifications")
-        checked: uiSettings.data.playAudioNotification || false
-        onCheckedChanged: {
-            uiSettings.write("playAudioNotification", checked)
-        }
-
-        Accessible.role: Accessible.CheckBox
-        Accessible.name: text
-        Accessible.onPressAction: {
+        position: uiSettings.data.playAudioNotification || false
+        triggered: function(checked){
             uiSettings.write("playAudioNotification", checked)
         }
     }
+
     RowLayout {
         visible: !styleHelper.isGroupHostMode
         Item { width: 16 }
@@ -179,8 +183,7 @@ ColumnLayout {
         }
 
         Slider {
-            maximumValue: 1.0
-            updateValueWhileDragging: false
+            to: 1.0
             enabled: uiSettings.data.playAudioNotification || false
             value: uiSettings.read("notificationVolume", 0.75)
             onValueChanged: {
@@ -201,7 +204,9 @@ ColumnLayout {
 
     RowLayout {
         z: 2
+        Layout.maximumWidth: 400
         Label {
+            Layout.fillWidth: true
             //: Label for combobox where users can specify the UI language
             text: qsTr("Language")
             Accessible.role: Accessible.StaticText
@@ -213,7 +218,9 @@ ColumnLayout {
             model: languageModel
             textRole: "nativeName"
             currentIndex: languageModel.rowForLocaleID(uiSettings.data.language)
-            Layout.minimumWidth: 200
+            Layout.minimumWidth: 160
+            Material.background: Material.Indigo
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
 
             LanguagesModel {
                 id: languageModel
@@ -245,6 +252,7 @@ ColumnLayout {
             //: Description of what the language combox is for for accessibility tech like screen readers
             Accessible.description: qsTr("What language Speek will use")
         }
+        Item{width:20;height:1}
     }
 
     Item {

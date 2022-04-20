@@ -1,23 +1,25 @@
 import QtQuick 2.2
-import QtQuick.Controls 1.0
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import im.utility 1.0
 
 ApplicationWindow {
     id: contactRequestSelectionDialog
-    width: 740
-    height: 430
+    width: Qt.platform.os == "android" ? undefined : 740
+    height: Qt.platform.os == "android" ? undefined : 430
     minimumWidth: width
     maximumWidth: width
     minimumHeight: height
     maximumHeight: height
-    flags: styleHelper.dialogWindowFlags
-    modality: Qt.WindowModal
+    flags: Qt.platform.os == "android" ? undefined : styleHelper.dialogWindowFlags
+    modality: Qt.platform.os == "android" ? undefined : Qt.WindowModal
     title: mainWindow.title
 
     Utility {
        id: utility
     }
+
+    color: palette.window
 
     signal closed
     onVisibleChanged: if (!visible) closed()
@@ -42,16 +44,16 @@ ApplicationWindow {
             top: parent.top
             bottom: parent.bottom
             topMargin: 8
-            leftMargin: 16
-            rightMargin: 16
+            leftMargin: Qt.platform.os === "android" ? 4 : 16
+            rightMargin: Qt.platform.os === "android" ? 4 : 16
         }
 
         ListView {
             clip: true
             id: listview
-            y: 25
+            y: Qt.platform.os === "android" ? 10 : 25
             width: parent.width
-            height: parent.height - 80
+            height: Qt.platform.os === "android" ? parent.height - 40 : parent.height - 80
             header: Rectangle{
                 color: palette.base
                 width: infoArea.width
@@ -61,7 +63,7 @@ ApplicationWindow {
                     width: parent.width
                     height: parent.height
                     Item{
-                        width:20
+                        width:Qt.platform.os === "android" ? 8 : 20
                     }
                     Label{
                         Layout.minimumWidth: (parent.width - 40) / 4
@@ -83,7 +85,7 @@ ApplicationWindow {
                         text: qsTr("Speek ID")
                     }
                     Item{
-                        width:20
+                        width:Qt.platform.os === "android" ? 8 : 20
                     }
                 }
             }
@@ -123,7 +125,7 @@ ApplicationWindow {
                     width: parent.width
                     height: parent.height
                     Item{
-                        width:20
+                        width:Qt.platform.os === "android" ? 8 : 20
                     }
                     Label{
                         Layout.minimumWidth: (parent.width - 40) / 4
@@ -151,7 +153,7 @@ ApplicationWindow {
                         elide: Text.ElideMiddle
                     }
                     Item{
-                        width:20
+                        width:Qt.platform.os === "android" ? 8 : 20
                     }
                 }
             }
@@ -168,12 +170,16 @@ ApplicationWindow {
             bottom: parent.bottom
             rightMargin: 16
             bottomMargin: 8
+            leftMargin: Qt.platform.os === "android" ? 16 : undefined
+            left: Qt.platform.os === "android" ? parent.left : undefined
         }
 
         Button {
             //: label for button which dismisses a dialog
             text: qsTr("Close")
             onClicked: contactRequestSelectionDialog.close()
+            Layout.fillWidth: Qt.platform.os === "android" ? true : false
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
             Accessible.role: Accessible.Button
             Accessible.name: text
             //: description for 'Close' button accessibility tech like screen readers

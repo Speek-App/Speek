@@ -1,18 +1,22 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.2
 
 ApplicationWindow {
     id: contactRequestDialog
-    width: 740
-    height: 240
-    minimumWidth: width
-    maximumWidth: width
-    minimumHeight: height
-    maximumHeight: height
-    flags: styleHelper.dialogWindowFlags
-    modality: Qt.WindowModal
+    width: Qt.platform.os == "android" ? undefined : 740
+    height: Qt.platform.os == "android" ? undefined : 240
+    minimumWidth: Qt.platform.os == "android" ? undefined : 300
+    maximumWidth: Qt.platform.os == "android" ? undefined : 1440
+    minimumHeight: Qt.platform.os == "android" ? undefined : height
+    flags: Qt.platform.os == "android" ? undefined : styleHelper.dialogWindowFlags
+    modality: Qt.platform.os == "android" ? undefined : Qt.WindowModal
     title: mainWindow.title
+
+    background: Rectangle {
+            visible: !styleData.hasColor
+            color: palette.window
+    }
 
     signal closed
     //onVisibleChanged: if (!visible) closed()
@@ -117,6 +121,7 @@ ApplicationWindow {
             //: Label for button which rejects a contact request when pressed
             text: qsTr("Dismiss")
             onClicked: contactRequestDialog.close()
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
             Accessible.role: Accessible.Button
             Accessible.name: text
             //: Description of what 'Reject' button does for accessibility tech like screen readers
@@ -127,6 +132,7 @@ ApplicationWindow {
             //: Label for button which rejects a contact request and block the sending user when pressed
             text: qsTr("Reject and Block further requests")
             onClicked: contactRequestDialog.reject()
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
             Accessible.role: Accessible.Button
             Accessible.name: text
             //: Description of what 'Reject and Block further requests' button does for accessibility tech like screen readers
@@ -138,6 +144,7 @@ ApplicationWindow {
             text: qsTr("Accept")
             enabled: hasValidContact
             onClicked: contactRequestDialog.accept()
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
             Accessible.role: Accessible.Button
             Accessible.name: text
             //: Description of what 'Accept' button does for accessibility tech like screen readers

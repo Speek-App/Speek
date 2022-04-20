@@ -3,6 +3,13 @@
 #include "UserIdentity.h"
 #include "ContactsManager.h"
 #include "utils/json.h"
+#include "utility.h"
+
+#ifdef ANDROID
+#include <QAndroidJniObject>
+#include <QAndroidJniEnvironment>
+#include <QtAndroid>
+#endif
 
 namespace shims
 {
@@ -278,6 +285,22 @@ QMutex ConversationModel::mutex;
         else
             filePath = path;
 
+#ifdef ANDROID
+        QFile a(filePath);
+        QMimeDatabase db;
+        QMimeType mime = db.mimeTypeForFile(filePath, QMimeDatabase::MatchContent);
+        QString suf = mime.preferredSuffix();
+        if(!suf.isEmpty())
+            suf = "." + suf;
+        const auto proposedDest = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/file_" + Utility::GetRandomString(5) + suf;
+        if(a.copy(proposedDest)){
+            filePath = proposedDest;
+        }
+        else{
+            return;
+        }
+#endif
+qWarning()<<filePath;
         if (!filePath.isEmpty())
         {
             auto userIdentity = shims::UserIdentity::userIdentity;
@@ -492,11 +515,14 @@ QMutex ConversationModel::mutex;
 
         auto proposedDest = QString("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)).arg(data.fileName);
 
+#ifdef ANDROID
+        auto dest = proposedDest;
+#else
         auto dest = QFileDialog::getSaveFileName(
             nullptr,
             tr("Save File"),
             proposedDest);
-
+#endif
         if (!dest.isEmpty())
         {
             auto userIdentity = shims::UserIdentity::userIdentity;

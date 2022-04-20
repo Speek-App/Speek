@@ -306,6 +306,8 @@ QString TorManagerPrivate::torExecutablePath() const
 {
 #ifdef Q_OS_WIN
     QString filename(QStringLiteral("/tor.exe"));
+#elif ANDROID
+    QString filename(QStringLiteral("/libTor.so"));
 #else
     QString filename(QStringLiteral("/tor"));
 #endif

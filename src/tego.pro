@@ -10,7 +10,7 @@ SUBDIRS = \
 
 
 # macx can't build tests for somereason, stub out for now
-!macx {
+!macx:!android {
     SUBDIRS += tests \
 }
 

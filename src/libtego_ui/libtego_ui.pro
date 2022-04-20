@@ -21,6 +21,11 @@ CONFIG(release,debug|release):DEFINES += QT_NO_DEBUG_OUTPUT QT_NO_WARNING_OUTPUT
 macx {
     QT += macextras
 }
+android{
+    QT += androidextras multimedia svg
+}
+QT += quickcontrols2
+QT += quick
 
 CONFIG += precompile_header
 PRECOMPILED_HEADER = precomp.hpp
@@ -75,3 +80,5 @@ include($${PWD}/../libtego/libtego.pri)
 !win32{
     include($${PWD}/../libtego_ui/quazip/quazip.pri)
 }
+
+include(SCodes/SCodes.pri)

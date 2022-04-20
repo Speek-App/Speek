@@ -103,6 +103,12 @@
         <file>icons_letter/ASCII-246.png</file>
         <file>icons_letter/ASCII-252.png</file>
         <file>speek_light.png</file>
+        <file>onion-color.png</file>
+        <file>tor_logo.svg</file>
+        <file>incoming_contact_requests.svg</file>
+        <file>view_id.svg</file>
+        <file>settings.svg</file>
+        <file>add_contact.svg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

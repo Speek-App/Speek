@@ -11,6 +11,7 @@ FocusScope {
     height: layout.height
     Layout.fillWidth: true
 
+    property alias textField: field
     property alias text: field.text
     property alias readOnly: field.readOnly
     property alias horizontalAlignment: field.horizontalAlignment

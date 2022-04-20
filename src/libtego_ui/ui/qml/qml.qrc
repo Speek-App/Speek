@@ -51,13 +51,18 @@
         <file>SendImageDialog.qml</file>
         <file>SelectGroupDialog.qml</file>
         <file>CreateNewGroupDialog.qml</file>
+        <file>SettingsSwitch.qml</file>
+        <file>ScanQRCode.qml</file>
+        <file>qrcode/CButton.qml</file>
+        <file>qrcode/CComboBox.qml</file>
+        <file>qrcode/CTextField.qml</file>
+        <file>qrcode/GeneratorPage.qml</file>
+        <file>qrcode/ScannerOverlay.qml</file>
+        <file>qrcode/ScannerPage.qml</file>
+        <file>ContactSettingWindow.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>
         <file>../../../EULA</file>
-    </qresource>
-    <qresource prefix="/">
-        <file>SelectGroupDialog.qml</file>
-        <file>CreateNewGroupDialog.qml</file>
     </qresource>
 </RCC>

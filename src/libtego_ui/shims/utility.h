@@ -13,6 +13,11 @@
 #include <quazip/quazipfile.h>
 #endif
 
+#ifdef ANDROID
+#include <QAndroidJniObject>
+#include <QAndroidJniEnvironment>
+#include <QtAndroid>
+#endif
 
 class Utility : public QObject
 {
@@ -20,10 +25,9 @@ class Utility : public QObject
 
 public:
     explicit Utility (QObject* parent = 0) : QObject(parent) {}
-    QString GetRandomString() const
+    static QString GetRandomString(int randomStringLength = 12)
     {
        const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-       const int randomStringLength = 12;
 
        QString randomString;
        for(int i=0; i<randomStringLength; ++i)
@@ -34,6 +38,74 @@ public:
        }
        return randomString;
     }
+
+#ifdef ANDROID
+    static bool RequestPermissionAndroid(QString permission)
+    {
+        auto result = QtAndroid::checkPermission(permission);
+
+        if (result == QtAndroid::PermissionResult::Denied) {
+            QtAndroid::PermissionResultMap resultHash = QtAndroid::requestPermissionsSync(QStringList({permission}));
+
+            if (resultHash[permission] == QtAndroid::PermissionResult::Denied)
+                return false;
+        }
+        return true;
+    }
+    static void android_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS(){
+        QAndroidJniEnvironment env;
+        QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
+        if ( activity.isValid() )
+        {
+            QAndroidJniObject intent("android/content/Intent","()V");
+            if ( intent.isValid() )
+            {
+                QAndroidJniObject param1 = QAndroidJniObject::fromString("android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
+                //QAndroidJniObject param3 = QAndroidJniObject::fromString("android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS");
+                if ( param1.isValid() )
+                {
+                    QAndroidJniObject serviceName = QAndroidJniObject::getStaticObjectField<jstring>("android/content/Context","POWER_SERVICE");
+                    if ( serviceName.isValid() )
+                    {
+                        QAndroidJniObject powerMgr = activity.callObjectMethod("getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;",serviceName.object<jobject>());
+                        if ( powerMgr.isValid() )
+                        {
+                            QAndroidJniObject packageManager = activity.callObjectMethod("getPackageManager", "()Landroid/content/pm/PackageManager;");
+                            if( packageManager.isValid() ){
+                                QAndroidJniObject packageName = activity.callObjectMethod("getPackageName", "()Ljava/lang/String;");
+                                if( packageName.isValid() ){
+                                    qDebug()<<"Package Name: "<<packageName.toString();
+
+                                    jboolean isIgnoringBatteryOptimizations = powerMgr.callMethod<jboolean>("isIgnoringBatteryOptimizations","(Ljava/lang/String;)Z",packageName.object<jstring>());
+                                    qDebug()<<isIgnoringBatteryOptimizations;
+                                    if( isIgnoringBatteryOptimizations == 0 ){
+                                        qDebug()<<"isIgnoringBatteryOptimizations: False";
+                                        intent.callObjectMethod("setAction","(Ljava/lang/String;)Landroid/content/Intent;",param1.object<jobject>());
+                                        QAndroidJniObject PkgName = QAndroidJniObject::fromString("package:" + packageName.toString());
+                                        QAndroidJniObject uri = QAndroidJniObject::callStaticObjectMethod("android/net/Uri","parse","(Ljava/lang/String;)Landroid/net/Uri;", PkgName.object<jstring>());
+                                        intent.callObjectMethod("setData","(Landroid/net/Uri;)Landroid/content/Intent;",uri.object<jobject>());
+                                        activity.callMethod<void>("startActivity","(Landroid/content/Intent;)V",intent.object<jobject>());
+                                    }
+                                    /*
+                                    else{
+                                        qDebug()<<"isIgnoringBatteryOptimizations: True";
+                                        intent.callObjectMethod("setAction","(Ljava/lang/String;)Landroid/content/Intent;",param3.object<jobject>());
+                                        activity.callMethod<void>("startActivity","(Landroid/content/Intent;)V",intent.object<jobject>());
+                                    }*/
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (env->ExceptionCheck()) {
+            qWarning()<<"android_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS exception";
+            env->ExceptionClear();
+        }
+    }
+#endif
+
     Q_INVOKABLE bool saveBase64(QString base64, QString name, QString type){
         auto proposedDest = QString("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)).arg(name + "." + type);
 
@@ -432,6 +504,8 @@ public:
 
         #ifdef Q_OS_WIN
             dir_ = dir_.replace("file:///", "").replace("/","\\\\");
+        #elif ANDROID
+
         #else
             dir_ = dir_.replace("file://", "");
         #endif

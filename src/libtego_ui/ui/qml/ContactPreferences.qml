@@ -1,8 +1,9 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
 import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls.Material 2.15
 import im.utility 1.0
 import im.ricochet 1.0
 
@@ -19,8 +20,11 @@ Item {
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
                 var b = utility.toBase64_PNG(fileDialog.fileUrl.toString(), 300, 300);
-                if(b.length < 55000)
+                if(b.length < 55000){
                     contactInfo.contact.icon = b
+                    if(typeof(contactPreferencesWindow) != "undefined")
+                        contactPreferencesWindow.close()
+                }
             }
         }
 
@@ -30,6 +34,7 @@ Item {
         }
 
         ContactList {
+            visible: Qt.platform.os !== "android"
             id: contacts
             Layout.preferredWidth: 210
             Layout.minimumWidth: 150
@@ -60,8 +65,8 @@ Item {
             Item { height: 1; width: 1 }
 
             Rectangle{
-                width: 80
-                height: 80
+                width: Qt.platform.os === "android" ? 160 : 80
+                height: Qt.platform.os === "android" ? 160 : 80
                 Layout.alignment: Qt.AlignCenter
                 color: "transparent"
 
@@ -72,29 +77,28 @@ Item {
                     icon: visible ? typeof(contactInfo.contact.icon) !== "undefined" ? contactInfo.contact.icon : "" : ""
                 }
                 Button{
+                    id: button2
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
-                    width: 35
-                    height: 35
+                    width: Qt.platform.os === "android" ? 50 : 35
+                    height: Qt.platform.os === "android" ? 50 : 35
 
-                    style: ButtonStyle {
-                        background: Rectangle {
-                            implicitWidth: 35
-                            implicitHeight: 35
-                            radius: 18
-                            color: palette.base
-                            border.color: styleHelper.borderColor2
-                            border.width: 1
-                        }
-                        label: Text {
-                            text: "I"
-                            font.family: iconFont.name
-                            font.pixelSize: 18
-                            horizontalAlignment: Qt.AlignHCenter
-                            verticalAlignment: Qt.AlignVCenter
-                            renderType: Text.QtRendering
-                            color: control.hovered ? palette.text : styleHelper.chatIconColor
-                        }
+                    background: Rectangle {
+                        implicitWidth: Qt.platform.os === "android" ? 50 : 35
+                        implicitHeight: Qt.platform.os === "android" ? 50 : 35
+                        radius: Qt.platform.os === "android" ? 25 : 18
+                        color: palette.base
+                        border.color: styleHelper.borderColor2
+                        border.width: 1
+                    }
+                    contentItem: Text {
+                        text: "I"
+                        font.family: iconFont.name
+                        font.pixelSize: Qt.platform.os === "android" ? 24 : 18
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                        renderType: Text.QtRendering
+                        color: button2.hovered ? palette.text : styleHelper.chatIconColor
                     }
 
                     MouseArea {
@@ -151,7 +155,7 @@ Item {
                 Label {
                     id: nickname
                     Layout.fillWidth: nicknameLayout.renameMode
-                    text: visible ? contactInfo.contact.nickname : ""
+                    text: visible && !nicknameLayout.renameMode ? contactInfo.contact.nickname : ""
                     textFormat: Text.PlainText
                     horizontalAlignment: Qt.AlignHCenter
                     Layout.alignment: Qt.AlignCenter
@@ -163,6 +167,10 @@ Item {
                         id: renameComponent
 
                         TextField {
+                            /*
+                            background: Rectangle{
+                                color: palette.base
+                            }*/
                             id: nameField
                             anchors {
                                 left: parent.left
@@ -181,23 +189,22 @@ Item {
                 }
 
                 Button {
+                    id: button1
                     Layout.alignment: Qt.AlignTop
                     onClicked: nicknameLayout.renameMode = !nicknameLayout.renameMode
 
-                    style: ButtonStyle {
-                        background: Rectangle {
-                            implicitWidth: 14
-                            implicitHeight: 14
-                            color: "transparent"
-                        }
-                        label: Text {
-                            text: nicknameLayout.renameMode ? "h" : "A"
-                            font.family: iconFont.name
-                            font.pixelSize: 14
-                            horizontalAlignment: Qt.AlignLeft
-                            renderType: Text.QtRendering
-                            color: control.hovered ? palette.text : styleHelper.chatIconColor
-                        }
+                    background: Rectangle {
+                        implicitWidth: 14
+                        implicitHeight: 14
+                        color: "transparent"
+                    }
+                    contentItem: Text {
+                        text: nicknameLayout.renameMode ? "h" : "A"
+                        font.family: iconFont.name
+                        font.pixelSize: 14
+                        horizontalAlignment: Qt.AlignLeft
+                        renderType: Text.QtRendering
+                        color: button1.hovered ? styleHelper.textColor : styleHelper.chatIconColor
                     }
                 }
             }
@@ -232,10 +239,12 @@ Item {
                     //: Label for button which removes a contact from the contact list
                     text: qsTr("Remove")
                     onClicked: contactActions.removeContact()
+                    Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
                     Accessible.role: Accessible.Button
                     Accessible.name: text
                     //: Description of button which removes a user from the contact list for accessibility tech like screen readers
                     Accessible.description: qsTr("Removes this contact")
+                    Material.background: Material.Red
                 }
             }
 

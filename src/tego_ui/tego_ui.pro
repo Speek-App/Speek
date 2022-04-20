@@ -70,6 +70,12 @@ macx {
     QMAKE_BUNDLE_DATA += icons
 }
 
+android{
+    QT += androidextras multimedia svg
+}
+QT += quickcontrols2
+QT += quick
+
 # Create a pdb for release builds as well, to enable debugging
 win32-msvc2008|win32-msvc2010 {
     QMAKE_CXXFLAGS_RELEASE += /Zi
@@ -99,8 +105,10 @@ RESOURCES +=\
 
 win32:RC_ICONS = icons/speek.ico
 OTHER_FILES += $${PWD}/../libtego_ui/ui/qml/*
+OTHER_FILES += $${PWD}/../libtego_ui/ui/qml/qrcode/*
 lupdate_only {
     SOURCES += $${PWD}/../libtego_ui/ui/qml/*.qml
+    SOURCES += $${PWD}/../libtego_ui/ui/qml/qrcode/*.qml
     SOURCES += $${PWD}/../libtego_ui/ui/*.cpp
     SOURCES += $${PWD}/../libtego_ui/ui/*.h
     SOURCES += $${PWD}/../libtego_ui/shims/*.cpp
@@ -157,3 +165,22 @@ SOURCES += main.cpp
 
 include($${PWD}/../libtego_ui/libtego_ui.pri)
 include($${PWD}/../libtego/libtego.pri)
+
+android{
+    DISTFILES += \
+        android/AndroidManifest.xml \
+        android/build.gradle \
+        android/gradle.properties \
+        android/gradle/wrapper/gradle-wrapper.jar \
+        android/gradle/wrapper/gradle-wrapper.properties \
+        android/gradlew \
+        android/gradlew.bat \
+        android/res/values/libs.xml
+
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+    ANDROID_EXTRA_LIBS += $${TORDIR}/arm/libTor.so \
+    $${TORDIR}/arm64/libTor.so \
+    $${TORDIR}/x86/libTor.so \
+    $${TORDIR}/x86_64/libTor.so
+}

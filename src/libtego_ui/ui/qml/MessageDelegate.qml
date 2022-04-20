@@ -234,17 +234,52 @@ Column {
                     color: palette.base
                     opacity: 0.85
                     radius: 3
-                    TextField{
+                    width: imageField.width
+                    height: imageCaption.height + 4
+                    Text{
                         width: imageField.width
                         id: imageCaption
                         text: ""
-                        readOnly: true
-                        validator: RegExpValidator{regExp: /^[A-Za-z0-9-_. ]+$/}
+                        color: palette.text
+                        x: 4
+                        y: 2
+                        //readOnly: true
+                        //validator: RegExpValidator{regExp: /^[A-Za-z0-9-_. ]+$/}
                     }
                 }
                 MouseArea {
                     anchors.fill: parent
-                    acceptedButtons: Qt.RightButton
+                    acceptedButtons: Qt.platform.os === "android" ? Qt.LeftButton | Qt.RightButton : Qt.RightButton
+
+                    signal pressAndHold()
+
+                    onPressAndHold: {
+                        if (Qt.platform.os === "android") {
+                            delegate.showContextMenu()
+                        }
+                    }
+
+                    Timer {
+                        id: longPressTimer
+
+                        interval: 2000
+                        repeat: false
+                        running: false
+
+                        onTriggered: {
+                            ma.pressAndHold()
+                        }
+                    }
+
+
+                    onPressedChanged: {
+                        if ( pressed ) {
+                            longPressTimer.running = true;
+                        } else {
+                            longPressTimer.running = false;
+                        }
+                    }
+
 
                     onClicked: delegate.showContextMenu()
                 }

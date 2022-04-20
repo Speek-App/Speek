@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
+import QtQuick.Controls.Styles 1.2
 
 TextArea {
     id: logDisplay
@@ -8,6 +9,14 @@ TextArea {
     text: torInstance.logMessages.join('\n')
     textFormat: TextEdit.PlainText
     wrapMode: TextEdit.Wrap
+
+    style: TextAreaStyle {
+            frame: Rectangle {
+            radius: 8
+            color: palette.base
+            y:0
+        }
+    }
 
     Connections {
         target: torInstance

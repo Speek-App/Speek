@@ -1,5 +1,5 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import im.ricochet 1.0
 
@@ -16,7 +16,7 @@ GridLayout {
     Label {
         //: Label for the contact id text box in the 'add new contact' window
         text: qsTr("ID:")
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+        Layout.alignment: Qt.platform.os === "android" ? Qt.AlignVCenter | Qt.AlignLeft : Qt.AlignVCenter | Qt.AlignRight
         Accessible.role: Accessible.StaticText
         Accessible.name: text
     }
@@ -28,10 +28,22 @@ GridLayout {
         showCopyButton: contactFields.readOnly
     }
 
+    /*
+    Rectangle{visible: !readOnly && Qt.platform.os === "android";width:50;height:16;color:"transparent"}
+
+    Button{
+        visible: !readOnly && Qt.platform.os === "android"
+        text: qsTr("Scan ID as QR-Code")
+        onClicked: {
+            var object = createDialog("qrcode/ScannerPage.qml", { "textInput": contactIdField.textField, "nameInput": nameField })
+            object.visible = true
+        }
+    }
+*/
     Label {
         //: Label for the contact nickname text box in the 'add new contact' window
         text: qsTr("Name:")
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+        Layout.alignment: Qt.platform.os === "android" ? Qt.AlignVCenter | Qt.AlignLeft : Qt.AlignVCenter | Qt.AlignRight
         Accessible.role: Accessible.StaticText
         Accessible.name: text
     }
@@ -53,7 +65,7 @@ GridLayout {
     Label {
         //: Label for the contact greeting message text box in the 'add new contact' window
         text: qsTr("Message:")
-        Layout.alignment: Qt.AlignTop | Qt.AlignRight
+        Layout.alignment: Qt.platform.os === "android" ? Qt.AlignVCenter | Qt.AlignLeft : Qt.AlignVCenter | Qt.AlignRight
         Accessible.role: Accessible.StaticText
         Accessible.name: text
     }

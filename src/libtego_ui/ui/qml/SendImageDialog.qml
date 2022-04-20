@@ -1,28 +1,30 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.0
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.2
 import im.utility 1.0
 
 ApplicationWindow {
     id: sendImageDialog
-    flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    modality: Qt.WindowModal
+    flags: Qt.platform.os == "android" ? null : Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+    modality: Qt.platform.os == "android" ? undefined : Qt.WindowModal
     width: minimumWidth
     height: 160 + baseImage.paintedHeight
     minimumWidth: 350
     maximumWidth: minimumWidth
     minimumHeight: 300
     title: "Speek.Chat"
-    x: mainWindow.x + ((mainWindow.width - width) / 2)
-    y: mainWindow.y + ((mainWindow.height - height) / 2)
+    x: Qt.platform.os == "android" ? 0 : mainWindow.x + ((mainWindow.width - width) / 2)
+    y: Qt.platform.os == "android" ? 0 : mainWindow.y + ((mainWindow.height - height) / 2)
 
-    property var imageBase64: ""
-    property var imageBase64_send: ""
+    property string imageBase64: ""
+    property string imageBase64_send: ""
     property var conversationModel: null
 
     signal closed
     onVisibleChanged: if (!visible) closed()
+
+    color: Qt.platform.os === "android" ? palette.window : "transparent"
 
     function close() {
         visible = false
@@ -32,14 +34,14 @@ ApplicationWindow {
        id: utility
     }
 
-    color: "transparent"
     Rectangle{
         radius: 5
         anchors.fill: parent
-        color: "transparent"
+        color: Qt.platform.os === "android" ? palette.window : "transparent"
         Rectangle {
             x: 3
             y: 3
+            visible: Qt.platform.os !== "android"
             width: parent.width - 5
             height:parent.height - 5
             color: "black"
@@ -49,6 +51,7 @@ ApplicationWindow {
         Rectangle {
             x: 3
             y: 3
+            visible: Qt.platform.os !== "android"
             width: parent.width - 4
             height:parent.height - 4
             color: "black"
@@ -58,6 +61,7 @@ ApplicationWindow {
         Rectangle {
             x: 3
             y: 3
+            visible: Qt.platform.os !== "android"
             width: parent.width-6
             height:parent.height-6
             color: palette.window
@@ -100,6 +104,7 @@ ApplicationWindow {
                     text: ""
                     validator: RegExpValidator{regExp: /^[A-Za-z0-9-_. ]+$/}
                     Layout.minimumWidth: 300
+                    Layout.minimumHeight: Qt.platform.os === "android" ? 50 : 33
 
                     onTextChanged: {
                         if (length > 39) remove(39, length);
@@ -125,6 +130,7 @@ ApplicationWindow {
                 Button {
                     //: button label to send a image
                     text: qsTr("Send")
+                    Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
                     onClicked: {
                         var msg = imageBase64_send.replace("%Name%", caption.text)
                         if(conversationModel.contact.is_a_group){
@@ -138,6 +144,7 @@ ApplicationWindow {
 
                         sendImageDialog.close()
                     }
+                    Layout.fillWidth: Qt.platform.os === "android" ? true : false
 
                     Accessible.role: Accessible.Button
                     Accessible.name: text
@@ -150,6 +157,8 @@ ApplicationWindow {
                     //: label for button which dismisses a dialog
                     text: qsTr("Close")
                     onClicked: sendImageDialog.close()
+                    Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+                    Layout.fillWidth: Qt.platform.os === "android" ? true : false
                     Accessible.role: Accessible.Button
                     Accessible.name: text
                     //: description for 'Close' button accessibility tech like screen readers
@@ -166,6 +175,20 @@ ApplicationWindow {
         }
     }
 
+    Component.onCompleted: {
+        if(Qt.platform.os === "android"){
+            contentItem.Keys.released.connect(function(event) {
+                if (event.key === Qt.Key_Back) {
+                    event.accepted = true
+                    sendImageDialog.back()
+                }
+            })
+        }
+    }
+
+    function back() {
+        sendImageDialog.close()
+    }
 
     Action {
         shortcut: StandardKey.Close

@@ -164,11 +164,11 @@ Rectangle {
         width: parent.width
         anchors.fill: parent
         anchors.bottomMargin: buttonWidth * 1.45
-        cellWidth: buttonWidth; cellHeight: buttonWidth
+        cellWidth: emojiGrid.width / Math.floor(emojiGrid.width / buttonWidth); cellHeight: buttonWidth
 
         model: emojiByCategory
         delegate: EmojiButton {
-            width: buttonWidth
+            width: emojiGrid.width / Math.floor(emojiGrid.width / buttonWidth)
             height: buttonWidth
             color: emojiPicker.color
             onClickedFunction: {
@@ -195,10 +195,14 @@ Rectangle {
 
     //emoji category selector
     ListView {
-        width: parent.width
+        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: buttonWidth * 1.4
+        anchors.bottomMargin: 0//buttonWidth * 1.4
+        height: buttonWidth * 1.4
+        width: parent.width
         orientation: ListView.Horizontal
+        clip: true
 
         model: emojiCategoryButtons
         delegate: EmojiCategoryButton {
@@ -210,7 +214,10 @@ Rectangle {
                 categoryChangedHandler(b)
             }
         }
-
+        footer: Item{
+            height:2
+            width: 40
+        }
         RowLayout {
             y: 6
             anchors {

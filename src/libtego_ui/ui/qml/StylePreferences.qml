@@ -1,7 +1,8 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
+import QtQuick.Controls.Material 2.15
 import im.utility 1.0
 import im.ricochet 1.0
 
@@ -34,25 +35,22 @@ ColumnLayout {
         margins: 8
     }
 
-    CheckBox {
+    SettingsSwitch{
+        visible: Qt.platform.os !== "android"
         //: Text description of an option to use one single program window for the contact list and the chats
         text: qsTr("Use a single window for conversations")
-        checked: uiSettings.data.combinedChatWindow || false
-        onCheckedChanged: {
-            uiSettings.write("combinedChatWindow", checked)
-        }
-
-        Accessible.role: Accessible.CheckBox
-        Accessible.name: text
-        Accessible.onPressAction: {
+        position: uiSettings.data.combinedChatWindow || false
+        triggered: function(checked){
             uiSettings.write("combinedChatWindow", checked)
         }
     }
 
     RowLayout {
+        Layout.maximumWidth: 400
         visible: typeof(uiSettings.data.useCustomTheme) !== "undefined" ? !uiSettings.data.useCustomTheme : true
         z: 2
         Label {
+            Layout.fillWidth: true
             //: Label for combobox where users can specify the color theme
             text: qsTr("Theme")
             Accessible.role: Accessible.StaticText
@@ -60,8 +58,10 @@ ColumnLayout {
         }
 
         ComboBox {
+            Material.background: Material.Indigo
             currentIndex: typeof(uiSettings.data.theme) !== "undefined" ? model.indexOf(uiSettings.data.theme) : 0
-            Layout.minimumWidth: 200
+            Layout.minimumWidth: 140
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
             model: [
                 "Dark-Blue",
                 "Dark",
@@ -80,26 +80,23 @@ ColumnLayout {
             //: Description of what the theme is for for accessibility tech like screen readers
             Accessible.description: qsTr("Which theme speek uses")
         }
+        Item{width:20;height:1}
     }
 
-    CheckBox {
+    SettingsSwitch{
         text: qsTr("Use custom chat area background")
-        checked: uiSettings.data.UseCustomChatAreaBackground || false
-        onCheckedChanged: {
-            uiSettings.write("UseCustomChatAreaBackground", checked)
-        }
-
-        Accessible.role: Accessible.CheckBox
-        Accessible.name: text
-        Accessible.onPressAction: {
+        position: uiSettings.data.UseCustomChatAreaBackground || false
+        triggered: function(checked){
             uiSettings.write("UseCustomChatAreaBackground", checked)
         }
     }
 
     RowLayout {
+        Layout.maximumWidth: 400
         visible: typeof(uiSettings.data.UseCustomChatAreaBackground) !== "undefined" ? !uiSettings.data.UseCustomChatAreaBackground : true
         z: 2
         Label {
+            Layout.fillWidth: true
             //: Label for combobox where users can specify the Background for the chat area
             text: qsTr("Chat Area Background")
             Accessible.role: Accessible.StaticText
@@ -108,8 +105,10 @@ ColumnLayout {
 
         ComboBox {
             id: backgroundBox
+            Material.background: Material.Indigo
             currentIndex: typeof(uiSettings.data.chatBackground) !== "undefined" ? model.indexOf(uiSettings.data.chatBackground) : 0
-            Layout.minimumWidth: 200
+            Layout.minimumWidth: 140
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
             model: [
                 "Blue",
                 "Blue-Squares",
@@ -130,9 +129,10 @@ ColumnLayout {
             //: Description of what the language combox is for for accessibility tech like screen readers
             Accessible.description: qsTr("Which background the Chat Area uses")
         }
+        Item{width:20;height:1}
     }
 
-    RowLayout {
+    ColumnLayout{
         visible: typeof(uiSettings.data.UseCustomChatAreaBackground) !== "undefined" ? uiSettings.data.UseCustomChatAreaBackground : false
         z: 2
         Label {
@@ -142,38 +142,44 @@ ColumnLayout {
             Accessible.name: text
         }
 
-        TextArea {
-            id: customChatAreaBackgroundText
+        RowLayout {
+            TextArea {
+                id: customChatAreaBackgroundText
 
-            text: typeof(uiSettings.data.customChatAreaBackground) !== "undefined" ? uiSettings.data.customChatAreaBackground : ""
-            Layout.minimumWidth: 300
-            Layout.maximumHeight: 33
+                text: typeof(uiSettings.data.customChatAreaBackground) !== "undefined" ? uiSettings.data.customChatAreaBackground : ""
+                Layout.minimumWidth: 80
+                Layout.maximumHeight: Qt.platform.os === "android" ? 50 : 33
+                Layout.fillWidth: true
 
-            onTextChanged: {
-                uiSettings.write("customChatAreaBackground", customChatAreaBackgroundText.text)
+                onTextChanged: {
+                    uiSettings.write("customChatAreaBackground", customChatAreaBackgroundText.text)
+                }
+
+                Accessible.role: Accessible.EditableText
+                //: Name of the text input used to set a custom chat area background
+                Accessible.name: qsTr("Custom chat area background input field")
+                //: Description of what the Custom chat area background input is for accessibility tech like screen readers
+                Accessible.description: qsTr("What the custom chat area background should be")
             }
-
-            Accessible.role: Accessible.EditableText
-            //: Name of the text input used to set a custom chat area background
-            Accessible.name: qsTr("Custom chat area background input field")
-            //: Description of what the Custom chat area background input is for accessibility tech like screen readers
-            Accessible.description: qsTr("What the custom chat area background should be")
-        }
-
-        Button {
-            //: Label for button which allows the selecting of a custom chat area background
-            text: qsTr("Select Image")
-            onClicked: fileDialog.open()
-            Accessible.role: Accessible.Button
-            Accessible.name: text
-            //: Description of button which allows the selection of a custom chat area background for accessibility tech like screen readers
-            Accessible.description: qsTr("Select a custom chat area background image")
+            Button {
+                //: Label for button which allows the selecting of a custom chat area background
+                text: qsTr("Select Image")
+                onClicked: fileDialog.open()
+                Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+                Accessible.role: Accessible.Button
+                Accessible.name: text
+                //: Description of button which allows the selection of a custom chat area background for accessibility tech like screen readers
+                Accessible.description: qsTr("Select a custom chat area background image")
+            }
+            Item{width:20;height:1}
         }
     }
 
     RowLayout {
+        Layout.maximumWidth: 400
         z: 2
         Label {
+            Layout.fillWidth: true
             //: Label for combobox where users can specify the used emoji font
             text: qsTr("Emoji Font")
             Accessible.role: Accessible.StaticText
@@ -182,8 +188,10 @@ ColumnLayout {
 
         ComboBox {
             id: emojiBox
+            Material.background: Material.Indigo
             currentIndex: typeof(uiSettings.data.emojiFont) !== "undefined" ? model.indexOf(uiSettings.data.emojiFont) : 0
-            Layout.minimumWidth: 200
+            Layout.minimumWidth: 140
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
             model: ["Noto-Emoji",
                     "Twemoji",
                     "Emojitwo"
@@ -200,6 +208,7 @@ ColumnLayout {
             //: Description of what the emoji font combox is for for accessibility tech like screen readers
             Accessible.description: qsTr("Which emoji font the application uses")
         }
+        Item{width:20;height:1}
     }
 
     Item{
@@ -216,21 +225,15 @@ ColumnLayout {
         }
     }
 
-    CheckBox {
+    SettingsSwitch{
         text: qsTr("Use custom theme")
-        checked: uiSettings.data.useCustomTheme || false
-        onCheckedChanged: {
-            uiSettings.write("useCustomTheme", checked)
-        }
-
-        Accessible.role: Accessible.CheckBox
-        Accessible.name: text
-        Accessible.onPressAction: {
+        position: uiSettings.data.useCustomTheme || false
+        triggered: function(checked){
             uiSettings.write("useCustomTheme", checked)
         }
     }
 
-    RowLayout {
+    ColumnLayout {
         visible: typeof(uiSettings.data.useCustomTheme) !== "undefined" ? uiSettings.data.useCustomTheme : false
         z: 2
         Label {
@@ -239,54 +242,64 @@ ColumnLayout {
             Accessible.role: Accessible.StaticText
             Accessible.name: text
         }
+        RowLayout{
+            TextArea {
+                id: customTheme
 
-        TextArea {
-            id: customTheme
+                text: typeof(uiSettings.data.customTheme) !== "undefined" ? uiSettings.data.customTheme : ""
+                Layout.minimumWidth: 80
+                Layout.maximumHeight: Qt.platform.os === "android" ? 50 : 33
 
-            text: typeof(uiSettings.data.customTheme) !== "undefined" ? uiSettings.data.customTheme : ""
-            Layout.minimumWidth: 300
-            Layout.maximumHeight: 33
+                /*background: Qt.platform.os === "android" ? customTheme.background : Rectangle{
+                    color: "red"
+                }*/
 
-            onTextChanged: {
-                uiSettings.write("customTheme", customTheme.text)
+                onTextChanged: {
+                    uiSettings.write("customTheme", customTheme.text)
+                }
+
+                Accessible.role: Accessible.EditableText
+                //: Name of the text input used to set a custom theme
+                Accessible.name: qsTr("Custom theme input field")
+                //: Description of what the Custom theme input is for accessibility tech like screen readers
+                Accessible.description: qsTr("What the custom theme should be")
+            }
+        }
+        RowLayout{
+            Button {
+                //: Label for button which allows the selecting of a custom theme
+                text: qsTr("Select Theme")
+                onClicked: fileDialogTheme.open()
+                Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+                Accessible.role: Accessible.Button
+                Accessible.name: text
+                //: Description of button which allows the selection of a custom theme for accessibility tech like screen readers
+                Accessible.description: qsTr("Select a custom theme file")
             }
 
-            Accessible.role: Accessible.EditableText
-            //: Name of the text input used to set a custom theme
-            Accessible.name: qsTr("Custom theme input field")
-            //: Description of what the Custom theme input is for accessibility tech like screen readers
-            Accessible.description: qsTr("What the custom theme should be")
-        }
+            Button {
+                //: Label for button which allows the creation of a new custom theme
+                text: qsTr("Create New Theme")
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Create a new theme based on the currently selected color scheme")
+                onClicked: utility.createNewTheme(uiSettings.data.lightMode ? "light" : "dark")
+                Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+                Accessible.role: Accessible.Button
+                Accessible.name: text
+                //: Description of button which allows the creation of a new custom theme for accessibility tech like screen readers
+                Accessible.description: qsTr("Create a new custom theme file")
+            }
 
-        Button {
-            //: Label for button which allows the selecting of a custom theme
-            text: qsTr("Select Theme")
-            onClicked: fileDialogTheme.open()
-            Accessible.role: Accessible.Button
-            Accessible.name: text
-            //: Description of button which allows the selection of a custom theme for accessibility tech like screen readers
-            Accessible.description: qsTr("Select a custom theme file")
-        }
-
-        Button {
-            //: Label for button which allows the creation of a new custom theme
-            text: qsTr("Create New Theme")
-            tooltip: qsTr("Create a new theme based on the currently selected color scheme")
-            onClicked: utility.createNewTheme(uiSettings.data.lightMode ? "light" : "dark")
-            Accessible.role: Accessible.Button
-            Accessible.name: text
-            //: Description of button which allows the creation of a new custom theme for accessibility tech like screen readers
-            Accessible.description: qsTr("Create a new custom theme file")
-        }
-
-        Button {
-            //: Label for button which reloads the theme
-            text: qsTr("Reload Theme")
-            onClicked: uiMain.reloadTheme()
-            Accessible.role: Accessible.Button
-            Accessible.name: text
-            //: Description of button which reloads the theme for accessibility tech like screen readers
-            Accessible.description: qsTr("Reload the theme")
+            Button {
+                //: Label for button which reloads the theme
+                text: qsTr("Reload Theme")
+                onClicked: uiMain.reloadTheme()
+                Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+                Accessible.role: Accessible.Button
+                Accessible.name: text
+                //: Description of button which reloads the theme for accessibility tech like screen readers
+                Accessible.description: qsTr("Reload the theme")
+            }
         }
     }
 
