@@ -148,6 +148,7 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 startIndex: 0
                 showHide: "hide"
+                showGroups: false
 
                 Accessible.role: Accessible.List
                 //: Description of the list of contacts for accessibility tech like screen readers
@@ -182,6 +183,7 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 startIndex: 0
                 showHide: "show"
+                showGroups: false
 
                 Accessible.role: Accessible.List
                 //: Description of the list of contacts for accessibility tech like screen readers

@@ -11,6 +11,7 @@ Rectangle {
     property alias contactsModel: contactsModel
     property var showHideElements: []
     property var showHide: "none"
+    property bool showGroups: true
 
     data: [
         ContactsModel {
@@ -90,6 +91,7 @@ Rectangle {
             height: label.height + 8
             x: 8
             spacing: 6
+            visible: scroll.showGroups ? true : section === "group-online" || section === "group-offline" || section === "group-request" ? false : true
 
             Label {
                 id: label
@@ -99,6 +101,7 @@ Rectangle {
                 textFormat: Text.PlainText
                 color: palette.text
                 opacity: 0.8
+                visible: scroll.showGroups ? true : section === "group-online" || section === "group-offline" || section === "group-request" ? false : true
 
                 text: {
                     // Translation strings are uppercase for legacy reasons, and because they

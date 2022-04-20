@@ -133,36 +133,41 @@ namespace shims
         // bridges
         if (auto it = options.find("bridges"); it != options.end())
         {
+            // get the bridge list
             auto bridgeList = it->toList();
-            std::vector<std::string> bridgeStrings;
-            bridgeStrings.reserve(bridgeList.size());
 
-            for(auto& v : bridgeList)
+            if (bridgeList.size() > 0)
             {
-                auto currentBridge = v.toString();
-                bridgeStrings.push_back(currentBridge.toStdString());
-            }
-            const size_t bridgeCount = bridgeStrings.size();
-            if (bridgeCount > 0)
-            {
+                // convert the bridges to strings
+                std::vector<std::string> bridgeStrings;
+                bridgeStrings.reserve(static_cast<size_t>(bridgeList.size()));
+
+                // create a vector of said strings, so that the raw pointers have a lifetime for the rest of this scope
+                for(auto& v : bridgeList)
+                {
+                    auto currentBridge = v.toString();
+                    bridgeStrings.push_back(currentBridge.toStdString());
+                }
+                const size_t bridgeCount = bridgeStrings.size();
+
                 // copy over raw
-                const char* rawBridges[bridgeCount];
-                size_t rawBridgeLengths[bridgeCount];
+                auto rawBridges = std::make_unique<char* []>(bridgeCount);
+                auto rawBridgeLengths = std::make_unique<size_t[]>(bridgeCount);
 
-                std::fill(rawBridges, rawBridges + bridgeCount, nullptr);
-                std::fill(rawBridgeLengths, rawBridgeLengths + bridgeCount, 0);
+                std::fill(rawBridges.get(), rawBridges.get() + bridgeCount, nullptr);
+                std::fill(rawBridgeLengths.get(), rawBridgeLengths.get()+ bridgeCount, 0);
 
                 for(size_t i = 0; i < bridgeStrings.size(); ++i)
                 {
                     const auto& currentBridgeString = bridgeStrings[i];
-                    rawBridges[i] = currentBridgeString.data();
+                    rawBridges[i] = const_cast<char*>(currentBridgeString.data());
                     rawBridgeLengths[i] = currentBridgeString.size();
                 }
 
                 tego_tor_daemon_config_set_bridges(
                     daemonConfig.get(),
-                    rawBridges,
-                    rawBridgeLengths,
+                    const_cast<const char**>(rawBridges.get()),
+                    rawBridgeLengths.get(),
                     bridgeCount,
                     tego::throw_on_error());
             }

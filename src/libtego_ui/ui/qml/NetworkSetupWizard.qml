@@ -8,10 +8,11 @@ ApplicationWindow {
     id: window
     width: Qt.platform.os == "android" ? undefined : minimumWidth
     height: Qt.platform.os == "android" ? undefined : minimumHeight
-    minimumWidth: Qt.platform.os == "android" ? undefined : 500
+    minimumWidth: Qt.platform.os == "android" ? undefined : 600
     maximumWidth: Qt.platform.os == "android" ? undefined : minimumWidth
     minimumHeight: Qt.platform.os == "android" ? undefined : visibleItem.height + 16
     maximumHeight: Qt.platform.os == "android" ? undefined : minimumHeight
+
     title: "Speek.Chat"
 
     color: palette.window
