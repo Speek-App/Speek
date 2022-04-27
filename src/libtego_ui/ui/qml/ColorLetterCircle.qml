@@ -30,11 +30,12 @@ Rectangle {
                     if(typeof(name) === "undefined"){
                         return "";
                     }
-                    var file_path = ":/icons/icons_letter/ASCII-" + name.charCodeAt(0) + ".png";
+                    var icon_size = width > 96 ? "512" : "96"
+                    var file_path = ":/icons/icons_letter/" + icon_size + "/ASCII-" + name.charCodeAt(0) + ".png";
                     if(utility.checkFileExists(file_path))
                         return "qrc" + file_path
                     else
-                        return "qrc:/icons/icons_letter/ASCII-63.png";
+                        return "qrc:/icons/icons_letter/" + icon_size +"/ASCII-63.png";
                 }
                 else{
                     return "image://base64/" + icon;

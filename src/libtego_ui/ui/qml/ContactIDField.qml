@@ -47,7 +47,7 @@ FocusScope {
                             //: Error message showed when user attempts to add a contact already in their contact list
                             errorBubble.show(qsTr("<b>%1</b> is already your contact").arg(Utils.htmlEscaped(contact.nickname)))
                         }
-                        else if (!isValidID(field.text))
+                        else if (field.text.startsWith('speek:') && !isValidID(field.text))
                         {
                             //: Error message showed when the id doesn't comply with spec https://gitweb.torproject.org/torspec.git/tree/rend-spec-v3.txt
                             errorBubble.show(qsTr("This ID is invalid"));

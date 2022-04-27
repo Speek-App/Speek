@@ -7,11 +7,20 @@ RowLayout{
     property string text: ""
     property var triggered: function(checked){}
     property int position: 0
+    property string switchIcon: ""
+    spacing: 0
+
     RowLayout{
         visible: Qt.platform.os === "android"
-        Layout.maximumWidth: 400
-        Layout.rightMargin: 10
+        Layout.maximumWidth: Qt.platform.os === "android" ? 1500 : 400
 
+        Image{
+            visible: switchIcon !== ""
+            source: switchIcon
+            Layout.preferredWidth: styleHelper.androidIconSize
+            Layout.preferredHeight: styleHelper.androidIconSize
+        }
+        Item{width:2;visible: switchIcon !== ""}
         Label {
             text: settingsSwitch.text
             Accessible.role: Accessible.StaticText

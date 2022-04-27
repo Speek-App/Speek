@@ -45,15 +45,6 @@ Column {
                 console.log("SETCONF error:", command.errorMessage)
         })
     }
-/*
-    Label {
-        width: parent.width
-        text: qsTr("Proxy Setup:")//qsTr("Does this computer need a proxy to access the internet?")
-        wrapMode: Text.Wrap
-
-        Accessible.role: Accessible.StaticText
-        Accessible.name: text
-    }*/
 
     GroupBox {
         width: setup.width
@@ -85,6 +76,13 @@ Column {
                 SystemPalette {
                     id: proxyPalette
                     colorGroup: setup.proxyType == "" ? SystemPalette.Disabled : SystemPalette.Active
+                }
+
+                Component.onCompleted: {
+                    if(Qt.platform.os !== "android"){
+                        contentItem.color = palette.text
+                        indicator.color = palette.text
+                    }
                 }
 
                 Accessible.role: Accessible.ComboBox
@@ -184,17 +182,7 @@ Column {
     }
 
     Item { height: 4; width: 1 }
-/*
-    Label {
-        width: parent.width
-        //: Description for the purpose of the Allowed Ports textbox
-        text: qsTr("Allowed ports:") //qsTr("Does this computer's Internet connection go through a firewall that only allows connections to certain ports?")
-        wrapMode: Text.Wrap
 
-        Accessible.role: Accessible.StaticText
-        Accessible.name: text
-    }
-*/
     GroupBox {
         width: parent.width
         // Workaround OS X visual bug
@@ -230,17 +218,7 @@ Column {
     }
 
     Item { height: 4; width: 1 }
-/*
-    Label {
-        width: parent.width
 
-        text: qsTr("Bridge relays:") //qsTr("If this computer's Internet connection is censored, you will need to obtain and use bridge relays.")
-        wrapMode: Text.Wrap
-
-        Accessible.role: Accessible.StaticText
-        Accessible.name: text
-    }
-*/
     GroupBox {
         width: parent.width
         ColumnLayout {
@@ -254,13 +232,19 @@ Column {
                 Accessible.role: Accessible.StaticText
                 Accessible.name: text
             }
-            TextArea {
-                id: bridgesField
+            ScrollView {
+                Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.preferredHeight: allowedPortsField.height * 2
 
-                Accessible.name: qsTr("Enter one or more bridge relays (one per line):")
-                Accessible.role: Accessible.EditableText
+                background: Rectangle { color: palette.base;radius:4;visible:Qt.platform.os !== "android" }
+                TextArea {
+                    id: bridgesField
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: allowedPortsField.height * 2
+
+                    Accessible.name: qsTr("Enter one or more bridge relays (one per line):")
+                    Accessible.role: Accessible.EditableText
+                }
             }
         }
     }
@@ -272,6 +256,7 @@ Column {
             //: Button label for going back to previous screen
             text: qsTr("Back")
             onClicked: window.back()
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
 
             Accessible.name: text
             Accessible.onPressAction: window.back()
@@ -286,6 +271,7 @@ Column {
             onClicked: {
                 setup.save()
             }
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
 
             Accessible.name: text
             Accessible.onPressAction: setup.save()

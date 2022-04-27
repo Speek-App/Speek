@@ -36,8 +36,8 @@ ApplicationWindow {
     }
 
     Item{
-        width: 40
-        height: 40
+        width: 50
+        height: 50
         visible: Qt.platform.os === "android"
         Button {
             id: qrScanButton
@@ -58,7 +58,7 @@ ApplicationWindow {
                 color: "transparent"
             }
             contentItem: Text {
-                text: "N"
+                text: "u"
                 font.family: iconFont.name
                 font.pixelSize: 30
                 horizontalAlignment: Qt.AlignLeft
@@ -118,6 +118,13 @@ ApplicationWindow {
             margins: Qt.platform.os === "android" ? 4 : 8
             leftMargin: Qt.platform.os === "android" ? 4 : 16
             rightMargin: Qt.platform.os === "android" ? 4 : 16
+        }
+
+        Image{
+            visible: Qt.platform.os === "android"
+            source: "qrc:/icons/android/settings_android/settings_username.svg"
+            Layout.preferredWidth: styleHelper.androidIconSize
+            Layout.preferredHeight: styleHelper.androidIconSize
         }
 
         Label {
@@ -183,11 +190,19 @@ ApplicationWindow {
         Button {
             //: button label to finish adding a contact/friend
             text: qsTr("Add")
-            //isDefault: true
             enabled: fields.hasValidRequest
             onClicked: addContactWindow.accept()
-            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
-            Layout.fillWidth: Qt.platform.os === "android" ? true : false
+
+            //palette.buttonText seems broken (see https://bugreports.qt.io/browse/QTBUG-79881)
+            contentItem: Label {
+                text: parent.text
+                color: palette.text
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Layout.fillWidth: Qt.platform.os === "android"
+            highlighted: Qt.platform.os === "android"
 
             Accessible.role: Accessible.Button
             Accessible.name: text

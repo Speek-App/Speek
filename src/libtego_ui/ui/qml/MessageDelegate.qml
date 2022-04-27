@@ -160,7 +160,7 @@ Column {
                 if (model.type == "text")
                 {
                     if(model.text !== "" && model.text.indexOf("\n") === -1 && model.text.indexOf("\r") === -1){
-                        const found = model.text.match("^<img name=([A-Za-z0-9-_. ]{0,40}) width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$");
+                        const found = model.text.match("^<html><head><meta name=\"qrichtext\"></head><body><img name=\"([A-Za-z0-9-_. ]{0,40})\" width=\"(\\d{1,4})\" height=\"(\\d{1,4})\" src=\"data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)\" /></body></html>$");
                         if(found){
                             imageField.source =  "image://base64r/" + found[6]
                             imageCaption.text = found[1]
@@ -248,6 +248,7 @@ Column {
                     }
                 }
                 MouseArea {
+                    id: ma
                     anchors.fill: parent
                     acceptedButtons: Qt.platform.os === "android" ? Qt.LeftButton | Qt.RightButton : Qt.RightButton
 
@@ -516,12 +517,15 @@ Column {
                         utility.saveBase64(found[2],"1",found[1])
                     }
                     else if(messageChildItem == imageField){
-                        const found = model.text.match("^<img name=([A-Za-z0-9-_. ]{0,40}) width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$");
+                        const found = model.text.match("^<html><head><meta name=\"qrichtext\"></head><body><img name=\"([A-Za-z0-9-_. ]{0,40})\" width=\"(\\d{1,4})\" height=\"(\\d{1,4})\" src=\"data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)\" /></body></html>$");
                         if(found){
                             var cap = found[1].replace("./g","")
-                            if(cap == "")
+                            if(cap === "")
                                 cap = "Image"
                             utility.saveBase64(found[6],cap,"jpg")
+                        }
+                        else{
+                            console.log("Image not found")
                         }
                     }
                 }
@@ -538,7 +542,7 @@ Column {
                         object.visible = true
                     }
                     else if(messageChildItem == imageField){
-                        const found = model.text.match("^<img name=([A-Za-z0-9-_. ]{0,40}) width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$");
+                        const found = model.text.match("^<html><head><meta name=\"qrichtext\"></head><body><img name=\"([A-Za-z0-9-_. ]{0,40})\" width=\"(\\d{1,4})\" height=\"(\\d{1,4})\" src=\"data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)\" /></body></html>$");
                         if(found){
                             var object = createDialog("ImageViewerDialog.qml", { "imageData": found[6] }, window)
                             object.visible = true

@@ -5,12 +5,12 @@ import com.scythestudio.scodes 1.0
 
 ApplicationWindow {
     id: viewIdDialog_
-    width: Qt.platform.os == "android" ? undefined : 740
-    height: Qt.platform.os == "android" ? undefined : 500
-    minimumWidth: Qt.platform.os == "android" ? undefined : width
-    maximumWidth: Qt.platform.os == "android" ? undefined : width
-    minimumHeight: Qt.platform.os == "android" ? undefined : height
-    maximumHeight: Qt.platform.os == "android" ? undefined : height
+    width: 740
+    height: 500
+    minimumWidth: width
+    maximumWidth: width
+    minimumHeight: height
+    maximumHeight: height
     flags: Qt.platform.os == "android" ? undefined : styleHelper.dialogWindowFlags
     modality: Qt.platform.os == "android" ? undefined : Qt.WindowModal
     title: mainWindow.title

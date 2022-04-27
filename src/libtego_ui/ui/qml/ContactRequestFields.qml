@@ -5,13 +5,20 @@ import im.ricochet 1.0
 
 GridLayout {
     id: contactFields
-    columns: 2
+    columns: Qt.platform.os === "android" ? 3 : 2
 
     property bool readOnly
     property ContactIDField contactId: contactIdField
     property TextField name: nameField
     property TextArea message: messageField
     property bool hasValidRequest: contactIdField.acceptableInput && nameField.text.length
+
+    Image{
+        visible: Qt.platform.os === "android"
+        source: "qrc:/icons/android/contact_id.svg"
+        Layout.preferredWidth: styleHelper.androidIconSize
+        Layout.preferredHeight: styleHelper.androidIconSize
+    }
 
     Label {
         //: Label for the contact id text box in the 'add new contact' window
@@ -28,18 +35,13 @@ GridLayout {
         showCopyButton: contactFields.readOnly
     }
 
-    /*
-    Rectangle{visible: !readOnly && Qt.platform.os === "android";width:50;height:16;color:"transparent"}
-
-    Button{
-        visible: !readOnly && Qt.platform.os === "android"
-        text: qsTr("Scan ID as QR-Code")
-        onClicked: {
-            var object = createDialog("qrcode/ScannerPage.qml", { "textInput": contactIdField.textField, "nameInput": nameField })
-            object.visible = true
-        }
+    Image{
+        visible: Qt.platform.os === "android"
+        source: "qrc:/icons/android/contact_name.svg"
+        Layout.preferredWidth: styleHelper.androidIconSize
+        Layout.preferredHeight: styleHelper.androidIconSize
     }
-*/
+
     Label {
         //: Label for the contact nickname text box in the 'add new contact' window
         text: qsTr("Name:")
@@ -60,6 +62,13 @@ GridLayout {
         Accessible.name: text
         //: Description of textbox for setting a contact's nickname for accessibility tech like screen readers
         Accessible.description: qsTr("Field for the contact's nickname")
+    }
+
+    Image{
+        visible: Qt.platform.os === "android"
+        source: "qrc:/icons/android/message.svg"
+        Layout.preferredWidth: styleHelper.androidIconSize
+        Layout.preferredHeight: styleHelper.androidIconSize
     }
 
     Label {

@@ -28,7 +28,6 @@ ApplicationWindow {
 
     function close() {
         visible = false
-        console.log(mainWindow.contactRequestDialogs[0].request)
     }
 
     onContactRequestDialogsChanged: {

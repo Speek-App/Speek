@@ -16,7 +16,8 @@ namespace shims
             const QString &contactID,
             const QString &nickname,
             const QString &myNickname,
-            const QString &message)
+            const QString &message,
+            const QString &icon)
     {
         logger::println("{{ contactID : {}, nickname : {}, myNickname : {}, message : {} }}",
             contactID, nickname, myNickname, message);
@@ -29,7 +30,7 @@ namespace shims
             return nullptr;
         }
 
-        auto shimContact = this->addContact(serviceId, nickname);
+        auto shimContact = this->addContact(serviceId, nickname, icon);
 
         auto userId = shimContact->toTegoUserId();
 
@@ -151,5 +152,13 @@ namespace shims
             }
         }
         emit this->contactStatusChanged(user, status);
+    }
+
+    int ContactsManager::count_contacts_with_unread_message(){
+        int c = 0;
+        for(auto cu : contactsList)
+            if(cu->conversation()->getUnreadCount() > 0)
+                c++;
+        return c;
     }
 }

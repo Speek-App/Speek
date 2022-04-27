@@ -15,7 +15,8 @@ namespace shims
             const QString &contactID,
             const QString &nickname,
             const QString &myNickname,
-            const QString &message);
+            const QString &message,
+            const QString &icon = "");
         shims::ContactUser* addContact(const QString& serviceId, const QString& nickname, const QString& icon = "", bool is_a_group = false);
         const QList<shims::ContactUser*>& contacts() const;
         shims::ContactUser* getShimContactByContactId(const QString& contactId) const;
@@ -37,6 +38,7 @@ namespace shims
                     c++;
             return c;
         }
+        Q_INVOKABLE int count_contacts_with_unread_message();
 
     signals:
         void contactAdded(shims::ContactUser *user);

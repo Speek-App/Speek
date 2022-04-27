@@ -85,7 +85,7 @@ FocusScope{
 
     function parse_image(p){
         var b = utility.toBase64(p);
-        var regex = "^<img name=[A-Za-z0-9-_. %]{0,40} width=(\\d{1,4}) height=(\\d{1,4}) src=data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)>$";
+        var regex = "^<html><head><meta name=\"qrichtext\"></head><body><img name=\"[A-Za-z0-9-_. %]{0,40}\" width=\"(\\d{1,4})\" height=\"(\\d{1,4})\" src=\"data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)\" /></body></html>$";
         const found = b.match(regex);
         if(found){
             var object = createDialog("SendImageDialog.qml", { "imageBase64": found[5], "conversationModel": conversationModel, "imageBase64_send": b, "groupIdentifier": chatFocusScope.groupIdentifier }, Qt.platform.os === "android" ? null : window)
@@ -118,11 +118,8 @@ FocusScope{
                 for(var i = 0; i < multiFileDialog.fileUrls.length; i++){
                     files_list.push(String(multiFileDialog.fileUrls[i]))
                 }
-                console.log(multiFileDialog.fileUrls)
-
 
                 var b = utility.makeTempZipFromMultipleFiles(files_list);
-                console.log(b)
                 if(b.error === ""){
                     sendZipDialog.fileToSend = b.filePath
                     sendZipDialog.text = qsTr("Are you sure you want to send the archive %1 to %2? (size: %3)").arg(b.fileName).arg(contact.nickname).arg(b.size)
@@ -139,9 +136,7 @@ FocusScope{
             id: folderDialog
             selectFolder: true
             onAccepted: {
-                console.log(folderDialog.folder)
                 var b = utility.makeTempZipFromFolder(folderDialog.folder);
-                console.log(b)
                 if(b.error === ""){
                     sendZipDialog.fileToSend = b.filePath
                     sendZipDialog.text = qsTr("Are you sure you want to send the archive %1 to %2? (size: %3)").arg(b.fileName).arg(contact.nickname).arg(b.size)
@@ -252,7 +247,7 @@ FocusScope{
                 implicitHeight: 32
                 implicitWidth: 32
 
-                text: "N"
+                text: "r"
 
                 visible: conversationModel.contact.is_a_group && conversationModel.pinned_message != "" && typeof(conversationModel.pinned_message) != "undefined"
 
@@ -379,6 +374,13 @@ FocusScope{
                 id: pinnedTextMessageField
                 height: parent.height - 6
                 width: parent.width - 6
+
+                style: TextAreaStyle {
+                    textColor: palette.text
+                    frame: Rectangle {
+                        color: palette.base
+                    }
+                }
 
                 textFormat: conversationModel.pinned_message.includes("<html><head><meta name=\"qrichtext\"") ? TextEdit.RichText : TextEdit.PlainText
                 font.pixelSize: 13

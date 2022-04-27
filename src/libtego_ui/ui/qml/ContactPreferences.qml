@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.0
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.1
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Controls.Material 2.15
 import im.utility 1.0
@@ -12,19 +12,38 @@ Item {
 
     RowLayout {
         Utility {
-               id: utility
+           id: utility
+        }
+
+        MessageDialog {
+            id: fileSizeWarningDialog
+            title: "File size limit exceeded"
+            text: "The size of the selected file is too large. Please select a different one."
+            onAccepted: {
+                visible = false
             }
+        }
+
+        function handleContactIconImage(fileLocation, quality){
+            var b = utility.toBase64_JPG(fileLocation, 300, 300, quality);
+            if(b.length < 25000){
+                contactInfo.contact.icon = b
+                if(typeof(contactPreferencesWindow) != "undefined")
+                    contactPreferencesWindow.close()
+            }
+            else if(quality > 30){
+                handleContactIconImage(fileLocation, 30)
+            }
+            else{
+                fileSizeWarningDialog.visible = true
+            }
+        }
 
         FileDialog {
             id: fileDialog
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
-                var b = utility.toBase64_PNG(fileDialog.fileUrl.toString(), 300, 300);
-                if(b.length < 55000){
-                    contactInfo.contact.icon = b
-                    if(typeof(contactPreferencesWindow) != "undefined")
-                        contactPreferencesWindow.close()
-                }
+                handleContactIconImage(fileDialog.fileUrl.toString(), 50)
             }
         }
 
@@ -102,13 +121,45 @@ Item {
                     }
 
                     MouseArea {
+                        id: ma
                         anchors.fill: parent
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+                        signal pressAndHold()
+
+                        onPressAndHold: {
+                            if (Qt.platform.os === "android") {
+                                profilePictureContextMenu.popup()
+                            }
+                        }
+
+                        Timer {
+                            id: longPressTimer
+
+                            interval: 2000
+                            repeat: false
+                            running: false
+
+                            onTriggered: {
+                                ma.pressAndHold()
+                            }
+                        }
+
+
+                        onPressedChanged: {
+                            if ( pressed ) {
+                                longPressTimer.running = true;
+                            } else {
+                                longPressTimer.running = false;
+                            }
+                        }
+
                         onClicked: {
                             if (mouse.button === Qt.RightButton) { // 'mouse' is a MouseEvent argument passed into the onClicked signal handler
                                 profilePictureContextMenu.popup()
                             } else if (mouse.button === Qt.LeftButton) {
-                                fileDialog.open()
+                                if(profilePictureContextMenu.visible === false)
+                                    fileDialog.open()
                             }
                         }
                     }

@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.4
 import im.ricochet 1.0
 import Qt.labs.platform 1.1
+import im.utility 1.0
 import "ContactWindow.js" as ContactWindow
 
 ApplicationWindow {
@@ -37,6 +38,10 @@ ApplicationWindow {
 
     onClosing: {
         Qt.quit()
+    }
+
+    Utility {
+       id: utility
     }
 
     Drawer {
@@ -103,14 +108,14 @@ ApplicationWindow {
                     text: qsTr("Add Contact")
                     showRequests: false
                     triggered: function(){toolBar.addContactAction.trigger()}
-                    img: "qrc:/icons/add_contact.svg"
+                    img: "qrc:/icons/android/add_contact.svg"
                 }
                 ListElement {
                     //: Context menu entry to open a window showing the selected contact's details
                     text: qsTr("View Speek ID")
                     showRequests: false
                     triggered: function(){toolBar.viewIdAction.trigger()}
-                    img: "qrc:/icons/view_id.svg"
+                    img: "qrc:/icons/android/view_id.svg"
                 }
                 ListElement {
                     //: Context menu entry to open the dialog to view all received contact requests
@@ -121,14 +126,21 @@ ApplicationWindow {
                         object.visible = true
                         contactRequestSelectionDialog = object
                     }
-                    img: "qrc:/icons/incoming_contact_requests.svg"
+                    img: "qrc:/icons/android/incoming_contact_requests.svg"
                 }
                 ListElement {
-                    //: Context menu command to open the settings dialog
+                    //: Context menu entry to open the settings dialog
                     text: qsTr("Settings")
                     showRequests: false
                     triggered: function(){toolBar.preferencesAction.trigger()}
-                    img: "qrc:/icons/settings.svg"
+                    img: "qrc:/icons/android/settings.svg"
+                }
+                ListElement {
+                    //: Context menu entry to close the speek app
+                    text: qsTr("Close Speek!")
+                    showRequests: false
+                    triggered: function(){window.close()}
+                    img: "qrc:/icons/android/close.svg"
                 }
             }
 
@@ -181,8 +193,20 @@ ApplicationWindow {
                 // On OS X, avoid bouncing the dock icon forever
                 if(Qt.platform.os !== "android")
                     w.alert(Qt.platform.os == "osx" ? 1000 : 0)
-                if(!window.visible && uiSettings.data.showNotificationSystemtray)
-                    systray.showMessage(qsTr("New Message"), ("You just received a new message from %1").arg(user.nickname),SystemTrayIcon.Information, 3000)
+                if(!window.visible && uiSettings.data.showNotificationSystemtray && Qt.platform.os !== "android"){
+                    var systrayMessage = qsTr("You just received a new message from %1").arg(user.nickname)
+                    systray.showMessage(qsTr("New Message"), systrayMessage,SystemTrayIcon.Information, 3000)
+                }
+                else if(Qt.application.state !== Qt.ApplicationActive && uiSettings.data.showNotificationAndroid && Qt.platform.os === "android"){
+                    var number_unread_user_messages = userIdentity.contacts.count_contacts_with_unread_message();
+                    var androidMessage;
+                    if(number_unread_user_messages <= 1)
+                        androidMessage = qsTr("New message from %1").arg(user.nickname)
+                    else
+                        androidMessage = qsTr("New message from %1 and %2 other contact/s").arg(user.nickname).arg(String(number_unread_user_messages-1))
+                    //notificationClient.notification = androidMessage
+                    notificationClient.newAndroidNotification(qsTr("New Message"), androidMessage)
+                }
             }
         }
         function onContactStatusChanged(user, status) {
@@ -324,7 +348,7 @@ ApplicationWindow {
                         height: 20
                         Layout.preferredWidth: 20
                         Layout.preferredHeight: 20
-                        source: "qrc:/icons/tor_logo.svg"
+                        source: "qrc:/icons/android/tor_logo.svg"
                         clip: true
                         fillMode: Image.PreserveAspectFit
                     }
@@ -377,7 +401,6 @@ ApplicationWindow {
             onCurrentContactChanged: {
                 if (currentContact !== null) {
                     if(Qt.platform.os === "android"){
-                        console.log(stack.depth)
                         stack.push(combinedChatView)
                     }
                     // remove chat page for user when they are deleted
@@ -432,7 +455,9 @@ ApplicationWindow {
                 stack.pop()
             }
             else{
-                window.close()
+                if(!utility.minimizeAndroid()){
+                    window.close()
+                }
             }
         }
     }

@@ -180,12 +180,17 @@ QImage SBarcodeDecoder::videoFrameToImage(QVideoFrame &videoFrame, const QRect &
     return QImage();
 }
 
+void imageCleanupHandler(void *info)
+{
+    delete[] (uchar*)info;
+}
+
 QImage SBarcodeDecoder::imageFromVideoFrame(const QVideoFrame &videoFrame)
 {
-    uchar* ARGB32Bits = new uchar[(videoFrame.width() * videoFrame.height()) * 4];
     QImage::Format imageFormat = videoFrame.imageFormatFromPixelFormat(videoFrame.pixelFormat());
-    if(imageFormat == QImage::Format_Invalid) {
-        switch(videoFrame.pixelFormat()) {
+    if(imageFormat == QImage::Format_Invalid){
+        uchar* ARGB32Bits = new uchar[(videoFrame.width() * videoFrame.height()) * 4];
+        switch(videoFrame.pixelFormat()){
             case QVideoFrame::Format_YUYV: qt_convert_YUYV_to_ARGB32(videoFrame, ARGB32Bits); break;
             case QVideoFrame::Format_NV12: qt_convert_NV12_to_ARGB32(videoFrame, ARGB32Bits); break;
             case QVideoFrame::Format_YUV420P: qt_convert_YUV420P_to_ARGB32(videoFrame, ARGB32Bits); break;
@@ -204,7 +209,9 @@ QImage SBarcodeDecoder::imageFromVideoFrame(const QVideoFrame &videoFrame)
         return QImage(ARGB32Bits,
                       videoFrame.width(),
                       videoFrame.height(),
-                      QImage::Format_ARGB32);
+                      QImage::Format_ARGB32,
+                      imageCleanupHandler,
+                      ARGB32Bits);
     }
 
     return QImage(videoFrame.bits(),

@@ -79,6 +79,7 @@ ApplicationWindow {
                 id: baseImage
                 Layout.preferredWidth: 300
                 Layout.preferredHeight: paintedHeight
+                Layout.maximumHeight: Qt.platform.os === "android" ? 400 : 2000
                 source: "image://base64n/" + imageBase64
                 fillMode: Image.PreserveAspectFit
                 Layout.alignment: Qt.AlignHCenter

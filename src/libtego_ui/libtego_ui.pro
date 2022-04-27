@@ -74,6 +74,11 @@ HEADERS += \
     shims/ContactIDValidator.h \
     utils/json.h
 
+android{
+    HEADERS += utils/NotificationClient.h
+    SOURCES += utils/NotificationClient.cpp
+}
+
 include($${QMAKE_INCLUDES}/protobuf.pri)
 include($${QMAKE_INCLUDES}/openssl.pri)
 include($${PWD}/../libtego/libtego.pri)

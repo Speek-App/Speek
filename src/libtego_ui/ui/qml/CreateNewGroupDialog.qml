@@ -216,8 +216,8 @@ ApplicationWindow {
         }
 
         Button {
-            //: button label to finish adding a contact/friend
-            text: qsTr("Add")
+            //: button label to create the new group
+            text: qsTr("Create Group")
             isDefault: true
             enabled: groupFields.hasValidRequest
             onClicked: createNewGroupDialog.accept()

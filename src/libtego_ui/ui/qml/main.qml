@@ -165,6 +165,20 @@ QtObject {
             }
         },
 
+        Connections {
+            target: Qt.application
+            function onStateChanged() {
+                if(Qt.platform.os === "android"){
+                    if(Qt.application.state === Qt.ApplicationActive){
+                        notificationClient.clearNotifications()
+                    }
+                    else if(Qt.application.state !== Qt.ApplicationInactive){
+                        notificationClient.newAndroidNotification(qsTr("Background Task"), qsTr("Speek is now running in background"))
+                    }
+                }
+            }
+        },
+
         Settings {
             id: uiSettings
             path: "ui"
@@ -195,6 +209,7 @@ QtObject {
             Label { id: fakeLabel }
             Label { id: fakeLabelSized; font.pointSize: styleHelper.pointSize > 0 ? styleHelper.pointSize : 1 }
 
+            property int androidIconSize: 26
             property int pointSize: (Qt.platform.os === "windows") ? 10 : (Qt.platform.os === "osx")  || (Qt.platform.os === "android") ? 14 : 12
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint

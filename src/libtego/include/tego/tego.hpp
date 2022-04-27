@@ -12,6 +12,7 @@
 #include <utility>
 #include <memory>
 #include <type_traits>
+#include <string>
 
 // libtego
 #include <tego/utilities.hpp>

@@ -162,7 +162,6 @@ Rectangle {
 
         onClicked: {
             if(Qt.platform.os === "android"){
-                console.log(stack.depth)
                 if(stack.depth < 2){
                     stack.push(combinedChatView)
                 }

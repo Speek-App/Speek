@@ -61,6 +61,7 @@
 
 #ifdef ANDROID
 #include "SBarcodeFilter.h"
+#include "utils/NotificationClient.h"
 #endif
 
 #include <QQuickStyle>
@@ -159,6 +160,13 @@ bool MainWindow::showUI(QVariantMap _theme_color, bool isGroupHostMode)
     qml->rootContext()->setContextProperty(QLatin1String("torControl"), shims::TorControl::torControl);
     qml->rootContext()->setContextProperty(QLatin1String("torInstance"), shims::TorManager::torManager);
     qml->rootContext()->setContextProperty(QLatin1String("uiMain"), this);
+
+    #ifdef ANDROID
+        if(!this->isGroupHostMode){
+            NotificationClient *notificationClient = new NotificationClient(qml);
+            qml->rootContext()->setContextProperty(QLatin1String("notificationClient"), notificationClient);
+        }
+    #endif
 
     qml->load(QUrl(QLatin1String("qrc:/ui/main.qml")));
 
@@ -381,6 +389,9 @@ void MainWindow::loadDefaultSettings(SettingsFile *settings)
 {
     settings->root()->write("ui.combinedChatWindow", true);
     settings->root()->write("ui.minimizeToSystemtray", false);
+    #ifdef ANDROID
+        settings->root()->write("ui.showNotificationAndroid", true);
+    #endif
 }
 
 bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QString &errorMessage, QString pathChange)

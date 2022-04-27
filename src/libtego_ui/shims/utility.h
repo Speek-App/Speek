@@ -61,7 +61,6 @@ public:
             if ( intent.isValid() )
             {
                 QAndroidJniObject param1 = QAndroidJniObject::fromString("android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
-                //QAndroidJniObject param3 = QAndroidJniObject::fromString("android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS");
                 if ( param1.isValid() )
                 {
                     QAndroidJniObject serviceName = QAndroidJniObject::getStaticObjectField<jstring>("android/content/Context","POWER_SERVICE");
@@ -86,12 +85,6 @@ public:
                                         intent.callObjectMethod("setData","(Landroid/net/Uri;)Landroid/content/Intent;",uri.object<jobject>());
                                         activity.callMethod<void>("startActivity","(Landroid/content/Intent;)V",intent.object<jobject>());
                                     }
-                                    /*
-                                    else{
-                                        qDebug()<<"isIgnoringBatteryOptimizations: True";
-                                        intent.callObjectMethod("setAction","(Ljava/lang/String;)Landroid/content/Intent;",param3.object<jobject>());
-                                        activity.callMethod<void>("startActivity","(Landroid/content/Intent;)V",intent.object<jobject>());
-                                    }*/
                                 }
                             }
                         }
@@ -104,21 +97,60 @@ public:
             env->ExceptionClear();
         }
     }
+
+    Q_INVOKABLE bool minimizeAndroid(){
+        QAndroidJniObject action_main = QAndroidJniObject::fromString("android.intent.action.MAIN");
+        if ( action_main.isValid() )
+        {
+            QAndroidJniObject intent("android/content/Intent","(Ljava/lang/String;)V", action_main.object<jobject>());
+            if ( intent.isValid() )
+            {
+                QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
+                if ( activity.isValid() )
+                {
+                    QAndroidJniObject param1 = QAndroidJniObject::fromString("android.intent.category.HOME");
+                    if ( param1.isValid() )
+                    {
+                        intent.callObjectMethod("addCategory","(Ljava/lang/String;)Landroid/content/Intent;",param1.object<jobject>());
+                        activity.callMethod<void>("startActivity","(Landroid/content/Intent;)V",intent.object<jobject>());
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+        /*Intent i = new Intent(Intent.ACTION_MAIN);
+         i.addCategory(Intent.CATEGORY_HOME);
+         startActivity(i);*/
+    }
 #endif
 
     Q_INVOKABLE bool saveBase64(QString base64, QString name, QString type){
         auto proposedDest = QString("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)).arg(name + "." + type);
-
-        auto dest = QFileDialog::getSaveFileName(
-            nullptr,
-            tr("Save Image"),
-            proposedDest);
+        #ifndef ANDROID
+            auto dest = QFileDialog::getSaveFileName(
+                nullptr,
+                tr("Save Image"),
+                proposedDest);
+        #else
+            auto dest = QFileDialog::getSaveFileName(
+                nullptr,
+                name + "." + type,
+                proposedDest);
+        #endif
 
         if (!dest.isEmpty())
         {
             QImage image1;
-            image1.loadFromData(QByteArray::fromBase64(base64.toUtf8()));
-            image1.save(dest);
+            if(image1.loadFromData(QByteArray::fromBase64(base64.toUtf8()))){
+                if(!image1.save(dest, type.toUtf8())){
+                    qWarning()<<"saveBase64: Can not save image";
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
         }
         else{
             return false;
@@ -154,11 +186,11 @@ public:
             h=maxs;
             w=maxs*image2.width()/image2.height();
         }
-        encoded = "<img name=%Name% width=" + QString::number(w) + " height=" + QString::number(h) + " src=data:image/jpg;base64," + encoded + ">";
+        encoded = "<html><head><meta name=\"qrichtext\"></head><body><img name=\"%Name%\" width=\"" + QString::number(w) + "\" height=\"" + QString::number(h) + "\" src=\"data:image/jpg;base64," + encoded + "\" /></body></html>";
         return encoded;
     }
 
-    Q_INVOKABLE QString toBase64_PNG(QString url, int w_, int h_) {
+    Q_INVOKABLE QString toBase64_JPG(QString url, int w_, int h_, int quality = 65) {
         #ifdef Q_OS_WIN
             QImage image1(url.replace("file:///", "").replace("/","\\\\"));
         #else
@@ -173,7 +205,7 @@ public:
         buffer.open(QIODevice::WriteOnly);
 
         image2 = image2.scaled(w_, h_, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-        image2.save(&buffer, "jpg", 65);
+        image2.save(&buffer, "jpg", quality);
         QString encoded = buffer.data().toBase64();
 
         encoded = "data:image/jpg;base64," + encoded;

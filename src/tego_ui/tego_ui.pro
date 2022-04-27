@@ -169,6 +169,7 @@ include($${PWD}/../libtego/libtego.pri)
 android{
     DISTFILES += \
         android/AndroidManifest.xml \
+        android/src/notification/NotificationClient.java \
         android/build.gradle \
         android/gradle.properties \
         android/gradle/wrapper/gradle-wrapper.jar \

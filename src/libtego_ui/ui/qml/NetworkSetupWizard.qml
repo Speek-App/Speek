@@ -40,7 +40,7 @@ ApplicationWindow {
     function openBeginning() {
         configPage.visible = false
         configPage.reset()
-        pageLoader.sourceComponent = firstPage
+        pageLoader.sourceComponent = Qt.platform.os === "android" ? firstPageAndroid : firstPage
         pageLoader.visible = true
     }
 
@@ -61,10 +61,10 @@ ApplicationWindow {
             top: parent.top
             left: parent.left
             right: parent.right
-            bottom: parent.bottom
+            bottom: Qt.platform.os === "android" ? parent.bottom : undefined
             margins: 8
         }
-        sourceComponent: firstPage
+        sourceComponent: Qt.platform.os === "android" ? firstPageAndroid : firstPage
     }
 
     TorConfigurationPage {
@@ -100,12 +100,13 @@ ApplicationWindow {
     }
 
     Component {
-        id: firstPage
+        id: firstPageAndroid
         Rectangle{
+            id: firstPageAndroidCont
             color: "transparent"
             anchors.fill: parent
             Rectangle{
-                visible: Qt.platform.os === "android" ? true : false
+                visible: true
                 width: Math.max(parent.width, parent.height) * 2
                 height: Math.max(parent.width, parent.height) * 2
                 radius: Math.max(parent.width, parent.height)
@@ -113,34 +114,123 @@ ApplicationWindow {
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: palette.base
             }
-        ColumnLayout {
-            anchors.fill: parent
-            spacing: 8
-
-            Item{
-                width:1
-                Layout.fillHeight: Qt.platform.os === "android"
+            ColumnLayout {
+                anchors.fill: parent
+                spacing: 8
+    
+                Item{
+                    width:1
+                    Layout.fillHeight: true
+                }
+                Rectangle{
+                    visible: !uiMain.appstore_compliant
+                    width: 180
+                    height: 180
+                    radius: 20
+                    color: "transparent"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    Image{
+                        source: "qrc:/icons/speeklogo2.png"
+                        width: 180
+                        height: 180
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+    
+                Item{
+                    width: 1
+                    height: 150
+                }
+    
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    //: Label for button to connect to the Tor network
+                    text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek!") : qsTr("Launch Speek! with default settings")
+                    //isDefault: true
+                    onClicked: {
+                        // Reset to defaults and proceed to bootstrap page
+                        configPage.reset()
+                        configPage.save()
+                        if(uiMain.appstore_compliant)
+                            uiSettings.write("eulaAccepted", "true")
+                        if(Qt.platform.os === "android"){
+                            utility.android_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS()
+                        }
+                    }
+                    Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+                    Accessible.role: Accessible.Button
+                    Accessible.name: text
+                    Accessible.onPressAction: {
+                        configPage.reset()
+                        configPage.save()
+                        uiSettings.write("eulaAccepted", "true")
+                    }
+                    highlighted: true
+                }
+                Item{
+                    width:1
+                    Layout.fillHeight: true
+                }
+                Item{
+                    width: 1
+                    height: parent.height*0.05
+                }
+    
+                Button {
+                    id: advancedNetworkConfiguration
+                    visible: !uiMain.appstore_compliant
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    //: Label for button to configure the Tor daemon beore connecting to the Tor network
+                    text: qsTr("Advanced Network Configuration")
+                    onClicked: window.openConfig()
+    
+                    Accessible.role: Accessible.Button
+                    Accessible.name: text
+                    Accessible.onPressAction: {
+                        window.openConfig()
+                    }
+    
+                    background: Rectangle {
+                        color: "transparent"
+                    }
+                    contentItem: Text {
+                        renderType: Text.NativeRendering
+                        text: advancedNetworkConfiguration.text
+                        color: advancedNetworkConfiguration.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+                Item{
+                    width:1
+                    height: 10
+                }
             }
+        }
+    }
+
+    Component {
+        id: firstPage
+
+        Column {
+            spacing: 8
             Rectangle{
                 visible: !uiMain.appstore_compliant
-                width: Qt.platform.os === "android" ? 180 : 150
-                height: Qt.platform.os === "android" ? 180 : 150
+                width: 150
+                height: 150
                 radius: 20
-                color: Qt.platform.os === "android" ? "transparent" : palette.base
+                color: palette.base
                 anchors.horizontalCenter: parent.horizontalCenter
                 Image{
                     source: "qrc:/icons/speeklogo2.png"
-                    width: Qt.platform.os === "android" ? 180 : 110
-                    height: Qt.platform.os === "android" ? 180 : 110
+                    width: 110
+                    height: 110
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
 
-            Item{
-                width: 1
-                height: Qt.platform.os === "android" ? parent.height*0.17 : 0
-            }
             TextArea {
                 visible: uiMain.appstore_compliant
                 Layout.fillWidth: true
@@ -158,20 +248,15 @@ ApplicationWindow {
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
+                Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
                 //: Label for button to connect to the Tor network
-                text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek!") : qsTr("Launch Speek! with default settings")
-                //isDefault: true
+                text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek.Chat") : qsTr("Launch Speek.Chat with default settings")
                 onClicked: {
                     // Reset to defaults and proceed to bootstrap page
                     configPage.reset()
                     configPage.save()
-                    if(uiMain.appstore_compliant)
-                        uiSettings.write("eulaAccepted", "true")
-                    if(Qt.platform.os === "android"){
-                        utility.android_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS()
-                    }
+                    uiSettings.write("eulaAccepted", "true")
                 }
-                Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
                 Accessible.role: Accessible.Button
                 Accessible.name: text
                 Accessible.onPressAction: {
@@ -179,15 +264,6 @@ ApplicationWindow {
                     configPage.save()
                     uiSettings.write("eulaAccepted", "true")
                 }
-                highlighted: Qt.platform.os === "android"
-            }
-            Item{
-                width:1
-                Layout.fillHeight: Qt.platform.os === "android"
-            }
-            Item{
-                width: 1
-                height: Qt.platform.os === "android" ? parent.height*0.05 : 0
             }
 
             Button {
@@ -215,11 +291,6 @@ ApplicationWindow {
                     horizontalAlignment: Text.AlignHCenter
                 }
             }
-            Item{
-                width:1
-                height: Qt.platform.os === "android" ? 10 : 0
-            }
-        }
         }
     }
 
