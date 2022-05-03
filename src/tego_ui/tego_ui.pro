@@ -72,6 +72,8 @@ macx {
 
 android{
     QT += androidextras multimedia svg
+    ANDROID_MIN_SDK_VERSION = 27
+    ANDROID_TARGET_SDK_VERSION = 30
 }
 QT += quickcontrols2
 QT += quick

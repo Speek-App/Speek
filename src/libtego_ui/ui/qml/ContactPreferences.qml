@@ -24,26 +24,40 @@ Item {
             }
         }
 
-        function handleContactIconImage(fileLocation, quality){
-            var b = utility.toBase64_JPG(fileLocation, 300, 300, quality);
-            if(b.length < 25000){
-                contactInfo.contact.icon = b
-                if(typeof(contactPreferencesWindow) != "undefined")
-                    contactPreferencesWindow.close()
-            }
-            else if(quality > 30){
-                handleContactIconImage(fileLocation, 30)
-            }
-            else{
-                fileSizeWarningDialog.visible = true
-            }
-        }
-
         FileDialog {
             id: fileDialog
             nameFilters: ["Images (*.png *.jpg *.jpeg)"]
             onAccepted: {
                 handleContactIconImage(fileDialog.fileUrl.toString(), 50)
+            }
+
+            function handleContactIconImage(fileLocation, quality){
+                var b = utility.toBase64_JPG(fileLocation, 300, 300, quality);
+                if(b.length < 25000){
+                    contactInfo.contact.icon = b
+                    if(typeof(contactPreferencesWindow) != "undefined")
+                        contactPreferencesWindow.close()
+                }
+                else if(quality > 30){
+                    handleContactIconImage(fileLocation, 30)
+                }
+                else if(quality > 20){
+                    handleContactIconImage(fileLocation, 20)
+                }
+                else if(quality > 10){
+                    handleContactIconImage(fileLocation, 10)
+                }
+                else if(quality > 5){
+                    handleContactIconImage(fileLocation, 5)
+                }
+                else if(quality > 0){
+                    handleContactIconImage(fileLocation, 0)
+                }
+                else{
+                    fileSizeWarningDialog.visible = true
+                    if(typeof(contactPreferencesWindow) != "undefined")
+                        contactPreferencesWindow.close()
+                }
             }
         }
 

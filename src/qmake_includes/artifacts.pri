@@ -3,10 +3,20 @@
 CONFIG += debug_and_release
 
 CONFIG(release, release|debug) {
-    DESTDIR = $${PWD}/../../build/release/$${TARGET}
+    !android{
+        DESTDIR = $${PWD}/../../build/release/$${TARGET}
+    }
+    android{
+        DESTDIR = $${PWD}/../../build/release/$${ANDROID_TARGET_ARCH}/$${TARGET}
+    }
 }
 CONFIG(debug, release|debug) {
-    DESTDIR = $${PWD}/../../build/debug/$${TARGET}
+    !android{
+        DESTDIR = $${PWD}/../../build/debug/$${TARGET}
+    }
+    android{
+        DESTDIR = $${PWD}/../../build/debug/$${ANDROID_TARGET_ARCH}/$${TARGET}
+    }
 }
 
 # artifacts go under hidden dirs in DESTDIR

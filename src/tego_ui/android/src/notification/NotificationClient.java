@@ -79,8 +79,8 @@ public class NotificationClient
                 m_builder = new Notification.Builder(context);
             }
 
-            m_builder.setSmallIcon(R.drawable.icon)
-                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon))
+            m_builder.setSmallIcon(R.drawable.sys)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.sys))
                     .setContentTitle(title)
                     .setContentText(message)
                     .setDefaults(Notification.DEFAULT_SOUND)

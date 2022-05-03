@@ -303,9 +303,7 @@ ApplicationWindow {
                         opacity: offlineLoader.item !== null ? (1 - offlineLoader.item.opacity) : 1
     
                         onContactActivated: {
-                            if (contact.status === ContactUser.RequestPending || contact.status === ContactUser.RequestRejected) {
-                                actions.openPreferences()
-                            } else if (!uiSettings.data.combinedChatWindow) {
+                            if (!uiSettings.data.combinedChatWindow) {
                                 actions.openWindow()
                             }
                         }
