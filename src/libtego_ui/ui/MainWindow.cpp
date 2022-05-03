@@ -409,7 +409,10 @@ bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QStr
     QStringList args = qApp->arguments();
 
     if (args.size() > 1) {
-        configPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + pathChange + args[1];
+        if(args[1].contains("/") || args[1].contains("\\"))
+            configPath = args[1];
+        else
+            configPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + pathChange + args[1];
     } else {
         if(pathChange == "/")
             configPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);

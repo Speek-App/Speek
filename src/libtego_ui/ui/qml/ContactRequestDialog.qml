@@ -15,8 +15,7 @@ ApplicationWindow {
     title: mainWindow.title
 
     background: Rectangle {
-            visible: !styleData.hasColor
-            color: palette.window
+        color: palette.window
     }
 
     signal closed
