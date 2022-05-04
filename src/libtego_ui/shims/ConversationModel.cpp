@@ -876,6 +876,9 @@ qWarning()<<filePath;
 
     void ConversationModel::messageAcknowledged(tego_message_id_t messageId, bool accepted)
     {
+        if (messages.size() == 0)
+            return;
+
         auto row = this->indexOfOutgoingMessage(messageId);
         if(row < 0)
             return;
