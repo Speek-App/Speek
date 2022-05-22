@@ -107,14 +107,21 @@ ApplicationWindow {
                     //: Context menu entry to open the chat screen in a separate window
                     text: qsTr("Add Contact")
                     showRequests: false
-                    triggered: function(){toolBar.addContactAction.trigger()}
+                    triggered: function(){
+                        var object = addtoStackView("AddContactDialogMain.qml", { })
+                        object.android_finished.connect(function() {
+                            back()
+                        })
+                    }
                     img: "qrc:/icons/android/add_contact.svg"
                 }
                 ListElement {
                     //: Context menu entry to open a window showing the selected contact's details
                     text: qsTr("View Speek ID")
                     showRequests: false
-                    triggered: function(){toolBar.viewIdAction.trigger()}
+                    triggered: function(){
+                        var object = addtoStackView("ViewIdDialogMain.qml", { })
+                    }
                     img: "qrc:/icons/android/view_id.svg"
                 }
                 ListElement {
@@ -122,9 +129,7 @@ ApplicationWindow {
                     text: qsTr("View Contact Requests")
                     showRequests: true
                     triggered: function(){
-                        var object = createDialog("ContactRequestSelectionDialog.qml", { }, window)
-                        object.visible = true
-                        contactRequestSelectionDialog = object
+                        var object = addtoStackView("ContactRequestSelectionDialogMain.qml", { "id": "contactRequestSelectionDialogMain" })
                     }
                     img: "qrc:/icons/android/incoming_contact_requests.svg"
                 }
@@ -132,7 +137,9 @@ ApplicationWindow {
                     //: Context menu entry to open the settings dialog
                     text: qsTr("Settings")
                     showRequests: false
-                    triggered: function(){toolBar.preferencesAction.trigger()}
+                    triggered: function(){
+                        var object = addtoStackView("PreferencesDialogMain.qml", { })
+                    }
                     img: "qrc:/icons/android/settings.svg"
                 }
                 ListElement {
@@ -204,7 +211,7 @@ ApplicationWindow {
                         androidMessage = qsTr("New message from %1").arg(user.nickname)
                     else
                         androidMessage = qsTr("New message from %1 and %2 other contact/s").arg(user.nickname).arg(String(number_unread_user_messages-1))
-                    //notificationClient.notification = androidMessage
+
                     notificationClient.newAndroidNotification(qsTr("New Message"), androidMessage)
                 }
             }
@@ -218,7 +225,7 @@ ApplicationWindow {
 
     AppNotifications{
         id: appNotifications
-        visible: Qt.platform.os !== "android" && mainWindow.appNotificationsModel.length > 0
+        visible: Qt.platform.os !== "android" && model.length > 0
         anchors.right: parent.right
         anchors.top: parent.top
         z: 99
@@ -279,7 +286,6 @@ ApplicationWindow {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.bottom: torOnline.visible ? torOnline.top : parent.bottom
-                //anchors.fill: parent
 
                 MainToolBar {
                     id: toolBar

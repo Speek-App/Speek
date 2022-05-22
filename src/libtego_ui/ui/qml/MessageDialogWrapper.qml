@@ -12,5 +12,12 @@ MessageDialog {
     //: Message describing what will happen when a contact is removed from you contact list
     informativeText: qsTr("This contact will no longer be able to message you, and will be notified about the removal. They may choose to send a new connection request.")
     standardButtons: StandardButton.Yes | StandardButton.No
-    onYes: contact.deleteContact()
+    onYes: {
+        if(Qt.platform.os === "android"){
+            if(typeof(contactPreferencesWindow) != "undefined")
+                contactPreferencesWindow.close()
+            mainWindow.back()
+        }
+        contact.deleteContact()
+    }
 }

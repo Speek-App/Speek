@@ -17,6 +17,18 @@ QtObject {
         //onVisibleChanged: if (!visible) Qt.quit()
     }
 
+    function addtoStackView(component, properties) {
+        if (typeof(component) === "string")
+            component = Qt.createComponent(component)
+        if (component.status !== Component.Ready)
+            console.log("addtoStackView:", component.errorString())
+        var object = component.createObject(mainWindow.stack, (properties !== undefined) ? properties : { })
+        if (!object)
+            console.log("addtoStackView:", component.errorString())
+        mainWindow.stack.push(object)
+        return object
+    }
+
     function createDialog(component, properties, parent) {
         if (typeof(component) === "string")
             component = Qt.createComponent(component)
@@ -52,6 +64,10 @@ QtObject {
             mainWindow.contactRequestDialogsLength = mainWindow.contactRequestDialogs.length;
             if(typeof(mainWindow.contactRequestSelectionDialog) != "undefined" && mainWindow.contactRequestSelectionDialog != null)
                 mainWindow.contactRequestSelectionDialog.contactRequestDialogsChanged();
+            if(Qt.platform.os === "android"){
+                if(mainWindow.stack.currentItem.contactRequestDialogsChangedAndroid != "undefined" && mainWindow.stack.currentItem.contactRequestDialogsChangedAndroid != null)
+                    mainWindow.stack.currentItem.contactRequestDialogsChangedAndroid()
+            }
         })
         return object
     }

@@ -40,7 +40,6 @@ FocusScope{
         if(Qt.platform.os === "android"){
             var object = createDialog("ContactSettingWindow.qml", { 'selectedContact': contact })
             object.visible = true
-            object.forceActiveFocus()
         }
         else
             root.openPreferences("ContactPreferences.qml", { 'selectedContact': contact })
@@ -761,29 +760,7 @@ FocusScope{
             }
         }
     }
-    Rectangle {
-        visible: contact.status == 0 || contact.status == 1 ? false : true
-        anchors.fill: parent
-        color: "transparent"
-        Rectangle{
-            width:100
-            height:140
-            color: "transparent"
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            BusyIndicator {
-                running: true
-                anchors.top: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                width:100
-                height:100
-                smooth: true
-            }
-            Label{
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-                text: "Waiting for contact request to be accepted..."
-            }
-        }
+
+    WaitingRequestAccepted{
     }
 }

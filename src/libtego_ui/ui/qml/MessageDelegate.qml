@@ -365,6 +365,10 @@ Column {
                         id: downloadAction
                         text: qsTr("Download '%1'").arg(filename.text);
                         onTriggered: {
+                            if(Qt.platform.os === "android"){
+                                if(!utility.requestPermissionAndroid("android.permission.WRITE_EXTERNAL_STORAGE"))
+                                    return
+                            }
                             contact.conversation.tryAcceptFileTransfer(model.transfer.id);
                         }
                     }
@@ -511,6 +515,10 @@ Column {
                 text: qsTr("Save Image")
                 visible: copy_selected_image != "" || messageChildItem == imageField ? true : false
                 onTriggered: {
+                    if(Qt.platform.os === "android"){
+                        if(!utility.requestPermissionAndroid("android.permission.WRITE_EXTERNAL_STORAGE"))
+                            return
+                    }
                     if(messageChildItem == textField){
                         const regex = '<a href="' + copy_selected_image + '"><img.* src="data:image/([a-zA-Z]+);base64,([A-Za-z0-9+/=]+)';
                         const found = textField.text.match(regex);

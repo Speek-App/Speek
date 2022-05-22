@@ -69,7 +69,6 @@ FocusScope {
     Rectangle {
         visible: currentPage != null ? !currentPage.visible : true
         anchors.fill: parent
-        //color: "transparent"
         color: palette.window
         Image{
             anchors.verticalCenter: parent.verticalCenter

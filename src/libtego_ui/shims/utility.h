@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <QDir>
 #include <QDesktopServices>
+#include <QtConcurrent>
 
 #ifndef _WIN32
 #include <quazip/quazip.h>
@@ -40,7 +41,7 @@ public:
     }
 
 #ifdef ANDROID
-    static bool RequestPermissionAndroid(QString permission)
+    Q_INVOKABLE static bool requestPermissionAndroid(QString permission)
     {
         auto result = QtAndroid::checkPermission(permission);
 
@@ -483,14 +484,33 @@ public:
         return true;
     }
 
-    Q_INVOKABLE bool exportBackup(QString name) {
+    Q_INVOKABLE static bool exportBackup(QString name) {
+    #ifndef ANDROID
         QString fileName = QFileDialog::getSaveFileName(nullptr, tr("Save File"), name + "_Speek_Backup.zip", ".zip");
+    #else
+        QString fileName = QFileDialog::getSaveFileName(nullptr, name + "_Speek_Backup.zip", name + "_Speek_Backup.zip", ".zip");
+    #endif
+
         if (fileName.isEmpty()) {
             return false;
         }
         QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
 
         return createZipFromFolder(dir, fileName);
+    }
+
+    Q_INVOKABLE void exportBackupCallback(QString name, const QJSValue &callback) const
+    {
+        auto *watcher = new QFutureWatcher<bool>();
+        QObject::connect(watcher, &QFutureWatcher<bool>::finished,
+                         this, [this,watcher,callback]() {
+            bool res = watcher->result();
+            QJSValue callbackCopy(callback);
+            QJSEngine *engine = qjsEngine(this);
+            callbackCopy.call(QJSValueList { engine->toScriptValue(res) });
+            watcher->deleteLater();
+        });
+        watcher->setFuture(QtConcurrent::run(&Utility::exportBackup, name));
     }
 
     static qint64 dirSize(QString dirPath) {

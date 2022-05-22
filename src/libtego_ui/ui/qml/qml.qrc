@@ -60,6 +60,11 @@
         <file>qrcode/ScannerOverlay.qml</file>
         <file>qrcode/ScannerPage.qml</file>
         <file>ContactSettingWindow.qml</file>
+        <file>ViewIdDialogMain.qml</file>
+        <file>PreferencesDialogMain.qml</file>
+        <file>AddContactDialogMain.qml</file>
+        <file>WaitingRequestAccepted.qml</file>
+        <file>ContactRequestSelectionDialogMain.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>

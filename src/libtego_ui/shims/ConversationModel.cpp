@@ -300,7 +300,6 @@ QMutex ConversationModel::mutex;
             return;
         }
 #endif
-qWarning()<<filePath;
         if (!filePath.isEmpty())
         {
             auto userIdentity = shims::UserIdentity::userIdentity;
@@ -516,15 +515,22 @@ qWarning()<<filePath;
         auto proposedDest = QString("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)).arg(data.fileName);
 
 #ifdef ANDROID
-        auto dest = proposedDest;
+        data.filePath = QFileDialog::getSaveFileName(
+            nullptr,
+            data.fileName,
+            proposedDest);
+        auto dest = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/" + Utility::GetRandomString(18);
+        data.fileTransferPath = dest;
+        if (!dest.isEmpty() && !data.filePath.isEmpty())
+        {
 #else
         auto dest = QFileDialog::getSaveFileName(
             nullptr,
             tr("Save File"),
             proposedDest);
-#endif
         if (!dest.isEmpty())
         {
+#endif
             auto userIdentity = shims::UserIdentity::userIdentity;
             auto context = userIdentity->getContext();
             const auto sender = this->contactUser->toTegoUserId();
@@ -716,6 +722,34 @@ qWarning()<<filePath;
             {
                 case tego_file_transfer_result_success:
                     data.transferStatus = Finished;
+                    #ifdef ANDROID
+                    if(!data.fileTransferPath.isEmpty() && !data.filePath.isEmpty()){
+                        QFile source(data.fileTransferPath);
+                        source.open(QIODevice::ReadOnly);
+                        QFile destination(data.filePath);
+                        destination.open(QIODevice::ReadWrite);
+                        destination.resize(source.size());
+                        uchar *data = destination.map(0,destination.size());
+                        if(!data){
+                            qWarning() << "Error Android: Cannot map destination";
+                        }
+                        else{
+                            QByteArray buffer;
+                            int chunksize = 200;
+                            int var = 0;
+                            do{
+                                var = source.read((char *)(data), chunksize);
+                                data += var;
+                            }while(var > 0);
+                        }
+                        destination.unmap(data);
+                        destination.close();
+
+                        if(!source.remove()){
+                            qWarning() << "Error Android: Can't delete temporary file";
+                        }
+                    }
+                    #endif
                     break;
                 case tego_file_transfer_result_failure:
                     data.transferStatus = UnknownFailure;

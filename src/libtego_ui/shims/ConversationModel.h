@@ -163,6 +163,10 @@ namespace shims
             quint64 bytesTransferred = 0;
             TransferDirection transferDirection = InvalidDirection;;
             TransferStatus transferStatus = InvalidTransfer;
+            #ifdef ANDROID
+            QString filePath = {};
+            QString fileTransferPath = {};
+            #endif
         };
 
         struct EventData

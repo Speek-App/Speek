@@ -39,7 +39,18 @@ ColumnLayout {
             Layout.minimumWidth: 200
             Layout.fillWidth: Qt.platform.os === "android" ? true : false
             Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
-            onClicked: utility.exportBackup(typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek User")
+            onClicked: {
+                if(Qt.platform.os === "android"){
+                    if(!utility.requestPermissionAndroid("android.permission.WRITE_EXTERNAL_STORAGE"))
+                        return
+                    utility.exportBackupCallback(typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek_User", function(res) {
+                        console.log("done: backup")
+                    })
+                }
+                else{
+                    utility.exportBackup(typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek_User")
+                }
+            }
             Accessible.role: Accessible.Button
             Accessible.name: text
             //: Description of button which allows the exporting of the current identity for accessibility tech like screen readers

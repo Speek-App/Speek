@@ -226,16 +226,10 @@ Item {
                     Layout.alignment: Qt.AlignCenter
                     font.pointSize: styleHelper.pointSize + 1
 
-                    //MouseArea { anchors.fill: parent; onDoubleClicked: nicknameLayout.renameMode = true }
-
                     Component {
                         id: renameComponent
 
                         TextField {
-                            /*
-                            background: Rectangle{
-                                color: palette.base
-                            }*/
                             id: nameField
                             anchors {
                                 left: parent.left
@@ -247,7 +241,6 @@ Item {
                             font.pointSize: nickname.font.pointSize
                             onEditingFinished: {
                                 contactInfo.contact.nickname = text
-                                //nicknameLayout.renameMode = false
                             }
                         }
                     }
@@ -303,7 +296,9 @@ Item {
                 Button {
                     //: Label for button which removes a contact from the contact list
                     text: qsTr("Remove")
-                    onClicked: contactActions.removeContact()
+                    onClicked: {
+                        contactActions.removeContact()
+                    }
                     Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
                     Accessible.role: Accessible.Button
                     Accessible.name: text
