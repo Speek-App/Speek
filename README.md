@@ -1,5 +1,7 @@
 # Speek! Secure Messenger
 
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
 Speek.Chat is currently available for OS X (10.12 or later), Linux and Windows. Visit the [releases page](https://github.com/Speek-App/Speek/releases) for the latest version and changelog. Alternatively, the newest version of Speek.Chat is also available on the [MacOS Appstore](https://apps.apple.com/us/app/speek/id1609665326) and the [Microsoft Store](https://www.microsoft.com/en-us/p/speek/9plhbg7k1wzn?activetab=pivot:overviewtab).
 
 <p align="center">
