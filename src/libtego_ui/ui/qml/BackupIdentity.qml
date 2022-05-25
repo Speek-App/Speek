@@ -18,6 +18,28 @@ ColumnLayout {
         margins: 8
     }
 
+    Popup {
+        id: waitPopup
+        width: 100
+        height: 100
+        modal: true
+        focus: true
+        Rectangle{
+            anchors.fill: parent
+            color: "transparent"
+            BusyIndicator {
+                running: true
+                anchors.fill: parent
+            }
+        }
+        background: Rectangle {
+            color: "transparent"
+            border.color: "transparent"
+        }
+        anchors.centerIn: Overlay.overlay
+        closePolicy: Popup.NoAutoClose
+    }
+
     RowLayout {
         z: 2
         width: parent.width - 10
@@ -43,12 +65,41 @@ ColumnLayout {
                 if(Qt.platform.os === "android"){
                     if(!utility.requestPermissionAndroid("android.permission.WRITE_EXTERNAL_STORAGE"))
                         return
+
                     utility.exportBackupCallback(typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek_User", function(res) {
-                        console.log("done: backup")
+                        waitPopup.close()
                     })
+                    waitPopup.open()
                 }
                 else{
                     utility.exportBackup(typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek_User")
+                }
+            }
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            //: Description of button which allows the exporting of the current identity for accessibility tech like screen readers
+            Accessible.description: qsTr("Create a backup of the current identity")
+        }
+    }
+
+    RowLayout {
+        Layout.fillWidth: Qt.platform.os === "android"
+        visible: Qt.platform.os === "android"
+        z: 2
+        Button {
+            //: Label for button which allows the exporting of the current identity
+            text: qsTr("Restore Backup\n(deletes current identity - please backup first)")
+            Layout.minimumWidth: 200
+            Layout.fillWidth: Qt.platform.os === "android"
+            Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+            visible: Qt.platform.os === "android"
+            onClicked: {
+                if(Qt.platform.os === "android"){
+                    if(!utility.requestPermissionAndroid("android.permission.READ_EXTERNAL_STORAGE"))
+                        return
+                    utility.restoreBackup()
+                }
+                else{
                 }
             }
             Accessible.role: Accessible.Button

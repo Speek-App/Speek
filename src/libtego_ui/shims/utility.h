@@ -484,12 +484,124 @@ public:
         return true;
     }
 
+    static bool extractZip(const QString & filePath, const QString & extDirPath, const QString & singleFileName = QString("")) {
+        #ifndef _WIN32
+        QuaZip zip(filePath);
+
+        if (!zip.open(QuaZip::mdUnzip)) {
+            qWarning("testRead(): zip.open(): %d", zip.getZipError());
+            return false;
+        }
+
+        zip.setFileNameCodec("IBM866");
+
+        QuaZipFileInfo info;
+
+        QuaZipFile file(&zip);
+
+        QFile out;
+        QString name;
+        char c;
+        for (bool more = zip.goToFirstFile(); more; more = zip.goToNextFile()) {
+
+            if (!zip.getCurrentFileInfo(&info)) {
+                qWarning("testRead(): getCurrentFileInfo(): %d\n", zip.getZipError());
+                return false;
+            }
+
+            if (!singleFileName.isEmpty())
+                if (!info.name.contains(singleFileName))
+                    continue;
+
+            if (!file.open(QIODevice::ReadOnly)) {
+                qWarning("testRead(): file.open(): %d", file.getZipError());
+                return false;
+            }
+
+            name = QString("%1/%2").arg(extDirPath).arg(file.getActualFileName());
+
+            if (file.getZipError() != UNZ_OK) {
+                qWarning("testRead(): file.getFileName(): %d", file.getZipError());
+                return false;
+            }
+
+            out.setFileName(name);
+
+            out.open(QIODevice::WriteOnly);
+            while (file.getChar(&c)) out.putChar(c);
+
+            out.close();
+
+            if (file.getZipError() != UNZ_OK) {
+                qWarning("testRead(): file.getFileName(): %d", file.getZipError());
+                return false;
+            }
+
+            if (!file.atEnd()) {
+                qWarning("testRead(): read all but not EOF");
+                return false;
+            }
+
+            file.close();
+
+            if (file.getZipError() != UNZ_OK) {
+                qWarning("testRead(): file.close(): %d", file.getZipError());
+                return false;
+            }
+        }
+
+        zip.close();
+
+        if (zip.getZipError() != UNZ_OK) {
+            qWarning("testRead(): zip.close(): %d", zip.getZipError());
+            return false;
+        }
+
+        #else
+
+        #endif
+
+        return true;
+    }
+
+    Q_INVOKABLE static bool restoreBackup() {
+        QMessageBox::StandardButton btn = QMessageBox::question(0,
+            tr("Delete current Indentity"),
+            tr("Are sure you want to permanently delete your current identity in order to restore a backup?"));
+        if(btn != QMessageBox::Yes)
+            return false;
+
+        QString backupPath = QFileDialog::getOpenFileName(nullptr, tr("Select Backup File"), QStandardPaths::writableLocation(QStandardPaths::DownloadLocation), tr("Zip files (*.zip)"));
+        if (backupPath.isEmpty()) {
+            return false;
+        }
+
+        //delete current config
+        QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+        dir.setNameFilters(QStringList() << "*.*");
+        dir.setFilter(QDir::Files);
+        foreach(QString dirFile, dir.entryList())
+        {
+            dir.remove(dirFile);
+        }
+
+        bool ret = extractZip(backupPath, QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+
+        if(ret){
+            QMessageBox::StandardButton closeNow = QMessageBox::question(0, tr("Restart Required"), tr("A restart is required to load the restored identity. Should Speek close now?"));
+            if(closeNow == QMessageBox::Yes)
+                qApp->exit();
+        }
+
+        return ret;
+    }
+
     Q_INVOKABLE static bool exportBackup(QString name) {
-    #ifndef ANDROID
-        QString fileName = QFileDialog::getSaveFileName(nullptr, tr("Save File"), name + "_Speek_Backup.zip", ".zip");
-    #else
-        QString fileName = QFileDialog::getSaveFileName(nullptr, name + "_Speek_Backup.zip", name + "_Speek_Backup.zip", ".zip");
-    #endif
+        #ifndef ANDROID
+            QString fileName = QFileDialog::getSaveFileName(nullptr, tr("Save File"), name + "_Speek_Backup.zip", ".zip");
+        #else
+            QString fileName = QFileDialog::getSaveFileName(nullptr, name + "_Speek_Backup.zip", name + "_Speek_Backup.zip", ".zip");
+        #endif
 
         if (fileName.isEmpty()) {
             return false;

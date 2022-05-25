@@ -268,6 +268,50 @@ Item{
             Item{width:5;height:1}
         }
 
+        ColumnLayout{
+            RowLayout {
+                Image{
+                    visible: Qt.platform.os === "android"
+                    source: "qrc:/icons/android/settings_android/settings_rich_text.svg"
+                    Layout.preferredWidth: styleHelper.androidIconSize
+                    Layout.preferredHeight: styleHelper.androidIconSize
+                }
+                Item{width:2;visible: Qt.platform.os === "android"}
+
+                Label {
+                    //: Label for a slider used to adjust audio notification volume
+                    text: qsTr("Font Size (restart required)")
+                    Accessible.role: Accessible.StaticText
+                    Accessible.name: text
+                }
+            }
+            RowLayout {
+                Item { width: Qt.platform.os === "android" ? 36 : 16 }
+
+                Slider {
+                    to: 1.3
+                    from: 0.7
+                    snapMode: Slider.SnapAlways
+                    value: uiSettings.read("fontSizeMultiplier", 1)
+                    stepSize: 0.15
+
+                    onValueChanged: {
+                        uiSettings.write("fontSizeMultiplier", value)
+                    }
+
+                    Accessible.role: Accessible.Slider
+                    //: Name of the slider used to adjust audio notification volume for accessibility tech like screen readers
+                    Accessible.name: qsTr("Font Size Multiplier")
+                    Accessible.onIncreaseAction: {
+                        value += 0.15 // 8 volume settings
+                    }
+                    Accessible.onDecreaseAction: {
+                        value -= 0.15
+                    }
+                }
+            }
+        }
+
         Item{
             height: 10
         }

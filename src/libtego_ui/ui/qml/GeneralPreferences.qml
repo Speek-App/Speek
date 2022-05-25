@@ -160,6 +160,17 @@ Item{
         }
 
         SettingsSwitch{
+            visible: Qt.platform.os === "android"
+            //: Text description of an option to activate rich text editing by default which allows the input of emojis and images
+            text: qsTr("Open other identity prompt on startup")
+            position: uiSettings.data.identityPromptOnStartup || false
+            switchIcon: "qrc:/icons/android/settings_android/settings_rich_text.svg"
+            triggered: function(checked){
+                uiSettings.write("identityPromptOnStartup", checked)
+            }
+        }
+
+        SettingsSwitch{
             visible: !styleHelper.isGroupHostMode && Qt.platform.os !== "android"
             //: Text description of an option to minimize to the systemtray
             text: qsTr("Minimize to Systemtray")

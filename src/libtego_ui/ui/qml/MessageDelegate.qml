@@ -196,7 +196,7 @@ Column {
                 }
                 selectionColor: !model.isOutgoing ? styleHelper.outgoingMessageColor : styleHelper.incomingMessageColor
                 selectedTextColor: palette.highlightedText
-                font.pixelSize: 13
+                font.pixelSize: styleHelper.pixelSize
                 font.family: styleHelper.fontFamily
 
                 wrapMode: TextEdit.Wrap
@@ -207,8 +207,15 @@ Column {
                         if(typeof(model.group_user_nickname) != "undefined" && model.group_user_nickname.length > 0){
                             return "<p style=\"color:#308cc6;font-weight:700;margin-bottom:5px;\">" + model.group_user_nickname.replace(/[^a-zA-Z0-9\-_, ]/g,'') + " (" + hexToBase64(model.group_user_id_hash.replace(/[^a-fA-F0-9]/g,'')) + ")" + "</p>" + model.text.replace(emojiRegex, emojiPicker.replaceEmojiWithImage)
                         }
-                        else
-                            return model.text.replace(emojiRegex, emojiPicker.replaceEmojiWithImage)
+                        else{
+                            var regexBody = /<body style=".+">/g
+
+                            var msg = model.text.replace(regexBody, function(match, contents, offset, input_string){
+                                return '<body style="font-family:\'Noto Sans\'; font-size:' + styleHelper.pixelSize + 'px; font-weight:400; font-style:normal">'
+                            })
+
+                            return msg.replace(emojiRegex, emojiPicker.replaceEmojiWithImage)
+                        }
                     }
                     else
                         return model.prep_text
