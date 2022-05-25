@@ -62,6 +62,7 @@
 #ifdef ANDROID
 #include "SBarcodeFilter.h"
 #include "utils/NotificationClient.h"
+#include <QInputDialog>
 #endif
 
 #include <QQuickStyle>
@@ -417,7 +418,7 @@ bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QStr
         if(pathChange == "/")
             configPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
         else
-            configPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + pathChange + "default";
+            configPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + pathChange;
     }
 
     QDir dir(configPath);
@@ -463,6 +464,17 @@ bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QStr
 
     #ifdef ANDROID
         settings->root()->write("ui.combinedChatWindow", true);
+
+        if(pathChange == "/" && settings->root()->read("ui.identityPromptOnStartup").toBool(false)){
+            initTranslation();
+            QVariantMap theme_color;
+            initTheme(&theme_color);
+            bool ok;
+            QString identityName = QInputDialog::getText(nullptr, QInputDialog::tr("Enter the Identity Name to start (blank for default)"), QInputDialog::tr("Identity Name to start (blank for default):"), QLineEdit::Normal, "", &ok);
+            if (ok && !identityName.isEmpty()){
+                return initSettings(settings, lockFile, errorMessage, "/"+ identityName +"/");
+            }
+        }
     #endif
 
     return true;
@@ -472,13 +484,16 @@ void MainWindow::initFontSettings(){
     // increase font size for better reading
     QFont defaultFont = QApplication::font();
     defaultFont.setFamily("Noto Sans");
+
+    SettingsObject settings;
     #ifdef Q_OS_OSX
-        defaultFont.setPointSize(12);
+        defaultFont.setPointSize(12 * settings.read("ui.fontSizeMultiplier").toDouble(1));
     #elif ANDROID
-        defaultFont.setPointSize(12);
+        defaultFont.setPointSize(12 * settings.read("ui.fontSizeMultiplier").toDouble(1));
     #else
-        defaultFont.setPointSize(9);
+        defaultFont.setPointSize(9 * settings.read("ui.fontSizeMultiplier").toDouble(1));
     #endif
+
     qApp->setFont(defaultFont);
 }
 

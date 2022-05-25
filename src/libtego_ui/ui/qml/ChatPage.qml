@@ -541,8 +541,7 @@ FocusScope{
                     wrapMode: TextEdit.Wrap
                     textFormat: richTextActive ? TextEdit.RichText : TextEdit.PlainText
 
-                    //font.pointSize: styleHelper.pointSize * 0.9
-                    font.pixelSize: 13
+                    font.pixelSize: styleHelper.pixelSize
                     font.family: styleHelper.fontFamily
                     textColor: palette.text
 
@@ -564,7 +563,7 @@ FocusScope{
                         x: 5
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
-                        font.pixelSize: 13
+                        font.pixelSize: styleHelper.pixelSize
                         text: textInput.placeholderText
                         color: styleHelper.messageBoxText
                         visible: Qt.platform.os === "android" ? (!textInput.getText(0, textInput.length) && !textInput.activeFocus) : !textInput.getText(0, textInput.length)
@@ -604,6 +603,13 @@ FocusScope{
                     function send() {
                         if(textInput.length > 0){
                             var msg = emojiPicker.replaceImageWithEmojiCharacter(textInput.text)
+
+                            var regexBody = /<body style=".+">/g
+
+                            msg = msg.replace(regexBody, function(match, contents, offset, input_string){
+                                return '<body style="font-family:\'Noto Sans\'; font-size:13px; font-weight:400; font-style:normal">'
+                            })
+
                             if(conversationModel.contact.is_a_group){
                                 var obj = {};
                                 obj["message"] = msg

@@ -226,7 +226,19 @@ QtObject {
             Label { id: fakeLabelSized; font.pointSize: styleHelper.pointSize > 0 ? styleHelper.pointSize : 1 }
 
             property int androidIconSize: 26
-            property int pointSize: (Qt.platform.os === "windows") ? 10 : (Qt.platform.os === "osx")  || (Qt.platform.os === "android") ? 14 : 12
+            property int defaultPointSize: (Qt.platform.os === "windows") ? 10 : (Qt.platform.os === "osx")  || (Qt.platform.os === "android") ? 14 : 12
+            property int defaultPixelSize: {
+                if(Qt.platform.os === "windows")
+                    return 13
+                else if(Qt.platform.os === "osx")
+                    return 13
+                else if(Qt.platform.os === "android")
+                    return 13
+                else
+                    return 13
+            }
+            property int pointSize: defaultPointSize * uiSettings.read("fontSizeMultiplier", 1)
+            property int pixelSize: defaultPixelSize * uiSettings.read("fontSizeMultiplier", 1)
             property int textHeight: fakeLabelSized.height
             property int dialogWindowFlags: Qt.Dialog | Qt.WindowSystemMenuHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
             property string fontFamily: "Noto Sans"

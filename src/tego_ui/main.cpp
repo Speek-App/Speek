@@ -74,8 +74,6 @@ int main(int argc, char *argv[]) try
 #ifndef ANDROID
     qApp->setStyle(QStyleFactory::create("Fusion"));
 #endif
-    MainWindow::initFontSettings();
-
 
     tego_context_t* tegoContext = nullptr;
     tego_initialize(&tegoContext, tego::throw_on_error());
@@ -102,6 +100,7 @@ int main(int argc, char *argv[]) try
         QMessageBox::critical(0, qApp->translate("Main", "Speek Error"), error);
         return 1;
     }
+    MainWindow::initFontSettings();
     QScopedPointer<QLockFile> lockFile(lock);
 
     QVariantMap theme_color;

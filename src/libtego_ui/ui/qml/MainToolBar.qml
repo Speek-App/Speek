@@ -118,7 +118,7 @@ ToolBar {
                 label: Text {
                     renderType: Text.NativeRendering
                     font.family: iconFont.name
-                    font.pointSize: Qt.platform.os === "android" ? styleHelper.pointSize * 1.6 :styleHelper.pointSize * 1.1
+                    font.pointSize: Qt.platform.os === "android" ? styleHelper.defaultPointSize * 1.6 :styleHelper.defaultPointSize * 1.1
                     font.bold: true
                     text: control.text
                     color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
