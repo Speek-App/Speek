@@ -64,7 +64,7 @@ Item{
             Label {
                 Layout.fillWidth: true
                 //: Label for combobox where users can specify the color theme
-                text: qsTr("Theme")
+                text: qsTr("Theme (restart required)")
                 Accessible.role: Accessible.StaticText
                 Accessible.name: text
             }
@@ -86,9 +86,14 @@ Item{
                 ]
 
                 onActivated: {
-                    var back = model[index]
-                    uiSettings.write("theme", back)
-                    uiMain.reloadTheme()
+                    var oldTheme = uiSettings.read("theme", "dark-blue")
+                    var newTheme = model[index]
+                    uiSettings.write("theme", newTheme)
+
+                    if(oldTheme !== newTheme)
+                        utility.themeChanged()
+                        //reloading the theme not working correctly with qtquick2
+                        //uiMain.reloadTheme()
                 }
 
                 Accessible.role: Accessible.ComboBox
