@@ -160,7 +160,6 @@ Item{
         }
 
         SettingsSwitch{
-            visible: Qt.platform.os === "android"
             //: Text description of an option to activate rich text editing by default which allows the input of emojis and images
             text: qsTr("Open other identity prompt on startup")
             position: uiSettings.data.identityPromptOnStartup || false

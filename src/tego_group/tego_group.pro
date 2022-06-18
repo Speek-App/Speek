@@ -65,7 +65,7 @@ macx {
     # Work around by copying Info.plist directly.
     QMAKE_INFO_PLIST = Info.plist
 
-    icons.files = icons/speek.icns
+    icons.files = ../tego_ui/icons/speek.icns
     icons.path = Contents/Resources/
     QMAKE_BUNDLE_DATA += icons
 }

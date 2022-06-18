@@ -185,9 +185,11 @@ ApplicationWindow {
             text: qsTr("Add")
             enabled: newIdentityName.text.length > 0
             onClicked: {
-                utility.startNewInstance(newIdentityName.text)
+                if(newIdentityName.text != "tor" && newIdentityName.text != "cache" && newIdentityName.text != "speek-groups"){
+                    utility.startNewInstance(newIdentityName.text)
 
-                timer.setTimeout(function(){ load(); }, 1000);
+                    timer.setTimeout(function(){ load(); }, 1000);
+                }
             }
 
             Accessible.role: Accessible.Button

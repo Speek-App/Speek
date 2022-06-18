@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-    <title>next track button</title>
-    <circle cx="32" cy="32" r="30" fill="#4fd1d9"/>
-    <g fill="#fff">
-        <path d="M12 18l17.4 14L12 46zM29.4 18l17.4 14-17.4 14zM46.8 18H52v28h-5.2z"/>
-    </g>
-</svg>

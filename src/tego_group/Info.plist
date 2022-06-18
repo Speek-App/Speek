@@ -11,7 +11,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-        <string>speek</string>
+        <string>speek-group</string>
 	<key>CFBundleIdentifier</key>
         <string>net.speek</string>
 	<key>CFBundleName</key>

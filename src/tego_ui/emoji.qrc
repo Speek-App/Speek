@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>emoji/noto-emoji/svg/LICENSE</file>
         <file>emoji/twemoji/18/1f004.png</file>
         <file>emoji/twemoji/18/1f0cf.png</file>
         <file>emoji/twemoji/18/1f170.png</file>

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-    <title>glowing star</title>
-    <path fill="#ffce31" d="M62 23H39.1L32 2l-7.1 21H2l18.5 13-7.1 21L32 44l18.5 13-7.1-21L62 23z"/>
-    <g fill="#ffdf85">
-        <path d="M46.2 20.3l4-11.4-10.5 7.2 1.5 4.2zM27.9 50L32 62l4.1-12-4.1-2.8zM50.7 34.3l-3.8 2.6 1.6 4.8h12.9zM24.3 16.1L13.8 8.9l4 11.4h5zM13.3 34.3L2.6 41.7h12.9l1.6-4.8z"/>
-    </g>
-</svg>

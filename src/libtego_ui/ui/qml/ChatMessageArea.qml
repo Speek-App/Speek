@@ -17,9 +17,9 @@ Rectangle {
                 return uiSettings.data.customChatAreaBackground
             else
                 if(typeof(uiSettings.data.chatBackground) !== "undefined")
-                    return "qrc:/backgrounds/" + uiSettings.data.chatBackground.toLowerCase() + ".png"
+                    return "qrc:/backgrounds/" + uiSettings.data.chatBackground.toLowerCase() + ".jpg"
                 else
-                    return "qrc:/backgrounds/blue.png"
+                    return "qrc:/backgrounds/blue.jpg"
         }
         fillMode: Image.PreserveAspectCrop
         smooth: true

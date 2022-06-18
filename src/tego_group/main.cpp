@@ -93,7 +93,11 @@ int main(int argc, char *argv[]) try
 
     QString error;
     QLockFile *lock = 0;
+    #if defined(Q_OS_MAC)
+    if (!MainWindow::initSettings(settings.data(), &lock, error, "/speek-groups/")) {
+    #else
     if (!MainWindow::initSettings(settings.data(), &lock, error, "/")) {
+    #endif
         if (error.isEmpty())
             return 0;
         QMessageBox::critical(0, qApp->translate("Main", "Speek Error"), error);

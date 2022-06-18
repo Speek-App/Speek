@@ -168,11 +168,11 @@ ApplicationWindow {
             //: button label to add a new identity
             text: qsTr("Add New Group")
             onClicked: {
+                if(Qt.platform.os === "osx")
+                    selectGroupDialog.close()
+
                 var object = createDialog("CreateNewGroupDialog.qml", { }, mainWindow)
                 object.visible = true
-                //utility.startNewInstance(newIdentityName.text)
-
-                //timer.setTimeout(function(){ load(); }, 1000);
             }
 
             Accessible.role: Accessible.Button

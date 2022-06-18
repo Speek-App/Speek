@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-    <title>Falling Diagonal In White Circle In Black Square</title>
-	<path fill="#0071bc" d="M62 52c0 5.5-4.5 10-10 10H12C6.5 62 2 57.5 2 52V12C2 6.5 6.5 2 12 2h40c5.5 0 10 4.5 10 10v40z"/>
-    <path transform="scale(0.8) translate(8,8)" fill="#fff" d="M32 2C15.4 2 2 15.4 2 32s13.4 30 30 30 30-13.4 30-30S48.6 2 32 2m22 30c0 4.6-1.4 8.9-3.9 12.5L19.5 13.9C23.1 11.4 27.4 10 32 10c12.2 0 22 9.9 22 22m-44 0c0-4.6 1.4-8.9 3.9-12.5l30.6 30.6C40.9 52.6 36.6 54 32 54c-12.1 0-22-9.9-22-22"/>
-</svg>

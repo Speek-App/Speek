@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 //
 // Tego File Hash
 //

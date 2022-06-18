@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>backgrounds/purple-blue.png</file>
-        <file>backgrounds/purple.png</file>
-        <file>backgrounds/purple2.png</file>
-        <file>backgrounds/purple-wave.png</file>
-        <file>backgrounds/blue.png</file>
-        <file>backgrounds/blue-squares.png</file>
+        <file>backgrounds/purple-blue.jpg</file>
+        <file>backgrounds/purple.jpg</file>
+        <file>backgrounds/purple2.jpg</file>
+        <file>backgrounds/purple-wave.jpg</file>
+        <file>backgrounds/blue.jpg</file>
+        <file>backgrounds/blue-squares.jpg</file>
     </qresource>
 </RCC>

@@ -40,19 +40,6 @@ ColumnLayout {
             }
         }
     }
-    /*
-    TextArea {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-
-        readOnly: true
-        text: uiMain.aboutText
-        textFormat: TextEdit.PlainText
-        wrapMode: TextEdit.Wrap
-
-        Accessible.description: qsTr("The license of Speek and its dependencies")
-        Accessible.name: qsTr("License")
-    }*/
 
     Accessible.role: Accessible.Window
     Accessible.name: qsTr("About")

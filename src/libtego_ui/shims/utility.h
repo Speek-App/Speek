@@ -258,14 +258,18 @@ public:
         if(l == "")
             search_path = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
         else{
-            QString appname("speek");
             search_path = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-            search_path.replace(search_path.lastIndexOf(appname), appname.size(), l);
+            #if defined(Q_OS_MAC)
+                search_path += "/speek-groups";
+            #else
+                QString appname("speek");
+                search_path.replace(search_path.lastIndexOf(appname), appname.size(), l);
+            #endif
         }
 
         for (QString const& name: QDir(search_path).entryList(QDir::AllDirs | QDir::NoDotAndDotDot))
         {
-            if(name != "tor" && name != "cache"){
+            if(name != "tor" && name != "cache" && name != "speek-groups"){
                 QVariantMap p;
                 p.insert("name", name);
 

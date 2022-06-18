@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-	<title>Digram for Greater Yin</title>
-	<g fill="#c28fef">
-		<rect id="mid-top-l" x="2" y="14" width="24" height="12"/>
-		<rect id="mid-top-r" x="38" y="14" width="24" height="12"/>
-		<rect id="mid-bot-l" x="2" y="38" width="24" height="12"/>
-		<rect id="mid-bot-r" x="38" y="38" width="24" height="12"/>
-	</g>
-</svg>

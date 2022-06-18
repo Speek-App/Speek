@@ -41,7 +41,7 @@ ApplicationWindow {
             left: parent.left
             right: parent.right
             top: parent.top
-            bottom: parent.bottom
+            bottom: buttonRow.top
             topMargin: 8
             leftMargin: Qt.platform.os === "android" ? 4 : 16
             rightMargin: Qt.platform.os === "android" ? 4 : 16

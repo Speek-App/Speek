@@ -9,7 +9,7 @@ Rectangle {
     function generate_qr_code(){
         barcodeGenerator.setFormat("QRCode")
         var str = userIdentity.contactID
-        if(addUsernameToQR)
+        if(addUsernameToQR && nameField.text.length > 0)
             str += ";"+nameField.text
         barcodeGenerator.generate(str)
     }
@@ -41,7 +41,7 @@ Rectangle {
             left: parent.left
             right: parent.right
             top: parent.top
-            topMargin: Qt.platform.os === "android" ? 45 : 8
+            topMargin: Qt.platform.os === "android" ? 45 : Qt.platform.os === "osx" ? 20 : 8
             leftMargin: 16
             rightMargin: 16
         }

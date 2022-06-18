@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-	<title>Trigram for Fire</title>
-	<g fill="#c28fef">
-		<rect id="top" x="2" y="2" width="60" height="12"/>
-		<rect id="mid-l" x="2" y="26" width="24" height="12"/>
-		<rect id="mid-r" x="38" y="26" width="24" height="12"/>
-		<rect id="bot" x="2" y="50" width="60" height="12"/>
-	</g>
-</svg>

@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-    <title>up-down arrow</title>
-    <circle cx="32" cy="32" r="30" fill="#4fd1d9"/>
-    <path fill="#fff" d="M32 52l16-15.5H36.6v-9H48L32 12 16 27.5h11.4v9H16z"/>
-</svg>
