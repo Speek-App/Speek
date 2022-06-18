@@ -158,7 +158,7 @@ ApplicationWindow {
     SystemTrayIcon {
         id: systray
         visible: uiSettings.data.minimizeToSystemtray
-        icon.source: "qrc:/icons/speek.png"
+        icon.source: styleHelper.isGroupHostMode ? "qrc:/icons/speek-group.png" : "qrc:/icons/speek.png"
 
         onActivated: {
             window.show()

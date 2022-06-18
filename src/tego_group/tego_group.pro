@@ -65,7 +65,7 @@ macx {
     # Work around by copying Info.plist directly.
     QMAKE_INFO_PLIST = Info.plist
 
-    icons.files = ../tego_ui/icons/speek.icns
+    icons.files = ../tego_ui/icons/speek-group.icns
     icons.path = Contents/Resources/
     QMAKE_BUNDLE_DATA += icons
 }
@@ -100,7 +100,7 @@ RESOURCES +=\
     ../tego_ui/themes.qrc \
     ../tego_ui/translation/embedded.qrc
 
-win32:RC_ICONS = icons/speek.ico
+win32:RC_ICONS = icons/speek-group.ico
 OTHER_FILES += $${PWD}/../libtego_ui/ui/qml/*
 
 lupdate_only {

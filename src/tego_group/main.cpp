@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) try
 
     a.setApplicationVersion(QLatin1String(TEGO_VERSION_STR));
     #if !defined(Q_OS_WIN) && !defined(Q_OS_MAC)
-        a.setWindowIcon(QIcon(QStringLiteral(":/icons/speek.png")));
+        a.setWindowIcon(QIcon(QStringLiteral(":/icons/speek-group.png")));
     #endif
 
     QScopedPointer<SettingsFile> settings(new SettingsFile);
