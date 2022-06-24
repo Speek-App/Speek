@@ -17,7 +17,7 @@ namespace shims
             const QString &myNickname,
             const QString &message,
             const QString &icon = "");
-        shims::ContactUser* addContact(const QString& serviceId, const QString& nickname, const QString& icon = "", bool is_a_group = false);
+        shims::ContactUser* addContact(const QString& serviceId, const QString& nickname, const QString& icon = "", bool is_a_group = false, bool save_messages = false, bool send_undelivered_messages_after_resume = false, bool auto_download_files = false, QString auto_download_dir = "", unsigned last_online = 0);
         const QList<shims::ContactUser*>& contacts() const;
         shims::ContactUser* getShimContactByContactId(const QString& contactId) const;
 

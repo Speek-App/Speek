@@ -90,9 +90,13 @@ void TorSocket::resetAttempts()
 int TorSocket::reconnectInterval()
 {
     int delay = 0;
-    if (m_connectAttempts <= 4)
-        delay = 30;
-    else if (m_connectAttempts <= 6)
+    if (m_connectAttempts <= 1)
+        delay = 7;
+    else if (m_connectAttempts <= 3)
+        delay = 10;
+    else if (m_connectAttempts <= 8)
+        delay = 15;
+    else if (m_connectAttempts <= 12)
         delay = 120;
     else
         delay = m_maxInterval;

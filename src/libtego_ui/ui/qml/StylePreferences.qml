@@ -146,14 +146,10 @@ Item{
                         indicator.color = palette.text
                     }
                 }
-                model: [
-                    "Blue",
-                    "Blue-Squares",
-                    "Purple",
-                    "Purple2",
-                    "Purple-Blue",
-                    "Purple-Wave",
-                ]
+                model: {
+                    console.log(availableBackgroundsModel)
+                    return availableBackgroundsModel
+                }
 
                 onActivated: {
                     var back = model[index]
@@ -226,6 +222,54 @@ Item{
         RowLayout {
             Layout.maximumWidth: 400
             Layout.bottomMargin: 5
+            z: 2
+
+            Image{
+                visible: Qt.platform.os === "android"
+                source: "qrc:/icons/android/settings_android/smiley.svg"
+                Layout.preferredWidth: styleHelper.androidIconSize
+                Layout.preferredHeight: styleHelper.androidIconSize
+            }
+            Item{width:2;visible: Qt.platform.os === "android"}
+
+            Label {
+                Layout.fillWidth: true
+                //: Label for spinbox where users can specify the maximum number of messages before they get deleted
+                text: qsTr("Message Prune Limit")
+                Accessible.role: Accessible.StaticText
+                Accessible.name: text
+            }
+
+            SpinBox {
+                Material.background: Material.Indigo
+                value: typeof(uiSettings.data.messagePruneLimit) !== "undefined" ? uiSettings.data.messagePruneLimit : 1000
+                from: 10
+                to: 100000
+                stepSize: 100
+                Layout.minimumWidth: 140
+                Component.onCompleted: {
+                    if(Qt.platform.os !== "android"){
+                        contentItem.color = palette.text
+                        up.indicator.color = palette.text
+                        down.indicator.color = palette.text
+                    }
+                }
+
+                onValueChanged: {
+                    uiSettings.write("messagePruneLimit", value)
+                }
+
+                Accessible.role: Accessible.SpinBox
+                //: Name of the SpinBox used to specify the maximum number of messages before they get deleted for accessibility tech like screen readers
+                Accessible.name: qsTr("Message Prune Limit")
+                //: Description of what the Message Prune Limit is for for accessibility tech like screen readers
+                Accessible.description: qsTr("What is the maximum number of messages before they get deleted")
+            }
+            Item{width:5;height:1}
+        }
+
+        RowLayout {
+            Layout.maximumWidth: 400
             z: 2
 
             Image{

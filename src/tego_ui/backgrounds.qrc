@@ -6,5 +6,9 @@
         <file>backgrounds/purple-wave.jpg</file>
         <file>backgrounds/blue.jpg</file>
         <file>backgrounds/blue-squares.jpg</file>
+        <file>backgrounds/green.jpg</file>
+        <file>backgrounds/light-green.jpg</file>
+        <file>backgrounds/light-blue.jpg</file>
+        <file>backgrounds/orange.jpg</file>
     </qresource>
 </RCC>

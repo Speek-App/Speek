@@ -65,6 +65,7 @@
         <file>AddContactDialogMain.qml</file>
         <file>WaitingRequestAccepted.qml</file>
         <file>ContactRequestSelectionDialogMain.qml</file>
+        <file>MessageInfoPopup.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>
