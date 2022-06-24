@@ -786,6 +786,12 @@ public:
             qApp->exit();
     }
 
+    Q_INVOKABLE void fontSizeChanged() {
+        QMessageBox::StandardButton closeNow = QMessageBox::question(0, tr("Restart Required"), tr("A restart is required to apply the font size change. Should Speek close now?"));
+        if(closeNow == QMessageBox::Yes)
+            qApp->exit();
+    }
+
     Q_INVOKABLE static QString toHash(QString str){
         return QString(QCryptographicHash::hash((str.toUtf8()),QCryptographicHash::Md5).toHex());
     }

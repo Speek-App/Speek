@@ -225,6 +225,7 @@ Item{
 
         RowLayout {
             Layout.maximumWidth: 400
+            Layout.bottomMargin: 5
             z: 2
 
             Image{
@@ -277,14 +278,14 @@ Item{
             RowLayout {
                 Image{
                     visible: Qt.platform.os === "android"
-                    source: "qrc:/icons/android/settings_android/settings_rich_text.svg"
+                    source: "qrc:/icons/android/settings_android/change_font_size.svg"
                     Layout.preferredWidth: styleHelper.androidIconSize
                     Layout.preferredHeight: styleHelper.androidIconSize
                 }
                 Item{width:2;visible: Qt.platform.os === "android"}
 
                 Label {
-                    //: Label for a slider used to adjust audio notification volume
+                    //: Label for a slider used to adjust the font size
                     text: qsTr("Font Size (restart required)")
                     Accessible.role: Accessible.StaticText
                     Accessible.name: text
@@ -301,14 +302,19 @@ Item{
                     stepSize: 0.15
 
                     onValueChanged: {
+                        var oldSize = uiSettings.read("fontSizeMultiplier", 1)
+                        var newSize = value
                         uiSettings.write("fontSizeMultiplier", value)
+
+                        if(oldSize !== newSize)
+                            utility.fontSizeChanged()
                     }
 
                     Accessible.role: Accessible.Slider
-                    //: Name of the slider used to adjust audio notification volume for accessibility tech like screen readers
+                    //: Name of the slider used to adjust the font size for accessibility tech like screen readers
                     Accessible.name: qsTr("Font Size Multiplier")
                     Accessible.onIncreaseAction: {
-                        value += 0.15 // 8 volume settings
+                        value += 0.15
                     }
                     Accessible.onDecreaseAction: {
                         value -= 0.15

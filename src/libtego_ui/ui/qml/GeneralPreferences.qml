@@ -160,10 +160,10 @@ Item{
         }
 
         SettingsSwitch{
-            //: Text description of an option to activate rich text editing by default which allows the input of emojis and images
-            text: qsTr("Open other identity prompt on startup")
+            //: Text description of an option to ask for an identity to use on startup
+            text: qsTr("Open identity prompt on startup")
             position: uiSettings.data.identityPromptOnStartup || false
-            switchIcon: "qrc:/icons/android/settings_android/settings_rich_text.svg"
+            switchIcon: "qrc:/icons/android/settings_android/open_other_identity.svg"
             triggered: function(checked){
                 uiSettings.write("identityPromptOnStartup", checked)
             }
