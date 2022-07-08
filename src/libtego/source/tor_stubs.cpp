@@ -51,12 +51,11 @@ extern "C"
     }
 
 #if defined(_WIN32) || defined(Q_OS_ANDROID)
-/*
     const char* tor_fix_source_file(const char* fname)
     {
 	   return fname;
     }
-*/
+
     // we only need the following stubs on Windows because link-time optimization is broken
     // on Windows 64 bit ( https://sourceware.org/bugzilla/show_bug.cgi?id=12762) 
     void crypto_strongest_rand(uint8_t*, size_t)

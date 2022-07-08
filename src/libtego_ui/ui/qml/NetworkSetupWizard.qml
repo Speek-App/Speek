@@ -231,19 +231,27 @@ ApplicationWindow {
                 }
             }
 
-            TextArea {
-                visible: uiMain.appstore_compliant
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                width: parent.width
+            ScrollView {
+                    background: Rectangle { color: palette.base;radius:4;visible:Qt.platform.os !== "android" }
+                    ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                    Layout.fillWidth: true
+                    width: parent.width
+                    implicitHeight: 200
+                    Layout.preferredHeight: 200
+                TextArea {
+                    visible: uiMain.appstore_compliant
+                    anchors.fill:parent
+                    width: parent.width
 
-                readOnly: true
-                text: uiMain.eulaText
-                textFormat: TextEdit.PlainText
-                wrapMode: TextEdit.Wrap
+                    readOnly: true
+                    text: uiMain.eulaText
+                    textFormat: TextEdit.PlainText
+                    wrapMode: TextEdit.Wrap
 
-                Accessible.description: qsTr("The EULA of Speek")
-                Accessible.name: qsTr("EULA")
+
+                    Accessible.description: qsTr("The EULA of Speek")
+                    Accessible.name: qsTr("EULA")
+                }
             }
 
             Button {

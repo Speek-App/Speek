@@ -100,7 +100,7 @@ RESOURCES +=\
     ../tego_ui/themes.qrc \
     ../tego_ui/translation/embedded.qrc
 
-win32:RC_ICONS = icons/speek-group.ico
+win32:RC_ICONS = ../tego_ui/icons/speek-group.ico
 OTHER_FILES += $${PWD}/../libtego_ui/ui/qml/*
 
 lupdate_only {
