@@ -48,3 +48,10 @@ ricochet-refresh
 \.vscode/
 notes/*
 build-tego-Desktop-Release
+debian/files
+debian/speek.debhelper.log
+debian/speek.substvars
+debian/speek/
+libtego_ui/
+debian/.debhelper/
+debian/debhelper-build-stamp
