@@ -359,7 +359,7 @@ Column {
                             height: styleHelper.pointSize * 1.5
 
                             text: model.transfer ? model.transfer.statusString : ""
-                            font.pointSize: filename.font.pointSize * 0.8;
+                            font.pointSize: filename.font.pointSize * 0.75;
                             color: Qt.lighter(filename.color, 1.5)
                             Accessible.role: Accessible.StaticText
                             Accessible.name: text

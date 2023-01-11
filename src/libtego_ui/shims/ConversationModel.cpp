@@ -146,7 +146,7 @@ QMutex ConversationModel::mutex;
                             case InProgress:
                             {
                                 const auto locale = QLocale::system();
-                                return QString("%1 / %2").arg(locale.formattedDataSize(message.bytesTransferred)).arg(locale.formattedDataSize(message.fileSize));
+                                return QString("%1 / %2 (%3/s)").arg(locale.formattedDataSize(message.bytesTransferred)).arg(locale.formattedDataSize(message.fileSize)).arg(locale.formattedDataSize(message.transferDownloadSpeed));
                             }
                             case Cancelled: return tr("Cancelled");
                             case Finished: return tr("Complete");
@@ -703,6 +703,15 @@ QMutex ConversationModel::mutex;
             MessageData &data = messages[row];
             data.bytesTransferred = bytesTransferred;
             data.transferStatus = InProgress;
+
+            if(data.bytesTransferredFewSecAgo == 0 || QDateTime::currentMSecsSinceEpoch() - data.timeBytesTransferredFewSecAgo.toMSecsSinceEpoch() > 3000){
+                if(data.bytesTransferredFewSecAgo > 0){
+                    const auto newData = data.bytesTransferred - data.bytesTransferredFewSecAgo;
+                    data.transferDownloadSpeed = newData / (QDateTime::currentMSecsSinceEpoch() - data.timeBytesTransferredFewSecAgo.toMSecsSinceEpoch()) * 1000;
+                }
+                data.bytesTransferredFewSecAgo = data.bytesTransferred;
+                data.timeBytesTransferredFewSecAgo = QDateTime::currentDateTime();
+            }
 
             emitDataChanged(row);
         }
