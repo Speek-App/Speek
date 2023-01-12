@@ -590,7 +590,11 @@ void FileChannel::handleFileChunkAck(const Data::File::FileChunkAck &message)
 
     const auto& otr = it->second;
 
-    emit this->fileTransferProgress(otr.id, tego_file_transfer_direction_receiving, otr.offset, otr.size);
+    if(message.bytes_received() > otr.size){
+        emitFatalError("mismatch between the total bytes of the file sent and the bytes the receiver claims to have received", tego_file_transfer_result_failure, true);
+        return;
+    }
+    emit this->fileTransferProgress(otr.id, tego_file_transfer_direction_receiving, message.bytes_received(), otr.size);
 
     // send the next chunk until we are done
     if(otr.offset < otr.size)

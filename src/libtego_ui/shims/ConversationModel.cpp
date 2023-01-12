@@ -701,7 +701,8 @@ QMutex ConversationModel::mutex;
         if (row >= 0)
         {
             MessageData &data = messages[row];
-            data.bytesTransferred = bytesTransferred;
+            if(bytesTransferred > data.bytesTransferred)
+                data.bytesTransferred = bytesTransferred;
             data.transferStatus = InProgress;
 
             if(data.bytesTransferredFewSecAgo == 0 || QDateTime::currentMSecsSinceEpoch() - data.timeBytesTransferredFewSecAgo.toMSecsSinceEpoch() > 3000){
