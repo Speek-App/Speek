@@ -15,7 +15,7 @@ namespace shims
         bool isSuccessful() const;
 
     signals:
-        void finished();
+        void finished(bool success);
 
     private:
         bool m_successful = false;

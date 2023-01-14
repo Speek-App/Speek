@@ -160,6 +160,14 @@ public:
     {
         write<T>(QString::fromLatin1(key), value);
     }
+    template<typename K, typename T> void write_container(K&& key, const T& values)
+    {
+        QJsonArray array;
+        for (auto value : values) {
+            array.push_back(value);
+        }
+        write(std::move(key), array);
+    }
     void unset(const char *key)
     {
         unset(QString::fromLatin1(key));

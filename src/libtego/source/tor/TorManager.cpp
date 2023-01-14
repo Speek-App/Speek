@@ -40,7 +40,7 @@
 #include "signals.hpp"
 #include "globals.hpp"
 
-#include <QMessageBox>
+#include "torrc.hpp"
 using tego::g_globals;
 
 using namespace Tor;
@@ -59,7 +59,6 @@ public:
     QString dataDir;
     QStringList logMessages;
     QString errorMessage;
-    bool configNeeded;
 
     explicit TorManagerPrivate(TorManager *parent = 0);
 
@@ -74,7 +73,6 @@ public slots:
     void processErrorChanged(const QString &errorMessage);
     void processLogMessage(const QString &message);
     void controlStatusChanged(int status);
-    void getConfFinished();
 };
 
 }
@@ -89,7 +87,6 @@ TorManagerPrivate::TorManagerPrivate(TorManager *parent)
     , q(parent)
     , process(0)
     , control(new TorControl(this))
-    , configNeeded(false)
 {
     connect(control, SIGNAL(statusChanged(int,int)), SLOT(controlStatusChanged(int)));
 }
@@ -122,11 +119,6 @@ void TorManager::setDataDirectory(const QString &path)
     d->dataDir = QDir::fromNativeSeparators(path);
     if (!d->dataDir.isEmpty() && !d->dataDir.endsWith(QLatin1Char('/')))
         d->dataDir.append(QLatin1Char('/'));
-}
-
-bool TorManager::configurationNeeded() const
-{
-    return d->configNeeded;
 }
 
 QStringList TorManager::logMessages() const
@@ -189,25 +181,21 @@ void TorManager::start()
         return;
     }
 
+    // always write out a new default torrc
     QString defaultTorrc = d->dataDir + QStringLiteral("default_torrc");
-    if (!QFile::exists(defaultTorrc) && !d->createDefaultTorrc(defaultTorrc)) {
+    if (QFile::exists(defaultTorrc) && !QFile::remove(defaultTorrc)) {
+        d->setError(QStringLiteral("Could not remove: %1").arg(defaultTorrc));
+        return;
+    }
+
+    if (!d->createDefaultTorrc(defaultTorrc)) {
         d->setError(QStringLiteral("Cannot write data files: %1").arg(defaultTorrc));
         return;
     }
 
-    QFile torrc(d->dataDir + QStringLiteral("torrc"));
-
-    torrc.open(QIODevice::ReadOnly);
-    bool disableNetworkSet = false;
-    QTextStream in (&torrc);
-    if (in.readAll().contains("DisableNetwork", Qt::CaseSensitive)) {
-        disableNetworkSet = true;
-    }
-    torrc.close();
-
-    if (!torrc.exists() || torrc.size() == 0 || disableNetworkSet == false) {
-        d->configNeeded = true;
-        emit configurationNeededChanged();
+    QString torrc = d->dataDir + QStringLiteral("torrc");
+    if (QFile::exists(torrc)) {
+        QFile::remove(torrc);
     }
 
     d->process->setExecutable(executable);
@@ -243,10 +231,10 @@ void TorManagerPrivate::processStateChanged(int state)
     emit q->runningChanged();
 }
 
-void TorManagerPrivate::processErrorChanged(const QString &errorMessage)
+void TorManagerPrivate::processErrorChanged(const QString &message)
 {
-    qDebug() << "tor error:" << errorMessage;
-    setError(errorMessage);
+    qDebug() << "tor error:" << message;
+    setError(message);
 }
 
 void TorManagerPrivate::processLogMessage(const QString &message)
@@ -263,26 +251,20 @@ void TorManagerPrivate::processLogMessage(const QString &message)
 
     const auto msgLength = utf8.size();
     const auto msgSize = msgLength + 1;
-    auto msg = std::make_unique<char[]>(msgSize);
+    auto msg = std::make_unique<char[]>(static_cast<size_t>(msgSize));
 
     // copy utf8 string to our own buffer
     std::copy(utf8.begin(), utf8.end(), msg.get());
-    Q_ASSERT(msg[msgLength] == 0);
+    Q_ASSERT(msg[static_cast<size_t>(msgLength)] == 0);
 
     g_globals.context->callback_registry_.emit_tor_log_received(
         msg.release(),
-        msgLength);
+        static_cast<size_t>(msgLength));
 }
 
 void TorManagerPrivate::controlStatusChanged(int status)
 {
     if (status == TorControl::Connected) {
-        if (!configNeeded) {
-            // If DisableNetwork is 1, trigger configurationNeeded
-            connect(control->getConfiguration(QStringLiteral("DisableNetwork")),
-                    SIGNAL(finished()), SLOT(getConfFinished()));
-        }
-
         if (process) {
             // Take ownership via this control socket
             control->takeOwnership();
@@ -290,24 +272,10 @@ void TorManagerPrivate::controlStatusChanged(int status)
     }
 }
 
-void TorManagerPrivate::getConfFinished()
-{
-    GetConfCommand *command = qobject_cast<GetConfCommand*>(sender());
-    if (!command)
-        return;
-
-    if (command->get("DisableNetwork").toInt() == 1 && !configNeeded) {
-        configNeeded = true;
-        emit q->configurationNeededChanged();
-    }
-}
-
 QString TorManagerPrivate::torExecutablePath() const
 {
 #ifdef Q_OS_WIN
     QString filename(QStringLiteral("/tor.exe"));
-#elif ANDROID
-    QString filename(QStringLiteral("/libTor.so"));
 #else
     QString filename(QStringLiteral("/tor"));
 #endif
@@ -334,16 +302,36 @@ bool TorManagerPrivate::createDataDir(const QString &path)
 
 bool TorManagerPrivate::createDefaultTorrc(const QString &path)
 {
-    static const char defaultTorrcContent[] =
+    static const std::string_view defaultTorrcContent =
+        "# Do not edit this file! Contents are managed by Ricochet-Refresh\n"
+        "# and your changes will be overwritten\n"
         "SocksPort auto\n"
         "AvoidDiskWrites 1\n"
         "DisableNetwork 1\n"
-        "__ReloadTorrcOnSIGHUP 0\n";
+        "__ReloadTorrcOnSIGHUP 0\n\n"
+        "# Pluggable Transport Plugins\n";
+
+    std::stringstream defaultTorrcBuilder;
+    defaultTorrcBuilder << defaultTorrcContent;
+
+    // tor's ClientTransportPlugin setting cannot handle PT paths which contain spaces
+    // since we have no control over where PTs have been deployed, and the working
+    // directory is a different location from the binary location, we create a
+    // symlink in the working directory to the actual deployed location
+    const auto ptDir = fmt::format("{}/pluggable_transports", qApp->applicationDirPath());
+    // remove previous symlink if it exists in case we are a portable install
+    // and so the binary locations may have changed
+    QFile::remove("pluggable_transports");
+    QFile::link(QString::fromStdString(ptDir), QString("pluggable_transports"));
+
+    for (auto plugin : clientTransportPlugins) {
+        defaultTorrcBuilder << plugin << "\n";
+    }
 
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly))
         return false;
-    if (file.write(defaultTorrcContent) < 0)
+    if (file.write(defaultTorrcBuilder.str().c_str()) < 0)
         return false;
     return true;
 }

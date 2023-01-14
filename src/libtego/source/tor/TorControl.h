@@ -93,13 +93,13 @@ public:
     void takeOwnership();
 
     /* Hidden Services */
-    QList<HiddenService*> hiddenServices() const;
-    void addHiddenService(HiddenService *service);
+    HiddenService const* getHiddenService() const;
+    void setHiddenService(HiddenService* service);
+    void publishHiddenService();
 
     QVariantMap bootstrapStatus() const;
     QObject *getConfiguration(const QString &options);
     QObject *setConfiguration(const QVariantMap &options);
-    PendingOperation *saveConfiguration();
 
 signals:
     void statusChanged(int newStatus, int oldStatus);

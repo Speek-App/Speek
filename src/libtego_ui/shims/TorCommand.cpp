@@ -5,7 +5,7 @@ namespace shims
     void TorControlCommand::onFinished(bool success)
     {
         this->m_successful = success;
-        emit this->finished();
+        emit this->finished(success);
         this->deleteLater();
     }
 

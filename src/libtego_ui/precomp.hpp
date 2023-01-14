@@ -17,6 +17,7 @@
 #include <functional>
 #include <fstream>
 #include <iterator>
+#include <set>
 
 // fmt
 #include <fmt/format.h>
@@ -30,6 +31,7 @@
 #include <QGuiApplication>
 #include <QMessageBox>
 #include <QQuickItem>
+#include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include <QScreen>
 #include <QtQml>

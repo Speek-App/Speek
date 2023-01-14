@@ -46,8 +46,8 @@ namespace
             {
                 exec = [](run_once_task* self) -> void
                 {
-                    auto lambda = reinterpret_cast<void(*)(void)>(self->callable);
-                    lambda();
+                    auto fn = reinterpret_cast<void(*)(void)>(self->callable);
+                    fn();
 
                     self->exec = nullptr;
                     self->callable = nullptr;
@@ -59,9 +59,9 @@ namespace
             {
                 exec = [](run_once_task* self) -> void
                 {
-                    auto lambda = reinterpret_cast<LAMBDA*>(self->callable);
-                    (*lambda)();
-                    delete lambda;
+                    auto fn = reinterpret_cast<LAMBDA*>(self->callable);
+                    (*fn)();
+                    delete fn;
 
                     self->exec = nullptr;
                     self->callable = nullptr;
@@ -271,8 +271,13 @@ namespace
         push_task([=]() -> void
         {
             logger::println("bootstrap status : {{ progress : {}, tag : {} }}", progress, (int)tag);
+
+            auto tagSummary = tego_tor_bootstrap_tag_to_summary(
+                                tag,
+                                tego::throw_on_error());
+
             auto torControl = shims::TorControl::torControl;
-            emit torControl->bootstrapStatusChanged();
+            torControl->setBootstrapStatus(progress, tag, QString(tagSummary));
         });
     }
 

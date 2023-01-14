@@ -19,7 +19,6 @@ typedef enum
 
 struct tego_tor_daemon_config
 {
-    std::optional<bool> disableNetwork;
     struct
     {
         tego_proxy_type_t type = tego_proxy_type_none;

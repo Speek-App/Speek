@@ -6,7 +6,6 @@ namespace shims
     {
         Q_OBJECT
 
-        Q_PROPERTY(bool configurationNeeded READ configurationNeeded NOTIFY configurationNeededChanged)
         Q_PROPERTY(QStringList logMessages READ logMessages CONSTANT)
         Q_PROPERTY(QString running READ running NOTIFY runningChanged)
         Q_PROPERTY(bool hasError READ hasError NOTIFY errorChanged)
@@ -16,7 +15,6 @@ namespace shims
         TorManager(tego_context_t*);
         static TorManager* torManager;
 
-        bool configurationNeeded() const;
         QStringList logMessages() const;
         QString running() const;
         void setRunning(const QString& running);
@@ -24,7 +22,6 @@ namespace shims
         QString errorMessage() const;
         void setErrorMessage(const QString& message);
     signals:
-        void configurationNeededChanged();
         void logMessage(const QString &message);
         void runningChanged();
         void errorChanged();

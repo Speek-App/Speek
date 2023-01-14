@@ -8,7 +8,7 @@ Column {
 
     property var bootstrap: torControl.bootstrapStatus
     onBootstrapChanged: {
-        if (bootstrap['tag'] === "done")
+        if (bootstrap.done)
             window.networkReady()
     }
 
@@ -35,7 +35,7 @@ Column {
     }
 
     Label {
-        text: (bootstrap['warning'] !== undefined ) ? bootstrap['warning'] : bootstrap['summary']
+        text: bootstrap.summary
         textFormat: Text.PlainText
     }
 
@@ -100,7 +100,7 @@ Column {
             //: Label for button which closes the tor connection window
             text: qsTr("Done")
             isDefault: true
-            enabled: bootstrap.tag === "done"
+            enabled: bootstrap.done
             onClicked: window.visible = false
 
             Accessible.name: text

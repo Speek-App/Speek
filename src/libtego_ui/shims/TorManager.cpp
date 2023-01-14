@@ -6,26 +6,7 @@ namespace shims
 
     TorManager::TorManager(tego_context_t* context)
     : m_context(context)
-    {
-        // this ultimately controls whether the config dialog appears on launch
-        if (this->configurationNeeded())
-        {
-            emit this->configurationNeededChanged();
-        }
-    }
-
-    bool TorManager::configurationNeeded() const
-    {
-        logger::trace();
-
-        tego_bool_t daemonConfigured = TEGO_FALSE;
-        tego_context_get_tor_daemon_configured(
-            m_context,
-            &daemonConfigured,
-            tego::throw_on_error());
-
-        return (daemonConfigured == TEGO_FALSE);
-    }
+    { }
 
     QStringList TorManager::logMessages() const
     {

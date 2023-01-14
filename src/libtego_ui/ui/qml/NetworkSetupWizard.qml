@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.4
 import QtQuick.Controls.Styles 1.2
 import im.utility 1.0
+import im.ricochet 1.0
 
 ApplicationWindow {
     id: window
@@ -31,6 +32,7 @@ ApplicationWindow {
     function back() {
         if (pageLoader.visible) {
             pageLoader.visible = false
+            configPage.init();
             configPage.visible = true
         } else {
             openBeginning()
@@ -38,14 +40,14 @@ ApplicationWindow {
     }
 
     function openBeginning() {
-        configPage.visible = false
-        configPage.reset()
+        configPage.visible = false;
         pageLoader.sourceComponent = Qt.platform.os === "android" ? firstPageAndroid : firstPage
         pageLoader.visible = true
     }
 
     function openConfig() {
         pageLoader.visible = false
+        configPage.init();
         configPage.visible = true
     }
 
@@ -146,12 +148,21 @@ ApplicationWindow {
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     //: Label for button to connect to the Tor network
-                    text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek!") : qsTr("Launch Speek! with default settings")
-                    //isDefault: true
+                    text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek!") : qsTr("Launch Speek!")
+                    width: 200
                     onClicked: {
                         // Reset to defaults and proceed to bootstrap page
-                        configPage.reset()
-                        configPage.save()
+                        let command = torControl.beginBootstrap();
+                        if (command != null) {
+                            command.finished.connect(function(successful)
+                            {
+                                if (successful) {
+                                    window.openBootstrap()
+                                } else {
+                                    console.log("SETCONF error:", command.errorMessage)
+                                }
+                            });
+                        };
                         if(uiMain.appstore_compliant)
                             uiSettings.write("eulaAccepted", "true")
                         if(Qt.platform.os === "android"){
@@ -162,7 +173,6 @@ ApplicationWindow {
                     Accessible.role: Accessible.Button
                     Accessible.name: text
                     Accessible.onPressAction: {
-                        configPage.reset()
                         configPage.save()
                         uiSettings.write("eulaAccepted", "true")
                     }
@@ -184,6 +194,7 @@ ApplicationWindow {
                     //: Label for button to configure the Tor daemon beore connecting to the Tor network
                     text: qsTr("Advanced Network Configuration")
                     onClicked: window.openConfig()
+                    enabled: torControl.status == TorControl.Connected
     
                     Accessible.role: Accessible.Button
                     Accessible.name: text
@@ -250,17 +261,27 @@ ApplicationWindow {
                 anchors.horizontalCenter: parent.horizontalCenter
                 Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
                 //: Label for button to connect to the Tor network
-                text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek.Chat") : qsTr("Launch Speek.Chat with default settings")
+                text: uiMain.appstore_compliant ? qsTr("I have read and agree to the above EULA and Launch Speek.Chat") : qsTr("Launch Speek!")
+                enabled: torControl.status == TorControl.Connected
+                width: 200
                 onClicked: {
                     // Reset to defaults and proceed to bootstrap page
-                    configPage.reset()
-                    configPage.save()
+                    let command = torControl.beginBootstrap();
+                    if (command != null) {
+                        command.finished.connect(function(successful)
+                        {
+                            if (successful) {
+                                window.openBootstrap()
+                            } else {
+                                console.log("SETCONF error:", command.errorMessage)
+                            }
+                        });
+                    };
                     uiSettings.write("eulaAccepted", "true")
                 }
                 Accessible.role: Accessible.Button
                 Accessible.name: text
                 Accessible.onPressAction: {
-                    configPage.reset()
                     configPage.save()
                     uiSettings.write("eulaAccepted", "true")
                 }

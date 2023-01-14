@@ -69,7 +69,7 @@ public:
 
     QString aboutText() const;
     QString eulaText() const;
-    QString version() const;
+    static QString version();
     QString accessibleVersion() const;
     QVariantMap screens() const;
     bool appstore_compliant() const;

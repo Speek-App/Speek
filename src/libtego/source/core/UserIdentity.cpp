@@ -107,13 +107,8 @@ void UserIdentity::setupService(const QString& serviceID)
     Q_ASSERT(m_hiddenService);
     connect(m_hiddenService, SIGNAL(statusChanged(int,int)), SLOT(onStatusChanged(int,int)));
 
-    // Generally, these are not used, and we bind to localhost and port 0
-    // for an automatic (and portable) selection.
-    QHostAddress address = QHostAddress::LocalHost;
-    quint16 port = 0;
-
     m_incomingServer = new QTcpServer(this);
-    if (!m_incomingServer->listen(address, port)) {
+    if (!m_incomingServer->listen(QHostAddress::LocalHost, 0)) {
         // XXX error case
         qWarning() << "Failed to open incoming socket:" << m_incomingServer->errorString();
         return;
@@ -122,7 +117,9 @@ void UserIdentity::setupService(const QString& serviceID)
     connect(m_incomingServer, &QTcpServer::newConnection, this, &UserIdentity::onIncomingConnection);
 
     m_hiddenService->addTarget(9878, m_incomingServer->serverAddress(), m_incomingServer->serverPort());
-    g_globals.context->torControl->addHiddenService(m_hiddenService);
+
+    g_globals.context->torControl->setHiddenService(m_hiddenService);
+    g_globals.context->torControl->publishHiddenService();
 }
 
 QString UserIdentity::hostname() const

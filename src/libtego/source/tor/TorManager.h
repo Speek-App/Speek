@@ -56,9 +56,6 @@ public:
     QString dataDirectory() const;
     void setDataDirectory(const QString &path);
 
-    // True on first run or when the Tor configuration wizard needs to be shown
-    bool configurationNeeded() const;
-
     QStringList logMessages() const;
     QString running() const;
 
@@ -68,7 +65,6 @@ public slots:
     void start();
 
 signals:
-    void configurationNeededChanged();
     void errorChanged();
     void logMessage(const QString &message);
     void runningChanged();

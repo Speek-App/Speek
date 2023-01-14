@@ -135,7 +135,7 @@ QtObject {
             return re
         }
 
-        if (torInstance.configurationNeeded) {
+        if (!torControl.hasBootstrappedSuccessfully) {
             var object = createDialog("NetworkSetupWizard.qml")
             object.show()
             object.networkReady.connect(function() {
@@ -144,7 +144,22 @@ QtObject {
             })
 
         } else {
+            // auto forward to main screen
             mainWindow.visible = true
+            //  begin bootstrap once we have a control port connection
+            torControl.statusChanged.connect(function(newStatus, oldStatus) {
+                if (newStatus == TorControl.Connected) {
+                    let command = torControl.beginBootstrap();
+                    if (command != null) {
+                        command.finished.connect(function(successful)
+                        {
+                            if (!successful) {
+                                console.log("SETCONF error:", command.errorMessage)
+                            }
+                        });
+                    };
+                }
+            });
         }
     }
 
@@ -166,17 +181,6 @@ QtObject {
 
                 if(!mainWindow.visible && uiSettings.data.showNotificationSystemtray){
                     mainWindow.systray.showMessage(qsTr("New Contact Request"), ("You just received a new contact request"),SystemTrayIcon.Information, 3000)
-                }
-            }
-        },
-
-        Connections {
-            target: torInstance
-            function onConfigurationNeededChanged() {
-                if (torInstance.configurationNeeded) {
-                    var object = createDialog("NetworkSetupWizard.qml", { 'modality': Qt.ApplicationModal }, mainWindow)
-                    object.networkReady.connect(function() { object.visible = false })
-                    object.visible = true
                 }
             }
         },

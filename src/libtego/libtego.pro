@@ -57,6 +57,7 @@ HEADERS +=\
     source/context.hpp\
     source/signals.hpp\
     source/tor.hpp\
+    source/torrc.hpp \
     source/user.hpp\
     source/file_hash.hpp
 
@@ -98,7 +99,6 @@ SOURCES += \
     source/tor/AuthenticateCommand.cpp \
     source/tor/GetConfCommand.cpp \
     source/tor/HiddenService.cpp \
-    source/tor/ProtocolInfoCommand.cpp \
     source/tor/SetConfCommand.cpp \
     source/tor/TorControl.cpp \
     source/tor/TorControlCommand.cpp \
@@ -125,7 +125,6 @@ HEADERS += \
     source/tor/AuthenticateCommand.h \
     source/tor/GetConfCommand.h \
     source/tor/HiddenService.h \
-    source/tor/ProtocolInfoCommand.h \
     source/tor/SetConfCommand.h \
     source/tor/TorControl.h \
     source/tor/TorControlCommand.h \

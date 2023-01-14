@@ -4,7 +4,7 @@
 
 namespace shims
 {
-	// shim version of Tor::ToControl with just the functionality requried by the UI
+    // shim version of Tor::ToControl with just the functionality requried by the UI
     class TorControl : public QObject
     {
         Q_OBJECT
@@ -19,6 +19,7 @@ namespace shims
         Q_PROPERTY(QVariantMap bootstrapStatus READ bootstrapStatus NOTIFY bootstrapStatusChanged)
         // uses statusChanged like actual backend implementation
         Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY statusChanged)
+        Q_PROPERTY(bool hasBootstrappedSuccessfully READ hasBootstrappedSuccessfully CONSTANT)
     public:
         enum Status
         {
@@ -38,13 +39,21 @@ namespace shims
         };
 
         Q_INVOKABLE QObject *setConfiguration(const QVariantMap &options);
-        Q_INVOKABLE void saveConfiguration();
+        QObject* setConfiguration(const QJsonObject& options);
+        Q_INVOKABLE QJsonObject getConfiguration();
+        Q_INVOKABLE QObject *beginBootstrap();
+
+        // QVariant(Map) is not needed here, since QT handles the conversion to
+        // a JS array for us: see https://doc.qt.io/qt-5/qtqml-cppintegration-data.html#sequence-type-to-javascript-array
+        Q_INVOKABLE QList<QString> getBridgeTypes();
+        std::vector<std::string> getBridgeStringsForType(const QString &bridgeType);
 
         TorControl(tego_context_t* context);
 
         /* Ownership means that tor is managed by this socket, and we
          * can shut it down, own its configuration, etc. */
         bool hasOwnership() const;
+        bool hasBootstrappedSuccessfully() const;
 
         QString torVersion() const;
         Status status() const;
@@ -55,12 +64,16 @@ namespace shims
         void setStatus(Status);
         void setTorStatus(TorStatus);
         void setErrorMessage(const QString&);
+        void setBootstrapStatus(int32_t progress, tego_tor_bootstrap_tag_t tag, QString&& summary);
 
         static TorControl* torControl;
         TorControlCommand* m_setConfigurationCommand = nullptr;
         Status m_status = NotConnected;
         TorStatus m_torStatus = TorUnknown;
         QString m_errorMessage;
+        int m_bootstrapProgress = 0;
+        tego_tor_bootstrap_tag_t m_bootstrapTag = tego_tor_bootstrap_tag_invalid;
+        QString m_bootstrapSummary;
 
     signals:
         void statusChanged(int newStatus, int oldStatus);

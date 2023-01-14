@@ -459,19 +459,6 @@ void tego_context_start_tor(
 typedef struct tego_tor_daemon_config tego_tor_daemon_config_t;
 
 /*
- * Determine whether the tor daemon has an existing torrc and
- * is already configured
- *
- * @param context : the current tego context
- * @param out_configured : destination for result, TEGO_TRUE if has config, else TEGO_FALSE
- * @param error : filled on error
- */
-void tego_context_get_tor_daemon_configured(
-    const tego_context_t* context,
-    tego_bool_t* out_configured,
-    tego_error_t** error);
-
-/*
  * Returns a tor daemon config struct with default params
  *
  * @param out_config : destination for config
@@ -479,19 +466,6 @@ void tego_context_get_tor_daemon_configured(
  */
 void tego_tor_daemon_config_initialize(
     tego_tor_daemon_config_t** out_config,
-    tego_error_t** error);
-
-/*
- * Set the DisableNetwork flag (see Tor Manual :
- *  www.torproject.org/docs/tor-manual.html )
- *
- * @param config : config to update
- * @param disableNetwork : TEGO_TRUE or TEGO_FALSE
- * @param error : filled on error
- */
-void tego_tor_daemon_config_set_disable_network(
-    tego_tor_daemon_config_t* config,
-    tego_bool_t disableNetwork,
     tego_error_t** error);
 
 /*
@@ -618,14 +592,18 @@ void tego_context_update_tor_daemon_config(
     tego_error_t** error);
 
 /*
- * Save the courrent tor configuration to disk
+ * Set the DisableNetwork flag of running instance of tor associated
+ * with a given tego context
  *
  * @param context : the current tego context
+ * @param disableNetwork : TEGO_TRUE or TEGO_FALSE
  * @param error : filled on error
  */
-void tego_context_save_tor_daemon_config(
+void tego_context_update_disable_network_flag(
     tego_context_t* context,
+    tego_bool_t disableNetwork,
     tego_error_t** error);
+
 /*
  * Stops tor daemon associated with a given tego context
  *

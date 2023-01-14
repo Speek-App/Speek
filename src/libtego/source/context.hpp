@@ -34,6 +34,7 @@ public:
         size_t userCount);
     void start_service();
     void update_tor_daemon_config(const tego_tor_daemon_config_t* config);
+    void update_disable_network_flag(bool disableNetwork);
     void save_tor_daemon_config();
     void set_host_user_state(tego_host_user_state_t state);
     std::unique_ptr<tego_user_id_t> get_host_user_id() const;

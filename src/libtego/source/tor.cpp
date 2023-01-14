@@ -56,20 +56,6 @@ extern "C"
         }, error);
     }
 
-    void tego_tor_daemon_config_set_disable_network(
-        tego_tor_daemon_config_t* config,
-        tego_bool_t disableNetwork,
-        tego_error_t** error)
-    {
-        return tego::translateExceptions([=]() -> void
-        {
-            TEGO_THROW_IF_NULL(config);
-            TEGO_THROW_IF_FALSE(disableNetwork == TEGO_TRUE || disableNetwork == TEGO_FALSE);
-
-            config->disableNetwork = (disableNetwork == TEGO_TRUE);
-        }, error);
-    }
-
     void tego_tor_daemon_config_set_proxy_socks4(
         tego_tor_daemon_config_t* config,
         const char* address,

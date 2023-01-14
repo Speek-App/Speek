@@ -51,6 +51,7 @@ SOURCES += \
 
 HEADERS += \
     libtego_callbacks.hpp \
+    pluggables.hpp \
     shims/utility.h \
     ui/Base64CircleImageProvider.h \
     ui/Base64ImageProvider.h \
