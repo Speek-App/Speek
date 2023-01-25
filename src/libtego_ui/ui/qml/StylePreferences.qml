@@ -226,7 +226,7 @@ Item{
 
             Image{
                 visible: Qt.platform.os === "android"
-                source: "qrc:/icons/android/settings_android/smiley.svg"
+                source: "qrc:/icons/android/settings_android/settings_prune.svg"
                 Layout.preferredWidth: styleHelper.androidIconSize
                 Layout.preferredHeight: styleHelper.androidIconSize
             }

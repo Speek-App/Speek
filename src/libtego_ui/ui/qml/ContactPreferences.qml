@@ -324,7 +324,7 @@ Item {
                 //: Text description of an option to always save the conversation with a user and restore ist after a restart
                 text: qsTr("Always save conversations with this user")
                 position: contactInfo.contact.save_messages || false
-                switchIcon: "qrc:/icons/android/settings_android/settings_rich_text.svg"
+                switchIcon: "qrc:/icons/android/save.svg"
                 triggered: function(checked){
                     contactInfo.contact.save_messages = checked
                 }
@@ -335,7 +335,7 @@ Item {
                 //: Text description of an option to send the saved undelivered messages after restarting
                 text: qsTr("Try to send undelivered messages after a restart")
                 position: contactInfo.contact.send_undelivered_messages_after_resume || false
-                switchIcon: "qrc:/icons/android/settings_android/settings_rich_text.svg"
+                switchIcon: "qrc:/icons/android/send.svg"
                 triggered: function(checked){
                     contactInfo.contact.send_undelivered_messages_after_resume = checked
                 }

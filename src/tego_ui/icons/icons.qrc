@@ -222,6 +222,9 @@
         <file>android/view_id.svg</file>
         <file>android/settings_android/change_font_size.svg</file>
         <file>android/settings_android/open_other_identity.svg</file>
+        <file>android/send.svg</file>
+        <file>android/save.svg</file>
+        <file>android/settings_android/settings_prune.svg</file>
         <file>tor_logo.png</file>
     </qresource>
     <qresource prefix="/"/>

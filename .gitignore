@@ -4,6 +4,8 @@ Makefile.*
 *.user.*
 debug
 release
+build-tego-Android_Qt_5_15_2_Clang_Multi_Abi-Debug
+build-tego-Android_Qt_5_15_2_Clang_Multi_Abi-Release
 *.pdb
 *.app
 .packagingrc

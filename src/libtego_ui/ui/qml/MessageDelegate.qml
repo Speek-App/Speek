@@ -273,8 +273,38 @@ Column {
                 property bool view_more: false
 
                 MouseArea {
+                    id: maText
                     anchors.fill: parent
-                    acceptedButtons: Qt.RightButton
+                    acceptedButtons: Qt.platform.os === "android" ? Qt.LeftButton | Qt.RightButton : Qt.RightButton
+
+                    signal pressAndHold()
+
+                    onPressAndHold: {
+                        if (Qt.platform.os === "android") {
+                            delegate.showContextMenu()
+                        }
+                    }
+
+                    Timer {
+                        id: longPressTimer
+
+                        interval: 2000
+                        repeat: false
+                        running: false
+
+                        onTriggered: {
+                            maText.pressAndHold()
+                        }
+                    }
+
+
+                    onPressedChanged: {
+                        if ( pressed ) {
+                            longPressTimer.running = true;
+                        } else {
+                            longPressTimer.running = false;
+                        }
+                    }
 
                     onClicked: delegate.showContextMenu()
                 }
@@ -328,7 +358,7 @@ Column {
                     }
                 }
                 MouseArea {
-                    id: ma
+                    id: maImg
                     anchors.fill: parent
                     acceptedButtons: Qt.platform.os === "android" ? Qt.LeftButton | Qt.RightButton : Qt.RightButton
 
@@ -341,23 +371,23 @@ Column {
                     }
 
                     Timer {
-                        id: longPressTimer
+                        id: longPressTimerImg
 
                         interval: 2000
                         repeat: false
                         running: false
 
                         onTriggered: {
-                            ma.pressAndHold()
+                            maImg.pressAndHold()
                         }
                     }
 
 
                     onPressedChanged: {
                         if ( pressed ) {
-                            longPressTimer.running = true;
+                            longPressTimerImg.running = true;
                         } else {
-                            longPressTimer.running = false;
+                            longPressTimerImg.running = false;
                         }
                     }
 
