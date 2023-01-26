@@ -18,6 +18,9 @@ Column {
         delivered_time: {
             return isFinite(model.timestamp_delivered) ? Qt.formatDateTime(model.timestamp_delivered, Qt.DefaultLocaleLongDate) : "-"
         }
+        is_file_transfer: model.type == "transfer"
+        file_size: utility.toFormattedDataSize(model.transfer.file_size)
+        file_name: model.transfer.file_name
     }
 
     Loader {
@@ -406,6 +409,43 @@ Column {
 
                 color: "transparent"
 
+                MouseArea {
+                    id: maTransfer
+                    anchors.fill: parent
+                    acceptedButtons: Qt.platform.os === "android" ? Qt.LeftButton | Qt.RightButton : Qt.RightButton
+
+                    signal pressAndHold()
+
+                    onPressAndHold: {
+                        if (Qt.platform.os === "android") {
+                            delegate.showContextMenu()
+                        }
+                    }
+
+                    Timer {
+                        id: longPressTimerTransfer
+
+                        interval: 2000
+                        repeat: false
+                        running: false
+
+                        onTriggered: {
+                            maTransfer.pressAndHold()
+                        }
+                    }
+
+
+                    onPressedChanged: {
+                        if ( pressed ) {
+                            longPressTimerTransfer.running = true;
+                        } else {
+                            longPressTimerTransfer.running = false;
+                        }
+                    }
+
+                    onClicked: delegate.showContextMenu()
+                }
+
                 Row {
                     x: 0
                     y: 0
@@ -582,7 +622,7 @@ Column {
 
                     Button {
                         id: showInFolderButton
-                        visible: model.transfer ? (model.transfer.status === ConversationModel.Finished && model.transfer.direction === ConversationModel.Downloading) : false
+                        visible: Qt.platform.os === "android" ? false : (model.transfer ? (model.transfer.status === ConversationModel.Finished && model.transfer.direction === ConversationModel.Downloading) : false)
 
                         width: visible ? transferDisplay.height : 0
                         height: visible ? transferDisplay.height : 0

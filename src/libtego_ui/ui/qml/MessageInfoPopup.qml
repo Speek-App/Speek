@@ -6,6 +6,9 @@ Popup {
     property string sent_time: "-"
     property string delivered_time: "-"
     property bool is_file_transfer: false
+    property string file_size: "-"
+    property string file_name: "-"
+
     anchors.centerIn: Overlay.overlay
     modal: true
     focus: true
@@ -87,6 +90,48 @@ Popup {
             }
             Text{
                 text: delivered_time
+                color: palette.text
+            }
+        }
+
+        Rectangle{
+            visible: is_file_transfer
+            Layout.fillWidth: true
+            height: 1
+            color: palette.text
+            Layout.topMargin: 10
+            Layout.bottomMargin: 10
+        }
+
+        ColumnLayout {
+            spacing: 10
+            visible: is_file_transfer
+            Layout.bottomMargin: 10
+
+            RowLayout{
+                Text{
+                    color: palette.text
+                    text: qsTr("File Name") + ":"
+                }
+            }
+            Text{
+                text: file_name
+                color: palette.text
+            }
+        }
+
+        ColumnLayout {
+            spacing: 10
+            visible: is_file_transfer
+
+            RowLayout{
+                Text{
+                    color: palette.text
+                    text: qsTr("File Size") + ":"
+                }
+            }
+            Text{
+                text: file_size
                 color: palette.text
             }
         }

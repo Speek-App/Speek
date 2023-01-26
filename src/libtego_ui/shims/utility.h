@@ -792,6 +792,11 @@ public:
             qApp->exit();
     }
 
+    Q_INVOKABLE QString toFormattedDataSize(qint64 _bytes) {
+        const auto locale = QLocale::system();
+        return locale.formattedDataSize(_bytes);
+    }
+
     Q_INVOKABLE static QString toHash(QString str){
         return QString(QCryptographicHash::hash((str.toUtf8()),QCryptographicHash::Md5).toHex());
     }
@@ -836,7 +841,7 @@ public:
         });
         QObject::connect(thread, &QThread::finished, thread, &QObject::deleteLater);
         thread->start();
-    #elif defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
+    #elif defined(Q_OS_UNIX) && !defined(Q_OS_MACOS) && !defined(ANDROID)
         QProcess proc;
         proc.start(QStringLiteral(u"xdg-mime"), {QStringLiteral(u"query"), QStringLiteral(u"default"), QStringLiteral(u"inode/directory")});
         proc.waitForFinished();
@@ -865,8 +870,10 @@ public:
             // "caja" manager can't pinpoint the file, see: https://github.com/qbittorrent/qBittorrent/issues/5003
             openPath(f.absolutePath());
         }
+    #elif defined(ANDROID)
+        openPath(path);
     #else
-        openPath(path.parentPath());
+        openPath(f.absolutePath());
     #endif
     }
 
