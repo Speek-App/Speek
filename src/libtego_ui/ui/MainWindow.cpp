@@ -153,6 +153,14 @@ void MainWindow::reloadTheme(){
     emit themeColorChanged();
 }
 
+QString toCamelCase(const QString& str)
+{
+    QStringList cased;
+    foreach (QString word, str.split(QStringLiteral("-"), Qt::SkipEmptyParts))
+        cased << word.at(0).toUpper() + word.mid(1);
+    return cased.join(QStringLiteral("-"));
+}
+
 bool MainWindow::showUI(QVariantMap _theme_color, bool isGroupHostMode)
 {
     this->isGroupHostMode = isGroupHostMode;
@@ -161,6 +169,14 @@ bool MainWindow::showUI(QVariantMap _theme_color, bool isGroupHostMode)
     qml->rootContext()->setContextProperty(QLatin1String("torControl"), shims::TorControl::torControl);
     qml->rootContext()->setContextProperty(QLatin1String("torInstance"), shims::TorManager::torManager);
     qml->rootContext()->setContextProperty(QLatin1String("uiMain"), this);
+
+    QStringList backgroundImagesList;
+    if(!isGroupHostMode){
+        backgroundImagesList = QDir(QStringLiteral(":/backgrounds/")).entryList(QStringList(QStringLiteral("*.jpg")));
+        for (auto& i : backgroundImagesList )
+            i = toCamelCase(i).remove(QStringLiteral(".jpg"));
+    }
+    qml->rootContext()->setContextProperty(QStringLiteral("availableBackgroundsModel"),QVariant::fromValue(backgroundImagesList));
 
     #ifdef ANDROID
         if(!this->isGroupHostMode){
@@ -421,6 +437,8 @@ bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QStr
             configPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + pathChange;
     }
 
+    Utility::configPath = configPath;
+
     QDir dir(configPath);
     if (!dir.exists() && !dir.mkpath(QStringLiteral("."))) {
         errorMessage = QStringLiteral("Cannot create directory: %1").arg(dir.path());
@@ -462,7 +480,9 @@ bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QStr
         loadDefaultSettings(settings);
     }
 
-    settings->root()->write("ui.combinedChatWindow", true);
+    #ifdef ANDROID
+        settings->root()->write("ui.combinedChatWindow", true);
+    #endif
 
     if(pathChange == "/" && settings->root()->read("ui.identityPromptOnStartup").toBool(false)){
         initTranslation();
@@ -573,7 +593,17 @@ void MainWindow::loadSettings(tego_context_t* tegoContext, shims::ContactsManage
                 const auto nickname = userData.value("nickname").toString();
                 const auto icon = userData.contains("icon") ? userData.value("icon").toString() : "";
                 const auto is_a_group = userData.contains("isGroup") ? userData.value("isGroup").toBool() : false;
-                auto contact = contactsManager->addContact(serviceIdString, nickname, icon, is_a_group);
+                const auto send_undelivered_messages_after_resume = userData.contains("send_undelivered_messages_after_resume") ? userData.value("send_undelivered_messages_after_resume").toBool() : false;
+                const auto save_messages = userData.contains("save_messages") ? userData.value("save_messages").toBool() : false;
+                const auto last_online = userData.contains("last_online") ? userData.value("last_online").toInt() : 0;
+                #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+                const auto auto_download_files = userData.contains("auto_download_files") ? userData.value("auto_download_files").toBool() : false;
+                const auto auto_download_dir = userData.contains("auto_download_dir") ? userData.value("auto_download_dir").toString() : "";
+                #else
+                const auto auto_download_files = false;
+                const auto auto_download_dir = "";
+                #endif
+                auto contact = contactsManager->addContact(serviceIdString, nickname, icon, is_a_group, save_messages, send_undelivered_messages_after_resume, auto_download_files, auto_download_dir, last_online);
                 switch(type)
                 {
                 case tego_user_type_allowed:
@@ -600,5 +630,12 @@ void MainWindow::loadSettings(tego_context_t* tegoContext, shims::ContactsManage
             userTypes.data(),
             userCount,
             tego::throw_on_error());
+
+        for(auto contactUser : contactsManager->contacts())
+        {
+            if(contactUser->getStatus() == shims::ContactUser::Offline){
+                contactUser->conversation()->loadConversationHistory();
+            }
+        }
     }
 }

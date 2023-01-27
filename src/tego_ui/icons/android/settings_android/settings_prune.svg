@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="61.599751mm"
+   height="61.599751mm"
+   viewBox="0 0 61.599751 61.599751"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="settings_prune.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.81454783"
+     inkscape:cx="-191.5173"
+     inkscape:cy="197.04184"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1030"
+     inkscape:window-x="0"
+     inkscape:window-y="22"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:pagecheckerboard="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-132.81206,-93.40181)">
+    <rect
+       style="fill:#ec4d3d;fill-opacity:1;stroke:none;stroke-width:8.30792"
+       id="rect835-5-3"
+       width="61.599751"
+       height="61.599751"
+       x="132.81206"
+       y="93.40181"
+       ry="12.743525" />
+    <g
+       id="g104"
+       transform="matrix(2.3445027,0,0,2.3445027,140.12951,101.39859)">
+      <rect
+         x="0"
+         fill="none"
+         width="20"
+         height="20"
+         id="rect89"
+         y="0" />
+      <g
+         id="g93"
+fill="#ffffff">
+        <path
+           d="m 14,10 c 2.2,0 4,-1.8 4,-4 0,-2.2 -1.8,-4 -4,-4 -2.2,0 -4,1.8 -4,4 0,2.2 1.8,4 4,4 z M 17,5 V 7 H 11 V 5 Z M 9,6 C 9,4.4 9.8,3 11,2 H 10 C 6.1,2 3,2.9 3,4 3,5 5.6,5.8 9,6 Z m 3.8,4.8 C 11.9,10.9 10.9,11 10,11 6.1,11 3,10.1 3,9 v 3 c 0,1.1 3.1,2 7,2 3.9,0 7,-0.9 7,-2 v -2 c -0.9,0.7 -1.9,1 -3,1 -0.4,0 -0.8,-0.1 -1.2,-0.2 z M 10,10 h 1 C 10,9.3 9.3,8.2 9.1,7 5.7,6.9 3,6 3,5 v 3 c 0,1.1 3.1,2 7,2 z m 0,5 C 6.1,15 3,14.1 3,13 v 3 c 0,1.1 3.1,2 7,2 3.9,0 7,-0.9 7,-2 v -3 c 0,1.1 -3.1,2 -7,2 z"
+           id="path91" />
+      </g>
+    </g>
+  </g>
+</svg>

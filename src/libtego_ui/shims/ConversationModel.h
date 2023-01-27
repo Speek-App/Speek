@@ -30,6 +30,10 @@ namespace shims
             TransferRole,
             GroupUserRole,
             GroupUserIdRole,
+            MessageIdRole,
+            MessageSavedIdRole,
+            ImageRole,
+            TimestampDeliveredRole,
         };
 
         enum MessageStatus {
@@ -46,6 +50,7 @@ namespace shims
             InvalidMessage = -1,
             TextMessage,
             TransferMessage,
+            ImageMessage,
         };
 
         enum TransferStatus
@@ -76,7 +81,7 @@ namespace shims
             InvalidEvent,
             TextMessageEvent,
             TransferMessageEvent,
-            UserStatusUpdateEvent
+            UserStatusUpdateEvent,
         };
 
         enum UserStatusTarget {
@@ -114,6 +119,8 @@ namespace shims
         Q_INVOKABLE void cancelFileTransfer(quint32 id);
         Q_INVOKABLE void rejectFileTransfer(quint32 id);
 
+        Q_INVOKABLE void remove_message(quint32 id, quint32 saved_id);
+
 
         void setStatus(ContactUser::Status status);
 
@@ -126,6 +133,11 @@ namespace shims
         void messageReceived(tego_message_id_t messageId, QDateTime timestamp, const QString& text);
         void messageAcknowledged(tego_message_id_t messageId, bool accepted);
         void messagePartReceived(tego_message_id_t messageId, QDateTime timestamp, const QString& text, int chunks_max, int chunks_rec);
+
+        void deleteConversationHistory();
+        void saveConversationHistory();
+        void loadConversationHistory();
+        QTimer saveConversationTimer;
 
     public slots:
         void sendMessage(const QString &text);
@@ -151,9 +163,11 @@ namespace shims
             QString group_user_nickname = {};
             QString group_user_id_hash = {};
             QDateTime time = {};
+            QDateTime delivered_time = {};
             static_assert(std::is_same_v<quint32, tego_file_transfer_id_t>);
             static_assert(std::is_same_v<quint32, tego_message_id_t>);
             quint32 identifier = 0;
+            quint32 identifier_saved_message = 0;
             MessageStatus status = None;
             quint8 attemptCount = 0;
             // file transfer data
@@ -163,10 +177,13 @@ namespace shims
             quint64 bytesTransferred = 0;
             TransferDirection transferDirection = InvalidDirection;;
             TransferStatus transferStatus = InvalidTransfer;
-            #ifdef ANDROID
+            quint64 bytesTransferredFewSecAgo = 0;
+            QDateTime timeBytesTransferredFewSecAgo = {};
+            quint64 transferDownloadSpeed = 0;
             QString filePath = {};
             QString fileTransferPath = {};
-            #endif
+            QString base_64_image = {};
+            QString image_title = {};
         };
 
         struct EventData
@@ -211,11 +228,16 @@ namespace shims
         int indexOfMessage(quint32 identifier) const;
         int indexOfOutgoingMessage(quint32 identifier) const;
         int indexOfIncomingMessage(quint32 identifier) const;
+        int indexOfSavedMessage(quint32 identifier) const;
+
+        void prune();
 
         bool isGroupHostMode;
         unsigned member_in_group = 0;
         unsigned member_of_group_online = 0;
+        bool save_pending = false;
         QString pinned_message = {};
+        QRegularExpression imageRegex;
 
         static const char* getMessageStatusString(const MessageStatus status);
         static const char* getTransferStatusString(const TransferStatus status);

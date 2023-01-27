@@ -15,6 +15,17 @@ Item {
            id: utility
         }
 
+        FileDialog {
+            id: folderDialog
+            selectFolder: true
+            onAccepted: {
+                var path = folderDialog.folder.toString()
+                path = path.replace(/^(file:\/{2})/,"")
+                path = decodeURIComponent(path);
+                autoDownloadDir.text = path
+            }
+        }
+
         MessageDialog {
             id: fileSizeWarningDialog
             title: "File size limit exceeded"
@@ -306,6 +317,72 @@ Item {
                     Accessible.description: qsTr("Removes this contact")
                     Material.background: Material.Red
                 }
+            }
+
+            SettingsSwitch{
+                visible: !uiMain.isGroupHostMode
+                //: Text description of an option to always save the conversation with a user and restore ist after a restart
+                text: qsTr("Always save conversations with this user")
+                position: contactInfo.contact.save_messages || false
+                switchIcon: "qrc:/icons/android/save.svg"
+                triggered: function(checked){
+                    contactInfo.contact.save_messages = checked
+                }
+            }
+
+            SettingsSwitch{
+                visible: contactInfo.contact.save_messages && !uiMain.isGroupHostMode || false
+                //: Text description of an option to send the saved undelivered messages after restarting
+                text: qsTr("Try to send undelivered messages after a restart")
+                position: contactInfo.contact.send_undelivered_messages_after_resume || false
+                switchIcon: "qrc:/icons/android/send.svg"
+                triggered: function(checked){
+                    contactInfo.contact.send_undelivered_messages_after_resume = checked
+                }
+            }
+
+            SettingsSwitch{
+                visible: Qt.platform.os !== "android" && Qt.platform.os !== "macos" && !uiMain.isGroupHostMode && !contactInfo.contact.is_a_group
+                //: Text description of an option to always automatically download files from a user
+                text: qsTr("Always automatically accept and download files")
+                position: contactInfo.contact.auto_download_files || false
+                switchIcon: "qrc:/icons/android/settings_android/settings_rich_text.svg"
+                triggered: function(checked){
+                    contactInfo.contact.auto_download_files = checked
+                }
+            }
+
+            RowLayout {
+                visible: contactInfo.contact.auto_download_files && !uiMain.isGroupHostMode && Qt.platform.os !== "android" && Qt.platform.os !== "macos" && !contactInfo.contact.is_a_group || false
+                TextField {
+                    id: autoDownloadDir
+
+                    text: contactInfo.contact.auto_download_dir !== "" ? contactInfo.contact.auto_download_dir : "~/Downloads"
+                    Layout.minimumWidth: 80
+                    Layout.maximumHeight: Qt.platform.os === "android" ? 50 : 33
+                    Layout.fillWidth: true
+
+                    onTextChanged: {
+                        contactInfo.contact.auto_download_dir = autoDownloadDir.text
+                    }
+
+                    Accessible.role: Accessible.EditableText
+                    //: Name of the text input used to set the auto download directory
+                    Accessible.name: qsTr("Custom chat area background input field")
+                    //: Description of what the auto download directory input is for accessibility tech like screen readers
+                    Accessible.description: qsTr("Where the automatically downloaded files should be stored")
+                }
+                Button {
+                    //: Label for button which allows the selecting of the auto download location
+                    text: qsTr("Select Folder")
+                    onClicked: folderDialog.open()
+                    Component.onCompleted: {if(Qt.platform.os !== "android")contentItem.color = palette.text}
+                    Accessible.role: Accessible.Button
+                    Accessible.name: text
+                    //: Description of button which allows the selection auto download directory for accessibility tech like screen readers
+                    Accessible.description: qsTr("Select a folder to store automatically downloaded files")
+                }
+                Item{width:5;height:1}
             }
 
             Item {

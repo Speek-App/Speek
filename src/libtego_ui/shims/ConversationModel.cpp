@@ -20,7 +20,14 @@ QMutex ConversationModel::mutex;
     , messages({})
     , unreadCount(0)
     , isGroupHostMode(group)
+    , imageRegex("^<html><head><meta name=\"qrichtext\"></head><body><img name=\"([A-Za-z0-9-_. ]{0,40})\" width=\"(\\d{1,4})\" height=\"(\\d{1,4})\" src=\"data:((?:\\w+/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)\" /></body></html>$")
+    , saveConversationTimer(this)
     {
+        saveConversationTimer.setInterval(30000);
+        saveConversationTimer.setSingleShot(true);
+        connect(&saveConversationTimer, &QTimer::timeout, [self=this]() -> void {
+            self->saveConversationHistory();
+        });
         connect(this, &ConversationModel::unreadCountChanged, [self=this](int prevCount, int currentCount) -> void
         {
             static int globalUnreadCount = 0;
@@ -41,14 +48,18 @@ QMutex ConversationModel::mutex;
         roles[Qt::DisplayRole] = "text";
         roles[Qt::CheckStateRole] = "prep_text";
         roles[TimestampRole] = "timestamp";
+        roles[TimestampDeliveredRole] = "timestamp_delivered";
         roles[IsOutgoingRole] = "isOutgoing";
         roles[StatusRole] = "status";
         roles[SectionRole] = "section";
         roles[TimespanRole] = "timespan";
         roles[TypeRole] = "type";
         roles[TransferRole] = "transfer";
+        roles[ImageRole] = "image";
         roles[GroupUserRole] = "group_user_nickname";
         roles[GroupUserIdRole] = "group_user_id_hash";
+        roles[MessageIdRole] = "id";
+        roles[MessageSavedIdRole] = "saved_id";
         return roles;
     }
 
@@ -76,22 +87,33 @@ QMutex ConversationModel::mutex;
                 {
                     return QStringLiteral("not a text message");
                 }
-        case Qt::CheckStateRole:
-            if (message.type == TextMessage)
-            {
-                return message.prep_text;
-            }
-            else
-            {
-                return QStringLiteral("not a text message");
-            }
+            case Qt::CheckStateRole:
+                if (message.type == TextMessage)
+                {
+                    return message.prep_text;
+                }
+                else
+                {
+                    return QStringLiteral("not a text message");
+                }
 
             case TimestampRole: return message.time;
+            case TimestampDeliveredRole: return message.delivered_time;
+            case MessageIdRole: return message.identifier;
+            case MessageSavedIdRole: return message.identifier_saved_message;
             case IsOutgoingRole: return message.status != Received;
             case StatusRole: return message.status;
             case GroupUserRole: return message.group_user_nickname;
             case GroupUserIdRole: return message.group_user_id_hash;
-
+            case ImageRole:{
+                if (message.type == ImageMessage)
+                {
+                    QVariantMap image;
+                    image["base_64_image"] = message.base_64_image;
+                    image["image_title"] = message.image_title;
+                    return image;
+                }
+            }
             case SectionRole: {
                 if (contact()->getStatus() == ContactUser::Online)
                     return QString();
@@ -119,50 +141,55 @@ QMutex ConversationModel::mutex;
                 else if (message.type == TransferMessage) {
                     return QStringLiteral("transfer");
                 }
+                else if (message.type == ImageMessage) {
+                    return QStringLiteral("image");
+                }
                 else {
                     return QStringLiteral("invalid");
                 }
-            case TransferRole:
-                if (message.type == TransferMessage)
-                {
-                    QVariantMap transfer;
-                    transfer["file_name"] = message.fileName;
-                    transfer["file_size"] = message.fileSize;
-                    transfer["file_hash"] = message.fileHash;
-                    transfer["id"] = message.identifier;
-                    transfer["status"] = message.transferStatus;
-                    transfer["statusString"] = [=]()
+            }
+            case TransferRole:{
+                    if (message.type == TransferMessage)
                     {
-                        switch(message.transferStatus)
+                        QVariantMap transfer;
+                        transfer["file_name"] = message.fileName;
+                        transfer["file_size"] = message.fileSize;
+                        transfer["file_hash"] = message.fileHash;
+                        transfer["id"] = message.identifier;
+                        transfer["status"] = message.transferStatus;
+                        transfer["statusString"] = [=]()
                         {
-                            case Pending: {
-                                if(message.transferDirection == TransferDirection::Uploading)
-                                    return tr("Contact has to accept transfer");
-                                else
-                                    return tr("Pending");
-                            }
-                            case Accepted: return tr("Accepted");
-                            case Rejected: return tr("Rejected");
-                            case InProgress:
+                            switch(message.transferStatus)
                             {
-                                const auto locale = QLocale::system();
-                                return QString("%1 / %2").arg(locale.formattedDataSize(message.bytesTransferred)).arg(locale.formattedDataSize(message.fileSize));
+                                case Pending: {
+                                    if(message.transferDirection == TransferDirection::Uploading)
+                                        return tr("Contact has to accept transfer");
+                                    else
+                                        return tr("Pending");
+                                }
+                                case Accepted: return tr("Accepted");
+                                case Rejected: return tr("Rejected");
+                                case InProgress:
+                                {
+                                    const auto locale = QLocale::system();
+                                    return QString("%1 / %2 (%3/s)").arg(locale.formattedDataSize(message.bytesTransferred)).arg(locale.formattedDataSize(message.fileSize)).arg(locale.formattedDataSize(message.transferDownloadSpeed));
+                                }
+                                case Cancelled: return tr("Cancelled");
+                                case Finished: return tr("Complete");
+                                case UnknownFailure: return tr("Unkown Failure");
+                                case BadFileHash: return tr("Bad File Hash");
+                                case NetworkError: return tr("Network Error");
+                                case FileSystemError: return tr("File System Error");
+
+                                default: return tr("Invalid");
                             }
-                            case Cancelled: return tr("Cancelled");
-                            case Finished: return tr("Complete");
-                            case UnknownFailure: return tr("Unkown Failure");
-                            case BadFileHash: return tr("Bad File Hash");
-                            case NetworkError: return tr("Network Error");
-                            case FileSystemError: return tr("File System Error");
+                        }();
+                        transfer["progressPercent"] = double(message.bytesTransferred) / double(message.fileSize);
+                        transfer["direction"] = message.transferDirection;
+                        transfer["file_path"] = message.filePath;
 
-                            default: return tr("Invalid");
-                        }
-                    }();
-                    transfer["progressPercent"] = double(message.bytesTransferred) / double(message.fileSize);
-                    transfer["direction"] = message.transferDirection;
-
-                    return transfer;
-                }
+                        return transfer;
+                    }
             }
         }
 
@@ -262,6 +289,14 @@ QMutex ConversationModel::mutex;
         else{
             md.text = text;
         }
+        QRegularExpressionMatch match = imageRegex.match(md.text);
+        if(match.hasMatch()){
+            md.type = ImageMessage;
+            md.base_64_image = match.captured(6);
+            md.image_title = match.captured(1);
+        }
+        else
+            md.type = TextMessage;
         md.time = QDateTime::currentDateTime();
         md.identifier = messageId;
         md.status = Queued;
@@ -524,10 +559,27 @@ QMutex ConversationModel::mutex;
         if (!dest.isEmpty() && !data.filePath.isEmpty())
         {
 #else
-        auto dest = QFileDialog::getSaveFileName(
-            nullptr,
-            tr("Save File"),
-            proposedDest);
+        QString dest;
+        if(contact()->getAutoDownloadFiles()){
+            if(!contact()->getAutoDownloadDir().isEmpty()){
+                proposedDest = QString("%1/%2").arg(contact()->getAutoDownloadDir()).arg(data.fileName);
+            }
+            if(QFileInfo::exists(proposedDest))
+            {
+                return;
+            }
+            else{
+                dest = proposedDest;
+            }
+        }
+        else{
+            dest = QFileDialog::getSaveFileName(
+                nullptr,
+                tr("Save File"),
+                proposedDest);
+        }
+        data.filePath = dest;
+        data.fileTransferPath = dest;
         if (!dest.isEmpty())
         {
 #endif
@@ -652,6 +704,10 @@ QMutex ConversationModel::mutex;
 
         this->setUnreadCount(this->unreadCount + 1);
         this->addEventFromMessage(indexOfIncomingMessage(id));
+
+        if(contact()->getAutoDownloadFiles()){
+            tryAcceptFileTransfer(id);
+        }
     }
 
     void ConversationModel::fileTransferRequestAcknowledged(tego_file_transfer_id_t id, bool accepted)
@@ -664,6 +720,7 @@ QMutex ConversationModel::mutex;
 
         MessageData &data = messages[row];
         data.status = accepted ? Delivered : Error;
+        data.delivered_time = QDateTime::currentDateTime();
         emitDataChanged(row);
     }
 
@@ -701,8 +758,18 @@ QMutex ConversationModel::mutex;
         if (row >= 0)
         {
             MessageData &data = messages[row];
-            data.bytesTransferred = bytesTransferred;
+            if(bytesTransferred > data.bytesTransferred)
+                data.bytesTransferred = bytesTransferred;
             data.transferStatus = InProgress;
+
+            if(data.bytesTransferredFewSecAgo == 0 || QDateTime::currentMSecsSinceEpoch() - data.timeBytesTransferredFewSecAgo.toMSecsSinceEpoch() > 3000){
+                if(data.bytesTransferredFewSecAgo > 0){
+                    const auto newData = data.bytesTransferred - data.bytesTransferredFewSecAgo;
+                    data.transferDownloadSpeed = newData / (QDateTime::currentMSecsSinceEpoch() - data.timeBytesTransferredFewSecAgo.toMSecsSinceEpoch()) * 1000;
+                }
+                data.bytesTransferredFewSecAgo = data.bytesTransferred;
+                data.timeBytesTransferredFewSecAgo = QDateTime::currentDateTime();
+            }
 
             emitDataChanged(row);
         }
@@ -773,9 +840,28 @@ QMutex ConversationModel::mutex;
                     data.transferStatus = InvalidTransfer;
                     break;
             }
+            data.delivered_time = QDateTime::currentDateTime();
             emitDataChanged(row);
             this->addEventFromMessage(row);
         }
+    }
+
+    void ConversationModel::remove_message(quint32 id, quint32 saved_id)
+    {
+        if (messages.isEmpty())
+        {
+            return;
+        }
+
+        quint32 row;
+        if(saved_id == 0)
+            row = indexOfMessage(id);
+        else
+            row = indexOfSavedMessage(saved_id);
+        beginRemoveRows(QModelIndex(), row, row);
+        messages.removeAt(row);
+        endRemoveRows();
+        saveConversationHistory();
     }
 
     void ConversationModel::clear()
@@ -790,6 +876,7 @@ QMutex ConversationModel::mutex;
         endRemoveRows();
 
         resetUnreadCount();
+        saveConversationHistory();
     }
 
     void ConversationModel::messageReceived(tego_message_id_t messageId, QDateTime timestamp, const QString& text)
@@ -855,7 +942,141 @@ QMutex ConversationModel::mutex;
         else{
             md.text = text;
         }
+        QRegularExpressionMatch match = imageRegex.match(md.text);
+        if(match.hasMatch()){
+            md.type = ImageMessage;
+            md.base_64_image = match.captured(6);
+            md.image_title = match.captured(1);
+            md.text = "";
+        }
+        else
+            md.type = TextMessage;
         return true;
+    }
+
+    void ConversationModel::deleteConversationHistory(){
+        QString path = Utility::configPath + QStringLiteral("/speek_data/conversations/");
+        QFile f(path + Utility::toHash(contact()->getContactID()));
+        f.remove();
+    }
+
+    void ConversationModel::saveConversationHistory(){
+        save_pending = false;
+        if(isGroupHostMode)
+            return;
+        if (messages.isEmpty()){
+            deleteConversationHistory();
+            return;
+        }
+        if(!contact()->getSaveMessages())
+            return;
+
+        QString path = Utility::configPath + "/speek_data/conversations/";
+        QDir(path).mkpath(QStringLiteral("."));
+        QFile f(path + Utility::toHash(contact()->getContactID()));
+        nlohmann::json allMessages;
+
+        SettingsObject main_settings;
+        int max_msg = main_settings.read("ui.messagePruneLimit").toInt(1000);
+
+        if (f.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+            QTextStream stream(&f);
+
+            QList<MessageData>::iterator md = messages.end();
+            while(md != messages.constBegin()) {
+                  --md;
+                if((md->status == Received && md->transferStatus == InvalidTransfer && (md->type == TextMessage || md->type == ImageMessage)) ||
+                   (md->status == Delivered && md->transferStatus == InvalidTransfer && (md->type == TextMessage || md->type == ImageMessage)) ||
+                   (md->transferStatus == Finished  && md->type == TransferMessage) ||
+                   (contact()->getSendUndeliveredMessagesAfterResume() && md->status == Queued && md->transferStatus == InvalidTransfer && (md->type == TextMessage || md->type == ImageMessage)))
+                {
+                    nlohmann::json mdj;
+                    mdj["type"] = md->type;
+                    mdj["time"] = md->time.toSecsSinceEpoch();
+                    if(md->delivered_time.isValid())
+                        mdj["time_delivered"] = md->delivered_time.toSecsSinceEpoch();
+                    mdj["status"] = md->status;
+                    mdj["text"] = md->text.toStdString();
+                    mdj["group_user_id_hash"] = md->group_user_id_hash.toStdString();
+                    mdj["group_user_nickname"] = md->group_user_nickname.toStdString();
+                    mdj["fileName"] = md->fileName.toStdString();
+                    mdj["fileSize"] = md->fileSize;
+                    mdj["fileHash"] = md->fileHash.toStdString();
+                    mdj["bytesTransferred"] = md->bytesTransferred;
+                    mdj["transferDirection"] = md->transferDirection;
+                    mdj["transferStatus"] = md->transferStatus;
+                    mdj["attemptCount"] = md->attemptCount;
+                    mdj["filePath"] = md->filePath.toStdString();
+                    mdj["base_64_image"] = md->base_64_image.toStdString();
+                    mdj["image_title"] = md->image_title.toStdString();
+
+                    allMessages.push_back(mdj);
+
+                    max_msg--;
+                    if(max_msg <= 0){
+                        break;
+                    }
+                }
+            }
+            stream << QString::fromStdString(allMessages.dump());
+        }
+        f.close();
+    }
+
+    void ConversationModel::loadConversationHistory(){
+        if(isGroupHostMode)
+            return;
+        if(!contact()->getSaveMessages())
+            return;
+
+        QString path = Utility::configPath + "/speek_data/conversations/";
+        QFile f(path + Utility::toHash(contact()->getContactID()));
+        if (f.open(QIODevice::ReadOnly)) {
+            QTextStream in(&f);
+            QString line = in.readLine();
+            try{
+                quint32 ctr=1;
+                nlohmann::json allMessages = nlohmann::json::parse(line.toStdString());
+                for (auto it = allMessages.begin(); it != allMessages.end(); ++it) {
+                    if(contact()->getSendUndeliveredMessagesAfterResume() && static_cast<MessageStatus>(it.value()["status"].get<int>()) == Queued  && !QString::fromStdString(it.value()["text"].get<std::string>()).isEmpty() && static_cast<TransferStatus>(it.value()["transferStatus"].get<int>()) == InvalidTransfer){
+                        const QString text = QString::fromStdString(it.value()["text"].get<std::string>());
+                        sendMessage(text);
+                    }
+                    else{
+                        MessageData md;
+                        md.type = static_cast<MessageDataType>(it.value()["type"].get<int>());
+                        md.time = QDateTime::fromSecsSinceEpoch(it.value()["time"].get<int>());
+                        md.status = static_cast<MessageStatus>(it.value()["status"].get<int>());
+                        md.text = QString::fromStdString(it.value()["text"].get<std::string>());
+                        md.group_user_id_hash = QString::fromStdString(it.value()["group_user_id_hash"].get<std::string>());
+                        md.group_user_nickname = QString::fromStdString(it.value()["group_user_nickname"].get<std::string>());
+                        md.fileName = QString::fromStdString(it.value()["fileName"].get<std::string>());
+                        md.fileSize = it.value()["fileSize"].get<qint64>();
+                        md.fileHash = QString::fromStdString(it.value()["fileHash"].get<std::string>());
+                        md.bytesTransferred = it.value()["bytesTransferred"].get<qint64>();
+                        md.transferDirection = static_cast<TransferDirection>(it.value()["transferDirection"].get<int>());
+                        md.transferStatus = static_cast<TransferStatus>(it.value()["transferStatus"].get<int>());
+                        md.attemptCount = it.value()["attemptCount"].get<quint8>();
+                        md.identifier_saved_message = ctr++;
+                        md.filePath = QString::fromStdString(it.value()["filePath"].get<std::string>());
+                        md.base_64_image = QString::fromStdString(it.value()["base_64_image"].get<std::string>());
+                        md.image_title = QString::fromStdString(it.value()["image_title"].get<std::string>());
+                        if(it.value().contains("time_delivered"))
+                            md.delivered_time = QDateTime::fromSecsSinceEpoch(it.value()["time_delivered"].get<int>());
+
+                        this->beginInsertRows(QModelIndex(), 0, 0);
+                        this->messages.prepend(std::move(md));
+                        this->endInsertRows();
+                    }
+                }
+            }
+            catch(const std::runtime_error& err){
+                qWarning() << err.what();
+            }
+            catch(...){
+
+            }
+        }
     }
 
     void ConversationModel::messagePartReceived(tego_message_id_t messageId, QDateTime timestamp, const QString& text, int chunks_max, int chunks_rec)
@@ -897,6 +1118,7 @@ QMutex ConversationModel::mutex;
         }
         md.prep_text = QString::number(chunks_rec/chunks_max*100);
         md.time = timestamp;
+        md.delivered_time = QDateTime::currentDateTime();
         md.identifier = messageId;
         md.status = Received;
 
@@ -919,6 +1141,7 @@ QMutex ConversationModel::mutex;
 
         MessageData &data = messages[row];
         data.status = accepted ? Delivered : Error;
+        data.delivered_time = QDateTime::currentDateTime();
         emitDataChanged(row);
     }
 
@@ -936,6 +1159,10 @@ QMutex ConversationModel::mutex;
                 ed.type = TextMessageEvent;
                 ed.messageData.reverseIndex = this->messages.size() - row;
                 break;
+            case ImageMessage:
+                ed.type = TextMessageEvent;
+                ed.messageData.reverseIndex = this->messages.size() - row;
+                break;
             case TransferMessage:
                 ed.type = TransferMessageEvent;
                 ed.transferData.reverseIndex = this->messages.size() - row;
@@ -949,6 +1176,11 @@ QMutex ConversationModel::mutex;
 
         this->events.append(std::move(ed));
         emit this->conversationEventCountChanged();
+
+        prune();
+        if(!saveConversationTimer.isActive()){
+            saveConversationTimer.start();
+        }
     }
 
     void ConversationModel::setStatus(ContactUser::Status status)
@@ -968,6 +1200,8 @@ QMutex ConversationModel::mutex;
     {
         Q_ASSERT(row >= 0);
         emit dataChanged(index(row, 0), index(row, 0));
+
+        prune();
     }
 
     int ConversationModel::indexOfMessage(quint32 identifier) const
@@ -975,7 +1209,7 @@ QMutex ConversationModel::mutex;
         for (int i = 0; i < messages.size(); i++) {
             const auto& currentMessage = messages[i];
 
-            if (currentMessage.identifier == identifier)
+            if (currentMessage.identifier == identifier && currentMessage.identifier_saved_message == 0)
                 return i;
         }
         return -1;
@@ -986,7 +1220,7 @@ QMutex ConversationModel::mutex;
         for (int i = 0; i < messages.size(); i++) {
             const auto& currentMessage = messages[i];
 
-            if (currentMessage.identifier == identifier && (currentMessage.status != Received))
+            if (currentMessage.identifier == identifier && (currentMessage.status != Received) && currentMessage.identifier_saved_message == 0)
                 return i;
         }
         return -1;
@@ -997,10 +1231,35 @@ QMutex ConversationModel::mutex;
         for (int i = 0; i < messages.size(); i++) {
             const auto& currentMessage = messages[i];
 
-            if (currentMessage.identifier == identifier && (currentMessage.status == Received))
+            if (currentMessage.identifier == identifier && (currentMessage.status == Received) && currentMessage.identifier_saved_message == 0)
                 return i;
         }
         return -1;
+    }
+
+    int ConversationModel::indexOfSavedMessage(quint32 identifier) const
+    {
+        for (int i = 0; i < messages.size(); i++) {
+            const auto& currentMessage = messages[i];
+
+            if (currentMessage.identifier_saved_message == identifier && currentMessage.identifier == 0)
+                return i;
+        }
+        return -1;
+    }
+
+    void ConversationModel::prune()
+    {
+        SettingsObject main_settings;
+        const int history_limit = main_settings.read("ui.messagePruneLimit").toInt(1000);
+
+        if (messages.size() > history_limit) {
+            beginRemoveRows(QModelIndex(), history_limit, messages.size()-1);
+            while (messages.size() > history_limit) {
+                messages.removeLast();
+            }
+            endRemoveRows();
+        }
     }
 
     const char* ConversationModel::getMessageStatusString(const MessageStatus status)

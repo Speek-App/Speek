@@ -792,9 +792,92 @@ public:
             qApp->exit();
     }
 
+    Q_INVOKABLE QString toFormattedDataSize(qint64 _bytes) {
+        const auto locale = QLocale::system();
+        return locale.formattedDataSize(_bytes);
+    }
+
     Q_INVOKABLE static QString toHash(QString str){
         return QString(QCryptographicHash::hash((str.toUtf8()),QCryptographicHash::Md5).toHex());
     }
+
+    // Open the given path with an appropriate application
+     Q_INVOKABLE static void openPath(const QString &path)
+    {
+        // Hack to access samba shares with QDesktopServices::openUrl
+        const QUrl url = path.startsWith("//")
+            ? QUrl("file:" + path)
+            : QUrl::fromLocalFile(path);
+        QDesktopServices::openUrl(url);
+    }
+
+    // Open the parent directory of the given path with a file manager and select
+    // (if possible) the item at the given path
+    Q_INVOKABLE static void openFolderSelect(const QString &path)
+    {
+        QFileInfo f(path);
+        // If the item to select doesn't exist, try to open its parent
+        if (!f.exists())
+        {
+            openPath(f.absolutePath());
+            return;
+        }
+
+    #ifdef Q_OS_WIN
+        auto *thread = QThread::create([path]()
+        {
+            if (SUCCEEDED(::CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE)))
+            {
+                const std::wstring pathWStr = path.toStdWString();
+                PIDLIST_ABSOLUTE pidl = ::ILCreateFromPathW(pathWStr.c_str());
+                if (pidl)
+                {
+                    ::SHOpenFolderAndSelectItems(pidl, 0, nullptr, 0);
+                    ::ILFree(pidl);
+                }
+
+                ::CoUninitialize();
+            }
+        });
+        QObject::connect(thread, &QThread::finished, thread, &QObject::deleteLater);
+        thread->start();
+    #elif defined(Q_OS_UNIX) && !defined(Q_OS_MACOS) && !defined(ANDROID)
+        QProcess proc;
+        proc.start(QStringLiteral(u"xdg-mime"), {QStringLiteral(u"query"), QStringLiteral(u"default"), QStringLiteral(u"inode/directory")});
+        proc.waitForFinished();
+        const auto output = QString::fromLocal8Bit(proc.readLine().simplified());
+        if ((output == u"dolphin.desktop") || (output == u"org.kde.dolphin.desktop"))
+        {
+            proc.startDetached(QStringLiteral(u"dolphin"), {QStringLiteral(u"--select"), path});
+        }
+        else if ((output == u"nautilus.desktop") || (output == u"org.gnome.Nautilus.desktop")
+                     || (output == u"nautilus-folder-handler.desktop"))
+        {
+            proc.start(QStringLiteral(u"nautilus"), {QStringLiteral(u"--version")});
+            proc.waitForFinished();
+            proc.startDetached(QStringLiteral(u"nautilus"), {path});
+        }
+        else if (output == u"nemo.desktop")
+        {
+            proc.startDetached(QStringLiteral(u"nemo"), {QStringLiteral(u"--no-desktop"), path});
+        }
+        else if ((output == u"konqueror.desktop") || (output == u"kfmclient_dir.desktop"))
+        {
+            proc.startDetached(QStringLiteral(u"konqueror"), {QStringLiteral(u"--select"), path});
+        }
+        else
+        {
+            // "caja" manager can't pinpoint the file, see: https://github.com/qbittorrent/qBittorrent/issues/5003
+            openPath(f.absolutePath());
+        }
+    #elif defined(ANDROID)
+        openPath(path);
+    #else
+        openPath(f.absolutePath());
+    #endif
+    }
+
+    static QString configPath;
 };
 
 #endif // UTILITY_H

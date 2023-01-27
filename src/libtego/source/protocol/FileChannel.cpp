@@ -420,6 +420,10 @@ void FileChannel::handleFileHeaderResponse(const Data::File::FileHeaderResponse 
 
     const auto id = message.file_id();
 
+    auto version = 0;
+    if(message.has_version())
+        version = message.version();
+
     auto it = outgoingTransfers.find(id);
     if (it == outgoingTransfers.end())
     {
@@ -434,7 +438,8 @@ void FileChannel::handleFileHeaderResponse(const Data::File::FileHeaderResponse 
 
     if (response == tego_file_transfer_response_accept)
     {
-        sendNextChunk(id);
+        for(size_t i = 0;i<(version >= 17 ? MaxConcurrentChunks : 1);i++)
+            sendNextChunk(id);
         it->second.beginTime = std::chrono::system_clock::now();
     }
     else
@@ -476,7 +481,11 @@ void FileChannel::handleFileChunk(const Data::File::FileChunk &message)
     {
         auto& itr = it->second;
         const auto& chunk_data = message.chunk_data();
+        mMutexReceive.lock();
+        if(message.has_chunk_pos())
+            itr.stream.seekp(message.chunk_pos());
         itr.stream.write(chunk_data.data(), chunk_data.size());
+        mMutexReceive.unlock();
 
         // emit progress callback
         const auto id = message.file_id();
@@ -581,16 +590,11 @@ void FileChannel::handleFileChunkAck(const Data::File::FileChunkAck &message)
 
     const auto& otr = it->second;
 
-    // verify the ack corresponds to how many bytes we've sent
-    if (message.bytes_received() != otr.offset)
-    {
-        // acks currently always come between sending chunks, so our bytes sent and their bytes received should
-        // not diverge
-        emitFatalError("mismatch between bytes we have sent and the bytes the receiver claims to have received", tego_file_transfer_result_failure, true);
+    if(message.bytes_received() > otr.size){
+        emitFatalError("mismatch between the total bytes of the file sent and the bytes the receiver claims to have received", tego_file_transfer_result_failure, true);
         return;
     }
-
-    emit this->fileTransferProgress(otr.id, tego_file_transfer_direction_receiving, otr.offset, otr.size);
+    emit this->fileTransferProgress(otr.id, tego_file_transfer_direction_receiving, message.bytes_received(), otr.size);
 
     // send the next chunk until we are done
     if(otr.offset < otr.size)
@@ -727,6 +731,7 @@ void FileChannel::acceptFile(tego_file_transfer_id_t id, const std::string& dest
     auto response = std::make_unique<Data::File::FileHeaderResponse>();
     response->set_response(tego_file_transfer_response_accept);
     response->set_file_id(id);
+    response->set_version(17);
 
     Data::File::Packet packet;
     packet.set_allocated_file_header_response(response.release());
@@ -801,6 +806,8 @@ bool FileChannel::cancelTransfer(tego_file_transfer_id_t id)
 
 void FileChannel::sendNextChunk(tego_file_transfer_id_t id)
 {
+    QMutexLocker ml(&mMutexSend);
+
     Q_ASSERT(direction() == Outbound);
 
     if (auto it = outgoingTransfers.find(id); it != outgoingTransfers.end())
@@ -834,12 +841,14 @@ void FileChannel::sendNextChunk(tego_file_transfer_id_t id)
         }
         Q_ASSERT(static_cast<tego_file_size_t>(chunkSize) <= FileMaxChunkSize);
 
+        const auto chunkOffset = otr.offset;
         otr.offset += chunkSize;
 
         // build our chunk
         auto chunk = std::make_unique<Data::File::FileChunk>();
         chunk->set_file_id(id);
         chunk->set_chunk_data(std::begin(chunkBuffer), chunkSize);
+        chunk->set_chunk_pos(chunkOffset);
 
         Data::File::Packet packet;
         packet.set_allocated_file_chunk(chunk.release());

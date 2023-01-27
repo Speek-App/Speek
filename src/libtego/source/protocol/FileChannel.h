@@ -123,10 +123,14 @@ private:
     };
     // 63 kb, max packet size is UINT16_MAX (ak 65535, 64k - 1) so leave space for other data
     constexpr static tego_file_size_t FileMaxChunkSize = 63*1024; // bytes
+    const size_t MaxConcurrentChunks = 50;
     // intermediate buffer we load chunks from disk into
     // each access to this buffer happens on the same thread, and only within the scope of a function
     // so no need to worry about synchronization or sharing between file transfers
     char chunkBuffer[FileMaxChunkSize];
+
+    QMutex mMutexReceive;
+    QMutex mMutexSend;
 
     // file transfers we are sending
     std::map<tego_file_transfer_id_t, outgoing_transfer_record> outgoingTransfers;

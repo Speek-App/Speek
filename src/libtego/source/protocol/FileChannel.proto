@@ -59,11 +59,13 @@ message FileHeaderAck {
 message FileHeaderResponse {
     optional uint32 file_id = 1;
     optional int32 response = 2;
+    optional uint32 version = 3;
 }
 
 message FileChunk {
     optional uint32 file_id = 1;
     optional bytes chunk_data = 2;
+    optional uint32 chunk_pos = 3;
 }
 message FileChunkAck {
     optional uint32 file_id = 1;
