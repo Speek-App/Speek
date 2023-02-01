@@ -232,6 +232,7 @@ ApplicationWindow {
             }
 
             ScrollView {
+                    visible: uiMain.appstore_compliant
                     background: Rectangle { color: palette.base;radius:4;visible:Qt.platform.os !== "android" }
                     ScrollBar.vertical.policy: ScrollBar.AsNeeded
                     Layout.fillWidth: true

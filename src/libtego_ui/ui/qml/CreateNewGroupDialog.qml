@@ -30,6 +30,15 @@ ApplicationWindow {
         if (!groupFields.hasValidRequest)
             return
 
+        if(inviteSelfToGroup.checked == true){
+            var push = userIdentity.contactID+";"+(typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Speek User")
+
+            const index = userAddGroup.showHideElements.indexOf(push)
+            if (index === -1) {
+                userAddGroup.showHideElements.push(push)
+            }
+        }
+
         utility.startGroup(groupFields.name.text, groupFields.name.text, groupFields.message.text, userAddGroup.showHideElements)
         close()
     }
@@ -116,6 +125,17 @@ ApplicationWindow {
             Accessible.name: text
             //: Description of textbox for setting a new groups invite greeting message for accessibility tech like screen readers
             Accessible.description: qsTr("Field for the group invite greeting message")
+        }
+
+        CheckBox {
+            id: inviteSelfToGroup
+            //: Text description of an option to invite yourself to the newly created group
+            text: qsTr("Invite yourself to group")
+            checked: true
+
+            Accessible.role: Accessible.CheckBox
+            Accessible.name: text
+            Accessible.onPressAction: settingsSwitch.triggered(checked)
         }
     }
     ColumnLayout{

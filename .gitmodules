@@ -4,3 +4,6 @@
 [submodule "src/extern/tor"]
 	path = src/extern/tor
 	url = https://git.torproject.org/tor.git
+[submodule "src/extern/SortFilterProxyModel"]
+	path = src/extern/SortFilterProxyModel
+	url = https://github.com/oKcerG/SortFilterProxyModel

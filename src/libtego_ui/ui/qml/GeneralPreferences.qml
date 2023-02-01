@@ -148,6 +148,45 @@ Item{
             }
         }
 
+        ColumnLayout {
+            z: 2
+            visible: styleHelper.isGroupHostMode
+            RowLayout {
+                spacing: 0
+                Label {
+                    //: Label for text area where users can specify the available channels of a group
+                    text: qsTr("Group Channels (one per line)")
+                    Accessible.role: Accessible.StaticText
+                    Accessible.name: text
+                }
+            }
+
+            ScrollView {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                background: Rectangle { color: palette.base;radius:4;visible:Qt.platform.os !== "android" }
+                TextArea {
+                    id: groupChannels
+
+                    text: typeof(uiSettings.data.groupChannels) !== "undefined" ? uiSettings.data.groupChannels : "main"
+                    Layout.fillWidth: true
+                    Layout.maximumHeight: 80
+
+                    onTextChanged: {
+                        if (length > 800) remove(800, length);
+                        uiSettings.write("groupChannels", groupChannels.text)
+                    }
+
+                    Accessible.role: Accessible.EditableText
+                    //: Name of the text input used to set the available channels of a group
+                    Accessible.name: qsTr("Group Channels input field")
+                    //: Description of what the group channels input field is for accessibility tech like screen readers
+                    Accessible.description: qsTr("Which channels should be available")
+                }
+            }
+        }
+
         SettingsSwitch{
             visible: !styleHelper.isGroupHostMode
             //: Text description of an option to activate rich text editing by default which allows the input of emojis and images

@@ -168,6 +168,8 @@ SOURCES += main.cpp
 include($${PWD}/../libtego_ui/libtego_ui.pri)
 include($${PWD}/../libtego/libtego.pri)
 
+include ($${PWD}/../extern/SortFilterProxyModel/SortFilterProxyModel.pri)
+
 android{
     DISTFILES += \
         android/AndroidManifest.xml \

@@ -16,6 +16,8 @@ namespace shims
         Q_PROPERTY(unsigned member_in_group READ get_member_in_group NOTIFY group_member_changed)
         Q_PROPERTY(unsigned member_of_group_online READ get_member_of_group_online NOTIFY group_member_changed)
         Q_PROPERTY(QString pinned_message READ get_pinned_message NOTIFY group_member_changed)
+        Q_PROPERTY(QStringList available_channels READ get_available_channels NOTIFY group_member_changed)
+        Q_PROPERTY(QString selected_channel READ get_selected_channel WRITE set_selected_channel NOTIFY group_member_changed)
 
     public:
         ConversationModel(QObject *parent = 0, bool group = false);
@@ -30,6 +32,7 @@ namespace shims
             TransferRole,
             GroupUserRole,
             GroupUserIdRole,
+            GroupChannelRole,
         };
 
         enum MessageStatus {
@@ -102,6 +105,16 @@ namespace shims
         QString get_pinned_message() const{
             return pinned_message;
         }
+        QString get_selected_channel() const{
+            return selected_channel;
+        }
+        QStringList get_available_channels() const{
+            return available_channels;
+        }
+        void set_selected_channel(QString c){
+            selected_channel = c;
+            emit group_member_changed();
+        }
         Q_INVOKABLE void resetUnreadCount();
 
         void sendFile(QString path = "");
@@ -150,6 +163,7 @@ namespace shims
             QString prep_text = {};
             QString group_user_nickname = {};
             QString group_user_id_hash = {};
+            QString group_channel = {};
             QDateTime time = {};
             static_assert(std::is_same_v<quint32, tego_file_transfer_id_t>);
             static_assert(std::is_same_v<quint32, tego_message_id_t>);
@@ -216,6 +230,8 @@ namespace shims
         unsigned member_in_group = 0;
         unsigned member_of_group_online = 0;
         QString pinned_message = {};
+        QStringList available_channels;
+        QString selected_channel = "main";
 
         static const char* getMessageStatusString(const MessageStatus status);
         static const char* getTransferStatusString(const TransferStatus status);

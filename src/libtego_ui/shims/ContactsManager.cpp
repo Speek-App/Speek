@@ -90,6 +90,13 @@ namespace shims
                 return;
             if(!(j.contains("id") && j["id"].is_string() && j["id"] == Utility::toHash(exclude->getContactID()).toStdString()))
                 return;
+            SettingsObject settings;
+            QStringList av_channels = settings.read("ui.groupChannels").toString().split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
+            if(!(j.contains("channel") && j["channel"].is_string()))
+                j["channel"] = av_channels.first().toStdString();
+            if(!av_channels.contains(QString::fromStdString(j["channel"])))
+                return;
+
             if(j.contains("users_online"))
                 return;
             if(j.contains("total_group_member"))
@@ -141,6 +148,7 @@ namespace shims
 
                 SettingsObject settings;
                 j["pinned_message"] = settings.read("ui.groupPinnedMessage").toString().toStdString();
+                j["available_channels"] = settings.read("ui.groupChannels").toString().toStdString();
 
                 QString msg_send = QString::fromStdString(j.dump());
 

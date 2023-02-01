@@ -49,6 +49,7 @@ QMutex ConversationModel::mutex;
         roles[TransferRole] = "transfer";
         roles[GroupUserRole] = "group_user_nickname";
         roles[GroupUserIdRole] = "group_user_id_hash";
+        roles[GroupChannelRole] = "group_channel";
         return roles;
     }
 
@@ -91,6 +92,7 @@ QMutex ConversationModel::mutex;
             case StatusRole: return message.status;
             case GroupUserRole: return message.group_user_nickname;
             case GroupUserIdRole: return message.group_user_id_hash;
+            case GroupChannelRole: return message.group_channel;
 
             case SectionRole: {
                 if (contact()->getStatus() == ContactUser::Online)
@@ -253,6 +255,12 @@ QMutex ConversationModel::mutex;
                 }
                 if(j.contains("id") && j["id"].is_string()){
                     md.group_user_id_hash = QString::fromStdString(j["id"]);
+                }
+                else{
+                    return;
+                }
+                if(j.contains("channel") && j["channel"].is_string()){
+                    md.group_channel = QString::fromStdString(j["channel"]);
                 }
                 else{
                     return;
@@ -832,6 +840,14 @@ QMutex ConversationModel::mutex;
                         member_in_group = j["total_group_member"];
                         member_of_group_online = j["users_online"];
                         pinned_message = QString::fromStdString(j["pinned_message"]);
+
+                        if(j.contains("available_channels") && j["available_channels"].is_string()){
+                            available_channels = QString::fromStdString(j["available_channels"]).split(QRegExp("[\r\n]"), Qt::SkipEmptyParts);
+                        }
+                        else{
+                            available_channels = QStringList("main");
+                        }
+
                         emit group_member_changed();
                     }
                     return false;
@@ -849,6 +865,12 @@ QMutex ConversationModel::mutex;
                 else{
                     md.group_user_id_hash = "0";
                     return false;
+                }
+                if(j.contains("channel") && j["channel"].is_string() && j["channel"].size() < 50){
+                    md.group_channel = QString::fromStdString(j["channel"]);
+                }
+                else{
+                    md.group_channel = available_channels.size() > 0 ? available_channels.first() : "main";
                 }
             }
         }

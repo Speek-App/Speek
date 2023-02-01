@@ -7,6 +7,7 @@ import im.utility 1.0
 Column {
     id: delegate
     width: parent.width
+
     property string selected_image;
     property string copy_selected_image;
     property alias messageChildItem: message.childItem

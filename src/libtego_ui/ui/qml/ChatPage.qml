@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.2
 import im.ricochet 1.0
 import im.utility 1.0
 import QtQuick.Dialogs 1.3
+import SortFilterProxyModel 0.2
 
 FocusScope{
     id: chatFocusScope
@@ -17,7 +18,18 @@ FocusScope{
     property bool richTextActive: !uiSettings.data.disableDefaultRichText
     property var groupIdentifier: String(getRandomInt(1000))
     property var pinnedMessageVisible: false
+    property var availableChannelsVisible: false
     property var sendMessageButton: sendMessageButton
+
+    SortFilterProxyModel {
+        id: messageProxyModel
+        sourceModel: conversationModel
+        filters: ValueFilter {
+            enabled: conversationModel.contact.is_a_group
+            roleName: "group_channel"
+            value: conversationModel.selected_channel
+        }
+    }
 
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);
@@ -276,6 +288,7 @@ FocusScope{
                         if (mouse.button === Qt.RightButton) {
                         } else if (mouse.button === Qt.LeftButton) {
                             pinnedMessageVisible = !pinnedMessageVisible
+                            availableChannelsVisible = false
                         }
                     }
                 }
@@ -285,6 +298,51 @@ FocusScope{
                 Accessible.name: qsTr("Open group pinned message")
                 //: Description of the 'Open group pinned message' button for accessibility tech like screen readers
                 Accessible.description: qsTr("Shows the pinned message of the group")
+            }
+            ToolButton {
+                implicitHeight: 32
+                implicitWidth: 32
+
+                text: "r"
+
+                visible: conversationModel.contact.is_a_group && conversationModel.available_channels.length > 1 && typeof(conversationModel.available_channels) != "undefined"
+
+                style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 28
+                        implicitHeight: 28
+                        radius: 5
+                        color: "transparent"
+
+                    }
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        font.family: iconFont.name
+                        font.pointSize: styleHelper.pointSize * 1.2
+                        text: control.text
+                        color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                     }
+                }
+
+                MouseArea{
+                    cursorShape: Qt.PointingHandCursor
+                    anchors.fill: parent
+                    onClicked: {
+                        if (mouse.button === Qt.RightButton) {
+                        } else if (mouse.button === Qt.LeftButton) {
+                            pinnedMessageVisible = false
+                            availableChannelsVisible = !availableChannelsVisible
+                        }
+                    }
+                }
+
+                Accessible.role: Accessible.Button
+                //: Name of the button to show the available channels
+                Accessible.name: qsTr("Show available channels")
+                //: Description of the 'Show available channels' button for accessibility tech like screen readers
+                Accessible.description: qsTr("Shows the available channels")
             }
             ToolButton {
                 id: contactSettings
@@ -392,6 +450,57 @@ FocusScope{
             }
         }
 
+        Rectangle{
+            anchors {
+                top: infoBar.bottom
+                right: parent.right
+                rightMargin: 8
+                topMargin: 8
+            }
+            visible: availableChannelsVisible && conversationModel.contact.is_a_group && conversationModel.available_channels.length > 1 && typeof(conversationModel.available_channels) != "undefined"
+            height: 100
+            width: 200
+            color: palette.base
+            z: 90
+            radius: 6
+
+            ListView {
+                id: channelsListView
+                anchors.fill: parent
+                anchors.margins: 3
+                model: conversationModel.available_channels
+                delegate: RowLayout{
+                    property alias switchChannelChecked: switchChannel.checked
+                    property string channelName: modelData
+
+                    width: parent.width
+
+                    Label {
+                        text: modelData
+                        Accessible.role: Accessible.StaticText
+                        Accessible.name: text
+                        Layout.fillWidth: true
+                    }
+                    Switch{
+                        id: switchChannel
+
+                        checked: conversationModel.selected_channel === modelData
+                        enabled: !checked
+                        onCheckedChanged: {
+                            if(checked){
+                                conversationModel.selected_channel = modelData
+                                for(var child in channelsListView.contentItem.children) {
+                                    channelsListView.contentItem.children[child].switchChannelChecked = conversationModel.selected_channel === channelsListView.contentItem.children[child].channelName
+                                }
+                            }
+                        }
+
+                        Accessible.role: Accessible.CheckBox
+                    }
+                }
+            }
+        }
+
         Rectangle {
             anchors {
                 left: parent.left
@@ -422,7 +531,7 @@ FocusScope{
                 bottom: statusBar.top
             }
             anchors.bottomMargin: emojiVisible ? emojiPicker.height:0
-            model: conversationModel
+            model: messageProxyModel
             border.width: 0
         }
 
@@ -615,6 +724,7 @@ FocusScope{
                                 obj["message"] = msg
                                 obj["name"] = typeof(uiSettings.data.username) !== "undefined" ? uiSettings.data.username : "Anonymous" + chatFocusScope.groupIdentifier
                                 obj["id"] = utility.toHash(userIdentity.contactID)
+                                obj["channel"] = conversationModel.selected_channel
                                 msg = JSON.stringify(obj)
                             }
                             conversationModel.sendMessage(msg)
