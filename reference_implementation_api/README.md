@@ -1,10 +1,10 @@
-#Speek Terminal Client
+# Speek Terminal Client
 
-##Introduction
+## Introduction
 
 This serves as a demonstration of the utilization of the Speek IPC qlocalsocket API, which can be utilized to design additional user interfaces for the principal application. It is written in Python using the curses library, which provides an interface to the terminal window. The application implements various commands that interact with the main application through the IPC qlocalsocket API.
 
-##Prerequisites
+## Prerequisites
 
 The 'speek' CLI application must reside within the same directory as this program. It can be compiled by utilizing the argument 'CONFIG+=console'.
 
@@ -13,7 +13,7 @@ Additionally, before using this application, the following packages must be inst
 - threading
 - qrcode
 
-##Usage
+## Usage
 
 To use this application, simply run the script using Python. e.g.:
 ```
