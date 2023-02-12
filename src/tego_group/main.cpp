@@ -110,19 +110,11 @@ int main(int argc, char *argv[]) try
     shims::TorManager::torManager = new shims::TorManager(tegoContext);
 
     // start Tor
-    {
-        std::unique_ptr<tego_tor_launch_config_t> launchConfig;
-        tego_tor_launch_config_initialize(tego::out(launchConfig), tego::throw_on_error());
-
-        auto rawFilePath = (QFileInfo(settings->filePath()).path() + QStringLiteral("/tor/")).toUtf8();
-        tego_tor_launch_config_set_data_directory(
-            launchConfig.get(),
-            rawFilePath.data(),
-            rawFilePath.size(),
-            tego::throw_on_error());
-
-        tego_context_start_tor(tegoContext, launchConfig.get(), tego::throw_on_error());
-    }
+    std::unique_ptr<tego_tor_launch_config_t> launchConfig;
+    tego_tor_launch_config_initialize(tego::out(launchConfig), tego::throw_on_error());
+    auto rawFilePath = (QFileInfo(settings->filePath()).path() + QStringLiteral("/tor/")).toUtf8();
+    tego_tor_launch_config_set_data_directory(launchConfig.get(), rawFilePath.data(), rawFilePath.size(), tego::throw_on_error());
+    tego_context_start_tor(tegoContext, launchConfig.get(), tego::throw_on_error());
 
     /* Identities */
     shims::UserIdentity::userIdentity = new shims::UserIdentity(tegoContext, true);
@@ -142,10 +134,6 @@ int main(int argc, char *argv[]) try
     QScopedPointer<MainWindow> w(new MainWindow);
     if (!w->showUI(theme_color, true))
         return 1;
-
-    //QTimer *timer = new QTimer(shims::UserIdentity::userIdentity);
-    //QObject::connect(timer, SIGNAL(timeout()), shims::UserIdentity::userIdentity, SLOT(update()));
-    //timer->start(1000);
 
     if(args.size() > 4){
         QMetaObject::Connection * const connection = new QMetaObject::Connection;

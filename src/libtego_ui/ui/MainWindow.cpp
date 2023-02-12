@@ -31,17 +31,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <QApplication>
-#include <QInputDialog>
+#ifndef CONSOLE_ONLY
+    #include <QApplication>
+    #include <QInputDialog>
+#endif
 
 #include "ui/MainWindow.h"
-#include "ui/Clipboard.h"
+#ifndef CONSOLE_ONLY
+    #include "ui/Clipboard.h"
+#endif
 #include "ui/ContactsModel.h"
 #include "ui/LanguagesModel.h"
+
+#ifndef CONSOLE_ONLY
 #include "ui/Base64CircleImageProvider.h"
 #include "ui/Base64ImageProvider.h"
 #include "ui/Base64RoundedImageProvider.h"
 #include "ui/JazzIdenticonImageProvider.h"
+#endif
 
 #include "utils/Settings.h"
 #include "utils/Useful.h"
@@ -58,17 +65,20 @@
 #include "shims/ContactIDValidator.h"
 #include "shims/IncomingContactRequest.h"
 #include "shims/utility.h"
-#include "SBarcodeGenerator.h"
 
 #ifdef ANDROID
 #include "SBarcodeFilter.h"
 #include "utils/NotificationClient.h"
 #endif
 
+#ifndef CONSOLE_ONLY
 #include <QQuickStyle>
+#include "SBarcodeGenerator.h"
+#endif
 
 MainWindow *uiMain = 0;
 
+#ifndef CONSOLE_ONLY
 /* Through the QQmlNetworkAccessManagerFactory below, all network requests
  * created via QML will be passed to this object; including, for example,
  * <img> tags parsed in rich Text items.
@@ -105,6 +115,7 @@ public:
         return new BlockedNetworkAccessManager(parent);
     }
 };
+#endif
 
 MainWindow::MainWindow(QObject *parent)
     : QObject(parent)
@@ -112,6 +123,7 @@ MainWindow::MainWindow(QObject *parent)
     Q_ASSERT(!uiMain);
     uiMain = this;
 
+    #ifndef CONSOLE_ONLY
     qml = new QQmlApplicationEngine(this);
     qml->addImageProvider(QLatin1String("base64"), new Base64CircleImageProvider);
     qml->addImageProvider(QLatin1String("base64n"), new Base64ImageProvider);
@@ -138,6 +150,7 @@ MainWindow::MainWindow(QObject *parent)
     qmlRegisterSingletonType<::Clipboard>("im.ricochet", 1, 0, "Clipboard", &Clipboard::singleton_provider);
     qmlRegisterType<::LanguagesModel>("im.ricochet", 1, 0, "LanguagesModel");
     qmlRegisterType<Utility>("im.utility", 1, 0, "Utility");
+    #endif
 }
 
 MainWindow::~MainWindow()
@@ -157,28 +170,31 @@ bool MainWindow::showUI(QVariantMap _theme_color, bool isGroupHostMode)
 {
     this->isGroupHostMode = isGroupHostMode;
     theme_color = _theme_color;
-    qml->rootContext()->setContextProperty(QLatin1String("userIdentity"), shims::UserIdentity::userIdentity);
-    qml->rootContext()->setContextProperty(QLatin1String("torControl"), shims::TorControl::torControl);
-    qml->rootContext()->setContextProperty(QLatin1String("torInstance"), shims::TorManager::torManager);
-    qml->rootContext()->setContextProperty(QLatin1String("uiMain"), this);
 
-    #ifdef ANDROID
-        if(!this->isGroupHostMode){
-            NotificationClient *notificationClient = new NotificationClient(qml);
-            qml->rootContext()->setContextProperty(QLatin1String("notificationClient"), notificationClient);
+    #ifndef CONSOLE_ONLY
+        qml->rootContext()->setContextProperty(QLatin1String("userIdentity"), shims::UserIdentity::userIdentity);
+        qml->rootContext()->setContextProperty(QLatin1String("torControl"), shims::TorControl::torControl);
+        qml->rootContext()->setContextProperty(QLatin1String("torInstance"), shims::TorManager::torManager);
+        qml->rootContext()->setContextProperty(QLatin1String("uiMain"), this);
+
+        #ifdef ANDROID
+            if(!this->isGroupHostMode){
+                NotificationClient *notificationClient = new NotificationClient(qml);
+                qml->rootContext()->setContextProperty(QLatin1String("notificationClient"), notificationClient);
+            }
+        #endif
+
+        qml->load(QUrl(QLatin1String("qrc:/ui/main.qml")));
+
+        if (qml->rootObjects().isEmpty()) {
+            // Assume this is only applicable to technical users; not worth translating or simplifying.
+            QMessageBox::critical(0, QStringLiteral("Speek.Chat"),
+                QStringLiteral("An error occurred while loading the Speek.Chat UI.\n\n"
+                               "You might be missing plugins or dependency packages."));
+            qCritical() << "Failed to load UI. Exiting.";
+            return false;
         }
     #endif
-
-    qml->load(QUrl(QLatin1String("qrc:/ui/main.qml")));
-
-    if (qml->rootObjects().isEmpty()) {
-        // Assume this is only applicable to technical users; not worth translating or simplifying.
-        QMessageBox::critical(0, QStringLiteral("Speek.Chat"),
-            QStringLiteral("An error occurred while loading the Speek.Chat UI.\n\n"
-                           "You might be missing plugins or dependency packages."));
-        qCritical() << "Failed to load UI. Exiting.";
-        return false;
-    }
 
     return true;
 }
@@ -228,6 +244,7 @@ QString MainWindow::eulaText() const
 QVariantMap MainWindow::screens() const
 {
     QVariantMap mapScreenSizes;
+    #ifndef CONSOLE_ONLY
     foreach (QScreen *screen, QGuiApplication::screens()) {
         QVariantMap screenObj;
         screenObj.insert(QString::fromUtf8("width"), screen->availableSize().width());
@@ -236,9 +253,11 @@ QVariantMap MainWindow::screens() const
         screenObj.insert(QString::fromUtf8("top"), screen->geometry().top());
         mapScreenSizes.insert(screen->name(), screenObj);
     }
+    #endif
     return mapScreenSizes;
 }
 
+#ifndef CONSOLE_ONLY
 /* QMessageBox implementation for Qt <5.2 */
 bool MainWindow::showRemoveContactDialog(shims::ContactUser *user)
 {
@@ -249,12 +268,15 @@ bool MainWindow::showRemoveContactDialog(shims::ContactUser *user)
         tr("Do you want to permanently remove %1?").arg(user->getNickname()));
     return btn == QMessageBox::Yes;
 }
+#endif
 
+#ifndef CONSOLE_ONLY
 QQuickWindow *MainWindow::findParentWindow(QQuickItem *item)
 {
     Q_ASSERT(item);
     return item ? item->window() : 0;
 }
+#endif
 
 void MainWindow::initTranslation()
 {
@@ -367,6 +389,7 @@ QPalette MainWindow::load_palette_from_file(QString file, QVariantMap* theme_col
 
 void MainWindow::initTheme(QVariantMap* theme_color)
 {
+    #ifndef CONSOLE_ONLY
     SettingsObject settings;
     if(settings.read("ui.useCustomTheme").toBool() == false || settings.read("ui.customTheme").toString().isEmpty()){
         if(settings.read("ui.theme").toString().isEmpty()){
@@ -382,6 +405,7 @@ void MainWindow::initTheme(QVariantMap* theme_color)
     else{
         qApp->setPalette(load_palette_from_file(settings.read("ui.customTheme").toString(), theme_color));
     }
+    #endif
 }
 
 // Writes default settings to settings object. Does not care about any
@@ -464,6 +488,7 @@ bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QStr
 
     settings->root()->write("ui.combinedChatWindow", true);
 
+    #ifndef CONSOLE_ONLY
     if(pathChange == "/" && settings->root()->read("ui.identityPromptOnStartup").toBool(false)){
         initTranslation();
         QVariantMap theme_color;
@@ -474,11 +499,13 @@ bool MainWindow::initSettings(SettingsFile *settings, QLockFile **lockFile, QStr
             return initSettings(settings, lockFile, errorMessage, pathChange + identityName +"/");
         }
     }
+    #endif
 
     return true;
 }
 
 void MainWindow::initFontSettings(){
+    #ifndef CONSOLE_ONLY
     // increase font size for better reading
     QFont defaultFont = QApplication::font();
     defaultFont.setFamily("Noto Sans");
@@ -493,6 +520,7 @@ void MainWindow::initFontSettings(){
     #endif
 
     qApp->setFont(defaultFont);
+    #endif
 }
 
 void MainWindow::loadSettings(tego_context_t* tegoContext, shims::ContactsManager* contactsManager){

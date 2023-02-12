@@ -8,7 +8,12 @@
 
 // Qt
 
+#ifndef CONSOLE_ONLY
 #include <QApplication>
+#include <QMessageBox>
+#else
+#include <QCoreApplication>
+#endif
 #include <QByteArray>
 #include <QDir>
 #include <QFile>
@@ -18,7 +23,6 @@
 #include <QJsonObject>
 #include <QLibraryInfo>
 #include <QLockFile>
-#include <QMessageBox>
 #include <QObject>
 #include <QSettings>
 #include <QStandardPaths>

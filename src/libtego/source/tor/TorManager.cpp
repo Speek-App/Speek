@@ -40,7 +40,6 @@
 #include "signals.hpp"
 #include "globals.hpp"
 
-#include <QMessageBox>
 using tego::g_globals;
 
 using namespace Tor;

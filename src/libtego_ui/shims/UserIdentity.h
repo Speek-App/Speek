@@ -41,6 +41,9 @@ namespace shims
         // used in MainWindow.qml
         void unreadCountChanged(ContactUser *user, int unreadCount);
         void contactStatusChanged(ContactUser* user, int status);
+        #ifdef CONSOLE_ONLY
+        void requestRemoved(QString id);
+        #endif
 
     private:
         QList<shims::IncomingContactRequest*> requests;

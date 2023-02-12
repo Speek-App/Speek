@@ -7,15 +7,24 @@ TEMPLATE = lib
 TARGET = tego
 CONFIG += staticlib
 
-QT += core gui network quick widgets
+console{
+    QT += core network
+    DEFINES += "CONSOLE_ONLY=1"
+}
+else{
+    QT += core gui network quick widgets
+}
 macx {
     QT += macextras
 }
 android{
     QT += androidextras svg
 }
-QT += quickcontrols2
-QT += quick
+
+!console{
+    QT += quickcontrols2
+    QT += quick
+}
 
 # setup precompiled headers
 CONFIG += precompile_header

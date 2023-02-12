@@ -15,7 +15,9 @@ namespace shims
 
         // create command shim yuck
         auto setConfigurationCommand = new TorControlCommand();
+        #ifndef CONSOLE_ONLY
         QQmlEngine::setObjectOwnership(setConfigurationCommand, QQmlEngine::CppOwnership);
+        #endif
 
         this->m_setConfigurationCommand = setConfigurationCommand;
 
@@ -294,6 +296,11 @@ namespace shims
         emit this->torStatusChanged(
             static_cast<int>(status),
             static_cast<int>(oldStatus));
+
+        #ifdef CONSOLE_ONLY
+        if(m_torStatus == TorReady)
+            qInfo()<<"[INFO] Tor Ready";
+        #endif
     }
 
     void TorControl::setErrorMessage(const QString& msg)

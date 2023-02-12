@@ -36,7 +36,12 @@
 #include "utils/Settings.h"
 
 #include <libtego_callbacks.hpp>
+#ifndef CONSOLE_ONLY
 #include <QStyleFactory>
+#else
+#include "ui/console.h"
+#include <signal.h>
+#endif
 #include <QtCore/QMetaProperty>
 
 // shim replacements
@@ -45,6 +50,14 @@
 #include "shims/UserIdentity.h"
 
 #include <QQuickStyle>
+
+#ifdef CONSOLE_ONLY
+void signalHandler(int signal)
+{
+    std::cout << "Received signal " << signal << ", quitting..." << std::endl;
+    QCoreApplication::quit();
+}
+#endif
 
 int main(int argc, char *argv[]) try
 {
@@ -58,6 +71,7 @@ int main(int argc, char *argv[]) try
         qputenv("QMLSCENE_DEVICE", "software");
 #endif
 
+#ifndef CONSOLE_ONLY
     /* https://doc.qt.io/qt-5/highdpi.html#high-dpi-support-in-qt */
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     if (!qEnvironmentVariableIsSet("QT_DEVICE_PIXEL_RATIO")
@@ -66,13 +80,15 @@ int main(int argc, char *argv[]) try
             && !qEnvironmentVariableIsSet("QT_SCREEN_SCALE_FACTORS")) {
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     }
-
     QApplication a(argc, argv);
 
-
     //QQuickStyle::setStyle(QLatin1String("Material"));
-#ifndef ANDROID
-    qApp->setStyle(QStyleFactory::create("Fusion"));
+    #ifndef ANDROID
+        qApp->setStyle(QStyleFactory::create("Fusion"));
+    #endif
+#else
+    QCoreApplication a(argc, argv);
+    signal(SIGINT, signalHandler);
 #endif
 
     tego_context_t* tegoContext = nullptr;
@@ -85,7 +101,7 @@ int main(int argc, char *argv[]) try
     init_libtego_callbacks(tegoContext);
 
     a.setApplicationVersion(QLatin1String(TEGO_VERSION_STR));
-    #if !defined(Q_OS_WIN) && !defined(Q_OS_MAC)
+    #if !defined(Q_OS_WIN) && !defined(Q_OS_MAC) && !defined(CONSOLE_ONLY)
         a.setWindowIcon(QIcon(QStringLiteral(":/icons/speek.png")));
     #endif
 
@@ -97,7 +113,11 @@ int main(int argc, char *argv[]) try
     if (!MainWindow::initSettings(settings.data(), &lock, error)) {
         if (error.isEmpty())
             return 0;
-        QMessageBox::critical(0, qApp->translate("Main", "Speek Error"), error);
+        #ifndef CONSOLE_ONLY
+            QMessageBox::critical(0, qApp->translate("Main", "Speek Error"), error);
+        #else
+            qCritical() << "[Error] " << error;
+        #endif
         return 1;
     }
     MainWindow::initFontSettings();
@@ -112,19 +132,11 @@ int main(int argc, char *argv[]) try
     shims::TorManager::torManager = new shims::TorManager(tegoContext);
 
     // start Tor
-    {
-        std::unique_ptr<tego_tor_launch_config_t> launchConfig;
-        tego_tor_launch_config_initialize(tego::out(launchConfig), tego::throw_on_error());
-
-        auto rawFilePath = (QFileInfo(settings->filePath()).path() + QStringLiteral("/tor/")).toUtf8();
-        tego_tor_launch_config_set_data_directory(
-            launchConfig.get(),
-            rawFilePath.data(),
-            rawFilePath.size(),
-            tego::throw_on_error());
-
-        tego_context_start_tor(tegoContext, launchConfig.get(), tego::throw_on_error());
-    }
+    std::unique_ptr<tego_tor_launch_config_t> launchConfig;
+    tego_tor_launch_config_initialize(tego::out(launchConfig), tego::throw_on_error());
+    auto rawFilePath = (QFileInfo(settings->filePath()).path() + QStringLiteral("/tor/")).toUtf8();
+    tego_tor_launch_config_set_data_directory(launchConfig.get(), rawFilePath.data(), rawFilePath.size(), tego::throw_on_error());
+    tego_context_start_tor(tegoContext, launchConfig.get(), tego::throw_on_error());
 
     /* Identities */
     shims::UserIdentity::userIdentity = new shims::UserIdentity(tegoContext);
@@ -136,6 +148,13 @@ int main(int argc, char *argv[]) try
     QScopedPointer<MainWindow> w(new MainWindow);
     if (!w->showUI(theme_color))
         return 1;
+
+    #ifdef CONSOLE_ONLY
+    Console console;
+    console.run();
+
+    QObject::connect(&console, SIGNAL(quit()), &a, SLOT(quit()));
+    #endif
 
     return a.exec();
 }

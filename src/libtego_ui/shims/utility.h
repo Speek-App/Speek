@@ -7,7 +7,10 @@
 #include <QPainter>
 #include <QDir>
 #include <QDesktopServices>
+
+#ifndef CONSOLE_ONLY
 #include <QtConcurrent>
+#endif
 
 #ifndef _WIN32
 #include <quazip/quazip.h>
@@ -126,6 +129,7 @@ public:
     }
 #endif
 
+#ifndef CONSOLE_ONLY
     Q_INVOKABLE bool saveBase64(QString base64, QString name, QString type){
         auto proposedDest = QString("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)).arg(name + "." + type);
         #ifndef ANDROID
@@ -158,6 +162,8 @@ public:
         }
         return true;
     }
+#endif
+
     Q_INVOKABLE QString toBase64(QString url) {
         #ifdef Q_OS_WIN
             QImage image1(url.replace("file:///", "").replace("/","\\\\"));
@@ -568,6 +574,7 @@ public:
         return true;
     }
 
+#ifndef CONSOLE_ONLY
     Q_INVOKABLE static bool restoreBackup() {
         QMessageBox::StandardButton btn = QMessageBox::question(0,
             tr("Delete current Indentity"),
@@ -628,6 +635,7 @@ public:
         });
         watcher->setFuture(QtConcurrent::run(&Utility::exportBackup, name));
     }
+#endif
 
     static qint64 dirSize(QString dirPath) {
         qint64 size = 0;
@@ -750,6 +758,7 @@ public:
         openWithDefaultApplication(dir.path());
     }
 
+#ifndef CONSOLE_ONLY
     Q_INVOKABLE bool createNewTheme(QString name) {
         QString fileName = QFileDialog::getSaveFileName(nullptr, tr("Save File"), "my_speek_theme", "");
         if (fileName.isEmpty()) {
@@ -791,6 +800,7 @@ public:
         if(closeNow == QMessageBox::Yes)
             qApp->exit();
     }
+#endif
 
     Q_INVOKABLE static QString toHash(QString str){
         return QString(QCryptographicHash::hash((str.toUtf8()),QCryptographicHash::Md5).toHex());

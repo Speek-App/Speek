@@ -584,7 +584,9 @@ QObject *TorControl::getConfiguration(const QString &options)
     GetConfCommand *command = new GetConfCommand(GetConfCommand::GetConf);
     d->socket->sendCommand(command, command->build(options.toLatin1()));
 
+    #ifndef CONSOLE_ONLY
     QQmlEngine::setObjectOwnership(command, QQmlEngine::CppOwnership);
+    #endif
     return command;
 }
 
@@ -594,7 +596,9 @@ QObject *TorControl::setConfiguration(const QVariantMap &options)
     command->setResetMode(true);
     d->socket->sendCommand(command, command->build(options));
 
+    #ifndef CONSOLE_ONLY
     QQmlEngine::setObjectOwnership(command, QQmlEngine::CppOwnership);
+    #endif
     return command;
 }
 
@@ -699,7 +703,9 @@ PendingOperation *TorControl::saveConfiguration()
     QObject::connect(operation, &PendingOperation::finished, operation, &QObject::deleteLater);
     operation->start(d->socket);
 
+    #ifndef CONSOLE_ONLY
     QQmlEngine::setObjectOwnership(operation, QQmlEngine::CppOwnership);
+    #endif
     return operation;
 }
 

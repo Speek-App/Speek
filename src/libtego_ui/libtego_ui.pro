@@ -7,7 +7,13 @@ TEMPLATE = lib
 TARGET = tego_ui
 CONFIG += staticlib
 
-QT += core gui network quick widgets
+console{
+    QT += core network
+    DEFINES += "CONSOLE_ONLY=1"
+}
+else{
+    QT += core gui network quick widgets
+}
 
 CONFIG(release,debug|release):DEFINES += QT_NO_DEBUG_OUTPUT QT_NO_WARNING_OUTPUT
 
@@ -24,8 +30,11 @@ macx {
 android{
     QT += androidextras multimedia svg
 }
-QT += quickcontrols2
-QT += quick
+
+!console{
+    QT += quickcontrols2
+    QT += quick
+}
 
 CONFIG += precompile_header
 PRECOMPILED_HEADER = precomp.hpp
@@ -33,7 +42,6 @@ PRECOMPILED_HEADER = precomp.hpp
 SOURCES += \
     libtego_callbacks.cpp \
     shims/utility.cpp \
-    ui/Clipboard.cpp \
     ui/ContactsModel.cpp \
     ui/LanguagesModel.cpp \
     ui/MainWindow.cpp \
@@ -49,15 +57,17 @@ SOURCES += \
     shims/OutgoingContactRequest.cpp\
     shims/ContactIDValidator.cpp
 
+!console{
+    SOURCES += ui/Clipboard.cpp
+}
+else{
+    SOURCES += ui/console.cpp
+}
+
 HEADERS += \
     libtego_callbacks.hpp \
     shims/utility.h \
-    ui/Base64CircleImageProvider.h \
-    ui/Base64ImageProvider.h \
-    ui/Base64RoundedImageProvider.h \
-    ui/Clipboard.h \
     ui/ContactsModel.h \
-    ui/JazzIdenticonImageProvider.h \
     ui/LanguagesModel.h \
     ui/MainWindow.h \
     utils/Settings.h \
@@ -74,6 +84,17 @@ HEADERS += \
     shims/ContactIDValidator.h \
     utils/json.h
 
+!console{
+    HEADERS += ui/Clipboard.h \
+    ui/JazzIdenticonImageProvider.h \
+    ui/Base64RoundedImageProvider.h \
+    ui/Base64CircleImageProvider.h \
+    ui/Base64ImageProvider.h
+}
+else{
+    HEADERS += ui/console.h
+}
+
 android{
     HEADERS += utils/NotificationClient.h
     SOURCES += utils/NotificationClient.cpp
@@ -86,4 +107,6 @@ include($${PWD}/../libtego/libtego.pri)
     include($${PWD}/../libtego_ui/quazip/quazip.pri)
 }
 
-include(SCodes/SCodes.pri)
+!console{
+    include(SCodes/SCodes.pri)
+}

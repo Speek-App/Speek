@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ContactUser.h"
+#include "utils/json.h"
 
 namespace shims
 {
@@ -110,10 +111,17 @@ namespace shims
         bool exportConversation();
         // invokable function neeeds to use a Qt type since it is invokable from QML
         static_assert(std::is_same_v<quint32, tego_file_transfer_id_t>);
+        #ifndef CONSOLE_ONLY
         Q_INVOKABLE void tryAcceptFileTransfer(quint32 id);
+        #else
+        Q_INVOKABLE void tryAcceptFileTransfer(quint32 id, QString destination);
+        #endif
         Q_INVOKABLE void cancelFileTransfer(quint32 id);
         Q_INVOKABLE void rejectFileTransfer(quint32 id);
 
+        #ifdef CONSOLE_ONLY
+        void addEmitConsoleEventFromAllMessages();
+        #endif
 
         void setStatus(ContactUser::Status status);
 
@@ -136,6 +144,7 @@ namespace shims
         void group_member_changed();
         void unreadCountChanged(int prevCount, int currentCount);
         void conversationEventCountChanged();
+        void newIncomingMessage(nlohmann::json data);
     protected:
         static QMutex mutex;
 
@@ -148,6 +157,7 @@ namespace shims
             MessageDataType type = InvalidMessage;
             QString text = {};
             QString prep_text = {};
+            bool is_fully_received = true;
             QString group_user_nickname = {};
             QString group_user_id_hash = {};
             QDateTime time = {};
@@ -198,6 +208,9 @@ namespace shims
         bool handleMessage(MessageData &md, const QString& text);
 
         void addEventFromMessage(int row);
+        #ifdef CONSOLE_ONLY
+        void addEmitConsoleEventFromMessage(int row);
+        #endif
 
         void deserializeTextMessageEventToFile(const EventData &event, std::ofstream &ofile) const;
         void deserializeTransferMessageEventToFile(const EventData &event, std::ofstream &ofile) const;

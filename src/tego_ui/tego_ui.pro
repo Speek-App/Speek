@@ -43,8 +43,13 @@ include($${QMAKE_INCLUDES}/linker_flags.pri)
 TARGET = speek
 TEMPLATE = app
 
-QT += core gui network quick widgets
-
+console{
+    QT += core network
+    DEFINES += "CONSOLE_ONLY=1"
+}
+else{
+    QT += core gui network quick widgets
+}
 LIBS += -lz
 
 VERSION = 1.7.0
@@ -75,8 +80,11 @@ android{
     ANDROID_MIN_SDK_VERSION = 27
     ANDROID_TARGET_SDK_VERSION = 30
 }
-QT += quickcontrols2
-QT += quick
+
+!console{
+    QT += quickcontrols2
+    QT += quick
+}
 
 # Create a pdb for release builds as well, to enable debugging
 win32-msvc2008|win32-msvc2010 {
@@ -95,15 +103,17 @@ unix:!macx:QTPLUGIN.platforminputcontexts = composeplatforminputcontextplugin ib
 
 DEFINES += QT_NO_CAST_TO_ASCII
 
-# QML
-RESOURCES +=\
-    $${PWD}/../libtego_ui/ui/qml/qml.qrc \
-    backgrounds.qrc \
-    emoji.qrc \
-    fonts.qrc \
-    icons/icons.qrc \
-    sounds/sounds.qrc \
-    themes.qrc
+!console{
+    # QML
+    RESOURCES +=\
+        $${PWD}/../libtego_ui/ui/qml/qml.qrc \
+        backgrounds.qrc \
+        emoji.qrc \
+        fonts.qrc \
+        icons/icons.qrc \
+        sounds/sounds.qrc \
+        themes.qrc
+}
 
 win32:RC_ICONS = icons/speek.ico
 OTHER_FILES += $${PWD}/../libtego_ui/ui/qml/*

@@ -30,6 +30,10 @@ namespace shims
         this->requests.erase(it);
         emit this->requestsChanged();
 
+        #ifdef CONSOLE_ONLY
+        emit this->requestRemoved(incomingContactRequest->getContactId());
+        #endif
+
         incomingContactRequest->deleteLater();
     }
 

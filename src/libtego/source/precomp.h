@@ -98,13 +98,19 @@ extern "C" {
 #include <QPair>
 #include <QPointer>
 #include <QProcess>
-#include <QPushButton>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QQmlEngine>
-#include <QQmlNetworkAccessManagerFactory>
+#ifndef CONSOLE_ONLY
+    #include <QPushButton>
+    #include <QQmlApplicationEngine>
+    #include <QQmlContext>
+    #include <QQmlEngine>
+    #include <QQmlNetworkAccessManagerFactory>
+    #include <QQuickItem>
+    #include <QtQml>
+#else
+    #include <QDir>
+    #include <QRandomGenerator>
+#endif
 #include <QQueue>
-#include <QQuickItem>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include <QSaveFile>
@@ -122,7 +128,6 @@ extern "C" {
 #include <QtGlobal>
 #include <QTime>
 #include <QTimer>
-#include <QtQml>
 #include <QUrl>
 #include <QVariant>
 #include <QVariantMap>

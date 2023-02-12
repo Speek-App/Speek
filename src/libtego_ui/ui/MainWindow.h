@@ -90,10 +90,12 @@ public:
 
     Q_INVOKABLE void reloadTheme();
 
+    #ifndef CONSOLE_ONLY
     Q_INVOKABLE bool showRemoveContactDialog(shims::ContactUser *user);
 
     // Find parent window of a QQuickItem; exposed as property after Qt 5.4
     Q_INVOKABLE QQuickWindow *findParentWindow(QQuickItem *item);
+    #endif
 
 private:
     QQmlApplicationEngine *qml;

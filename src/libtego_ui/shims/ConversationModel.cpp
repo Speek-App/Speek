@@ -276,12 +276,16 @@ QMutex ConversationModel::mutex;
     {
         QString filePath;
         if(path == "")
+            #ifndef CONSOLE_ONLY
             filePath =
                 QFileDialog::getOpenFileName(
                     nullptr,
                     tr("Open File"),
                     QDir::homePath(),
                     nullptr);
+            #else
+            return;
+            #endif
         else
             filePath = path;
 
@@ -475,10 +479,14 @@ QMutex ConversationModel::mutex;
     {
         const auto proposedDest = QString("%1/%2-%3.log").arg(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)).arg(this->contact()->getNickname()).arg(this->events.constFirst().time.toString(Qt::ISODate));
 
+        #ifndef CONSOLE_ONLY
         auto filePath = QFileDialog::getSaveFileName(nullptr,
                                                         tr("Save File"),
                                                         proposedDest,
                                                         "Log files (*.log);;All files (*)");
+        #else
+        auto filePath = QString("");
+        #endif
 
         if (filePath.isEmpty())
             return true;
@@ -502,7 +510,11 @@ QMutex ConversationModel::mutex;
         return true;
     }
 
+    #ifndef CONSOLE_ONLY
     void ConversationModel::tryAcceptFileTransfer(quint32 id)
+    #else
+    void ConversationModel::tryAcceptFileTransfer(quint32 id, QString destination)
+    #endif
     {
         auto row = this->indexOfIncomingMessage(id);
         if (row < 0)
@@ -524,10 +536,14 @@ QMutex ConversationModel::mutex;
         if (!dest.isEmpty() && !data.filePath.isEmpty())
         {
 #else
+        #ifndef CONSOLE_ONLY
         auto dest = QFileDialog::getSaveFileName(
             nullptr,
             tr("Save File"),
             proposedDest);
+        #else
+        auto dest = destination;
+        #endif
         if (!dest.isEmpty())
         {
 #endif
@@ -867,34 +883,38 @@ QMutex ConversationModel::mutex;
         }
 
         QMutexLocker locker(&mutex);
-        QList<MessageData>::iterator i = nullptr;
-        for (i = messages.begin(); i != messages.end(); i++)
-            if(i->identifier == messageId){
-                auto row = this->indexOfMessage(messageId);
-                if (row >= 0)
-                {
-                    MessageData &data = messages[row];
-                    data.prep_text = QString::number(chunks_rec*100/chunks_max) + "% (" + QString::number(float(chunks_max)*63000/1000/1000*chunks_rec/chunks_max) + "/" + QString::number(float(chunks_max)*63000/1000/1000)+"MB)";
+        int row = this->indexOfMessage(messageId);
 
-                    if(chunks_max == chunks_rec){
-                        if(!handleMessage(data, text)){
+        if (row >= 0) {
+            MessageData &data = messages[row];
+            data.prep_text = QString::number(chunks_rec * 100 / chunks_max) +
+                "% (" + QString::number(float(chunks_max) * 63000 / 1000 / 1000 * chunks_rec / chunks_max) +
+                "/" + QString::number(float(chunks_max) * 63000 / 1000 / 1000) + "MB)";
 
-                        }
-                    }
-                    emitDataChanged(row);
-                    return;
-                }
+            if (chunks_max == chunks_rec){
+                data.is_fully_received = true;
+                if (handleMessage(data, text))
+                    this->addEventFromMessage(indexOfIncomingMessage(messageId));
             }
+            else
+                data.is_fully_received = false;
+
+            emitDataChanged(row);
+            return;
+        }
 
         MessageData md;
         md.type = TextMessage;
         if(chunks_max == chunks_rec){
+            md.is_fully_received = true;
             if(!handleMessage(md, text)){
                 return;
             }
             if(isGroupHostMode)
                 return;
         }
+        else
+            md.is_fully_received = false;
         md.prep_text = QString::number(chunks_rec/chunks_max*100);
         md.time = timestamp;
         md.identifier = messageId;
@@ -921,6 +941,51 @@ QMutex ConversationModel::mutex;
         data.status = accepted ? Delivered : Error;
         emitDataChanged(row);
     }
+
+    #ifdef CONSOLE_ONLY
+    void ConversationModel::addEmitConsoleEventFromAllMessages()
+    {
+        for (int i = messages.size() - 1; i >= 0; i--) {
+            addEmitConsoleEventFromMessage(i);
+        }
+    }
+
+    void ConversationModel::addEmitConsoleEventFromMessage(int row)
+    {
+        if (row < 0)
+            return;
+
+        auto &md = this->messages[row];
+
+        if(md.status == Received || md.status == Sending || md.status == Queued || md.status == Delivered){
+            nlohmann::json j;
+            j["type"] = md.type;
+            j["text"] = md.text.toStdString();
+            j["prep_text"] = md.prep_text.toStdString();
+            j["is_fully_received"] = md.is_fully_received;
+            j["group_user_nickname"] = md.group_user_nickname.toStdString();
+            j["group_user_id_hash"] = md.group_user_id_hash.toStdString();
+            j["time"] = md.time.toString().toStdString();
+            j["identifier"] = md.identifier;
+            j["status"] = md.status;
+            j["attemptCount"] = md.attemptCount;
+            j["fileName"] = md.fileName.toStdString();
+            j["fileSize"] = md.fileSize;
+            j["fileHash"] = md.fileHash.toStdString();
+            j["bytesTransferred"] = md.bytesTransferred;
+            j["transferDirection"] = md.transferDirection;
+            j["transferStatus"] = md.transferStatus;
+            j["from_id"] = contactUser->getContactID().toStdString();
+            j["from_name"] = contactUser->getNickname().toStdString();
+            #ifdef ANDROID
+                j["filePath"] = md.filePath.toStdString();
+                j["fileTransferPath"] = md.fileTransferPath.toStdString();
+            #endif
+
+            emit this->newIncomingMessage(j);
+        }
+    }
+    #endif
 
     void ConversationModel::addEventFromMessage(int row)
     {
@@ -949,6 +1014,10 @@ QMutex ConversationModel::mutex;
 
         this->events.append(std::move(ed));
         emit this->conversationEventCountChanged();
+
+        #ifdef CONSOLE_ONLY
+        addEmitConsoleEventFromMessage(row);
+        #endif
     }
 
     void ConversationModel::setStatus(ContactUser::Status status)
@@ -968,6 +1037,9 @@ QMutex ConversationModel::mutex;
     {
         Q_ASSERT(row >= 0);
         emit dataChanged(index(row, 0), index(row, 0));
+        #ifdef CONSOLE_ONLY
+        addEmitConsoleEventFromMessage(row);
+        #endif
     }
 
     int ConversationModel::indexOfMessage(quint32 identifier) const

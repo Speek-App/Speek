@@ -26,13 +26,20 @@
 #include <QClipboard>
 #include <QDateTime>
 #include <QDir>
-#include <QFileDialog>
-#include <QGuiApplication>
-#include <QMessageBox>
-#include <QQuickItem>
+#ifndef CONSOLE_ONLY
+    #include <QFileDialog>
+    #include <QGuiApplication>
+    #include <QMessageBox>
+    #include <QQuickItem>
+    #include <QtQml>
+#else
+    #include <QtCore>
+    #include <QNetworkAccessManager>
+    #include <QNetworkProxy>
+    #include <QPalette>
+#endif
 #include <QRegularExpressionValidator>
 #include <QScreen>
-#include <QtQml>
 #ifdef Q_OS_MAC
 #   include <QtMac>
 #endif // Q_OS_MAC
