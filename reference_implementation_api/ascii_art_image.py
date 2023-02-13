@@ -60,7 +60,7 @@ def display_image(screen, image_b64):
         ascii_color.append(closest_color[0])
     
     # Display the ASCII image in the terminal
-    for row in range(curses.LINES):
+    for row in range(max_y - 1):
         line = "".join(ascii_image[row * (img.width) : (row + 1) * (img.width)])
         color_line = ascii_color[row * (img.width) : (row + 1) * (img.width)]
         for i, char in enumerate(line):

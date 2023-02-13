@@ -9,6 +9,7 @@ import qrcode
 import os
 import subprocess
 import logging
+import sys
 from ascii_art_image import display_image
 
 command_desc = {"/send": "Sends a message to the selected contact. Example: '/send Hello, how are you?'",
@@ -21,13 +22,14 @@ command_desc = {"/send": "Sends a message to the selected contact. Example: '/se
                 "/reject_request": "Rejects a contact request. Example: '/reject_request 1' to reject the contact request with ID 1.",
                 "/accept_request": "Accepts a contact request. Example: '/accept_request 1' to accept the contact request with ID 1.",
                 "/send_request": "Sends a contact request. Example: '/send_request speek_id nickname my_nickname message' to send a request to the specified 'speek_id' and set the recipient's name as 'nickname'. Your name will be suggested as 'my_nickname' and a 'message' can be included.",
-                "/set_nick": "Sets the nickname for a contact. Example: '/set_nick 1 nickname' to set the nickname for contact with ID 1 to 'nickname'.",
+                "/rename": "Sets the nickname for a contact. Example: '/rename 1 nickname' to set the nickname for contact with ID 1 to 'nickname'.",
                 #"/set_prune_limit": "Sets the pruning limit for the chat messages. Example: '/set_prune_limit 100' to set the prune limit to 100.",
                 #"/export_identity": "Exports your identity for backup purposes. Example: '/export_identity /folder/backup_1.zip' to backup your speek indentity to '/folder/backup_1.zip'.",
                 "/show_config_path": "Displays the path of the configuration folder.",
                 "/show_my_speek_id": "Displays your speek id.",
                 "/help": "Displays the list of commands and their descriptions.",
                 "/show_contact_requests": "Displays a list of all contact requests.",
+                "/show_image": "Displays the selected image directly in the terminal window.",
                 "/quit": "Closes this application."
 }
 
@@ -329,12 +331,10 @@ class ChatUI:
                     c.messages.append(msgc)
                     if json_data["from_id"] == self.selected_contact.id:
                         self._linebuffer_add(msgc)
-        if not already_exists:
-            self.redraw_chatbuffer()
-            self.redraw_chatline()
-            self.win_chatline.cursyncup()
-        else:
-            self.resize()
+
+        self.redraw_chatbuffer()
+        self.redraw_chatline()
+        self.win_chatline.cursyncup()
 
     def _linebuffer_add(self, msgc):
         msg = ""
@@ -509,7 +509,7 @@ def receive_updates(ipc_socket, stop_flag, ui, torStatus):
                             c.name = json_data["name"]
                             c.status = json_data["status"]
                             c.is_group = json_data["is_group"]
-                    ui.redraw_userlist()
+                    ui.redraw_ui()
             elif "com" in json_data:
                 if json_data["com"] == "getId":
                     ui.speek_id = json_data["id"]
@@ -520,8 +520,9 @@ def receive_updates(ipc_socket, stop_flag, ui, torStatus):
                         ui.contacts.clear()
                         for c in json_data["out"]:
                             ui.contacts.append(Contact(c["name"], c["id"], c["is_group"], c["status"]))
-                        ui.selected_contact = ui.contacts[8]
-                        ui.redraw_userlist()
+                        if len(ui.contacts) > 0:
+                            ui.selected_contact = ui.contacts[0]
+                        ui.redraw_ui()
 
 def write_message(socket, data, version=19):
     # Encode the data
@@ -581,6 +582,7 @@ class torStatus:
                 self.stdscr.refresh()
             time.sleep(0.05)
         try:
+            self.stdscr.clear()
             curses.curs_set(1)
         except:
             pass
@@ -600,11 +602,18 @@ def main(stdscr):
         stop_flag = threading.Event()
         t = threading.Thread(target=receive_updates, args=(ipc_socket, stop_flag, ui, tor_status))
 
-        start_process = False
+        # Get all input parameters passed to the Python script
+        input_parameters = sys.argv[1:]
 
+        # Check if the skip-process-start option is present in the input parameters
+        start_process = True
+        if "--skip-process-start" in input_parameters:
+            start_process = False
+            input_parameters.remove("--skip-process-start")
+
+        # Start the subprocess if the start_process option is present
         if start_process:
-            # Start the subprocess
-            p = subprocess.Popen(["./speek"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = subprocess.Popen(["./speek"] + input_parameters, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         # Wait for the IPC endpoint file to become available
         start_time = time.time()
@@ -623,7 +632,8 @@ def main(stdscr):
             tor_status.show()
 
         ui.update_screen = True
-        ui.redraw_ui()
+        ui.resize()
+        ui.win_chatline.move(0,0)
         
         write_message(ipc_socket, '{"com":"getContacts"}')
         write_message(ipc_socket, '{"com":"getAllMessages"}')
@@ -697,8 +707,18 @@ def main(stdscr):
                         write_message(ipc_socket, json.dumps(json_c))
                 elif com == "/send_request":
                     pass
-                elif com == "/set_nick":
-                    pass
+                elif com == "/rename":
+                    json_c["com"] = "renameContact"
+
+                    contact_id, contact_name = val.split(" ", 1)
+                    contact_speek_id = ""
+                    for c in ui.contacts:
+                        if c.contact_counter == int(contact_id):
+                            contact_speek_id = c.id
+                    if contact_speek_id != "":
+                        json_c["id"] = contact_speek_id
+                        json_c["nickname"] = contact_name
+                        write_message(ipc_socket, json.dumps(json_c))
                 elif com == "/set_prune_limit":
                     pass
                 elif com == "/export_identity":
@@ -716,21 +736,20 @@ def main(stdscr):
                     for c in ui.contacts:
                         if c.contact_counter == int(val):
                             ui.selected_contact = c
-                            ui.redraw_userlist()
+                            ui.resize()
                             break
                 elif com == "/show_contact_requests":
                     contact_requests_display.update_shown_strings()
                     contact_requests_display.show()
                 elif com == "/show_image":
-                    ui.update_screen = False
-                    stdscr.clear()
-
                     image_b64 = ""
                     for m in ui.selected_contact.messages:
                         if hasattr(m, "file_counter") and m.file_counter == int(val) and m.json_data["type"] == 2:
                             image_b64 = m.json_data["image"]
                     
                     if image_b64 != "":
+                        ui.update_screen = False
+                        stdscr.clear()
                         display_image(stdscr, image_b64)
                         ui.update_screen = True
                         ui.redraw_ui()
@@ -768,6 +787,9 @@ def main(stdscr):
                     
                     ui.update_screen = True
                     ui.redraw_ui()
+                else:
+                    ui.log_line = "unknown command: " + inp
+                    ui.redraw_help()
             except Exception as e:
                 ui.update_screen = True
                 logging.exception("An error occured:")

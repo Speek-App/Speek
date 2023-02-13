@@ -352,6 +352,8 @@ void Console::handleRenameContact(const nlohmann::json &command, nlohmann::json 
     if (!renameContact) throw std::invalid_argument("No user found with this id");
 
     renameContact->setNickname(QString::fromStdString(command["nickname"]));
+
+    emit renameContact->statusChanged();
 }
 
 void Console::handleSetIconContact(const nlohmann::json &command, nlohmann::json &res) {
