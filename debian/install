@@ -1,2 +1,14 @@
-src/speek.desktop usr/share/applications
-speek usr/bin
+src/tego_ui/speek.desktop usr/share/applications
+build/release/tego_ui/speek usr/bin
+build/release/tego_group/speek-group usr/bin
+debian/icons/16x16/* usr/share/icons/hicolor/16x16/apps
+debian/icons/24x24/* usr/share/icons/hicolor/24x24/apps
+debian/icons/32x32/* usr/share/icons/hicolor/32x32/apps
+debian/icons/48x48/* usr/share/icons/hicolor/48x48/apps
+debian/icons/64x64/* usr/share/icons/hicolor/64x64/apps
+debian/icons/96x96/* usr/share/icons/hicolor/96x96/apps
+debian/icons/128x128/* usr/share/icons/hicolor/128x128/apps
+debian/icons/192x192/* usr/share/icons/hicolor/192x192/apps
+debian/icons/256x256/* usr/share/icons/hicolor/256x256/apps
+debian/icons/512x512/* usr/share/icons/hicolor/512x512/apps
+debian/icons/1024x1024/* usr/share/icons/hicolor/1024x1024/apps

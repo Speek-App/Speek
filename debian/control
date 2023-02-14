@@ -2,8 +2,8 @@ Source: speek
 Section: net
 Priority: optional
 Maintainer: Speek <contact@speek.network>
-Build-Depends: debhelper (>= 9), pkg-config, libevent-dev, libssl-dev, libprotobuf-dev, protobuf-compiler, qtbase5-dev, qtdeclarative5-dev, qttools5-dev-tools, tor, make
-Standards-Version: 4.4.1
+Build-Depends: debhelper (>= 9), pkg-config, libevent-dev, libssl-dev (>= 1.1), libprotobuf-dev, protobuf-compiler, qtbase5-dev (>= 5.15), qtdeclarative5-dev (>= 5.15), qttools5-dev-tools, qtquickcontrols2-5-dev (>= 5.15), qtmultimedia5-dev (>= 5.15), tor, make
+Standards-Version: 1.7.0
 Homepage: https://speek.network/
 
 Package: speek
@@ -11,6 +11,8 @@ Architecture: any
 Depends: tor, ${shlibs:Depends}, ${misc:Depends},
     qml-module-qtgraphicaleffects,
     qml-module-qtquick-controls,
+    qml-module-qtquick-controls2,
+    qml-module-qt-labs-platform,
     qml-module-qtquick-layouts,
     qml-module-qtquick-dialogs
 Description: Anonymous metadata-resistant instant messaging
