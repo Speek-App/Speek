@@ -163,6 +163,9 @@ namespace shims
             quint64 bytesTransferred = 0;
             TransferDirection transferDirection = InvalidDirection;;
             TransferStatus transferStatus = InvalidTransfer;
+            quint64 bytesTransferredFewSecAgo = 0;
+            QDateTime timeBytesTransferredFewSecAgo = {};
+            quint64 transferDownloadSpeed = 0;
             #ifdef ANDROID
             QString filePath = {};
             QString fileTransferPath = {};
