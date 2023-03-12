@@ -30,6 +30,16 @@ For more information, you can [read about Tor](https://www.torproject.org/about/
 
 Speek.Chat is currently available for OS X (10.12 or later), Linux and Windows. Visit the [releases page](https://github.com/Speek-App/Speek/releases) for the latest version and changelog. Alternatively, the newest version of Speek.Chat is also available on the [Microsoft Store](https://www.microsoft.com/en-us/p/speek/9plhbg7k1wzn?activetab=pivot:overviewtab).
 
+### Cloning Instructions
+
+In order to clone the repository correctly, it is necessary to use the --recurse-submodules flag to ensure that all the required submodules are cloned along with the main repository.
+
+Please use the following command to clone the repository:
+
+```sh
+git clone --recurse-submodules https://github.com/Speek-App/Speek.git
+```
+
 ### License
 
 Everything is [open-source](https://github.com/Speek-App/Speek/blob/main/src/LICENSE) and open to contribution.
