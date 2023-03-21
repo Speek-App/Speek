@@ -4,6 +4,18 @@
 
 namespace shims
 {
+    struct ContactInfo {
+        QString nickname;
+        QString icon;
+        bool group = false;
+        bool is_a_group = false;
+        bool save_messages = false;
+        bool send_undelivered_messages_after_resume = false;
+        bool auto_download_files = false;
+        QString auto_download_dir = "";
+        unsigned last_online = 0;
+    };
+
     class ContactsManager;
     class ConversationModel;
     class OutgoingContactRequest;
@@ -35,7 +47,7 @@ namespace shims
             Outdated
         };
 
-        ContactUser(const QString& serviceId, const QString& nickname, const QString& icon = "", bool is_a_group = false, bool group = false, bool save_messages = false, bool send_undelivered_messages_after_resume = false, bool auto_download_files = false, QString auto_download_dir = "", unsigned last_online = 0);
+        ContactUser(const QString& serviceId, const ContactInfo& info);
         ~ContactUser();
         QString getNickname() const;
         QString getIcon() const;

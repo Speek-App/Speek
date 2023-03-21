@@ -590,20 +590,22 @@ void MainWindow::loadSettings(tego_context_t* tegoContext, shims::ContactsManage
                 type == tego_user_type_pending ||
                 type == tego_user_type_rejected)
             {
-                const auto nickname = userData.value("nickname").toString();
-                const auto icon = userData.contains("icon") ? userData.value("icon").toString() : "";
-                const auto is_a_group = userData.contains("isGroup") ? userData.value("isGroup").toBool() : false;
-                const auto send_undelivered_messages_after_resume = userData.contains("send_undelivered_messages_after_resume") ? userData.value("send_undelivered_messages_after_resume").toBool() : false;
-                const auto save_messages = userData.contains("save_messages") ? userData.value("save_messages").toBool() : false;
-                const auto last_online = userData.contains("last_online") ? userData.value("last_online").toInt() : 0;
+                shims::ContactInfo info;
+                info.nickname = userData.value("nickname").toString();
+                info.icon = userData.contains("icon") ? userData.value("icon").toString() : "";
+                info.group = contactsManager->get_isGroupHostMode();
+                info.is_a_group = userData.contains("isGroup") ? userData.value("isGroup").toBool() : false;
+                info.send_undelivered_messages_after_resume = userData.contains("send_undelivered_messages_after_resume") ? userData.value("send_undelivered_messages_after_resume").toBool() : false;
+                info.save_messages = userData.contains("save_messages") ? userData.value("save_messages").toBool() : false;
+                info.last_online = userData.contains("last_online") ? userData.value("last_online").toInt() : 0;
                 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
-                const auto auto_download_files = userData.contains("auto_download_files") ? userData.value("auto_download_files").toBool() : false;
-                const auto auto_download_dir = userData.contains("auto_download_dir") ? userData.value("auto_download_dir").toString() : "";
+                info.auto_download_files = userData.contains("auto_download_files") ? userData.value("auto_download_files").toBool() : false;
+                info.auto_download_dir = userData.contains("auto_download_dir") ? userData.value("auto_download_dir").toString() : "";
                 #else
-                const auto auto_download_files = false;
-                const auto auto_download_dir = "";
+                info.auto_download_files = false;
+                info.auto_download_dir = "";
                 #endif
-                auto contact = contactsManager->addContact(serviceIdString, nickname, icon, is_a_group, save_messages, send_undelivered_messages_after_resume, auto_download_files, auto_download_dir, last_online);
+                auto contact = contactsManager->addContact(serviceIdString, info);
                 switch(type)
                 {
                 case tego_user_type_allowed:

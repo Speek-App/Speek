@@ -30,7 +30,10 @@ namespace shims
             return nullptr;
         }
 
-        auto shimContact = this->addContact(serviceId, nickname, icon);
+        shims::ContactInfo info;
+        info.nickname = nickname;
+        info.icon = icon;
+        auto shimContact = this->addContact(serviceId, info);
 
         auto userId = shimContact->toTegoUserId();
 
@@ -55,10 +58,10 @@ namespace shims
         return shimContact;
     }
 
-    shims::ContactUser* ContactsManager::addContact(const QString& serviceId, const QString& nickname, const QString& icon, bool is_a_group, bool save_messages, bool send_undelivered_messages_after_resume, bool auto_download_files, QString auto_download_dir, unsigned last_online)
+    shims::ContactUser* ContactsManager::addContact(const QString& serviceId, const shims::ContactInfo& info)
     {
         // creates a new contact from service id and nickname
-        auto shimContact = new shims::ContactUser(serviceId, nickname, icon, is_a_group, isGroupHostMode, save_messages, send_undelivered_messages_after_resume, auto_download_files, auto_download_dir, last_online);
+        auto shimContact = new shims::ContactUser(serviceId, info);
         contactsList.push_back(shimContact);
 
         // remove our reference and ready for deleting when contactDeleted signal is fireds

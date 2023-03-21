@@ -9,8 +9,8 @@
 
 namespace shims
 {
-    ContactUser::ContactUser(const QString& serviceId, const QString& nickname, const QString& icon, bool is_a_group, bool group, bool save_messages, bool send_undelivered_messages_after_resume, bool auto_download_files, QString auto_download_dir, unsigned last_online)
-    : conversationModel(new shims::ConversationModel(this, group))
+    ContactUser::ContactUser(const QString& serviceId, const ContactInfo& info)
+    : conversationModel(new shims::ConversationModel(this, info.group))
     , outgoingContactRequest(new shims::OutgoingContactRequest())
     , status(ContactUser::Offline)
     , serviceId(serviceId)
@@ -21,14 +21,14 @@ namespace shims
         Q_ASSERT(serviceId.size() == TEGO_V3_ONION_SERVICE_ID_LENGTH);
         conversationModel->setContact(this);
 
-        this->setNickname(nickname);
-        this->setIcon(icon);
-        this->setIsAGroup(is_a_group);
-        this->setSaveMessages(save_messages);
-        this->setSendUndeliveredMessagesAfterResume(send_undelivered_messages_after_resume);
-        this->setAutoDownloadFiles(auto_download_files);
-        this->setAutoDownloadDir(auto_download_dir);
-        this->last_online = QDateTime::fromSecsSinceEpoch(last_online);
+        this->setNickname(info.nickname);
+        this->setIcon(info.icon);
+        this->setIsAGroup(info.is_a_group);
+        this->setSaveMessages(info.save_messages);
+        this->setSendUndeliveredMessagesAfterResume(info.send_undelivered_messages_after_resume);
+        this->setAutoDownloadFiles(info.auto_download_files);
+        this->setAutoDownloadDir(info.auto_download_dir);
+        this->last_online = QDateTime::fromSecsSinceEpoch(info.last_online);
         emit this->lastOnlineChanged();
     }
 
