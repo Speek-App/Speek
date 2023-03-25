@@ -332,27 +332,34 @@ ApplicationWindow {
 
             Rectangle{
                 id: torOnline
-                visible: Qt.platform.os === "android" && !toolBar.torstatewidget.visible
+                visible: Qt.platform.os === "android"
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 height:30
                 color: palette.window
                 Layout.alignment: Qt.AlignRight
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        if(toolBar.torstatewidget.visible)
+                            openPreferences("TorPreferences.qml")
+                    }
+                }
                 RowLayout{
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     Text {
                         id: connectedIndicator
                         color:styleHelper.chatIconColor
-                        text: qsTr("Tor circuit established")
+                        text: !toolBar.torstatewidget.visible ? qsTr("Tor circuit established") : qsTr("Establishing Tor circuit")
                     }
                     Image{
                         width: 20
                         height: 20
                         Layout.preferredWidth: 20
                         Layout.preferredHeight: 20
-                        source: "qrc:/icons/android/tor_logo.svg"
+                        source: Qt.platform.os === "android" ? "qrc:/icons/android/tor_logo.svg" : "qrc:/icons/tor_logo.png"
                         clip: true
                         fillMode: Image.PreserveAspectFit
                     }

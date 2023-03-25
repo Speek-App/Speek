@@ -17,7 +17,7 @@ namespace shims
             const QString &myNickname,
             const QString &message,
             const QString &icon = "");
-        shims::ContactUser* addContact(const QString& serviceId, const QString& nickname, const QString& icon = "", bool is_a_group = false);
+        shims::ContactUser* addContact(const QString& serviceId, const ContactInfo& info);
         const QList<shims::ContactUser*>& contacts() const;
         shims::ContactUser* getShimContactByContactId(const QString& contactId) const;
 
@@ -37,6 +37,9 @@ namespace shims
                 if(cu->getStatus() == ContactUser::Online || cu->getStatus() == ContactUser::Offline)
                     c++;
             return c;
+        }
+        bool get_isGroupHostMode(){
+            return isGroupHostMode;
         }
         Q_INVOKABLE int count_contacts_with_unread_message();
 

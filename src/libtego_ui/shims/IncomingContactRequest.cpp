@@ -59,7 +59,11 @@ namespace shims
 
         userIdentity->removeIncomingContactRequest(this);
 
-        contactManager->addContact(serviceIdString, nickname, "", isGroup);
+        shims::ContactInfo info;
+        info.nickname = nickname;
+        info.icon = "";
+        info.is_a_group = isGroup;
+        contactManager->addContact(serviceIdString, info);
 
         SettingsObject settings(QString("users.%1").arg(serviceIdString));
         settings.write<QString>("type", "allowed");

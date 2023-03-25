@@ -9,8 +9,8 @@
 
 namespace shims
 {
-    ContactUser::ContactUser(const QString& serviceId, const QString& nickname, const QString& icon, bool is_a_group, bool group)
-    : conversationModel(new shims::ConversationModel(this, group))
+    ContactUser::ContactUser(const QString& serviceId, const ContactInfo& info)
+    : conversationModel(new shims::ConversationModel(this, info.group))
     , outgoingContactRequest(new shims::OutgoingContactRequest())
     , status(ContactUser::Offline)
     , serviceId(serviceId)
@@ -21,9 +21,23 @@ namespace shims
         Q_ASSERT(serviceId.size() == TEGO_V3_ONION_SERVICE_ID_LENGTH);
         conversationModel->setContact(this);
 
-        this->setNickname(nickname);
-        this->setIcon(icon);
-        this->setIsAGroup(is_a_group);
+        this->setNickname(info.nickname);
+        this->setIcon(info.icon);
+        this->setIsAGroup(info.is_a_group);
+        this->setSaveMessages(info.save_messages);
+        this->setSendUndeliveredMessagesAfterResume(info.send_undelivered_messages_after_resume);
+        this->setAutoDownloadFiles(info.auto_download_files);
+        this->setAutoDownloadDir(info.auto_download_dir);
+        this->last_online = QDateTime::fromSecsSinceEpoch(info.last_online);
+        emit this->lastOnlineChanged();
+    }
+
+    ContactUser::~ContactUser(){
+        conversation()->saveConversationTimer.stop();
+        if(this->status == ContactUser::Online){
+            settings.write("last_online", QDateTime::currentDateTime().toSecsSinceEpoch());
+        }
+        conversation()->saveConversationHistory();
     }
 
     QString ContactUser::getNickname() const
@@ -44,6 +58,42 @@ namespace shims
     ContactUser::Status ContactUser::getStatus() const
     {
         return status;
+    }
+
+    QString ContactUser::getTimeSinceLastOnline() const {
+        if(last_online.toSecsSinceEpoch() == 0)
+            return "";
+
+        qint64 seconds = last_online.secsTo(QDateTime::currentDateTime());
+
+        if(seconds < 0){
+            return "";
+        }
+
+        const qint64 DAY = 86400;
+        qint64 days = seconds / DAY;
+        QTime t = QTime(0,0).addSecs(seconds % DAY);
+        if(days > 0){
+            if(days > 1)
+                return QString(tr("%1 days ago")).arg(days);
+            else
+                return QString(tr("1 day ago"));
+        }
+        else if(t.hour() > 0){
+            if(t.hour() > 1)
+                return QString(tr("%1 hours ago")).arg(t.hour());
+            else
+                return QString(tr("1 hour ago"));
+        }
+        else if(t.minute() > 0){
+            if(t.minute() > 1)
+                return QString(tr("%1 minutes ago")).arg(t.minute());
+            else
+                return QString(tr("1 minute ago"));
+        }
+        else{
+            return QString(tr("just now"));
+        }
     }
 
     QString ContactUser::getSection() const {
@@ -76,6 +126,9 @@ namespace shims
                 case ContactUser::Online:
                 case ContactUser::Offline:
                     settings.write("type", "allowed");
+                    last_online = QDateTime::currentDateTime();
+                    settings.write("last_online", last_online.toSecsSinceEpoch());
+                    emit lastOnlineChanged();
                     break;
                 case ContactUser::RequestPending:
                     settings.write("type", "pending");
@@ -117,6 +170,45 @@ namespace shims
             this->icon = icon;
             settings.write("icon", icon);
             emit this->iconChanged();
+        }
+    }
+
+    void ContactUser::setSendUndeliveredMessagesAfterResume(const bool &val){
+        if (this->send_undelivered_messages_after_resume != val)
+        {
+            this->send_undelivered_messages_after_resume = val;
+            settings.write("send_undelivered_messages_after_resume", val);
+            emit this->sendUndeliveredMessagesAfterResumeChanged();
+        }
+    }
+
+    void ContactUser::setSaveMessages(const bool &val){
+        if (this->save_messages != val)
+        {
+            this->save_messages = val;
+            settings.write("save_messages", val);
+            if(!val){
+                conversation()->deleteConversationHistory();
+            }
+            emit this->saveMessagesChanged();
+        }
+    }
+
+    void ContactUser::setAutoDownloadFiles(const bool &val){
+        if (this->auto_download_files != val)
+        {
+            this->auto_download_files = val;
+            settings.write("auto_download_files", val);
+            emit this->autoDownloadFilesChanged();
+        }
+    }
+
+    void ContactUser::setAutoDownloadDir(const QString &val){
+        if (this->auto_download_dir != val)
+        {
+            this->auto_download_dir = val;
+            settings.write("auto_download_dir", val);
+            emit this->autoDownloadDirChanged();
         }
     }
 

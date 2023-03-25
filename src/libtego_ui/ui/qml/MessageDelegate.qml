@@ -6,11 +6,22 @@ import im.utility 1.0
 
 Column {
     id: delegate
-    width: parent.width
+    width: parent == null ? 0 : parent.width
     property string selected_image;
     property string copy_selected_image;
     property alias messageChildItem: message.childItem
     property var emojiRegex: /\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc41\u200d\ud83d\udde8|(?:[\u0023\u002a\u0030-\u0039])\ufe0f?\u20e3|(?:(?:[\u261d\u270c])(?:\ufe0f|(?!\ufe0e))|\ud83c[\udf85\udfc2-\udfc4\udfc7\udfca\udfcb]|\ud83d[\udc42\udc43\udc46-\udc50\udc66-\udc69\udc6e\udc70-\udc78\udc7c\udc81-\udc83\udc85-\udc87\udcaa\udd75\udd90\udd95\udd96\ude45-\ude47\ude4b-\ude4f\udea3\udeb4-\udeb6\udec0]|\ud83e\udd18|[\u26f9\u270a\u270b\u270d])(?:\ud83c[\udffb-\udfff]|)|\ud83c\udde6\ud83c[\udde8-\uddec\uddee\uddf1\uddf2\uddf4\uddf6-\uddfa\uddfc\uddfd\uddff]|\ud83c\udde7\ud83c[\udde6\udde7\udde9-\uddef\uddf1-\uddf4\uddf6-\uddf9\uddfb\uddfc\uddfe\uddff]|\ud83c\udde8\ud83c[\udde6\udde8\udde9\uddeb-\uddee\uddf0-\uddf5\uddf7\uddfa-\uddff]|\ud83c\udde9\ud83c[\uddea\uddec\uddef\uddf0\uddf2\uddf4\uddff]|\ud83c\uddea\ud83c[\udde6\udde8\uddea\uddec\udded\uddf7-\uddfa]|\ud83c\uddeb\ud83c[\uddee-\uddf0\uddf2\uddf4\uddf7]|\ud83c\uddec\ud83c[\udde6\udde7\udde9-\uddee\uddf1-\uddf3\uddf5-\uddfa\uddfc\uddfe]|\ud83c\udded\ud83c[\uddf0\uddf2\uddf3\uddf7\uddf9\uddfa]|\ud83c\uddee\ud83c[\udde8-\uddea\uddf1-\uddf4\uddf6-\uddf9]|\ud83c\uddef\ud83c[\uddea\uddf2\uddf4\uddf5]|\ud83c\uddf0\ud83c[\uddea\uddec-\uddee\uddf2\uddf3\uddf5\uddf7\uddfc\uddfe\uddff]|\ud83c\uddf1\ud83c[\udde6-\udde8\uddee\uddf0\uddf7-\uddfb\uddfe]|\ud83c\uddf2\ud83c[\udde6\udde8-\udded\uddf0-\uddff]|\ud83c\uddf3\ud83c[\udde6\udde8\uddea-\uddec\uddee\uddf1\uddf4\uddf5\uddf7\uddfa\uddff]|\ud83c\uddf4\ud83c\uddf2|\ud83c\uddf5\ud83c[\udde6\uddea-\udded\uddf0-\uddf3\uddf7-\uddf9\uddfc\uddfe]|\ud83c\uddf6\ud83c\udde6|\ud83c\uddf7\ud83c[\uddea\uddf4\uddf8\uddfa\uddfc]|\ud83c\uddf8\ud83c[\udde6-\uddea\uddec-\uddf4\uddf7-\uddf9\uddfb\uddfd-\uddff]|\ud83c\uddf9\ud83c[\udde6\udde8\udde9\uddeb-\udded\uddef-\uddf4\uddf7\uddf9\uddfb\uddfc\uddff]|\ud83c\uddfa\ud83c[\udde6\uddec\uddf2\uddf8\uddfe\uddff]|\ud83c\uddfb\ud83c[\udde6\udde8\uddea\uddec\uddee\uddf3\uddfa]|\ud83c\uddfc\ud83c[\uddeb\uddf8]|\ud83c\uddfd\ud83c\uddf0|\ud83c\uddfe\ud83c[\uddea\uddf9]|\ud83c\uddff\ud83c[\udde6\uddf2\uddfc]|\ud83c[\udccf\udd8e\udd91-\udd9a\udde6-\uddff\ude01\ude32-\ude36\ude38-\ude3a\ude50\ude51\udf00-\udf21\udf24-\udf84\udf86-\udf93\udf96\udf97\udf99-\udf9b\udf9e-\udfc1\udfc5\udfc6\udfc8\udfc9\udfcc-\udff0\udff3-\udff5\udff7-\udfff]|\ud83d[\udc00-\udc41\udc44\udc45\udc51-\udc65\udc6a-\udc6d\udc6f\udc79-\udc7b\udc7d-\udc80\udc84\udc88-\udca9\udcab-\udcfd\udcff-\udd3d\udd49-\udd4e\udd50-\udd67\udd6f\udd70\udd73\udd74\udd76-\udd79\udd87\udd8a-\udd8d\udda5\udda8\uddb1\uddb2\uddbc\uddc2-\uddc4\uddd1-\uddd3\udddc-\uddde\udde1\udde3\udde8\uddef\uddf3\uddfa-\ude44\ude48-\ude4a\ude80-\udea2\udea4-\udeb3\udeb7-\udebf\udec1-\udec5\udecb-\uded0\udee0-\udee5\udee9\udeeb\udeec\udef0\udef3]|\ud83e[\udd10-\udd17\udd80-\udd84\uddc0]|[\u2328\u23cf\u23e9-\u23f3\u23f8-\u23fa\u2602-\u2604\u2618\u2620\u2622\u2623\u2626\u262a\u262e\u262f\u2638\u2692\u2694\u2696\u2697\u2699\u269b\u269c\u26b0\u26b1\u26c8\u26ce\u26cf\u26d1\u26d3\u26e9\u26f0\u26f1\u26f4\u26f7\u26f8\u2705\u271d\u2721\u2728\u274c\u274e\u2753-\u2755\u2763\u2795-\u2797\u27b0\u27bf\ue50a]|(?:\ud83c[\udc04\udd70\udd71\udd7e\udd7f\ude02\ude1a\ude2f\ude37]|[\u00a9\u00ae\u203c\u2049\u2122\u2139\u2194-\u2199\u21a9\u21aa\u231a\u231b\u24c2\u25aa\u25ab\u25b6\u25c0\u25fb-\u25fe\u2600\u2601\u260e\u2611\u2614\u2615\u2639\u263a\u2648-\u2653\u2660\u2663\u2665\u2666\u2668\u267b\u267f\u2693\u26a0\u26a1\u26aa\u26ab\u26bd\u26be\u26c4\u26c5\u26d4\u26ea\u26f2\u26f3\u26f5\u26fa\u26fd\u2702\u2708\u2709\u270f\u2712\u2714\u2716\u2733\u2734\u2744\u2747\u2757\u2764\u27a1\u2934\u2935\u2b05-\u2b07\u2b1b\u2b1c\u2b50\u2b55\u3030\u303d\u3297\u3299])(?:\ufe0f|(?!\ufe0e))/g
+
+    MessageInfoPopup{
+        id: messageInfoPopup
+        sent_time: Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleLongDate)
+        delivered_time: {
+            return isFinite(model.timestamp_delivered) ? Qt.formatDateTime(model.timestamp_delivered, Qt.DefaultLocaleLongDate) : "-"
+        }
+        is_file_transfer: model.type == "transfer"
+        file_size: utility.toFormattedDataSize(model.transfer.file_size)
+        file_name: model.transfer.file_name
+    }
 
     Loader {
         active: {
@@ -108,7 +119,7 @@ Column {
 
         id: background
         width: Math.max(30, message.width + 12)
-        height: message.height + 12
+        height: textField.delivered_icon_same_line ? message.height + 12 : message.height + 20
         x: model.isOutgoing ? parent.width - width - 11 : model.group_user_id_hash !== "" ? 35 : 10
         radius: 5
         border.color: "transparent"
@@ -134,21 +145,55 @@ Column {
             visible: opacity > 0
             color: messageChildItem == imageField ? "transparent" : parent.color
         }
-        Label{
-            text: "E"
-            height: 14
-            width: 16
-            font.pixelSize: 13
-            font.family: iconFont.name
+        Rectangle{
+            z: 10
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            opacity: {
-                return (model.status === ConversationModel.Sending || model.status === ConversationModel.Queued || model.status === ConversationModel.Error) || (!model.isOutgoing) ? 0 : 1
-            }
-            visible: opacity > 0
-            color: styleHelper.darkMode ? Qt.darker(palette.highlight, 1.5) : Qt.darker(palette.highlight, 1.5)
+            anchors.margins: message.childItem === imageField ? 6 : 0
+            radius: message.childItem === imageField ? 4 : 0
+            width: delivered_icon_time.implicitWidth + (delivered_icon_time.anchors.margins*2)
+            height: delivered_icon_time.implicitHeight + (delivered_icon_time.anchors.margins*2) + 1
 
-            Behavior on opacity { NumberAnimation { } }
+            color: message.childItem === imageField ? palette.base : "transparent"
+            opacity: 0.85
+            Row{
+                id:delivered_icon_time
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.margins: message.childItem === imageField ? 2 : 0
+                Item{
+                    height: 16
+                    width: 3
+                    visible: message.childItem === imageField
+                }
+                Label{
+                    id: delivered_date
+                    text: Qt.formatTime(model.timestamp)
+                    height: 16
+                    font.pixelSize: 10
+                    color: styleHelper.chatIconColor
+                }
+                Item{
+                    height: 16
+                    width: 6
+                    visible: !delivered_icon.visible
+                }
+                Label{
+                    id: delivered_icon
+                    text: "E"
+                    height: 16
+                    width: 22
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 13
+                    font.family: iconFont.name
+                    color: message.childItem === imageField ? palette.text : Qt.darker(palette.highlight, 1.5)
+                    Behavior on opacity { NumberAnimation { } }
+                    opacity: {
+                        return (model.status === ConversationModel.Sending || model.status === ConversationModel.Queued || model.status === ConversationModel.Error) || (!model.isOutgoing) ? 0 : 1
+                    }
+                    visible: opacity > 0
+                }
+            }
         }
 
         Rectangle
@@ -159,17 +204,14 @@ Column {
             property Item childItem: {
                 if (model.type == "text")
                 {
-                    if(model.text !== "" && model.text.indexOf("\n") === -1 && model.text.indexOf("\r") === -1){
-                        const found = model.text.match("^<html><head><meta name=\"qrichtext\"></head><body><img name=\"([A-Za-z0-9-_. ]{0,40})\" width=\"(\\d{1,4})\" height=\"(\\d{1,4})\" src=\"data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)\" /></body></html>$");
-                        if(found){
-                            imageField.source =  "image://base64r/" + found[6]
-                            imageCaption.text = found[1]
-                            return imageField;
-                        }
-                    }
                     return textField;
                 }
-                else if (model.type =="transfer")
+                else if (model.type == "image"){
+                    imageField.source =  "image://base64r/" + model.image.base_64_image
+                    imageCaption.text = model.image.image_title
+                    return imageField;
+                }
+                else if (model.type == "transfer")
                 {
                     return transferField;
                 }
@@ -185,8 +227,9 @@ Column {
             TextEdit {
                 id: textField
                 visible: parent.childItem === this
-                width: Math.min(implicitWidth, background.__maxWidth)
-                height: contentHeight
+                property bool delivered_icon_same_line: implicitWidth + delivered_icon_time.implicitWidth < background.__maxWidth
+                width: delivered_icon_same_line ? implicitWidth + delivered_icon_time.implicitWidth : Math.min(implicitWidth, background.__maxWidth)
+                height: contentHeight + (read_more_limit_reached ? 24 : 0)
 
                 renderType: Text.NativeRendering
                 textFormat: text.includes("<html><head><meta name=\"qrichtext\"") ? TextEdit.RichText : TextEdit.PlainText
@@ -199,10 +242,18 @@ Column {
                 font.pixelSize: styleHelper.pixelSize
                 font.family: styleHelper.fontFamily
 
+                onTextChanged: {
+                    if (length > 1010 && !view_more){
+                        remove(1000, length)
+                        insert(length, "...")
+                        read_more_limit_reached = true
+                    }
+                }
+
                 wrapMode: TextEdit.Wrap
                 readOnly: true
                 selectByMouse: true
-                text: {
+                function getText(){
                     if(model.text != ""){
                         if(typeof(model.group_user_nickname) != "undefined" && model.group_user_nickname.length > 0){
                             return "<p style=\"color:#308cc6;font-weight:700;margin-bottom:5px;\">" + model.group_user_nickname.replace(/[^a-zA-Z0-9\-_, ]/g,'') + " (" + hexToBase64(model.group_user_id_hash.replace(/[^a-fA-F0-9]/g,'')) + ")" + "</p>" + model.text.replace(emojiRegex, emojiPicker.replaceEmojiWithImage)
@@ -220,12 +271,69 @@ Column {
                     else
                         return model.prep_text
                 }
+                text: getText()
+                property bool read_more_limit_reached: false
+                property bool view_more: false
 
                 MouseArea {
+                    id: maText
                     anchors.fill: parent
-                    acceptedButtons: Qt.RightButton
+                    acceptedButtons: Qt.platform.os === "android" ? Qt.LeftButton | Qt.RightButton : Qt.RightButton
+
+                    signal pressAndHold()
+
+                    onPressAndHold: {
+                        if (Qt.platform.os === "android") {
+                            delegate.showContextMenu()
+                        }
+                    }
+
+                    Timer {
+                        id: longPressTimer
+
+                        interval: 2000
+                        repeat: false
+                        running: false
+
+                        onTriggered: {
+                            maText.pressAndHold()
+                        }
+                    }
+
+
+                    onPressedChanged: {
+                        if ( pressed ) {
+                            longPressTimer.running = true;
+                        } else {
+                            longPressTimer.running = false;
+                        }
+                    }
 
                     onClicked: delegate.showContextMenu()
+                }
+                Button{
+                    id: view_more_button
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    visible: textField.read_more_limit_reached
+                    text: qsTr("read more...")
+                    onClicked: {
+                        textField.view_more = !textField.view_more
+                        textField.text = textField.getText()
+                        text = !textField.view_more ? qsTr("read more...") : qsTr("view less")
+                    }
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: "transparent"
+                        }
+                        label: Text {
+                            font.pixelSize: styleHelper.pixelSize * 0.9
+                            text: view_more_button.text
+                            horizontalAlignment: Qt.AlignHCenter
+                            renderType: Text.QtRendering
+                            color: control.hovered ? styleHelper.chatIconColorHover : styleHelper.chatIconColor
+                        }
+                    }
                 }
             }
 
@@ -250,12 +358,10 @@ Column {
                         color: palette.text
                         x: 4
                         y: 2
-                        //readOnly: true
-                        //validator: RegExpValidator{regExp: /^[A-Za-z0-9-_. ]+$/}
                     }
                 }
                 MouseArea {
-                    id: ma
+                    id: maImg
                     anchors.fill: parent
                     acceptedButtons: Qt.platform.os === "android" ? Qt.LeftButton | Qt.RightButton : Qt.RightButton
 
@@ -268,23 +374,23 @@ Column {
                     }
 
                     Timer {
-                        id: longPressTimer
+                        id: longPressTimerImg
 
                         interval: 2000
                         repeat: false
                         running: false
 
                         onTriggered: {
-                            ma.pressAndHold()
+                            maImg.pressAndHold()
                         }
                     }
 
 
                     onPressedChanged: {
                         if ( pressed ) {
-                            longPressTimer.running = true;
+                            longPressTimerImg.running = true;
                         } else {
-                            longPressTimer.running = false;
+                            longPressTimerImg.running = false;
                         }
                     }
 
@@ -299,9 +405,46 @@ Column {
                 visible: parent.childItem === this
 
                 width: 256
-                height: transferDisplay.height
+                height: transferDisplay.height + 12
 
                 color: "transparent"
+
+                MouseArea {
+                    id: maTransfer
+                    anchors.fill: parent
+                    acceptedButtons: Qt.platform.os === "android" ? Qt.LeftButton | Qt.RightButton : Qt.RightButton
+
+                    signal pressAndHold()
+
+                    onPressAndHold: {
+                        if (Qt.platform.os === "android") {
+                            delegate.showContextMenu()
+                        }
+                    }
+
+                    Timer {
+                        id: longPressTimerTransfer
+
+                        interval: 2000
+                        repeat: false
+                        running: false
+
+                        onTriggered: {
+                            maTransfer.pressAndHold()
+                        }
+                    }
+
+
+                    onPressedChanged: {
+                        if ( pressed ) {
+                            longPressTimerTransfer.running = true;
+                        } else {
+                            longPressTimerTransfer.running = false;
+                        }
+                    }
+
+                    onClicked: delegate.showContextMenu()
+                }
 
                 Row {
                     x: 0
@@ -313,7 +456,7 @@ Column {
                     Column {
                         id: transferDisplay
 
-                        width: parent.width - (acceptButton.visible ? (acceptButton.width + parent.spacing) : 0) - parent.spacing - cancelButton.width
+                        width: parent.width - (acceptButton.visible ? (acceptButton.width + parent.spacing) : 0) - parent.spacing - cancelButton.width - showInFolderButton.width
                         spacing: 6
 
                         Text {
@@ -431,6 +574,14 @@ Column {
                         }
                     }
 
+                    Action {
+                        id: showContainingFolderAction
+                        text: qsTr("Show Containing Folder");
+                        onTriggered: {
+                            utility.openFolderSelect(model.transfer.file_path)
+                        }
+                    }
+
                     Button {
                         id: cancelButton
                         visible: model.transfer ?
@@ -462,6 +613,41 @@ Column {
                             text: "T"
                             anchors.centerIn: parent
                             font.pointSize: 20
+                            color: palette.text
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                            font.family: iconFont.name
+                        }
+                    }
+
+                    Button {
+                        id: showInFolderButton
+                        visible: Qt.platform.os === "android" ? false : (model.transfer ? (model.transfer.status === ConversationModel.Finished && model.transfer.direction === ConversationModel.Downloading) : false)
+
+                        width: visible ? transferDisplay.height : 0
+                        height: visible ? transferDisplay.height : 0
+
+                        text: ""
+                        Accessible.role: Accessible.Button
+                        //: Label for file transfer 'Show Containing Folder' button for accessibility tech like screen readers
+                        Accessible.name: qsTr("Show Containing Folder")
+                        //: Description of what the Show Containing Folder button does for accessibility tech like screen readers
+                        Accessible.description: qsTr("Shows the location of the downloaded file")
+
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                implicitWidth: showInFolderButton.width
+                                implicitHeight: showInFolderButton.height
+                                radius: showInFolderButton.width / 2
+                                color: Qt.lighter(( !model.isOutgoing ? styleHelper.outgoingMessageColor : styleHelper.incomingMessageColor ), control.hovered ? 1.3 : 1)
+                            }
+                        }
+
+                        action: showContainingFolderAction
+                        Label {
+                            text: "i"
+                            anchors.centerIn: parent
+                            font.pointSize: 18
                             color: palette.text
                             horizontalAlignment: Qt.AlignHCenter
                             verticalAlignment: Qt.AlignVCenter
@@ -532,16 +718,10 @@ Column {
                         utility.saveBase64(found[2],"1",found[1])
                     }
                     else if(messageChildItem == imageField){
-                        const found = model.text.match("^<html><head><meta name=\"qrichtext\"></head><body><img name=\"([A-Za-z0-9-_. ]{0,40})\" width=\"(\\d{1,4})\" height=\"(\\d{1,4})\" src=\"data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)\" /></body></html>$");
-                        if(found){
-                            var cap = found[1].replace("./g","")
-                            if(cap === "")
-                                cap = "Image"
-                            utility.saveBase64(found[6],cap,"jpg")
-                        }
-                        else{
-                            console.log("Image not found")
-                        }
+                        var cap = model.image.image_title.replace("./g","")
+                        if(cap === "")
+                            cap = "Image"
+                        utility.saveBase64(model.image.base_64_image,cap,"jpg")
                     }
                 }
             }
@@ -557,21 +737,24 @@ Column {
                         object.visible = true
                     }
                     else if(messageChildItem == imageField){
-                        const found = model.text.match("^<html><head><meta name=\"qrichtext\"></head><body><img name=\"([A-Za-z0-9-_. ]{0,40})\" width=\"(\\d{1,4})\" height=\"(\\d{1,4})\" src=\"data:((?:\\w+\/(?:(?!;).)+)?)((?:;[\\w\\W]*?[^;])*),(.+)\" /></body></html>$");
-                        if(found){
-                            var object = createDialog("ImageViewerDialog.qml", { "imageData": found[6] }, window)
-                            object.visible = true
-                        }
+                        var object = createDialog("ImageViewerDialog.qml", { "imageData": model.image.base_64_image }, window)
+                        object.visible = true
                     }
                 }
             }
-
             MenuItem {
-                //: Text for context menu command to copy selected text to clipboard
-                text: qsTr("Remove Message")
-                visible: messageChildItem == textField && !model.isOutgoing
+                //: Text for context menu command to view additional information of a message
+                text: qsTr("Get Info")
                 onTriggered: {
-                    textField.text = "Removed"
+                    messageInfoPopup.open()
+                }
+            }
+            MenuItem {
+                //: Text for context menu command to delete a message
+                text: qsTr("Remove Message")
+                visible: (messageChildItem == textField || messageChildItem == imageField) && model.status !== ConversationModel.Queued
+                onTriggered: {
+                    contact.conversation.remove_message(model.id, model.saved_id)
                 }
             }
         }

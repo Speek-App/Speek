@@ -229,8 +229,29 @@ FocusScope{
                     color: palette.text
                 }
                 Label {
+                    function get_contact_status_text(){
+                        if(contact == null)
+                            return ""
+                        else if(contact.status == 0)
+                            return qsTr("online (P2P connected)")
+                        else if(contact.status == 1){
+                            if(contact.time_since_last_online != "")
+                                return qsTr("offline (%1)").arg(contact.time_since_last_online)
+                            else
+                                return qsTr("offline")
+                        }
+                        else
+                            return qsTr("offline")
+                    }
+                    property var status: contact.status
+                    onStatusChanged: status_contact.text = status_contact.get_contact_status_text()
+                    id: status_contact
                     anchors.bottomMargin: 15
-                    text: contact != null ? contact.status == 0 ? "online (P2P connected)": "offline" : ""
+                    text: get_contact_status_text()
+                    Timer{
+                      interval:60000; running:true; repeat: true
+                      onTriggered: status_contact.text = status_contact.get_contact_status_text()
+                    }
                     textFormat: Text.PlainText
                     font.pointSize: styleHelper.pointSize *0.8
                     opacity: 0.6

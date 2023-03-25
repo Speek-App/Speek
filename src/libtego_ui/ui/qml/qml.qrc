@@ -4,6 +4,7 @@
         <file>EmojiCategoryButton.qml</file>
         <file>EmojiPicker.qml</file>
         <file>emoji.js</file>
+        <file>emoji_names.js</file>
         <file>main.qml</file>
         <file>AddContactDialog.qml</file>
         <file>ChatMessageArea.qml</file>
@@ -65,6 +66,7 @@
         <file>AddContactDialogMain.qml</file>
         <file>WaitingRequestAccepted.qml</file>
         <file>ContactRequestSelectionDialogMain.qml</file>
+        <file>MessageInfoPopup.qml</file>
     </qresource>
     <qresource prefix="/text">
         <file>../../../LICENSE</file>

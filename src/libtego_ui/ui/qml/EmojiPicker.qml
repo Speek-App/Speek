@@ -6,6 +6,7 @@ import QtQuick.Dialogs 1.0
 import QtQuick.Window 2.15
 import im.utility 1.0
 import "qrc:/ui/emoji.js" as EmojiJSON
+import "qrc:/ui/emoji_names.js" as EmojiNamesJSON
 
 Rectangle {
     id: emojiPicker
@@ -19,6 +20,7 @@ Rectangle {
     property var emojiFont: typeof(uiSettings.data.emojiFont) !== "undefined" ? uiSettings.data.emojiFont.toLowerCase() : availableEmoji[0]
     property var availableEmoji: ["noto-emoji", "twemoji", "emojitwo"]
     property var emojiJoinChar: "-"
+    property var emojiNamesParsedJson: JSON.parse(EmojiNamesJSON.emoji_json)
 
     property alias current_skin_selected: button_skin.text
 
@@ -33,6 +35,40 @@ Rectangle {
         for (var i = 0; i < emojiParsedJson.emoji_by_category[newCategoryName].length; i++) {
             var elem = emojiParsedJson.emoji_by_category[newCategoryName][i]
             emojiByCategory.append({eCatName: newCategoryName, eCatText: elem})
+        }
+    }
+
+    function emojiExists(emoji) {
+        var characterCode;
+        characterCode = prepend_0(fixedCharCodeAt(emoji, 0).toString(16))
+
+        if(emoji.length >= 4)
+            for(var i = 2; i<emoji.length; i+=2)
+                characterCode += emojiPicker.emojiJoinChar + prepend_0(fixedCharCodeAt(emoji, i).toString(16))
+
+        var resource = ':/emoji/' + emojiPicker.emojiFont + '/' + emojiPicker.emojiRenderSize + '/' + characterCode + '.png'
+        if(!utility.checkFileExists(resource)){
+            for(var i = 0; i<emojiPicker.availableEmoji.length; i++){
+                if(emojiPicker.emojiFont !== emojiPicker.availableEmoji[i]){
+                    resource = ':/emoji/' + emojiPicker.availableEmoji[i] + '/' + emojiPicker.emojiRenderSize + '/' + characterCode + '.png'
+                    if(utility.checkFileExists(resource))
+                        return true;
+                }
+            }
+        }
+        else{
+            return true;
+        }
+        return false;
+    }
+
+    function searchChanged(searchText){
+        emojiByCategory.clear()
+
+        for (var i = 0; i < emojiNamesParsedJson.emojis.length; i++) {
+            var elem = emojiNamesParsedJson.emojis[i]
+            if(elem.name.toLowerCase().includes(searchText.toLowerCase()) && emojiExists(elem.emoji))
+                emojiByCategory.append({eCatName: "Search", eCatText: elem.emoji})
         }
     }
 
@@ -159,111 +195,135 @@ Rectangle {
         id: emojiByCategory
     }
 
-    GridView {
-        id: emojiGrid
-        width: parent.width
-        anchors.fill: parent
-        anchors.bottomMargin: buttonWidth * 1.45
-        cellWidth: emojiGrid.width / Math.floor(emojiGrid.width / buttonWidth); cellHeight: buttonWidth
-
-        model: emojiByCategory
-        delegate: EmojiButton {
-            width: emojiGrid.width / Math.floor(emojiGrid.width / buttonWidth)
-            height: buttonWidth
-            color: emojiPicker.color
-            onClickedFunction: {
-                emojiClickedHandler(b)
-            }
-        }
-    }
-
-
-    //seperator
-    Rectangle {
-        color: emojiPicker.color
-        anchors.bottom: parent.bottom
-        width: parent.width
-        height: buttonWidth * 1.45
-    }
-    Rectangle {
-        color: styleHelper.borderColor2
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: buttonWidth * 1.4
-        width: parent.width
-        height: 1
-    }
-
-    //emoji category selector
-    ListView {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0//buttonWidth * 1.4
-        height: buttonWidth * 1.4
-        width: parent.width
-        orientation: ListView.Horizontal
-        clip: true
-
-        model: emojiCategoryButtons
-        delegate: EmojiCategoryButton {
-            fontSize: buttonWidth
-            width: buttonWidth * 2
-            height: buttonWidth * 1.4
-            color: emojiPicker.color
-            onClickedFunction: {
-                categoryChangedHandler(b)
-            }
-        }
-        footer: Item{
-            height:2
-            width: 40
-        }
-        RowLayout {
-            y: 6
-            anchors {
-                right: parent.right
-            }
-            Button {
-                id: button_skin
-                text: skin_tones[0]
-                style: ButtonStyle {
-                    background: Rectangle {
-                        implicitWidth: 20
-                        implicitHeight: 20
-                        border.color: control.hovered ? "#dddddd" : "transparent"
-                        border.width: 1
-                        radius: 5
-                        color: "transparent"
-                     }
-
-                     label: Text {
-                          renderType: Text.NativeRendering
-                          text: {
-                              return replaceEmojiWithImage(control.text)
-                          }
-                          textFormat: TextEdit.RichText
-                          verticalAlignment: Text.AlignVCenter
-                          horizontalAlignment: Text.AlignHCenter
-                          font.pointSize: 22
-                      }
-                }
-
-                onClicked: {
-                    current_skin_tone += 1
-                    if(current_skin_tone > 4){
-                        current_skin_tone = 0
-                    }
-                    button_skin.text = skin_tones[current_skin_tone]
-                }
-            }
-            Item{
-                width: 4
-            }
-        }
-    }
-
     ListModel {
         id: emojiCategoryButtons
+    }
+
+    ColumnLayout{
+        anchors.fill: parent
+        spacing: 0
+
+        Rectangle{
+            Layout.maximumHeight: buttonWidth * 1.45
+            Layout.preferredHeight: buttonWidth * 1.45
+            Layout.fillWidth: true
+            color: emojiPicker.color
+            z:5
+
+            SearchBox {
+                id: searchEmoji
+                anchors.fill: parent
+                anchors.margins: 3
+
+                text: ""
+
+                onTextChanged: {
+                    searchChanged(searchEmoji.text);
+                }
+
+                Accessible.role: Accessible.EditableText
+                //: Name of the text input used to filter the emojis
+                Accessible.name: qsTr("Emoji search")
+                //: Description of what the emoji search filter is for accessibility tech like screen readers
+                Accessible.description: qsTr("Which emoji to find")
+            }
+        }
+
+        GridView {
+            id: emojiGrid
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            cellWidth: emojiGrid.width / Math.floor(emojiGrid.width / buttonWidth); cellHeight: buttonWidth
+
+            model: emojiByCategory
+            delegate: EmojiButton {
+                width: emojiGrid.width / Math.floor(emojiGrid.width / buttonWidth)
+                height: buttonWidth
+                color: emojiPicker.color
+                onClickedFunction: {
+                    emojiClickedHandler(b)
+                    forceActiveFocus()
+                }
+            }
+        }
+
+        Rectangle {
+            color: styleHelper.borderColor2
+            Layout.maximumHeight: 1
+            Layout.preferredHeight: 1
+            Layout.fillWidth: true
+        }
+
+        //emoji category selector
+        Rectangle{
+            Layout.maximumHeight: buttonWidth * 1.45
+            Layout.preferredHeight: buttonWidth * 1.45
+            Layout.fillWidth: true
+            color: emojiPicker.color
+            ListView {
+                anchors.fill: parent
+                orientation: ListView.Horizontal
+                clip: true
+
+                model: emojiCategoryButtons
+                delegate: EmojiCategoryButton {
+                    fontSize: buttonWidth
+                    width: buttonWidth * 2
+                    height: buttonWidth * 1.4
+                    color: emojiPicker.color
+                    onClickedFunction: {
+                        categoryChangedHandler(b)
+                        forceActiveFocus()
+                    }
+                }
+                footer: Item{
+                    height:2
+                    width: 40
+                }
+                RowLayout {
+                    y: 6
+                    anchors {
+                        right: parent.right
+                    }
+                    Button {
+                        id: button_skin
+                        text: skin_tones[0]
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                implicitWidth: 20
+                                implicitHeight: 20
+                                border.color: control.hovered ? "#dddddd" : "transparent"
+                                border.width: 1
+                                radius: 5
+                                color: "transparent"
+                             }
+
+                             label: Text {
+                                  renderType: Text.NativeRendering
+                                  text: {
+                                      return replaceEmojiWithImage(control.text)
+                                  }
+                                  textFormat: TextEdit.RichText
+                                  verticalAlignment: Text.AlignVCenter
+                                  horizontalAlignment: Text.AlignHCenter
+                                  font.pointSize: 22
+                              }
+                        }
+
+                        onClicked: {
+                            current_skin_tone += 1
+                            if(current_skin_tone > 4){
+                                current_skin_tone = 0
+                            }
+                            button_skin.text = skin_tones[current_skin_tone]
+                        }
+                    }
+                    Item{
+                        width: 4
+                    }
+                }
+            }
+        }
     }
 
     Component.onCompleted: completedHandler()
